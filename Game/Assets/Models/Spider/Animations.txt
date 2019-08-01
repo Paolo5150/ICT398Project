@@ -1,0 +1,15 @@
+0: Attack
+1: Death Flip
+2: Death Forward
+3: Bounce/Hide?
+4: Jump
+5: Static
+6: Walk Backwards
+7: Walk Forwards
+8: Walk Left
+9: Walk Right
+10: Walk Backwards Slowly
+11: Walk Forwards Slowly
+12: Walk Left Slowly
+13: Walk Right Slowly
+14: Idle
