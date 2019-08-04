@@ -1,6 +1,5 @@
 #pragma once
 #include "..\..\Core\GameObject.h"
-#include "imgui.h"
 #include "..\imgui_impl_glfw.h"
 #include "..\imgui_impl_opengl3.h"
 #include "..\..\Core\Window.h"
@@ -37,7 +36,7 @@ public:
 	* @pre			The GUIObject must exist
 	* @post			The GUIObject object is destroyed
 	*/
-	virtual ~GUIObject() {};
+	virtual ~GUIObject() { Logger::LogInfo("Deleted GUIobject", name); };
 
 	/**
 	* @brief		The position on the screen

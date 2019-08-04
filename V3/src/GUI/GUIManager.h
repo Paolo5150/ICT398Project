@@ -70,7 +70,9 @@ public:
 	void Refresh();
 
 	void AddCanvas(GUICanvas* canvas);
+	void RemoveCanvas(std::string name);
 
+	GUICanvas* GetCanvasByName(std::string name);
 
 
 
@@ -85,6 +87,8 @@ private:
 	* @post			The GUIManager instance is created
 	*/
 	GUIManager() {};
+
+	void CreateAndAddMainCanvas();
 
 };
 

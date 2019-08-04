@@ -59,6 +59,7 @@ void SceneManager::ReloadCurrent()
 		m_currentScene->Start();
 		Input::SetIsEnabled(1);
 		Timer::ResetTickCount();
+
 	}
 }
 
@@ -97,6 +98,7 @@ void SceneManager::LoadNewScene(std::string sceneName)
 	m_currentScene->Start();
 	Input::SetIsEnabled(1);
 	Timer::ResetTickCount();
+
 
 }
 

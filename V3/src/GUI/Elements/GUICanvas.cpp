@@ -1,23 +1,25 @@
 #include "pch.h"
 #include "GUICanvas.h"
-#include "GUIObject.h"
 #include "imgui.h"
 #include "..\imgui_impl_glfw.h"
 #include "..\imgui_impl_opengl3.h"
 
 GUICanvas::GUICanvas(std::string name) : _name(name)
 {
-
+	isActive = true;
 }
 
 
 GUICanvas::~GUICanvas()
 {
-
+	//Logger::LogInfo("Deleted canvas", _name);
+	allGUIObjects.clear();
 }
 
 void GUICanvas::Render()
 {
+	if (!isActive) return;
+
 	ImGui::SetNextWindowPos(ImVec2(startingPos.x, startingPos.y));
 	ImGui::SetNextWindowSize(ImVec2(widthPixels, heightPixels));
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(backgroundColor.x,backgroundColor.y,backgroundColor.z,backgroundColor.w));

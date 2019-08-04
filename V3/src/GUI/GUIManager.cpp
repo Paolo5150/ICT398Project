@@ -27,8 +27,21 @@ void GUIManager::Initialize()
 	ImGui_ImplGlfw_InitForOpenGL(Window::Instance().window.get(), false);
 	ImGui_ImplOpenGL3_Init("#version 430");
 
-	// Load fonts
+	// When the scene changes, removes all canvas and recreate the main one as per default
+	EventDispatcher::Instance().SubscribeCallback<SceneChangedEvent>([this](Event* e) {
+		allCanvas.clear();
+		CreateAndAddMainCanvas();
+		Logger::LogInfo("GUIManager reset");
+		return 0;
+	});
 
+	// Load fonts
+	CreateAndAddMainCanvas();
+	
+}
+
+void GUIManager::CreateAndAddMainCanvas()
+{
 	// Add main canvas
 	GUICanvas* mainCanvas = new GUICanvas("MainCanvas");
 	mainCanvas->SetBackgroundColor(1, 0, 0, 0);
@@ -36,12 +49,11 @@ void GUIManager::Initialize()
 	mainCanvas->AddGUIObject(new GUIButton("Test", "Click", []() { Logger::LogInfo("Clicked!"); }));
 	int x, y;
 	Window::Instance().GetWindowSize(x, y);
-	
+
 	mainCanvas->SetSize(x, y);
-	
+
 	AddCanvas(mainCanvas);
 }
-
 
 
 void GUIManager::Refresh()
@@ -54,6 +66,27 @@ void GUIManager::AddCanvas(GUICanvas* canvas)
 {
 	allCanvas[canvas->GetName()] = std::unique_ptr<GUICanvas>(canvas);
 }
+
+GUICanvas* GUIManager::GetCanvasByName(std::string name)
+{
+	auto it = allCanvas.find(name);
+
+	if (it != allCanvas.end())
+		return it->second.get();
+	else
+		return nullptr;
+}
+
+void GUIManager::RemoveCanvas(std::string name)
+{
+	auto it = allCanvas.find(name);
+
+	if (it != allCanvas.end())
+	{
+		allCanvas.erase(name);
+	}
+}
+
 
 
 void GUIManager::Render(bool forceRefresh, bool forceClear)

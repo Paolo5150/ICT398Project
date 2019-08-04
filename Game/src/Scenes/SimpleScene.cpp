@@ -64,6 +64,8 @@ void SimpleScene::Initialize() {
 	m.LoadCubemap(ContentManager::Instance().GetAsset<CubeMap>("SunSet"),"cubemap0");
 
 	g->ApplyMaterial(m);
+
+
 /*	g2 = new GameObject("Test");
 	ContentManager::Instance().GetAsset<Model>("Nanosuit")->PopulateGameObject(g2);
 
@@ -116,15 +118,15 @@ void SimpleScene::LogicUpdate()
 {
 	pointLight->transform.Translate(0, 0.01, 0.0);
 	
-	/*static float timer = 0;
+	static float timer = 0;
 	static bool done = false;
 	timer += Timer::GetDeltaS();
 
 	if (timer >= 3 && !done)
 	{
 		done = 1;
-		g->FlagToBeDestroyed();
-	}*/
+		//GUIManager::Instance().RemoveCanvas("MainCanvas");
+	}
 
 	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE))
 		EventDispatcher::Instance().DispatchEvent(new QuitRequestEvent());
