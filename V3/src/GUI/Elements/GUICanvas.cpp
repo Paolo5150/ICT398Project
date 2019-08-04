@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "GUICanvas.h"
+#include "GUIObject.h"
 #include "imgui.h"
 #include "..\imgui_impl_glfw.h"
 #include "..\imgui_impl_opengl3.h"
@@ -23,10 +24,20 @@ void GUICanvas::Render()
 
 	ImGui::Begin(_name.c_str(), (bool*)1,flags);
 
+	for (auto it = allGUIObjects.begin(); it != allGUIObjects.end(); it++)
+	{
+		if((*it).second->isActive)
+			(*it).second->Render();
+	}
+
 	//Draw elements
 	ImGui::End();
-
 	ImGui::PopStyleColor();
+}
+
+void GUICanvas::AddGUIObject(GUIObject* obj)
+{
+	allGUIObjects[obj->name] = std::unique_ptr<GUIObject>(obj);
 }
 
 

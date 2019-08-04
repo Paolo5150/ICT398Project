@@ -2,7 +2,10 @@
 
 #include <string>
 #include <list>
+#include <unordered_map>
 #include "..\..\Utils\Maths.h"
+
+class GUIObject;
 
 class GUICanvas
 {
@@ -20,6 +23,7 @@ public:
 	void SetStartingPosition(unsigned x, unsigned y) { startingPos.x = x; startingPos.y = y; }
 	void SetBackgroundColor(float r, float g, float b, float a) { backgroundColor.x = r; backgroundColor.y = g; backgroundColor.z = b; backgroundColor.a = a; }
 
+	void AddGUIObject(GUIObject* obj);
 
 
 private:
@@ -29,5 +33,7 @@ private:
 	ImGuiWindowFlags flags;
 	glm::vec2 startingPos;
 	glm::vec4 backgroundColor;
+
+	std::unordered_map<std::string,std::unique_ptr<GUIObject>> allGUIObjects;
 
 };

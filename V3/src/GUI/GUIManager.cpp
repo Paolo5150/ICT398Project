@@ -4,7 +4,7 @@
 #include "..\Events\ApplicationEvents.h"
 #include "..\Core\Core.h"
 #include <thread>
-
+#include "Elements/GUIButton.h"
 #include "imgui.h"
 #include "..\GUI\imgui_impl_glfw.h"
 #include "..\GUI\imgui_impl_opengl3.h"
@@ -17,7 +17,9 @@ GUIManager& GUIManager::Instance()
 }
 
 GUIManager::~GUIManager()
-{}
+{
+	allCanvas.clear();
+}
 
 void GUIManager::Initialize()
 {
@@ -31,7 +33,7 @@ void GUIManager::Initialize()
 	GUICanvas* mainCanvas = new GUICanvas("MainCanvas");
 	mainCanvas->SetBackgroundColor(1, 0, 0, 0);
 	mainCanvas->AddFlag(ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar);
-	
+	mainCanvas->AddGUIObject(new GUIButton("Test", "Click", []() { Logger::LogInfo("Clicked!"); }));
 	int x, y;
 	Window::Instance().GetWindowSize(x, y);
 	

@@ -188,7 +188,9 @@
     <ClInclude Include="src\Events\EventDispatcher.h" />
     <ClInclude Include="src\Events\TimerEvents.h" />
     <ClInclude Include="src\Events\WindowEvents.h" />
+    <ClInclude Include="src\GUI\Elements\GUIButton.h" />
     <ClInclude Include="src\GUI\Elements\GUICanvas.h" />
+    <ClInclude Include="src\GUI\Elements\GUIObject.h" />
     <ClInclude Include="src\GUI\GUIManager.h" />
     <ClInclude Include="src\GUI\imconfig.h" />
     <ClInclude Include="src\GUI\imgui.h" />

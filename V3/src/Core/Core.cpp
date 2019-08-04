@@ -89,6 +89,7 @@ void Core::Shutdown()
 	ContentManager::Instance().UnloadPreserved<Model>();
 	ContentManager::Instance().UnloadPreserved<Mesh>();
 
+	GUIManager::Instance().Shutdown();
 
 	Window::Instance().Destroy();
 	glfwTerminate();
