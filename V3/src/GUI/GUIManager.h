@@ -3,7 +3,7 @@
 #include <list>
 #include <unordered_map>
 #include "..\Events\EventDispatcher.h"
-
+#include "Elements/GUICanvas.h"
 class GUIObject;
 class GUIText;
 class GUIImage;
@@ -69,33 +69,15 @@ public:
 	*/
 	void Refresh();
 
-	/**
-	* @brief				Add the GUIObjects to the manager list
-	* @pre					The GUIManager instance must exist
-	* @post					The GUIObjects are added to the manager list
-	* @param gobj			The GUIObject
-	* @param preserve		Whether the object will be preserved between scenes
-	*/
+	void AddCanvas(GUICanvas* canvas);
 
-	void AddGUIObject(GUIObject* gobj, bool preserve = false);
 
-	void SetBackgroundColor(float r, float g, float b, float a);
 
-	void SelectFont(std::string fontName);
-
-	void DeleteGUIObjects(bool preservedToo);
 
 private:
 
-	/**
-	* @brief				The list of GUIObjects not preserve
-	*/
-	std::unordered_map<std::string, GUIObject*> allGUI;
 
-	/**
-	* @brief				The list of GUIObjects preserved
-	*/
-	std::unordered_map<std::string, GUIObject*> allGUIPreserved;
+	std::unordered_map<std::string, std::unique_ptr<GUICanvas>> allCanvas;
 
 	/**
 	* @brief		Create the GUIManager instance

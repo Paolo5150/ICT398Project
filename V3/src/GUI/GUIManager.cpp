@@ -4,6 +4,7 @@
 #include "..\Events\ApplicationEvents.h"
 #include "..\Core\Core.h"
 #include <thread>
+
 #include "imgui.h"
 #include "..\GUI\imgui_impl_glfw.h"
 #include "..\GUI\imgui_impl_opengl3.h"
@@ -26,8 +27,17 @@ void GUIManager::Initialize()
 
 	// Load fonts
 
+	// Add main canvas
+	GUICanvas* mainCanvas = new GUICanvas("MainCanvas");
+	mainCanvas->SetBackgroundColor(1, 0, 0, 0);
+	mainCanvas->AddFlag(ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar);
 	
-
+	int x, y;
+	Window::Instance().GetWindowSize(x, y);
+	
+	mainCanvas->SetSize(x, y);
+	
+	AddCanvas(mainCanvas);
 }
 
 
@@ -38,10 +48,9 @@ void GUIManager::Refresh()
 
 }
 
-void GUIManager::AddGUIObject(GUIObject* gobj, bool preserve)
+void GUIManager::AddCanvas(GUICanvas* canvas)
 {
-
-
+	allCanvas[canvas->GetName()] = std::unique_ptr<GUICanvas>(canvas);
 }
 
 
@@ -56,55 +65,25 @@ void GUIManager::Render(bool forceRefresh, bool forceClear)
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
-	ImGui::SetNextWindowPos(ImVec2(0, 50));
+	
+	// Render all canvas
+	auto it = allCanvas.begin();
 
-	int x, y;
-	Window::Instance().GetWindowSize(x, y);
-	ImGui::SetNextWindowSize(ImVec2(100,100));
+	for (; it != allCanvas.end(); it++)
+		(*it).second->Render();
 
-	ImGui::Begin("W1");
-	ImGui::Text("Win 1");
-	ImGui::End();
-
-
-	ImGui::SetNextWindowPos(ImVec2(150, 0));
-	ImGui::SetNextWindowSize(ImVec2(100, 100));
-	ImGui::Begin("W2");
-	ImGui::Text("Win 2");
-
-	ImGui::End();
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	if (forceRefresh)
 		Window::Instance().Refresh();
-
-
-
 }
 
 
-void GUIManager::SelectFont(std::string fontName)
-{
 
-}
-
-
-void GUIManager::DeleteGUIObjects(bool preservedToo)
-{
-
-	
-
-}
-
-
-void GUIManager::SetBackgroundColor(float r, float g, float b, float a)
-{
-
-}
 void GUIManager::Shutdown()
 {
-
+	allCanvas.clear();
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();

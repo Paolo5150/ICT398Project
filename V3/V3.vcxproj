@@ -188,6 +188,7 @@
     <ClInclude Include="src\Events\EventDispatcher.h" />
     <ClInclude Include="src\Events\TimerEvents.h" />
     <ClInclude Include="src\Events\WindowEvents.h" />
+    <ClInclude Include="src\GUI\Elements\GUICanvas.h" />
     <ClInclude Include="src\GUI\GUIManager.h" />
     <ClInclude Include="src\GUI\imconfig.h" />
     <ClInclude Include="src\GUI\imgui.h" />
@@ -264,6 +265,7 @@
     <ClCompile Include="src\Core\Transform.cpp" />
     <ClCompile Include="src\Core\Window.cpp" />
     <ClCompile Include="src\Events\EventDispatcher.cpp" />
+    <ClCompile Include="src\GUI\Elements\GUICanvas.cpp" />
     <ClCompile Include="src\GUI\GUIManager.cpp" />
     <ClCompile Include="src\GUI\imgui.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
