@@ -87,6 +87,8 @@ void OtherScene::Start()
 
 void OtherScene::LogicUpdate()
 {
+	SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("PointLight")[0]->transform.Translate(0, 0.01, 0.0);
+
 
 	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE))
 		EventDispatcher::Instance().DispatchEvent(new QuitRequestEvent());

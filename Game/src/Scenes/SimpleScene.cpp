@@ -81,13 +81,13 @@ void SimpleScene::Start()
 	Scene::Start();
 	Input::SetCursorMode("disabled");
 
-	//PhysicsWorld::Instance().InitializeQuadtree(0, 0, 5000, 5000);
+	PhysicsWorld::Instance().InitializeQuadtree(0, 0, 5000, 5000);
 
 }
 
 void SimpleScene::LogicUpdate()
 {
-	//pointLight->transform.Translate(0, 0.01, 0.0);
+	SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("PointLight")[0]->transform.Translate(0, 0.01, 0.0);
 	
 	static float timer = 0;
 	static bool done = false;
