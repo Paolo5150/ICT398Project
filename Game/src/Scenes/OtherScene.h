@@ -16,7 +16,7 @@ class GUIProgressBar;
 *
 * @bug No known bugs.
 */
-class SimpleScene : public Scene
+class OtherScene : public Scene
 {
 public:
 	enum SCENE_STATES
@@ -30,7 +30,7 @@ public:
 	* @pre			The MainScene object does not exist
 	* @post			The MainScene object is created.
 	*/
-	SimpleScene();
+	OtherScene();
 
 	/**
 	* @brief		Loads the assets needed for this scene.
@@ -56,7 +56,4 @@ public:
 	* @brief		Update objects in the scene.
 	*/
 	virtual void LogicUpdate() override;
-
-
-
 };

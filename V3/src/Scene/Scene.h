@@ -15,6 +15,7 @@
 #include "..\Physics\PhysicsWorld.h"
 #include "..\Physics\CollisionLayer.h"
 #include "..\Lighting\LightingManager.h"
+#include "..\GUI\GUIManager.h"
 #include <map>
 #include <vector>
 #include <list>

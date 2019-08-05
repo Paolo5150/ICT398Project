@@ -1,4 +1,5 @@
 #include "pch.h"
+
 #include "Core.h"
 
 #include "Input.h"
@@ -11,6 +12,7 @@
 #include "..\Rendering\RenderingEngine.h"
 #include "..\Utils\ContentManager.h"
 #include "..\Lighting\LightingManager.h"
+#include "..\GUI\GUIManager.h"
 
 
 void Core::Initialize()
@@ -62,6 +64,7 @@ void Core::Initialize()
 	RenderingEngine::Instance().Initialize();
 	Timer::Initialize();
 	LightManager::Instance().Initialize();
+	GUIManager::Instance().Initialize();
 
 	//Start update loop
 	m_isRunning = true;
@@ -86,6 +89,7 @@ void Core::Shutdown()
 	ContentManager::Instance().UnloadPreserved<Model>();
 	ContentManager::Instance().UnloadPreserved<Mesh>();
 
+	GUIManager::Instance().Shutdown();
 
 	Window::Instance().Destroy();
 	glfwTerminate();
@@ -146,6 +150,7 @@ bool Core::Render(Event* e)
 	
 	LightManager::Instance().Update();
 	RenderingEngine::Instance().RenderBufferToTexture();
+	GUIManager::Instance().Render();
 
 	Window::Instance().Refresh();
 	return 0;

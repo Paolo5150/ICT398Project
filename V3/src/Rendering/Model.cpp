@@ -11,19 +11,8 @@ Model::Model()
 
 Model::~Model()
 {
-//	auto it = allNodes.begin();
-
-	//for (; it != allNodes.end(); it++)
-	//	delete it->second;
-
-	//Textures are deleted by the AsetLoader
-	//Meshes are deleted by the mesh renderer
-
-	//for (int i = 0; i < allTextures.size(); i++)
-	//	delete allTextures[i];
-
-	//Logger::LogError("Deleted model", name);
-	//allNodes.clear();
+	//Logger::LogError("Model", name, "died");
+	allMeshes.clear();
 }
 
 

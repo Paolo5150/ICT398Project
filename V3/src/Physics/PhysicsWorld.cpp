@@ -83,26 +83,7 @@ PhysicsWorld::~PhysicsWorld()
 		staticQuadtree->ClearNodes();
 	}
 }
-/*
-void PhysicsWorld::AddRigidBody(RigidBody* rb)
-{
-	bool found = 0;
 
-	auto it = allRigidBodies.begin();
-
-	for (; it != allRigidBodies.end() && !found; it++)
-	{
-		if ((*it) == rb)
-			found = 1;
-	}
-
-	if (!found)
-	{
-		allRigidBodies.push_back(rb);
-		dynamicsWorld->addRigidBody(rb->btrb);
-	}
-}
-*/
 void PhysicsWorld::AddCollider(Collider* rb)
 {
 	if (!rb->GetParent()->GetIsStatic())
@@ -121,17 +102,15 @@ void PhysicsWorld::AddCollider(Collider* rb)
 
 void PhysicsWorld::Update()
 {
-	FillQuadtree(0);
-	PerformCollisions(false);
-	allNonStaticColliders.clear();
+	if (nonStaticQuadtree && staticQuadtree)
+	{
+		FillQuadtree(0);
+		PerformCollisions(false);
+		allNonStaticColliders.clear();
+	}
 
-	/*auto it = allRigidBodies.begin();
-	for (; it != allRigidBodies.end(); it++)
-		(*it)->PrePhysicsUpdate();*/
 
-	//dynamicsWorld->updateAabbs();
-	//Logger::LogInfo("RB", allRigidBodies.size());
-	//dynamicsWorld->stepSimulation(deltaS, 10);
+
 }
 
 

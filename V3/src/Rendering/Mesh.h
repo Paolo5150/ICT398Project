@@ -106,19 +106,19 @@ private:
 	/**
 	* @brief		The vertex buffer for the GPU
 	*/
-	ArrayBuffer<Vertex>* vertexBuffer;
+	std::unique_ptr<ArrayBuffer<Vertex>> vertexBuffer;
 
 
 	/**
 	* @brief		The indices buffer for the GPU
 	*/
-	ArrayBuffer<unsigned>* indexBuffer;
+	std::unique_ptr<ArrayBuffer<unsigned>> indexBuffer;
 
 
 	/**
 	* @brief		The vertex array of array buffers
 	*/
-	VertexArray* vertexArray;
+	std::unique_ptr<VertexArray> vertexArray;
 
 	unsigned VBO_bones;
 
