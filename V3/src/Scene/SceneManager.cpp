@@ -66,7 +66,6 @@ void SceneManager::ReloadCurrent()
 void SceneManager::LoadNewScene(std::string sceneName)
 {
 	Input::SetIsEnabled(0);
-	Input::Update();
 
 	//Check if scene is already loaded
 	if(m_currentScene != nullptr)
@@ -98,6 +97,7 @@ void SceneManager::LoadNewScene(std::string sceneName)
 	m_currentScene->Start();
 	Input::SetIsEnabled(1);
 	Timer::ResetTickCount();
+	//Input::Update();
 
 
 }

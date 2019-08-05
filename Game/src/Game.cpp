@@ -5,6 +5,8 @@
 #include "Core\Logger.h"
 #include "Scene\SceneManager.h"
 #include "Scenes/SimpleScene.h"
+#include "Scenes/OtherScene.h"
+
 
 
 
@@ -31,8 +33,12 @@ void Game::AppInitialize()
 	/*SceneManager::Instance().AddScene(new MainScene());
 	SceneManager::Instance().AddScene(new ExitScene());
 	SceneManager::Instance().AddScene(new MainMenuScene());*/
+
 	auto simple = std::unique_ptr<Scene>(new SimpleScene());
 	SceneManager::Instance().AddScene(simple);
+
+	auto other = std::unique_ptr<Scene>(new OtherScene());
+	SceneManager::Instance().AddScene(other);
 
 	//Load first scene
 	SceneManager::Instance().LoadNewScene("SimpleScene"); //Scene initialize is called here*/

@@ -189,6 +189,8 @@ void ContentManager::Unload()
 	{
 		it->second.UnloadVolatile();
 	}
+
+	//Logger::LogInfo("Containers:", containers.size());
 }
 
 template<class T>

@@ -121,17 +121,9 @@ void PhysicsWorld::AddCollider(Collider* rb)
 
 void PhysicsWorld::Update()
 {
-	FillQuadtree(0);
+	/*FillQuadtree(0);
 	PerformCollisions(false);
-	allNonStaticColliders.clear();
-
-	/*auto it = allRigidBodies.begin();
-	for (; it != allRigidBodies.end(); it++)
-		(*it)->PrePhysicsUpdate();*/
-
-	//dynamicsWorld->updateAabbs();
-	//Logger::LogInfo("RB", allRigidBodies.size());
-	//dynamicsWorld->stepSimulation(deltaS, 10);
+	allNonStaticColliders.clear();*/
 }
 
 

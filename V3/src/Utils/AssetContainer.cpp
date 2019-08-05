@@ -5,7 +5,6 @@
 void AssetContainer::UnloadVolatile()
 {
 	volatileAssets.clear();
-
 }
 
 void AssetContainer::LoadRaw(std::string name, Asset* asset, bool isPersistent)

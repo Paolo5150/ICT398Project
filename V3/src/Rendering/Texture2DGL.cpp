@@ -93,7 +93,7 @@ Texture2DGL::Texture2DGL(std::string name, unsigned width, unsigned height, BUFF
 Texture2DGL::~Texture2DGL()
 {
 	glDeleteTextures(1, &id);
-	//Logger::LogError("Texture", name, "died");
+//	Logger::LogError("Texture", name, "died");
 }
 
 

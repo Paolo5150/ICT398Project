@@ -29,15 +29,13 @@ void GUIManager::Initialize()
 
 	// When the scene changes, removes all canvas and recreate the main one as per default
 	EventDispatcher::Instance().SubscribeCallback<SceneChangedEvent>([this](Event* e) {
-		allCanvas.clear();
+	allCanvas.clear();
 		CreateAndAddMainCanvas();
 		Logger::LogInfo("GUIManager reset");
 		return 0;
 	});
-
-	// Load fonts
-	CreateAndAddMainCanvas();
 	
+
 }
 
 void GUIManager::CreateAndAddMainCanvas()
@@ -64,7 +62,7 @@ void GUIManager::Refresh()
 
 void GUIManager::AddCanvas(GUICanvas* canvas)
 {
-	allCanvas[canvas->GetName()] = std::unique_ptr<GUICanvas>(canvas);
+	//allCanvas[canvas->GetName()] = std::unique_ptr<GUICanvas>(canvas);
 }
 
 GUICanvas* GUIManager::GetCanvasByName(std::string name)

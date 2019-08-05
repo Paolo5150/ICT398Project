@@ -20,6 +20,7 @@ Mesh::~Mesh()
 	if (bones_id_weights_for_each_vertex.size() > 0)
 		glDeleteBuffers(1, &VBO_bones);
 
+//	Logger::LogError("Mesh", name, "died");
 
 }
 
@@ -54,9 +55,9 @@ glm::vec3 Mesh::GetCenter()
 
 void Mesh::InitializeVertexArray()
 {
-	vertexArray = Core::Instance().GetGraphicsAPI().CreateVertexArray();
-	vertexBuffer = Core::Instance().GetGraphicsAPI().CreateVertexBuffer();
-	indexBuffer = Core::Instance().GetGraphicsAPI().CreateIndexBuffer();
+	vertexArray = std::unique_ptr<VertexArray>(Core::Instance().GetGraphicsAPI().CreateVertexArray());
+	vertexBuffer = std::unique_ptr<ArrayBuffer<Vertex>>(Core::Instance().GetGraphicsAPI().CreateVertexBuffer());
+	indexBuffer = std::unique_ptr<ArrayBuffer<unsigned>>(Core::Instance().GetGraphicsAPI().CreateIndexBuffer());
 
 
 

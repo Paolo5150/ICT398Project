@@ -78,10 +78,12 @@ Texture2D* ContentManager::LoadTexture(std::string path, bool preserve )
 	{
 		 std::string namerr = FileUtils::GetFileNameNoExtensionFromAbsolutePath(path);
 
-		 t = Core::Instance().GetGraphicsAPI().CreateTexture2D(namerr, width, height, channels, data);
+		 t = std::move(Core::Instance().GetGraphicsAPI().CreateTexture2D(namerr, width, height, channels, data));
 		 Texture2D* ret = dynamic_cast<Texture2D*>(t.get());
 
 		 containers[typeid(Texture2D).name()].Load(namerr, t, preserve);
+		// Logger::LogError("Loaded texture",namerr);
+		 SOIL_free_image_data(data);
 		 return ret;		
 	}
 	else
@@ -135,11 +137,16 @@ CubeMap* ContentManager::LoadCubeMap(std::string pathToFolder,bool preserve,std:
 	std::unique_ptr<Asset> c = Core::Instance().GetGraphicsAPI().CreateCubeMap(folderName, data,width,height);
 	containers[typeid(CubeMap).name()].Load(folderName, c, preserve);
 
+	for (unsigned int i = 0; i < 6; i++)
+		SOIL_free_image_data(data[i]);
+
+
 	return dynamic_cast<CubeMap*>( c.get());
 }
 
 Mesh* ContentManager::AddMesh(std::string name, Mesh* mesh, bool preserve)
 {
+	//Logger::LogError("Added mesh", name, "P", preserve);
 	containers[typeid(Mesh).name()].LoadRaw(name, mesh , preserve);
 	return mesh;
 

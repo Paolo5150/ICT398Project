@@ -69,6 +69,7 @@ void Scene::UnloadAssets()
 	ContentManager::Instance().Unload<Model>();
 	ContentManager::Instance().Unload<Texture2D>();
 	ContentManager::Instance().Unload<Mesh>();
+	ContentManager::Instance().Unload<CubeMap>();
 
 
 }
