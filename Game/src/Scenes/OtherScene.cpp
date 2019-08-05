@@ -81,8 +81,6 @@ void OtherScene::Start()
 	Scene::Start();
 	Input::SetCursorMode("disabled");
 
-	//PhysicsWorld::Instance().InitializeQuadtree(0, 0, 5000, 5000);
-
 }
 
 void OtherScene::LogicUpdate()
@@ -90,7 +88,7 @@ void OtherScene::LogicUpdate()
 	SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("PointLight")[0]->transform.Translate(0, 0.01, 0.0);
 
 
-	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE))
+	if (Input::GetKeyDown(GLFW_KEY_ESCAPE))
 		EventDispatcher::Instance().DispatchEvent(new QuitRequestEvent());
 
 
@@ -101,7 +99,8 @@ void OtherScene::LogicUpdate()
 		Input::SetCursorMode("disabled");
 
 	if (Input::GetKeyDown(GLFW_KEY_R))
-		Restart();
+		SceneManager::Instance().ReloadCurrent();
+
 
 	if (Input::GetKeyDown(GLFW_KEY_P))
 		SceneManager::Instance().LoadNewScene("SimpleScene");
@@ -110,15 +109,6 @@ void OtherScene::LogicUpdate()
 
 }
 
-void OtherScene::Restart()
-{
-	Logger::LogInfo("Reloading scene");
-	SceneManager::Instance().ReloadCurrent();
-}
 
-void OtherScene::UpdateUI()
-{
-
-}
 
 

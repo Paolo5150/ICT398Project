@@ -99,7 +99,7 @@ void SimpleScene::LogicUpdate()
 		//GUIManager::Instance().RemoveCanvas("MainCanvas");
 	}
 
-	if (Input::GetKeyPressed(GLFW_KEY_ESCAPE))
+	if (Input::GetKeyDown(GLFW_KEY_ESCAPE))
 		EventDispatcher::Instance().DispatchEvent(new QuitRequestEvent());
 
 
@@ -110,7 +110,8 @@ void SimpleScene::LogicUpdate()
 		Input::SetCursorMode("disabled");
 
 	if (Input::GetKeyDown(GLFW_KEY_R))
-		Restart();
+		SceneManager::Instance().ReloadCurrent();
+
 
 	if (Input::GetKeyDown(GLFW_KEY_O))
 		SceneManager::Instance().LoadNewScene("OtherScene");
@@ -119,15 +120,5 @@ void SimpleScene::LogicUpdate()
 
 }
 
-void SimpleScene::Restart()
-{
-	Logger::LogInfo("Reloading scene");
-	SceneManager::Instance().ReloadCurrent();
-}
-
-void SimpleScene::UpdateUI()
-{
-
-}
 
 

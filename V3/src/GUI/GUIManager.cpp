@@ -62,7 +62,7 @@ void GUIManager::Refresh()
 
 void GUIManager::AddCanvas(GUICanvas* canvas)
 {
-	//allCanvas[canvas->GetName()] = std::unique_ptr<GUICanvas>(canvas);
+	allCanvas[canvas->GetName()] = std::unique_ptr<GUICanvas>(canvas);
 }
 
 GUICanvas* GUIManager::GetCanvasByName(std::string name)

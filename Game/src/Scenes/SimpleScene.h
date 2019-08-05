@@ -56,9 +56,7 @@ public:
 	* @brief		Update objects in the scene.
 	*/
 	virtual void LogicUpdate() override;
-	
 
-	void Restart();
-	void UpdateUI();
+
 
 };
