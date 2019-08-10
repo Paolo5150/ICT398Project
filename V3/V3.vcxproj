@@ -170,6 +170,7 @@
     <ClInclude Include="src\Components\Collider.h" />
     <ClInclude Include="src\Components\MeshRenderer.h" />
     <ClInclude Include="src\Components\Renderer.h" />
+    <ClInclude Include="src\Components\Rigidbody.h" />
     <ClInclude Include="src\Components\SphereCollider.h" />
     <ClInclude Include="src\Core\Application.h" />
     <ClInclude Include="src\Core\Camera.h" />
@@ -254,6 +255,7 @@
     <ClCompile Include="src\Components\Collider.cpp" />
     <ClCompile Include="src\Components\MeshRenderer.cpp" />
     <ClCompile Include="src\Components\Renderer.cpp" />
+    <ClCompile Include="src\Components\Rigidbody.cpp" />
     <ClCompile Include="src\Components\SphereCollider.cpp" />
     <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Core\Camera.cpp" />
