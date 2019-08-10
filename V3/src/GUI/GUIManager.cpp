@@ -2,6 +2,8 @@
 #include "GUIManager.h"
 #include "..\Core\Window.h"
 #include "..\Events\ApplicationEvents.h"
+#include "..\Events\WindowEvents.h"
+
 #include "..\Core\Core.h"
 #include <thread>
 #include "Elements/GUIButton.h"
@@ -35,6 +37,11 @@ void GUIManager::Initialize()
 		return 0;
 	});
 	
+	EventDispatcher::Instance().SubscribeCallback<WindowResizeEvent>([this](Event* e) {
+
+		// Resize canvas
+		return 0;
+	});
 
 }
 

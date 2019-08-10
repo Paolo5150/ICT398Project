@@ -13,14 +13,11 @@ void SimpleScene::LoadAssets() {
 	ContentManager::Instance().LoadModel("Assets\\Models\\Nanosuit\\nanosuit.obj",false,false);
 	ContentManager::Instance().LoadCubeMap("Assets\\SkyBoxes\\SunSet");
 
-
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_albedo.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_roughness.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_metallic.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_normal.jpg", 0);	
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_ao.jpg", 0);
-
-
 }
 
 void SimpleScene::QuitScene() {
@@ -47,16 +44,11 @@ void SimpleScene::Initialize() {
 	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("iron_metallic"), "metallicMap");
 	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("bamboo_ao"), "aoMap");
 	m.LoadCubemap(ContentManager::Instance().GetAsset<CubeMap>("SunSet"),"cubemap0");
-
 	g->ApplyMaterial(m);
-
-
-
-	
+	g->PrintHierarchy();
 	MainCamera* cam = new MainCamera();
 	cam->transform.SetPosition(0, 10, 50);
 	cam->transform.SetRotation(0, 180, 0);
-
 	
 	DirectionalLight* dirLight = new DirectionalLight(false);
 	dirLight->transform.SetRotation(45, 180, 0);
@@ -71,16 +63,12 @@ void SimpleScene::Initialize() {
 	AddGameObject(dirLight);
 	AddGameObject(pointLight);
 	AddGameObject(g);
-
-
-
 }
 
 void SimpleScene::Start()
 {
 	Scene::Start();
 	Input::SetCursorMode("disabled");
-
 	PhysicsWorld::Instance().InitializeQuadtree(0, 0, 5000, 5000);
 
 }
@@ -89,15 +77,14 @@ void SimpleScene::LogicUpdate()
 {
 	SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("PointLight")[0]->transform.Translate(0, 0.01, 0.0);
 	
-	static float timer = 0;
+	/*static float timer = 0;
 	static bool done = false;
 	timer += Timer::GetDeltaS();
 
 	if (timer >= 3 && !done)
 	{
 		done = 1;
-		//GUIManager::Instance().RemoveCanvas("MainCanvas");
-	}
+	}*/
 
 	if (Input::GetKeyDown(GLFW_KEY_ESCAPE))
 		EventDispatcher::Instance().DispatchEvent(new QuitRequestEvent());
@@ -111,7 +98,6 @@ void SimpleScene::LogicUpdate()
 
 	if (Input::GetKeyDown(GLFW_KEY_R))
 		SceneManager::Instance().ReloadCurrent();
-
 
 	if (Input::GetKeyDown(GLFW_KEY_O))
 		SceneManager::Instance().LoadNewScene("OtherScene");
