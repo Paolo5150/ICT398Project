@@ -128,6 +128,25 @@ void SimpleScene::LogicUpdate()
 
 	float value = 0.05;
 
+
+	// Global Velocity keys
+	// End to zero velocity
+	// Up/Down arrows to change x velocity
+	// Left/Right arrows to change z velocity
+	// PageUp/PageDown to change y velocity
+
+	// Relative Velocity keys
+	// End to zero velocity
+	// I/K to change x velocity
+	// J/L to change z velocity
+	// -/= to change y velocity
+
+	// Relative Angular Velocity keys
+	// Num_5 to zero angular velocity
+	// Num_8/Num_2 arrows to change x velocity
+	// Num_4/Num_6 arrows to change z velocity
+	// Num_+/Num_Enter to change y velocity
+
 	if (Input::GetKeyDown(GLFW_KEY_END))
 	{
 		r->SetVelocity(0, 0, 0);
