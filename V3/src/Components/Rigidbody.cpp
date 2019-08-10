@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "Rigidbody.h"
-#include "..\Core\Timer.h"
 
 
 Rigidbody::Rigidbody() : Component("Rigidbody")
 {
 	velocity = glm::vec3(0, 0, 0);
 	angVelocity = glm::vec3(0, 0, 0);
+	useGravity = true;
 }
 
 Rigidbody::Rigidbody(float x, float y, float z, bool relative) : Component("Rigidbody")
@@ -17,6 +17,7 @@ Rigidbody::Rigidbody(float x, float y, float z, bool relative) : Component("Rigi
 		AddRelativeVelocity(x, y, z);
 
 	angVelocity = glm::vec3(0, 0, 0);
+	useGravity = true;
 }
 
 Rigidbody::~Rigidbody()
@@ -62,6 +63,11 @@ glm::vec3 Rigidbody::GetVelocity() const
 	return velocity;
 }
 
+void Rigidbody::UseGravity(bool gravityEnabled)
+{
+	useGravity = gravityEnabled;
+}
+
 void Rigidbody::SetAngularVelocity(float x, float y, float z)
 {
 	angVelocity = glm::vec3(x, y, z);
@@ -77,6 +83,20 @@ void Rigidbody::AddAngularVelocity(float x, float y, float z)
 	angVelocity += glm::vec3(x, y, z);
 }
 
+void Rigidbody::AddRelativeAngularVelocity(float x, float y, float z)
+{
+	angVelocity += x * _parent->transform.GetLocalFront();
+	angVelocity += y * _parent->transform.GetLocalUp();
+	angVelocity += z * _parent->transform.GetLocalRight();
+}
+
+void Rigidbody::AddRelativeAngularVelocity(glm::vec3 angularVelocityVector)
+{
+	angVelocity += angularVelocityVector.x * _parent->transform.GetLocalFront();
+	angVelocity += angularVelocityVector.y * _parent->transform.GetLocalUp();
+	angVelocity += angularVelocityVector.z * _parent->transform.GetLocalRight();
+}
+
 void Rigidbody::AddAngularVelocity(glm::vec3 angularVelocityVector)
 {
 	angVelocity += angularVelocityVector;
@@ -89,6 +109,9 @@ glm::vec3 Rigidbody::GetAngularVelocity() const
 
 void Rigidbody::Update()
 {
+	if(useGravity)
+		AddVelocity(PhysicsWorld::Instance().gravity * Timer::GetDeltaS()); //If enabled, add gravity to the velocity vector
+
 	_parent->transform.Translate(velocity * Timer::GetDeltaS()); //Update the transform's postion in world space
 	_parent->transform.RotateBy(angVelocity.x * Timer::GetDeltaS(), 1, 0, 0); //Update the transform's x rotation
 	_parent->transform.RotateBy(angVelocity.y * Timer::GetDeltaS(), 0, 1, 0); //Update the transform's y rotation

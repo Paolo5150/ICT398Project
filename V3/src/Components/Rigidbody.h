@@ -1,7 +1,8 @@
 #pragma once
 #include "..\Core\Component.h"
 #include "..\Utils\Maths.h"
-
+#include "..\Core\Timer.h"
+#include "..\Physics\PhysicsWorld.h"
 
 /**
 * @class Rigidbody
@@ -131,6 +132,16 @@ public:
 	*/
 	glm::vec3 GetVelocity() const;
 
+	/**
+	* @brief		Enables/Disables the gameobject being affected by gravity, gravity value is stored in the **** file
+	*
+	* @pre			The Rigidbody must exist.
+	* @post			Whether the Rigidbody is affected by gravity will be set.
+	*
+	* @param		useGravity		whether the Rigidbody should be affected by gravity
+	*/
+	void UseGravity(bool gravityEnabled);
+
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	//-- Angular Velocity --//
 	/**
@@ -177,6 +188,10 @@ public:
 	*/
 	void AddAngularVelocity(glm::vec3 angularVelocityVector);
 
+	void AddRelativeAngularVelocity(float angX, float angY, float angZ);
+
+	void AddRelativeAngularVelocity(glm::vec3 angularVelocityVector);
+
 	/**
 	* @brief		Retrieves the angular velocity of the Rigidbody.
 	*
@@ -195,4 +210,5 @@ public:
 private:
 	glm::vec3 velocity; //Velocity vector
 	glm::vec3 angVelocity; //Angular velocity vector
+	bool useGravity; //Whether to be affected by gravity
 };

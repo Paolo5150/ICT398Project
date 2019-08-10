@@ -2,7 +2,11 @@
 #include "Components\MeshRenderer.h"
 #include "SimpleScene.h"
 #include "Components/BoxCollider.h"
+#include "Components/Rigidbody.h"
 #include "Core/Core.h"
+
+GameObject* g;
+Rigidbody* r;
 
 SimpleScene::SimpleScene() : Scene("SimpleScene")
 {
@@ -36,8 +40,13 @@ void SimpleScene::Initialize() {
 
 	skybox = std::unique_ptr<Skybox>(new Skybox(ContentManager::Instance().GetAsset<CubeMap>("SunSet")));
 	
-	GameObject* g = new GameObject("Test");
+	//GameObject* g = new GameObject("Test");
+	g = new GameObject("Test");
+	r = new Rigidbody();
+	//PhysicsWorld::Instance().gravity = glm::vec3(0, -0.5, 0);
+
 	ContentManager::Instance().GetAsset<Model>("Nanosuit")->PopulateGameObject(g);
+	g->AddComponent(r);
 
 	Material m;
 	m.SetShader(ContentManager::Instance().GetAsset<Shader>("PBR"));
@@ -115,7 +124,112 @@ void SimpleScene::LogicUpdate()
 
 	if (Input::GetKeyDown(GLFW_KEY_O))
 		SceneManager::Instance().LoadNewScene("OtherScene");
+
+
+	float value = 0.05;
+
+	if (Input::GetKeyDown(GLFW_KEY_END))
+	{
+		r->SetVelocity(0, 0, 0);
+	}
+
+	if (Input::GetKeyDown(GLFW_KEY_UP))
+	{
+		r->AddVelocity(value, 0, 0);
+	}
+
+	if (Input::GetKeyDown(GLFW_KEY_DOWN))
+	{
+		r->AddVelocity(-value, 0, 0);
+	}
+
+	if (Input::GetKeyDown(GLFW_KEY_LEFT))
+	{
+		r->AddVelocity(0, 0, value);
+	}
+
+	if (Input::GetKeyDown(GLFW_KEY_RIGHT))
+	{
+		r->AddVelocity(0, 0, -value);
+	}
+
+	if (Input::GetKeyDown(GLFW_KEY_PAGE_UP))
+	{
+		r->AddVelocity(0, value, 0);
+	}
+
+	if (Input::GetKeyDown(GLFW_KEY_PAGE_DOWN))
+	{
+		r->AddVelocity(0, -value, 0);
+	}
 	
+
+	if (Input::GetKeyDown(GLFW_KEY_I))
+	{
+		r->AddRelativeVelocity(value, 0, 0);
+	}
+
+	if (Input::GetKeyDown(GLFW_KEY_K))
+	{
+		r->AddRelativeVelocity(-value, 0, 0);
+	}
+
+	if (Input::GetKeyDown(GLFW_KEY_J))
+	{
+		r->AddRelativeVelocity(0, 0, value);
+	}
+
+	if (Input::GetKeyDown(GLFW_KEY_L))
+	{
+		r->AddRelativeVelocity(0, 0, -value);
+	}
+
+	if (Input::GetKeyDown(GLFW_KEY_EQUAL))
+	{
+		r->AddRelativeVelocity(0, value, 0);
+	}
+
+	if (Input::GetKeyDown(GLFW_KEY_MINUS))
+	{
+		r->AddRelativeVelocity(0, -value, 0);
+	}
+
+
+	if (Input::GetKeyDown(GLFW_KEY_KP_5))
+	{
+		r->SetAngularVelocity(0, 0, 0);
+	}
+
+	if (Input::GetKeyDown(GLFW_KEY_KP_8))
+	{
+		r->AddRelativeAngularVelocity(value, 0, 0);
+	}
+
+	if (Input::GetKeyDown(GLFW_KEY_KP_2))
+	{
+		r->AddRelativeAngularVelocity(-value, 0, 0);
+	}
+
+	if (Input::GetKeyDown(GLFW_KEY_KP_4))
+	{
+		r->AddRelativeAngularVelocity(0, value, 0);
+	}
+
+	if (Input::GetKeyDown(GLFW_KEY_KP_6))
+	{
+		r->AddRelativeAngularVelocity(0, -value, 0);
+	}
+
+	if (Input::GetKeyDown(GLFW_KEY_KP_ADD))
+	{
+		r->AddRelativeAngularVelocity(0, 0, value);
+	}
+
+	if (Input::GetKeyDown(GLFW_KEY_KP_ENTER))
+	{
+		r->AddRelativeAngularVelocity(0, 0, -value);
+	}
+
 	Scene::LogicUpdate(); //Must be last statement!
 
 }
