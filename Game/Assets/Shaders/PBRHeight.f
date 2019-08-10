@@ -93,8 +93,8 @@ vec2 parallaxOcclusionMapping(vec2 p_texCoords, vec3 p_viewDir)
     vec2 deltaTexCoords = P / numLayers;
 
 
-    vec2  currentTexCoords     = p_texCoords;
-    float currentDepthMapValue = texture(heightMap, currentTexCoords * material.UVScale).r;
+    vec2  currentTexCoords     = p_texCoords  * material.UVScale;
+    float currentDepthMapValue = texture(heightMap, currentTexCoords).r;
     float previousDepth = currentDepthMapValue;
 
     while(currentLayerDepth < currentDepthMapValue)
@@ -102,7 +102,7 @@ vec2 parallaxOcclusionMapping(vec2 p_texCoords, vec3 p_viewDir)
 
         currentTexCoords -= deltaTexCoords;
 
-        currentDepthMapValue = texture(heightMap, currentTexCoords * material.UVScale).r;  
+        currentDepthMapValue = texture(heightMap, currentTexCoords ).r;  
 
         previousDepth = currentDepthMapValue;
         currentLayerDepth += layerDepth;  
@@ -135,14 +135,14 @@ void main()
 
 	vec3 V = normalize(CameraPositionTS - FragPositionTS);
 
-    vec2 textOffset = parallaxOcclusionMapping(Textcoords,V) ;
+    vec2 textOffset = parallaxOcclusionMapping(Textcoords,V) * material.UVScale ;
 
 	
-	vec3 albedo     = pow(texture(albedoMap, textOffset* material.UVScale).rgb, vec3(2.2,2.2,2.2));
-    vec3 normal     = texture(normalMap,textOffset* material.UVScale).rgb *2.0 -1.0;
-    float metallic  = texture(metallicMap, textOffset* material.UVScale).r;
-    float roughness = texture(roughnessMap, textOffset* material.UVScale).r;
-    float ao        = texture(aoMap, textOffset* material.UVScale).r;
+	vec3 albedo     = pow(texture(albedoMap, textOffset).rgb, vec3(2.2,2.2,2.2));
+    vec3 normal     = texture(normalMap,textOffset).rgb *2.0 -1.0;
+    float metallic  = texture(metallicMap, textOffset).r;
+    float roughness = texture(roughnessMap, textOffset).r;
+    float ao        = texture(aoMap, textOffset).r;
 	
 	
     vec3 N = normalize(normal);

@@ -20,18 +20,18 @@ void Terrain::Initialize(int size)
 
 	Material material;
 	material.SetShader(ContentManager::Instance().GetAsset<Shader>("PBRHeight"));
-	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("moss_normal"), "normalMap");
-	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("moss_albedo"), "albedoMap");
-	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("moss_metallic"), "roughnessMap");
-	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("moss_height"), "heightMap");
-	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("moss_ao"), "aoMap");
-	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("moss_metallic"), "metallicMap");
+	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("limestone_normal"), "normalMap");
+	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("limestone_albedo"), "albedoMap");
+	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("limestone_metallic"), "roughnessMap");
+	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("limestone_height"), "heightMap");
+	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("limestone_ao"), "aoMap");
+	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("limestone_metallic"), "metallicMap");
 
 
 
 	material.LoadFloat("UVScale", 2.0);
 	material.LoadFloat("shininess", 18.0f);
-	material.LoadFloat("height_scale", 0.025);
+	material.LoadFloat("height_scale", 0.018);
 
 
 
