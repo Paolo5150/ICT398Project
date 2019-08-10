@@ -204,9 +204,9 @@ public:
 	* @brief		Adds the specified angular velocity to the angular velocity of the Rigidbody, relative to the direction of the gameobject.
 	*
 	* @pre			The Rigidbody must exist
-	* @post			The parameter value is added to the Rigidbody object's velocity, relative to the direction of the gameobject
+	* @post			The parameter value is added to the Rigidbody object's angular velocity, relative to the direction of the gameobject
 	*
-	* @param		velocityVector		velocity to add to the rigidbody, relative to the direction of the gameobject
+	* @param		angularVelocityVector		angular velocity to add to the rigidbody, relative to the direction of the gameobject
 	*/
 	void AddRelativeAngularVelocity(glm::vec3 angularVelocityVector);
 
