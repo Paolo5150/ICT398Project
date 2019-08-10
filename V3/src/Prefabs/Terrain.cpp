@@ -24,7 +24,7 @@ void Terrain::Initialize(int size)
 	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("grass"), "diffuse0");
 
 
-	material.LoadFloat("UVScale", 50.0f);
+	material.LoadFloat("UVScale", 500.0f);
 	material.LoadFloat("shininess", 18.0f);
 	material.LoadFloat("u_maxHeight", transform.GetScale().y);
 
@@ -34,8 +34,8 @@ void Terrain::Initialize(int size)
 
 	isWireframe = 0;
 
-	gridMesh = new GridMesh(size, size);
-	meshRenderer = new MeshRenderer(gridMesh, material);
+	gridMesh = std::unique_ptr<Mesh>(new GridMesh(size, size));
+	meshRenderer = new MeshRenderer(gridMesh.get(), material);
 	meshRenderer->SetMaterial(material);
 	meshRenderer->SetIsCullable(false);
 	meshRenderer->GetMaterial(MaterialType::NOLIGHT).SetShader(ContentManager::Instance().GetAsset<Shader>("TerrainNoLight"));
@@ -52,31 +52,23 @@ void Terrain::Initialize(int size)
 	this->AddComponent(meshRenderer);	
 
 	//transform.SetScale(20, 600, 20);
-	transform.SetScale(60, 3200, 60);
+	transform.SetScale(1, 1, 1);
 	transform.Translate(0, 0, 0);
 }
 
 void Terrain::OnPreRender(Camera& cam, Shader* s)
 {
-	if (Input::GetKeyPressed(GLFW_KEY_K))
-		isWireframe = !isWireframe;
-
-	if (isWireframe)
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	else
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-	s->SetFloat("u_maxHeight", transform.GetScale().y);
-	s->SetFloat("shadowMapCount", LightManager::Instance().GetShadowMapsCount());
+	
+	/*s->SetFloat("shadowMapCount", LightManager::Instance().GetShadowMapsCount());
 
 	if (s->name == "Terrain")
-		LightManager::Instance().SendShadowToShader(meshRenderer->GetMaterial().GetShader());
+		LightManager::Instance().SendShadowToShader(meshRenderer->GetMaterial().GetShader());*/
 
 }
 
 void Terrain::OnPostRender(Camera& cam, Shader* s)
 {
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 }
 
 float TriangleBaric(glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, glm::vec2 pos)
@@ -204,6 +196,7 @@ unsigned char* getColorAtPixel(unsigned char* image, size_t x, size_t y, size_t 
 	return (image + (y * width + x) * 1);
 }
 
+/*
 void Terrain::ApplyHeightMap(std::string texturePath)
 {
 
@@ -265,7 +258,7 @@ void Terrain::ApplyHeightMap(std::string texturePath)
 	}
 
 }
-
+*/
 float Terrain::GetTerrainMaxX()
 {
 	return meshRenderer->GetMesh().vertices[((terrainSize - 1) * terrainSize) + (terrainSize - 1)].position.x * transform.GetScale().x;

@@ -34,15 +34,7 @@ public:
 	* @pre			The terrain object must exist
 	* @post			The terrain object is destroyed
 	*/
-	~Terrain() { delete gridMesh; };
-
-	/**
-	* @brief				Applies a heightmap to the terrain
-	* @pre					The terrain object must exist, the heighmappath is valid
-	* @post					The terrain object has a heightmap applied
-	* @param texturePath	The absolute path to the heightmap
-	*/
-	void ApplyHeightMap(std::string texturePath);
+	~Terrain() {};
 
 	/**
 	* @brief		Callback called right before the Render method
@@ -126,10 +118,6 @@ private:
 	*/
 	void FilterPass(float* dataP, int increment, float weight, int size);
 
-	/**
-	* @brief		The material used by the terrain
-	*/
-	Material* material;
 
 	/**
 	* @brief		The mesh renderer component
@@ -146,6 +134,6 @@ private:
 	*/
 	bool isWireframe;
 
-	Mesh* gridMesh;
+	std::unique_ptr<Mesh> gridMesh;
 
 };

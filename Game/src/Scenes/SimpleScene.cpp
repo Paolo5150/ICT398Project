@@ -68,7 +68,7 @@ void SimpleScene::Initialize() {
 	Table* table = new Table();
 	table->transform.SetPosition(0, 0, 0);
 
-	Terrain* terrain = new Terrain(100);
+	Terrain* terrain = new Terrain(50);
 
 	MainCamera* cam = new MainCamera();
 	cam->transform.SetPosition(0, 10, 50);
