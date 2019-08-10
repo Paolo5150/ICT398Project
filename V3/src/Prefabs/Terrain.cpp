@@ -22,8 +22,8 @@ void Terrain::Initialize(int size)
 	material.SetShader(ContentManager::Instance().GetAsset<Shader>("PBRHeight"));
 	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("moss_normal"), "normalMap");
 	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("moss_albedo"), "albedoMap");
-	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("moss_roughness"), "roughnessMap");
-	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("limestone_height"), "heightMap");
+	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("moss_metallic"), "roughnessMap");
+	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("moss_height"), "heightMap");
 	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("moss_ao"), "aoMap");
 	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("moss_metallic"), "metallicMap");
 
@@ -31,7 +31,7 @@ void Terrain::Initialize(int size)
 
 	material.LoadFloat("UVScale", 2.0);
 	material.LoadFloat("shininess", 18.0f);
-	material.LoadFloat("height_scale", 0.02);
+	material.LoadFloat("height_scale", 0.025);
 
 
 

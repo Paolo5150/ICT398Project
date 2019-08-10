@@ -82,14 +82,14 @@ void SimpleScene::Initialize() {
 
 	skybox = std::unique_ptr<Skybox>(new Skybox(ContentManager::Instance().GetAsset<CubeMap>("SunSet")));	
 
-	/*Bench* bench = new Bench();
+	Bench* bench = new Bench();
 	bench->transform.SetPosition(-30, 0, 0);
 
 	Chair* chair = new Chair();
 	chair->transform.SetPosition(30, 0, 0);
 
 	Table* table = new Table();
-	table->transform.SetPosition(0, 0, 0);*/
+	table->transform.SetPosition(0, 0, 0);
 
 	Terrain* terrain = new Terrain(50);
 
@@ -98,21 +98,22 @@ void SimpleScene::Initialize() {
 	cam->transform.SetRotation(0, 180, 0);
 	
 	DirectionalLight* dirLight = new DirectionalLight(false);
-	dirLight->transform.SetRotation(70, 180, 0);
+	dirLight->transform.SetRotation(30,114,-4);
+
 
 	dirLight->SetIntensity(0.6);
 
 	PointLight* pointLight = new PointLight();
 
 	pointLight->SetIntensity(10);
-	pointLight->transform.SetPosition(20, 10, 20);
+	pointLight->transform.SetPosition(20, 3, 20);
 	
 	AddGameObject(cam);
 	AddGameObject(dirLight);
-	AddGameObject(pointLight);
-	//AddGameObject(bench);
-	//AddGameObject(chair);
-	//AddGameObject(table);
+	//AddGameObject(pointLight);
+	AddGameObject(bench);
+	AddGameObject(chair);
+	AddGameObject(table);
 	AddGameObject(terrain);
 
 
