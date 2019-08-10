@@ -72,6 +72,13 @@ void Transform::SetPosition(glm::vec3 r)
 	UpdateHierarchy();
 }
 
+void Transform::SetScale(float r)
+{
+	scale *= r;
+	UpdateHierarchy();
+}
+
+
 void Transform::SetScale(glm::vec3 r)
 {
 	scale = r;

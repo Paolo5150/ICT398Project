@@ -175,6 +175,15 @@ public:
 	*/
 	void SetScale(glm::vec3 r);
 
+	/**
+* @brief		Set the scale of the object for all axis
+* @pre			The game object owning the transform exists
+* @post			The object is scaled
+*
+* @param r		The scale
+*/
+	void SetScale(float r);
+
 
 	/**
 	* @brief		Rotate the object to look at a point

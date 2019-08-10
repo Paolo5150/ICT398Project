@@ -3,6 +3,7 @@
 #include "SimpleScene.h"
 #include "Components/BoxCollider.h"
 #include "Core/Core.h"
+#include "Prefabs/Bench.h"
 
 SimpleScene::SimpleScene() : Scene("SimpleScene")
 {
@@ -10,13 +11,19 @@ SimpleScene::SimpleScene() : Scene("SimpleScene")
 
 void SimpleScene::LoadAssets() {
 
-	ContentManager::Instance().LoadModel("Assets\\Models\\Nanosuit\\nanosuit.obj",false,false);
+	ContentManager::Instance().LoadModel("Assets\\Models\\Bench\\bench.obj", false, false);
 	ContentManager::Instance().LoadCubeMap("Assets\\SkyBoxes\\SunSet");
 
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_albedo.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_roughness.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_metallic.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_normal.jpg", 0);	
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_ao.jpg", 0);
+
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_albedo.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_roughness.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_metallic.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_normal.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_ao.jpg", 0);
 }
 
@@ -28,24 +35,12 @@ void SimpleScene::QuitScene() {
 void SimpleScene::Initialize() {
 
 	Timer::SetDisplayFPS(1);
-//	Core::Instance().GetGraphicsAPI().SetClearColor(1, 0, 0);
 	LightManager::Instance().SetAmbientLight(0.00, 0.00, 0.00);
 
-	skybox = std::unique_ptr<Skybox>(new Skybox(ContentManager::Instance().GetAsset<CubeMap>("SunSet")));
-	
-	GameObject* g = new GameObject("Test");
-	ContentManager::Instance().GetAsset<Model>("Nanosuit")->PopulateGameObject(g);
+	skybox = std::unique_ptr<Skybox>(new Skybox(ContentManager::Instance().GetAsset<CubeMap>("SunSet")));	
 
-	Material m;
-	m.SetShader(ContentManager::Instance().GetAsset<Shader>("PBR"));
-	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("iron_normal"),"normalMap");
-	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("iron_albedo"), "albedoMap");
-	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("iron_roughness"), "roughnessMap");
-	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("iron_metallic"), "metallicMap");
-	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("bamboo_ao"), "aoMap");
-	m.LoadCubemap(ContentManager::Instance().GetAsset<CubeMap>("SunSet"),"cubemap0");
-	g->ApplyMaterial(m);
-	g->PrintHierarchy();
+	Bench* bench = new Bench();
+
 	MainCamera* cam = new MainCamera();
 	cam->transform.SetPosition(0, 10, 50);
 	cam->transform.SetRotation(0, 180, 0);
@@ -62,7 +57,10 @@ void SimpleScene::Initialize() {
 	AddGameObject(cam);
 	AddGameObject(dirLight);
 	AddGameObject(pointLight);
-	AddGameObject(g);
+	AddGameObject(bench);
+
+
+
 }
 
 void SimpleScene::Start()
