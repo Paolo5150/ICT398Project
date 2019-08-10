@@ -89,7 +89,6 @@ void PhysicsWorld::AddCollider(Collider* rb)
 		allNonStaticColliders.push_back(rb);
 	else
 	{
-
 		allStaticColliders.push_back(rb);
 	}
 }
@@ -159,14 +158,17 @@ void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
 				if (*it == *it2) continue;
 				if ((*it)->GetCollideAgainstLayer() & (*it2)->GetCollisionLayer())
 				{
-					if (CollisionChecks::Collision((*it), (*it2)))
+					if ((*it)->GetActive() && (*it2)->GetActive())
 					{
-						// Check that the colliders do not belong to the same GameObject
-						if((*it)->GetParent() != (*it2)->GetParent())
-						{ 
-							(*it)->collisionCallback((*it2)->GetParent());
+						if (CollisionChecks::Collision((*it), (*it2)))
+						{
+							// Check that the colliders do not belong to the same GameObject
+							if ((*it)->GetParent() != (*it2)->GetParent())
+							{
+								(*it)->collisionCallback((*it2)->GetParent());
+							}
 						}
-					}
+					}		
 				}
 			}
 		}

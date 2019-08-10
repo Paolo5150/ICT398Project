@@ -61,12 +61,6 @@ void SimpleScene::Initialize() {
 	AddGameObject(pointLight);
 	AddGameObject(bench);
 	AddGameObject(bench2);
-
-
-
-
-
-
 }
 
 void SimpleScene::Start()
@@ -88,7 +82,6 @@ void SimpleScene::LogicUpdate()
 		SceneManager::Instance().LoadNewScene("OtherScene");
 	
 	Scene::LogicUpdate(); //Must be last statement!
-
 }
 
 

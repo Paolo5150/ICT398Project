@@ -172,6 +172,7 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 			bc->transform.SetPosition(t[i].p);
 			bc->transform.SetScale(t[i].s);
 			bc->transform.SetRotation(t[i].r);
+			bc->SetActive(t[i].isActive);
 			AddComponent(bc);
 		}
 		else if (t[i].type == "SC")
@@ -180,6 +181,8 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 			sc->enableRender = t[i].render;
 			sc->transform.SetPosition(t[i].p);
 			sc->transform.SetScale(t[i].s.x, t[i].s.x, t[i].s.x);
+			sc->SetActive(t[i].isActive);
+
 			AddComponent(sc);
 		}
 

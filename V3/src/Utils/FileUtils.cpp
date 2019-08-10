@@ -101,6 +101,8 @@ std::vector<ColliderInfo> FileUtils::ReadColliderFile(std::string absolutePathTo
 
 	glm::vec3 p, s, r;
 	int rend;
+	int isActive;
+
 	char c;
 	if (f != NULL)
 	{
@@ -112,7 +114,7 @@ std::vector<ColliderInfo> FileUtils::ReadColliderFile(std::string absolutePathTo
 			// If box collider
 			if (buf[0] == 'B' && buf[1]=='C')
 			{
-				int lineInd = 4;
+				int lineInd = 5;
 				// Read the next 4 lines
 				while (lineInd > 0)
 				{
@@ -133,16 +135,20 @@ std::vector<ColliderInfo> FileUtils::ReadColliderFile(std::string absolutePathTo
 					{
 						fscanf(f, "%d", &rend);
 					}
+					else if (c == 'A')
+					{
+						fscanf(f, "%d", &isActive);
+					}
 					lineInd--;
 					fgets(buf, 512, f);
 				}		
 
-				trans.emplace_back("BC",p, s, r,rend);
+				trans.emplace_back("BC",p, s, r,rend,isActive);
 			}	
 			else 			// If sphere collider
 				if (buf[0] == 'S' && buf[1] == 'C')
 				{
-					int lineInd = 3;
+					int lineInd = 4;
 					// Read the next 3 lines
 					while (lineInd > 0)
 					{
@@ -159,11 +165,15 @@ std::vector<ColliderInfo> FileUtils::ReadColliderFile(std::string absolutePathTo
 						{
 							fscanf(f, "%d", &rend);
 						}
+						else if (c == 'A')
+						{
+							fscanf(f, "%d", &isActive);
+						}
 						lineInd--;
 						fgets(buf, 512, f);
 					}
 
-					trans.emplace_back("SC", p, s, rend);
+					trans.emplace_back("SC", p, s, rend,isActive);
 				}
 		}
 	}
