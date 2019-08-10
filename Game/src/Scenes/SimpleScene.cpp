@@ -4,6 +4,8 @@
 #include "Components/BoxCollider.h"
 #include "Core/Core.h"
 #include "Prefabs/Bench.h"
+#include "Prefabs/Chair.h"
+
 
 SimpleScene::SimpleScene() : Scene("SimpleScene")
 {
@@ -12,6 +14,8 @@ SimpleScene::SimpleScene() : Scene("SimpleScene")
 void SimpleScene::LoadAssets() {
 
 	ContentManager::Instance().LoadModel("Assets\\Models\\Bench\\bench.obj", false, false);
+	ContentManager::Instance().LoadModel("Assets\\Models\\Chair\\chair.obj", false, false);
+
 	ContentManager::Instance().LoadCubeMap("Assets\\SkyBoxes\\SunSet");
 
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_albedo.jpg", 0);
@@ -25,6 +29,12 @@ void SimpleScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_metallic.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_normal.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_ao.jpg", 0);
+
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_albedo.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_roughness.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_metallic.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_normal.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_ao.jpg", 0);
 }
 
 void SimpleScene::QuitScene() {
@@ -40,8 +50,8 @@ void SimpleScene::Initialize() {
 	skybox = std::unique_ptr<Skybox>(new Skybox(ContentManager::Instance().GetAsset<CubeMap>("SunSet")));	
 
 	Bench* bench = new Bench();
-	Bench* bench2 = new Bench();
-	bench2->transform.SetPosition(50, 0, 0);
+	Chair* chair = new Chair();
+	bench->transform.SetPosition(150, 0, -20);
 
 	MainCamera* cam = new MainCamera();
 	cam->transform.SetPosition(0, 10, 50);
@@ -54,13 +64,13 @@ void SimpleScene::Initialize() {
 	PointLight* pointLight = new PointLight();
 
 	pointLight->SetIntensity(10);
-	pointLight->transform.SetPosition(0, 0, 5);
+	pointLight->transform.SetPosition(0, 10, 5);
 	
 	AddGameObject(cam);
 	AddGameObject(dirLight);
 	AddGameObject(pointLight);
 	AddGameObject(bench);
-	AddGameObject(bench2);
+	AddGameObject(chair);
 }
 
 void SimpleScene::Start()
@@ -73,7 +83,7 @@ void SimpleScene::Start()
 
 void SimpleScene::LogicUpdate()
 {
-	SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Bench")[0]->transform.Translate(0.05, 0.0, 0.0);
+	//SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Chair")[0]->transform.RotateBy(1, 0, 1, 0);
 
 	if (Input::GetKeyDown(GLFW_KEY_ESCAPE))
 		EventDispatcher::Instance().DispatchEvent(new QuitRequestEvent());

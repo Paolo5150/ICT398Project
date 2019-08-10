@@ -12,7 +12,7 @@ P 0 65 -45
 S 120 10 45
 R 0 0 0
 D 1
-A 0
+A 1
 BC
 P 115 55 -45
 S 5 55 45
@@ -30,7 +30,7 @@ P 0 120 -90
 S 125 50 10
 R -10 0 0
 D 1
-A 0
+A 1
 #Sphere colliders do not have R (rotation)
 SC
 P 20 0 0

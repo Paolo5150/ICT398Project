@@ -161,7 +161,7 @@ void GameObject::FlashColor(float r, float g, float b)
 
 void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 {
-	std::vector<ColliderInfo> t = FileUtils::ReadColliderFile("Assets\\Colliders\\Bench.txt");
+	std::vector<ColliderInfo> t = FileUtils::ReadColliderFile(absolutePathToFile);
 
 	for (int i = 0; i < t.size(); i++)
 	{

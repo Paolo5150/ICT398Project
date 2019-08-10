@@ -210,6 +210,7 @@
     <ClInclude Include="src\Physics\CollisionLayer.h" />
     <ClInclude Include="src\Physics\PhysicsWorld.h" />
     <ClInclude Include="src\Prefabs\Bench.h" />
+    <ClInclude Include="src\Prefabs\Chair.h" />
     <ClInclude Include="src\Prefabs\MainCamera.h" />
     <ClInclude Include="src\Rendering\API_Opengl.h" />
     <ClInclude Include="src\Rendering\ArrayBuffer.h" />
@@ -308,6 +309,7 @@
     <ClCompile Include="src\Physics\CollisionChecks.cpp" />
     <ClCompile Include="src\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="src\Prefabs\Bench.cpp" />
+    <ClCompile Include="src\Prefabs\Chair.cpp" />
     <ClCompile Include="src\Prefabs\MainCamera.cpp" />
     <ClCompile Include="src\Rendering\API_Opengl.cpp" />
     <ClCompile Include="src\Rendering\CubeMapGL.cpp" />
