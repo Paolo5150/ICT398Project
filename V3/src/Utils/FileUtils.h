@@ -5,6 +5,7 @@
 #include <assert.h>
 #include <filesystem>
 #include <windows.h>
+#include "Maths.h"
 
 /**
 * @class FileUtils
@@ -69,6 +70,8 @@ class FileUtils
 		* @return						The name of the folder
 		*/
 		static std::string GetLastFolderNameFromAbsolutePath(std::string path);
+
+		static void ReadColliderFile(std::string absolutePathToFile, glm::vec3& position, glm::vec3& scale, glm::vec3& rotation);
 
 		/**
 		* @brief						Returns the class name of an object

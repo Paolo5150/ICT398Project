@@ -7,7 +7,7 @@ Bench::Bench() : GameObject("Bench")
 {
 	SetIsStatic(false);
 	ContentManager::Instance().GetAsset<Model>("Bench")->PopulateGameObject(this);
-	transform.SetScale(0.05);
+	transform.SetScale(0.08);
 
 	Material m;
 	m.SetShader(ContentManager::Instance().GetAsset<Shader>("PBR"));
@@ -37,8 +37,12 @@ void Bench::Start()
 	// Colliders are best added in the Start method
 	BoxCollider* bc = new BoxCollider();
 	bc->enableRender = true;
-	bc->transform.SetScale(30);
-	bc->transform.SetPosition(0, 50, 0);	
+	glm::vec3 p,s,r;
+	FileUtils::ReadColliderFile("Assets\\Colliders\\Bench.txt", p,s,r);
+	bc->transform.SetPosition(p);
+	bc->transform.SetScale(s);
+	bc->transform.SetRotation(r);
+
 
 	// Uncomment this to see the lamba in action
 	// If "collisionCallback" is reassigned to a lambda, the OnCollision method will be overridden

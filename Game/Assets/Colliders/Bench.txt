@@ -1,0 +1,7 @@
+# This can be used as comments
+# Use "P" to specify position, followed by XYZ
+# Use "S" to specify scale, followed by XYZ
+# Use "R" to specify rotation, followed by XYZ
+P 0 70 0
+S 100 10 10
+R 0 0 0

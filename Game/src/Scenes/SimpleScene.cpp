@@ -77,7 +77,7 @@ void SimpleScene::Start()
 
 void SimpleScene::LogicUpdate()
 {
-	SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Bench")[0]->transform.Translate(0.1, 0.0, 0.0);
+	//SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Bench")[0]->transform.Translate(0.1, 0.0, 0.0);
 	
 	/*static float timer = 0;
 	static bool done = false;
@@ -92,14 +92,7 @@ void SimpleScene::LogicUpdate()
 		EventDispatcher::Instance().DispatchEvent(new QuitRequestEvent());
 
 
-	if (Input::GetKeyDown(GLFW_KEY_T))
-		Input::SetCursorMode("normal");
 
-	if (Input::GetKeyDown(GLFW_KEY_Y))
-		Input::SetCursorMode("disabled");
-
-	if (Input::GetKeyDown(GLFW_KEY_R))
-		SceneManager::Instance().ReloadCurrent();
 
 	if (Input::GetKeyDown(GLFW_KEY_O))
 		SceneManager::Instance().LoadNewScene("OtherScene");

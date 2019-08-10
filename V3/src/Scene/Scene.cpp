@@ -119,6 +119,10 @@ void Scene::EngineUpdate()
 
 void Scene::LogicUpdate()
 {
+	
+	if (Input::GetKeyDown(GLFW_KEY_R))
+		SceneManager::Instance().ReloadCurrent();
+
 	auto it = m_allGameObjects.begin();
 
 	for (; it != m_allGameObjects.end(); it++)
