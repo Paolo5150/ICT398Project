@@ -188,8 +188,26 @@ public:
 	*/
 	void AddAngularVelocity(glm::vec3 angularVelocityVector);
 
+	/**
+	* @brief		Adds the specified angular velocity to the angular velocity of the Rigidbody, relative to the direction of the gameobject.
+	*
+	* @pre			The Rigidbody must exist
+	* @post			The parameter values are added to the Rigidbody object's angular velocity, relative to the direction of the gameobject
+	*
+	* @param		x		angular velocity to add to the rigidbody along the x axis, relative to the direction of the gameobject
+	* @param		y		angular velocity to add to the rigidbody along the y axis, relative to the direction of the gameobject
+	* @param		z		angular velocity to add to the rigidbody along the z axis, relative to the direction of the gameobject
+	*/
 	void AddRelativeAngularVelocity(float angX, float angY, float angZ);
 
+	/**
+	* @brief		Adds the specified angular velocity to the angular velocity of the Rigidbody, relative to the direction of the gameobject.
+	*
+	* @pre			The Rigidbody must exist
+	* @post			The parameter value is added to the Rigidbody object's velocity, relative to the direction of the gameobject
+	*
+	* @param		velocityVector		velocity to add to the rigidbody, relative to the direction of the gameobject
+	*/
 	void AddRelativeAngularVelocity(glm::vec3 angularVelocityVector);
 
 	/**
