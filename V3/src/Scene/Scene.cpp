@@ -70,8 +70,6 @@ void Scene::UnloadAssets()
 	ContentManager::Instance().Unload<Texture2D>();
 	ContentManager::Instance().Unload<Mesh>();
 	ContentManager::Instance().Unload<CubeMap>();
-
-
 }
 
 
@@ -101,6 +99,7 @@ void Scene::LateUpdate()
 		else
 			it++;
 	}	
+
 }
 
 void Scene::EngineUpdate()

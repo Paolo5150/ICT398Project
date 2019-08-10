@@ -380,6 +380,8 @@ public:
 	*/
 	void ApplyMaterial(Material mat, MaterialType mt = DEFAULT);
 
+	void LoadCollidersFromFile(std::string absolutePathToFile);
+
 	/**
 	* @brief		Apply a color to the gameobject and its children
 	*

@@ -5,7 +5,7 @@
 
 Bench::Bench() : GameObject("Bench")
 {
-	SetIsStatic(false);
+	//SetIsStatic(false);
 	ContentManager::Instance().GetAsset<Model>("Bench")->PopulateGameObject(this);
 	transform.SetScale(0.08);
 
@@ -34,25 +34,7 @@ void Bench::Update()
 void Bench::Start()
 {
 
-	// Colliders are best added in the Start method
-	BoxCollider* bc = new BoxCollider();
-	bc->enableRender = true;
-	glm::vec3 p,s,r;
-	FileUtils::ReadColliderFile("Assets\\Colliders\\Bench.txt", p,s,r);
-	bc->transform.SetPosition(p);
-	bc->transform.SetScale(s);
-	bc->transform.SetRotation(r);
-
-
-	// Uncomment this to see the lamba in action
-	// If "collisionCallback" is reassigned to a lambda, the OnCollision method will be overridden
-	// This can be used to have different methods callbacks for different colliders.
-
-	/*bc->collisionCallback = [](GameObject* g) {
-		Logger::LogInfo("Greetings, I'm a lambda callback and I collided against", g->GetName());
-	};*/
-
-	AddComponent(bc); // Attach after you configured the collider.
+	LoadCollidersFromFile("Assets\\Colliders\\Bench.txt");
 
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider
 						 // has been added.

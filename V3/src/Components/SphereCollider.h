@@ -25,7 +25,7 @@ public:
 	SphereCollider() : Collider("SphereCollider")
 	{
 		colliderType = SPHERE;
-
+		InitializeMeshRenderer();
 	}
 	/**
 	* @brief		Destructor
