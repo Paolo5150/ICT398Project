@@ -44,7 +44,30 @@ void SimpleScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Grass\\grass_albedo.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Grass\\grass_roughness.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Grass\\grass_normal.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Grass\\grass_height.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Grass\\grass_ao.jpg", 0);
+
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Limestone\\limestone_albedo.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Limestone\\limestone_roughness.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Limestone\\limestone_normal.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Limestone\\limestone_metallic.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Limestone\\limestone_height.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Limestone\\limestone_ao.jpg", 0);
+
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Tiled\\tiled_albedo.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Tiled\\tiled_roughness.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Tiled\\tiled_normal.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Tiled\\tiled_height.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Tiled\\tiled_ao.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Tiled\\tiled_metallic.jpg", 0);
+
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Moss\\moss_albedo.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Moss\\moss_roughness.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Moss\\moss_normal.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Moss\\moss_height.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Moss\\moss_ao.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Moss\\moss_metallic.jpg", 0);
+
 }
 
 void SimpleScene::QuitScene() {
@@ -59,14 +82,14 @@ void SimpleScene::Initialize() {
 
 	skybox = std::unique_ptr<Skybox>(new Skybox(ContentManager::Instance().GetAsset<CubeMap>("SunSet")));	
 
-	Bench* bench = new Bench();
+	/*Bench* bench = new Bench();
 	bench->transform.SetPosition(-30, 0, 0);
 
 	Chair* chair = new Chair();
 	chair->transform.SetPosition(30, 0, 0);
 
 	Table* table = new Table();
-	table->transform.SetPosition(0, 0, 0);
+	table->transform.SetPosition(0, 0, 0);*/
 
 	Terrain* terrain = new Terrain(50);
 
@@ -75,20 +98,21 @@ void SimpleScene::Initialize() {
 	cam->transform.SetRotation(0, 180, 0);
 	
 	DirectionalLight* dirLight = new DirectionalLight(false);
-	dirLight->transform.SetRotation(45, 180, 0);
-	dirLight->SetIntensity(0.2);
+	dirLight->transform.SetRotation(70, 180, 0);
+
+	dirLight->SetIntensity(0.6);
 
 	PointLight* pointLight = new PointLight();
 
 	pointLight->SetIntensity(10);
-	pointLight->transform.SetPosition(0, 10, 5);
+	pointLight->transform.SetPosition(20, 10, 20);
 	
 	AddGameObject(cam);
 	AddGameObject(dirLight);
 	AddGameObject(pointLight);
-	AddGameObject(bench);
-	AddGameObject(chair);
-	AddGameObject(table);
+	//AddGameObject(bench);
+	//AddGameObject(chair);
+	//AddGameObject(table);
 	AddGameObject(terrain);
 
 

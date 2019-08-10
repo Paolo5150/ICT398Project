@@ -19,14 +19,20 @@ void Terrain::Initialize(int size)
 	this->terrainSize = size;
 
 	Material material;
-	material.SetShader(ContentManager::Instance().GetAsset<Shader>("Terrain"));
-	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("ground"));
-	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("grass"), "diffuse0");
+	material.SetShader(ContentManager::Instance().GetAsset<Shader>("PBRHeight"));
+	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("moss_normal"), "normalMap");
+	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("moss_albedo"), "albedoMap");
+	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("moss_roughness"), "roughnessMap");
+	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("limestone_height"), "heightMap");
+	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("moss_ao"), "aoMap");
+	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("moss_metallic"), "metallicMap");
 
 
-	material.LoadFloat("UVScale", 500.0f);
+
+	material.LoadFloat("UVScale", 2.0);
 	material.LoadFloat("shininess", 18.0f);
-	material.LoadFloat("u_maxHeight", transform.GetScale().y);
+	material.LoadFloat("height_scale", 0.02);
+
 
 
 	SetLayer(0);
@@ -54,6 +60,7 @@ void Terrain::Initialize(int size)
 	//transform.SetScale(20, 600, 20);
 	transform.SetScale(1, 1, 1);
 	transform.Translate(0, 0, 0);
+	transform.SetRotation(0, 0, 0);
 }
 
 void Terrain::OnPreRender(Camera& cam, Shader* s)

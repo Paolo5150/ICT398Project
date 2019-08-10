@@ -131,8 +131,6 @@ void Mesh::CalculateNormals()
 
 			float r = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV1.y * deltaUV2.x);
 
-			glm::vec3 test = r * ((v1v2 * deltaUV2.y) - (v1v3 * deltaUV1.y));
-
 			vertices[indices[i]].tangent = r * ((v1v2 * deltaUV2.y) - (v1v3 * deltaUV1.y));
 			vertices[indices[i + 1]].tangent = r * ((v1v2 * deltaUV2.y) - (v1v3 * deltaUV1.y));
 			vertices[indices[i + 2]].tangent = r * ((v1v2 * deltaUV2.y) - (v1v3 * deltaUV1.y));
