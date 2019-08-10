@@ -95,11 +95,6 @@ void PhysicsWorld::AddCollider(Collider* rb)
 	}
 }
 
-
-
-
-
-
 void PhysicsWorld::Update()
 {
 	if (nonStaticQuadtree && staticQuadtree)
@@ -108,16 +103,11 @@ void PhysicsWorld::Update()
 		PerformCollisions(false);
 		allNonStaticColliders.clear();
 	}
-
-
-
 }
-
 
 void PhysicsWorld::PerformCollisions(bool staticToo)
 {
 	PerformCollisions(nonStaticQuadtree->root);
-
 	
 	for (unsigned i = 0; i < allNonStaticColliders.size(); i++)
 	{
@@ -146,10 +136,6 @@ void PhysicsWorld::PerformCollisions(bool staticToo)
 
 	if (staticToo)
 	PerformCollisions(staticQuadtree->root);
-
-	
-	
-
 }
 
 void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)

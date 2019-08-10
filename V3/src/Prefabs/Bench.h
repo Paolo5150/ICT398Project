@@ -12,6 +12,7 @@ public:
 
 	void Update() override;
 	void Start() override;
+	void OnCollision(GameObject* g) override;
 
 private:
 

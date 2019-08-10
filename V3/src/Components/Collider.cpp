@@ -8,7 +8,7 @@ Collider::Collider(std::string name) : transform(Transform(GetParent())), Compon
 	enableRender = 0;
 	collisionLayer = CollisionLayers::DEFAULT;
 	collideAgainstLayer = CollisionLayers::DEFAULT;
-
+	collisionCallback = nullptr;
 }
 
 
@@ -24,7 +24,10 @@ void Collider::EngineUpdate()
 	}
 }
 
-
+void Collider::Start()
+{
+	transform.UpdateHierarchy();
+}
 
 void Collider::OnAttach(GameObject* go)
 {
@@ -33,7 +36,9 @@ void Collider::OnAttach(GameObject* go)
 	meshRenderer->transform = &transform;
 	meshRenderer->SetParent(go);
 
-	collisionCallback = std::bind(&GameObject::OnCollision, go, std::placeholders::_1);
+	if(collisionCallback == nullptr)
+		collisionCallback = std::bind(&GameObject::OnCollision, go, std::placeholders::_1);
+
 	meshRenderer->AddPreRenderCallback([](Camera& cam, Shader* s){		
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glDisable(GL_CULL_FACE);	
@@ -47,7 +52,7 @@ void Collider::OnAttach(GameObject* go)
 
 	Initialize();
 	PhysicsWorld::Instance().AddCollider(this);
-	transform.UpdateHierarchy();
+	
 	
 }
 

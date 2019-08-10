@@ -1,9 +1,7 @@
 #include "pch.h"
 
 #include "Core.h"
-
 #include "Input.h"
-
 #include "..\Events\EventDispatcher.h"
 #include "..\Events\WindowEvents.h"
 #include "..\Events\TimerEvents.h"
@@ -13,6 +11,7 @@
 #include "..\Utils\ContentManager.h"
 #include "..\Lighting\LightingManager.h"
 #include "..\GUI\GUIManager.h"
+#include "..\Physics\PhysicsWorld.h"
 
 
 void Core::Initialize()
@@ -120,6 +119,7 @@ bool Core::LogicUpdate(Event* e)
 	//Logger::LogInfo("Core logic update");
 
 	m_runningApplication->AppLogicUpdate();
+	
 	return 0;
 }
 

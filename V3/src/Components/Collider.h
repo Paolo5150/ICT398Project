@@ -71,6 +71,8 @@ public:
 	*/
 	void EngineUpdate() override;
 
+	void Start() override;
+
 	/**
 	* @brief		Virtual method to initialize collider
 	*/

@@ -5,6 +5,7 @@
 
 Bench::Bench() : GameObject("Bench")
 {
+	SetIsStatic(false);
 	ContentManager::Instance().GetAsset<Model>("Bench")->PopulateGameObject(this);
 	transform.SetScale(0.05);
 
@@ -32,15 +33,28 @@ void Bench::Update()
 
 void Bench::Start()
 {
-	GameObject::Start();
 
 	// Colliders are best added in the Start method
 	BoxCollider* bc = new BoxCollider();
 	bc->enableRender = true;
 	bc->transform.SetScale(30);
-	bc->transform.SetPosition(0, 50, 0);
+	bc->transform.SetPosition(0, 50, 0);	
 
+	// Uncomment this to see the lamba in action
+	// If "collisionCallback" is reassigned to a lambda, the OnCollision method will be overridden
+	// This can be used to have different methods callbacks for different colliders.
 
+	/*bc->collisionCallback = [](GameObject* g) {
+		Logger::LogInfo("Greetings, I'm a lambda callback and I collided against", g->GetName());
+	};*/
 
 	AddComponent(bc); // Attach after you configured the collider.
+
+	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider
+						 // has been added.
+}
+
+void Bench::OnCollision(GameObject* g)
+{
+	Logger::LogInfo("Collided against", g->GetName());
 }

@@ -127,6 +127,15 @@ public:
 	*/
 	virtual void Update(){};
 
+
+	/**
+	* @brief		Start called during scene Start
+	*
+	* @pre			The Component exists and is attached to a GameObject
+	* @post			The Component is updated
+	*/
+	virtual void Start() {};
+
 	/**
 	* @brief		Update called during Engine Update
 	*
