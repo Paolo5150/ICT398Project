@@ -129,10 +129,6 @@ float ShadowCalculation();
 void main()
 {
 
-   
-	vec3 colorRatio = vec3(max(0.4,HeightRatio));
-	colorRatio = clamp(colorRatio,0.0,1.0);
-
    vec3 DirLights =  CalculateDirectionalLights();   
    vec3 PointLights = CalculatePointLights();
    
@@ -141,8 +137,8 @@ void main()
 	float shadowColor = (1.0  - shadowFactor* shadowAlpha )  ;
    
     NormalToUse = normalize(texture(normal0,Textcoords*15).rgb);    
-   vec3 terrainColor =  GenerateTerrainColor();
-   vec3 total =  shadowColor* colorRatio *(AmbientLight + DirLights + PointLights) * terrainColor* material.color * vertexColor;
+   vec3 terrainColor =  texture(diffuse0,Textcoords * material.UVScale).rgb;
+   vec3 total =  shadowColor *(AmbientLight + DirLights + PointLights) * terrainColor* material.color;
 
    vec3 mixFog = mix(vec3(0.321,0.3529,0.3550),total,fogVisibility);
 	gl_FragColor =  vec4(total,1.0);

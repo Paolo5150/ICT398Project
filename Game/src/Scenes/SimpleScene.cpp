@@ -6,7 +6,7 @@
 #include "Prefabs/Bench.h"
 #include "Prefabs/Chair.h"
 #include "Prefabs/Table.h"
-
+#include "Prefabs/Terrain.h"
 
 
 SimpleScene::SimpleScene() : Scene("SimpleScene")
@@ -21,6 +21,7 @@ void SimpleScene::LoadAssets() {
 
 
 	ContentManager::Instance().LoadCubeMap("Assets\\SkyBoxes\\SunSet");
+	ContentManager::Instance().LoadTexture("Assets\\Textures\\grass.jpg");
 
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_albedo.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_roughness.jpg", 0);
@@ -39,6 +40,11 @@ void SimpleScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_metallic.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_normal.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_ao.jpg", 0);
+
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Grass\\grass_albedo.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Grass\\grass_roughness.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Grass\\grass_normal.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Grass\\grass_ao.jpg", 0);
 }
 
 void SimpleScene::QuitScene() {
@@ -62,6 +68,8 @@ void SimpleScene::Initialize() {
 	Table* table = new Table();
 	table->transform.SetPosition(0, 0, 0);
 
+	Terrain* terrain = new Terrain(100);
+
 	MainCamera* cam = new MainCamera();
 	cam->transform.SetPosition(0, 10, 50);
 	cam->transform.SetRotation(0, 180, 0);
@@ -81,6 +89,8 @@ void SimpleScene::Initialize() {
 	AddGameObject(bench);
 	AddGameObject(chair);
 	AddGameObject(table);
+	AddGameObject(terrain);
+
 
 }
 

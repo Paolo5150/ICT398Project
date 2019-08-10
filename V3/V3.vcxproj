@@ -213,6 +213,7 @@
     <ClInclude Include="src\Prefabs\Chair.h" />
     <ClInclude Include="src\Prefabs\MainCamera.h" />
     <ClInclude Include="src\Prefabs\Table.h" />
+    <ClInclude Include="src\Prefabs\Terrain.h" />
     <ClInclude Include="src\Rendering\API_Opengl.h" />
     <ClInclude Include="src\Rendering\ArrayBuffer.h" />
     <ClInclude Include="src\Rendering\ArrayBufferGL.h" />
@@ -224,6 +225,7 @@
     <ClInclude Include="src\Rendering\FrameBufferCube.h" />
     <ClInclude Include="src\Rendering\FrameBufferGL.h" />
     <ClInclude Include="src\Rendering\GraphicsAPI.h" />
+    <ClInclude Include="src\Rendering\GridMesh.h" />
     <ClInclude Include="src\Rendering\Layers.h" />
     <ClInclude Include="src\Rendering\Material.h" />
     <ClInclude Include="src\Rendering\Mesh.h" />
@@ -313,11 +315,13 @@
     <ClCompile Include="src\Prefabs\Chair.cpp" />
     <ClCompile Include="src\Prefabs\MainCamera.cpp" />
     <ClCompile Include="src\Prefabs\Table.cpp" />
+    <ClCompile Include="src\Prefabs\Terrain.cpp" />
     <ClCompile Include="src\Rendering\API_Opengl.cpp" />
     <ClCompile Include="src\Rendering\CubeMapGL.cpp" />
     <ClCompile Include="src\Rendering\EquirectangularMap.cpp" />
     <ClCompile Include="src\Rendering\FrameBufferCube.cpp" />
     <ClCompile Include="src\Rendering\FrameBufferGL.cpp" />
+    <ClCompile Include="src\Rendering\GridMesh.cpp" />
     <ClCompile Include="src\Rendering\Material.cpp" />
     <ClCompile Include="src\Rendering\Mesh.cpp" />
     <ClCompile Include="src\Rendering\Model.cpp" />
