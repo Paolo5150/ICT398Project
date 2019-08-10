@@ -212,6 +212,7 @@
     <ClInclude Include="src\Prefabs\Bench.h" />
     <ClInclude Include="src\Prefabs\Chair.h" />
     <ClInclude Include="src\Prefabs\MainCamera.h" />
+    <ClInclude Include="src\Prefabs\Table.h" />
     <ClInclude Include="src\Rendering\API_Opengl.h" />
     <ClInclude Include="src\Rendering\ArrayBuffer.h" />
     <ClInclude Include="src\Rendering\ArrayBufferGL.h" />
@@ -311,6 +312,7 @@
     <ClCompile Include="src\Prefabs\Bench.cpp" />
     <ClCompile Include="src\Prefabs\Chair.cpp" />
     <ClCompile Include="src\Prefabs\MainCamera.cpp" />
+    <ClCompile Include="src\Prefabs\Table.cpp" />
     <ClCompile Include="src\Rendering\API_Opengl.cpp" />
     <ClCompile Include="src\Rendering\CubeMapGL.cpp" />
     <ClCompile Include="src\Rendering\EquirectangularMap.cpp" />

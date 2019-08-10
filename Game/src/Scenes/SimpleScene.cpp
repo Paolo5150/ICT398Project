@@ -5,6 +5,8 @@
 #include "Core/Core.h"
 #include "Prefabs/Bench.h"
 #include "Prefabs/Chair.h"
+#include "Prefabs/Table.h"
+
 
 
 SimpleScene::SimpleScene() : Scene("SimpleScene")
@@ -15,6 +17,8 @@ void SimpleScene::LoadAssets() {
 
 	ContentManager::Instance().LoadModel("Assets\\Models\\Bench\\bench.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Chair\\chair.obj", false, false);
+	ContentManager::Instance().LoadModel("Assets\\Models\\Table\\table.fbx", false, false);
+
 
 	ContentManager::Instance().LoadCubeMap("Assets\\SkyBoxes\\SunSet");
 
@@ -50,8 +54,13 @@ void SimpleScene::Initialize() {
 	skybox = std::unique_ptr<Skybox>(new Skybox(ContentManager::Instance().GetAsset<CubeMap>("SunSet")));	
 
 	Bench* bench = new Bench();
+	bench->transform.SetPosition(-30, 0, 0);
+
 	Chair* chair = new Chair();
-	bench->transform.SetPosition(150, 0, -20);
+	chair->transform.SetPosition(30, 0, 0);
+
+	Table* table = new Table();
+	table->transform.SetPosition(0, 0, 0);
 
 	MainCamera* cam = new MainCamera();
 	cam->transform.SetPosition(0, 10, 50);
@@ -71,6 +80,8 @@ void SimpleScene::Initialize() {
 	AddGameObject(pointLight);
 	AddGameObject(bench);
 	AddGameObject(chair);
+	AddGameObject(table);
+
 }
 
 void SimpleScene::Start()
@@ -83,7 +94,7 @@ void SimpleScene::Start()
 
 void SimpleScene::LogicUpdate()
 {
-	//SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Chair")[0]->transform.RotateBy(1, 0, 1, 0);
+	//SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Chair")[0]->transform.Translate(0.05, 0, 0);
 
 	if (Input::GetKeyDown(GLFW_KEY_ESCAPE))
 		EventDispatcher::Instance().DispatchEvent(new QuitRequestEvent());
