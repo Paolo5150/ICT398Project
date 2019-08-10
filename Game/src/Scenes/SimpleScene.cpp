@@ -41,7 +41,7 @@ void SimpleScene::Initialize() {
 
 	Bench* bench = new Bench();
 	Bench* bench2 = new Bench();
-	bench2->transform.SetPosition(20, 0, 0);
+	bench2->transform.SetPosition(80, 0, 0);
 
 	MainCamera* cam = new MainCamera();
 	cam->transform.SetPosition(0, 10, 50);
@@ -77,22 +77,10 @@ void SimpleScene::Start()
 
 void SimpleScene::LogicUpdate()
 {
-	//SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Bench")[0]->transform.Translate(0.1, 0.0, 0.0);
-	
-	/*static float timer = 0;
-	static bool done = false;
-	timer += Timer::GetDeltaS();
-
-	if (timer >= 3 && !done)
-	{
-		done = 1;
-	}*/
+	SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Bench")[0]->transform.Translate(0.1, 0.0, 0.0);
 
 	if (Input::GetKeyDown(GLFW_KEY_ESCAPE))
 		EventDispatcher::Instance().DispatchEvent(new QuitRequestEvent());
-
-
-
 
 	if (Input::GetKeyDown(GLFW_KEY_O))
 		SceneManager::Instance().LoadNewScene("OtherScene");
