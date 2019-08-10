@@ -6,7 +6,7 @@
 #include <filesystem>
 #include <windows.h>
 #include "Maths.h"
-
+#include "..\Core\ColliderInfo.h"
 /**
 * @class FileUtils
 * @brief Helper class used for accessing external files
@@ -71,7 +71,7 @@ class FileUtils
 		*/
 		static std::string GetLastFolderNameFromAbsolutePath(std::string path);
 
-		static void ReadColliderFile(std::string absolutePathToFile, glm::vec3& position, glm::vec3& scale, glm::vec3& rotation);
+		static std::vector<ColliderInfo> ReadColliderFile(std::string absolutePathToFile);
 
 		/**
 		* @brief						Returns the class name of an object

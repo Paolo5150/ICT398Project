@@ -3,6 +3,7 @@
 #include "FileUtils.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include  <string.h>
 
 
 bool FileUtils::IsFileThere(std::string filePath)
@@ -85,50 +86,87 @@ std::string FileUtils::GetLastFolderNameFromAbsolutePath(std::string path)
 
 }
 
-void FileUtils::ReadColliderFile(std::string absolutePathToFile, glm::vec3& position, glm::vec3& scale, glm::vec3& rotation)
+std::vector<ColliderInfo> FileUtils::ReadColliderFile(std::string absolutePathToFile)
 {
+	std::vector<ColliderInfo> trans;
+
 	if (!IsFileThere(absolutePathToFile))
 	{
 		Logger::LogError("File", absolutePathToFile, "not found!!");
-		return;
+		return trans;
 	}
-	char buf[512];
+	char buf[100];
 	FILE* f;
 	f = fopen(absolutePathToFile.c_str(), "r");
 
+	glm::vec3 p, s, r;
+	int rend;
+	char c;
 	if (f != NULL)
 	{
 		while (!feof(f))
 		{
+			fgets(buf, 100, f);
+			//Logger::LogInfo(buf[0],buf[1]);
 
-		char c = fgetc(f);
+			// If box collider
+			if (buf[0] == 'B' && buf[1]=='C')
+			{
+				int lineInd = 4;
+				// Read the next 4 lines
+				while (lineInd > 0)
+				{
+					c = fgetc(f);
+					if (c == 'P')
+					{
+						fscanf(f, "%f %f %f", &p.x, &p.y, &p.z);						
+					}
+					else if (c == 'S')
+					{
+						fscanf(f, "%f %f %f", &s.x, &s.y, &s.z);
+					}
+					else if (c == 'R')
+					{
+						fscanf(f, "%f %f %f", &r.x, &r.y, &r.z);
+					}
+					else if (c == 'D')
+					{
+						fscanf(f, "%d", &rend);
+					}
+					lineInd--;
+					fgets(buf, 512, f);
+				}		
 
-		if (c == 'P')
-		{
-			float x, y, z;
-			fscanf(f,"%f %f %f", &x, &y, &z);
-			position.x = x;
-			position.y = y;
-			position.z = z;
-		}
-		else if (c == 'S')
-		{
-			float x, y, z;
-			fscanf(f, "%f %f %f", &x, &y, &z);
-			scale.x = x;
-			scale.y = y;
-			scale.z = z;
-		}
-		else if (c == 'R')
-		{
-			float x, y, z;
-			fscanf(f, "%f %f %f", &x, &y, &z);
-			rotation.x = x;
-			rotation.y = y;
-			rotation.z = z;
-		}
+				trans.emplace_back("BC",p, s, r,rend);
+			}	
+			else 			// If sphere collider
+				if (buf[0] == 'S' && buf[1] == 'C')
+				{
+					int lineInd = 3;
+					// Read the next 3 lines
+					while (lineInd > 0)
+					{
+						c = fgetc(f);
+						if (c == 'P')
+						{
+							fscanf(f, "%f %f %f", &p.x, &p.y, &p.z);
+						}
+						else if (c == 'S')
+						{
+							fscanf(f, "%f %f %f", &s.x, &s.y, &s.z);
+						}
+						else if (c == 'D')
+						{
+							fscanf(f, "%d", &rend);
+						}
+						lineInd--;
+						fgets(buf, 512, f);
+					}
 
-		fgets(buf, 512, f);
+					trans.emplace_back("SC", p, s, rend);
+				}
 		}
 	}
+
+	return trans;
 }

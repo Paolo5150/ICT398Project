@@ -437,5 +437,8 @@
     <ClInclude Include="src\Prefabs\Bench.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Core\ColliderInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -182,6 +182,7 @@
     <ClInclude Include="src\Core\Logger.h" />
     <ClInclude Include="src\Core\Timer.h" />
     <ClInclude Include="src\Core\Transform.h" />
+    <ClInclude Include="src\Core\ColliderInfo.h" />
     <ClInclude Include="src\Core\Window.h" />
     <ClInclude Include="src\Events\ApplicationEvents.h" />
     <ClInclude Include="src\Events\Event.h" />
