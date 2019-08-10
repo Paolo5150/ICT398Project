@@ -40,6 +40,8 @@ void SimpleScene::Initialize() {
 	skybox = std::unique_ptr<Skybox>(new Skybox(ContentManager::Instance().GetAsset<CubeMap>("SunSet")));	
 
 	Bench* bench = new Bench();
+	Bench* bench2 = new Bench();
+	bench2->transform.SetPosition(20, 0, 0);
 
 	MainCamera* cam = new MainCamera();
 	cam->transform.SetPosition(0, 10, 50);
@@ -58,6 +60,8 @@ void SimpleScene::Initialize() {
 	AddGameObject(dirLight);
 	AddGameObject(pointLight);
 	AddGameObject(bench);
+	AddGameObject(bench2);
+
 
 
 
@@ -73,7 +77,7 @@ void SimpleScene::Start()
 
 void SimpleScene::LogicUpdate()
 {
-	SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("PointLight")[0]->transform.Translate(0, 0.01, 0.0);
+	SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Bench")[0]->transform.Translate(0.1, 0.0, 0.0);
 	
 	/*static float timer = 0;
 	static bool done = false;

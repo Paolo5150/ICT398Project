@@ -1,11 +1,12 @@
 #include "pch.h"
 #include "Bench.h"
 #include "..\Utils\ContentManager.h"
+#include "..\Components\BoxCollider.h"
 
 Bench::Bench() : GameObject("Bench")
 {
 	ContentManager::Instance().GetAsset<Model>("Bench")->PopulateGameObject(this);
-	transform.SetScale(0.1);
+	transform.SetScale(0.05);
 
 	Material m;
 	m.SetShader(ContentManager::Instance().GetAsset<Shader>("PBR"));
@@ -33,4 +34,13 @@ void Bench::Start()
 {
 	GameObject::Start();
 
+	// Colliders are best added in the Start method
+	BoxCollider* bc = new BoxCollider();
+	bc->enableRender = true;
+	bc->transform.SetScale(30);
+	bc->transform.SetPosition(0, 50, 0);
+
+
+
+	AddComponent(bc); // Attach after you configured the collider.
 }
