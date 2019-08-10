@@ -7,12 +7,17 @@ MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspect
 	this->SetName("Main Camera");
 	m_rotationSpeed = 20;
 	m_movementSpeed = 40;	
+	blockRotation = false;
 }
 
 void MainCamera::Update()
 {	
+	if (!blockRotation)
+	{
+
 	transform.RotateBy(Input::GetDeltaMousePosX() * Timer::GetDeltaS() * m_rotationSpeed, glm::vec3(0, 1, 0));
 	transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * m_rotationSpeed, transform.GetLocalRight());
+	}
 
 	if (Input::GetKeyDown(GLFW_KEY_KP_ADD))
 	{
@@ -43,6 +48,18 @@ void MainCamera::Update()
 		this->transform.SetPosition(this->transform.GetPosition() - (m_movementSpeed * Timer::GetDeltaS() * this->transform.GetLocalRight()));
 	}
 
+	//Common inputs for all scenes
+	if (Input::GetKeyDown(GLFW_KEY_T))
+	{
+		Input::SetCursorMode("normal");
+		blockRotation = true;
+	}
+
+	if (Input::GetKeyDown(GLFW_KEY_Y))
+	{
+		Input::SetCursorMode("disabled");
+		blockRotation = false;
+	}
 
 	//Logger::LogInfo("Speed", m_movementSpeed);
 	Camera::Update(); //Update last as this will update the view matrix with the new position values

@@ -1,9 +1,7 @@
 #include "pch.h"
 
 #include "Core.h"
-
 #include "Input.h"
-
 #include "..\Events\EventDispatcher.h"
 #include "..\Events\WindowEvents.h"
 #include "..\Events\TimerEvents.h"
@@ -13,6 +11,7 @@
 #include "..\Utils\ContentManager.h"
 #include "..\Lighting\LightingManager.h"
 #include "..\GUI\GUIManager.h"
+#include "..\Physics\PhysicsWorld.h"
 
 
 void Core::Initialize()
@@ -50,7 +49,7 @@ void Core::Initialize()
 	m_runningApplication = CreateApplication();
 	//WINDOW
 	// Set up windows after flew initialization (and after the context has been set).
-	Window::Instance().SetWindowSize(800,600);
+	Window::Instance().SetWindowSize(1200,800);
 	
 	LoadBasicAssets();
 
@@ -120,6 +119,7 @@ bool Core::LogicUpdate(Event* e)
 	//Logger::LogInfo("Core logic update");
 
 	m_runningApplication->AppLogicUpdate();
+	
 	return 0;
 }
 

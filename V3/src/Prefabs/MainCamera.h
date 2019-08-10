@@ -36,5 +36,6 @@ public:
 private:
 	float m_movementSpeed;
 	float m_rotationSpeed;
+	bool blockRotation;
 };
 

@@ -311,15 +311,16 @@ bool GameObject::HasChild(std::string childName) const
 }
 
 
+void GameObject::Start()
+{
+	auto itc = _components.begin();
+	for (; itc != _components.end(); itc++)
+		if ((*itc)->GetActive() == true)
+			(*itc)->Start();
+}
+
 void GameObject::Update()
 {
-	colorTimer = colorTimer < 0 ? 0 : colorTimer - Timer::GetDeltaS();
-	if (colorTimer == 0 && flashing)
-	{
-		ApplyColor(1,1,1);
-		flashing = 0;
-	}
-
 	auto it = _children.begin();
 	for (; it != _children.end(); it++)
 		if ((*it)->GetActive() == true)

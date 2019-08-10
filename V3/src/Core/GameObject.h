@@ -326,7 +326,7 @@ public:
 
 	virtual void FlashColor(float r, float g, float b);
 
-	virtual void Start() {};
+	virtual void Start();
 
 	/**
 	* @brief		Update the gameobject in the Engine Update loop

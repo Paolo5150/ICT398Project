@@ -72,10 +72,22 @@ void Transform::SetPosition(glm::vec3 r)
 	UpdateHierarchy();
 }
 
+void Transform::SetScale(float r)
+{
+	scale *= r;
+	UpdateHierarchy();
+}
+
+
 void Transform::SetScale(glm::vec3 r)
 {
 	scale = r;
 	UpdateHierarchy();
+}
+
+void Transform::SetRotation(glm::vec3& rot)
+{
+	SetRotation(rot.x, rot.y, rot.z);
 }
 
 void Transform::SetRotation(float x, float y, float z)

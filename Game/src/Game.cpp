@@ -13,7 +13,7 @@
 
 std::unique_ptr<Application> CreateApplication()
 {
-	return std::unique_ptr<Application>(new Game("397 Project"));
+	return std::unique_ptr<Application>(new Game("398 Project"));
 }
 
 Game::Game(std::string appName)

@@ -1,6 +1,8 @@
 #include "pch.h"
 
 #include "FileUtils.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 
 bool FileUtils::IsFileThere(std::string filePath)
@@ -81,4 +83,52 @@ std::string FileUtils::GetLastFolderNameFromAbsolutePath(std::string path)
 
 	return folderName;
 
+}
+
+void FileUtils::ReadColliderFile(std::string absolutePathToFile, glm::vec3& position, glm::vec3& scale, glm::vec3& rotation)
+{
+	if (!IsFileThere(absolutePathToFile))
+	{
+		Logger::LogError("File", absolutePathToFile, "not found!!");
+		return;
+	}
+	char buf[512];
+	FILE* f;
+	f = fopen(absolutePathToFile.c_str(), "r");
+
+	if (f != NULL)
+	{
+		while (!feof(f))
+		{
+
+		char c = fgetc(f);
+
+		if (c == 'P')
+		{
+			float x, y, z;
+			fscanf(f,"%f %f %f", &x, &y, &z);
+			position.x = x;
+			position.y = y;
+			position.z = z;
+		}
+		else if (c == 'S')
+		{
+			float x, y, z;
+			fscanf(f, "%f %f %f", &x, &y, &z);
+			scale.x = x;
+			scale.y = y;
+			scale.z = z;
+		}
+		else if (c == 'R')
+		{
+			float x, y, z;
+			fscanf(f, "%f %f %f", &x, &y, &z);
+			rotation.x = x;
+			rotation.y = y;
+			rotation.z = z;
+		}
+
+		fgets(buf, 512, f);
+		}
+	}
 }
