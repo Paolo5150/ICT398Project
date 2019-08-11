@@ -68,6 +68,7 @@ void OtherScene::Initialize() {
 
 	pointLight->SetIntensity(10);
 	pointLight->transform.SetPosition(0, 0, 5);
+	pointLight->SetDiffuseColor(1, 0, 0);
 
 	AddGameObject(cam);
 	AddGameObject(dirLight);

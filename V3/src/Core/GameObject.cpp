@@ -6,7 +6,9 @@
 //#include "..\Core\Camera.h"
 #include "..\Components\MeshRenderer.h"
 #include "..\Core\Timer.h"
-
+#include "..\Components\BoxCollider.h"
+#include "..\Components\SphereCollider.h"
+#include "ColliderInfo.h"
 
 
 GameObject::GameObject(std::string name, bool isActive, unsigned int layer, GameObject* parent) : transform(Transform(this))
@@ -156,6 +158,46 @@ void GameObject::FlashColor(float r, float g, float b)
 	colorTimer = 0.1f;
 	flashing = 1;
 }
+
+void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
+{
+	std::vector<ColliderInfo> t = FileUtils::ReadColliderFile(absolutePathToFile);
+
+	for (int i = 0; i < t.size(); i++)
+	{
+		if (t[i].type == "BC")
+		{
+			BoxCollider* bc = new BoxCollider();
+			bc->enableRender = t[i].render;
+			bc->transform.SetPosition(t[i].p);
+			bc->transform.SetScale(t[i].s);
+			bc->transform.SetRotation(t[i].r);
+			bc->SetActive(t[i].isActive);
+			AddComponent(bc);
+		}
+		else if (t[i].type == "SC")
+		{
+			SphereCollider* sc = new SphereCollider();
+			sc->enableRender = t[i].render;
+			sc->transform.SetPosition(t[i].p);
+			sc->transform.SetScale(t[i].s.x, t[i].s.x, t[i].s.x);
+			sc->SetActive(t[i].isActive);
+
+			AddComponent(sc);
+		}
+
+
+		// Uncomment this to see the lamba in action
+		// If "collisionCallback" is reassigned to a lambda, the OnCollision method will be overridden
+		// This can be used to have different methods callbacks for different colliders.
+
+		/*bc->collisionCallback = [](GameObject* g) {
+			Logger::LogInfo("Greetings, I'm a lambda callback and I collided against", g->GetName());
+		};*/
+
+	}
+}
+
 
 
 std::string GameObject::GetName() const
@@ -311,15 +353,16 @@ bool GameObject::HasChild(std::string childName) const
 }
 
 
+void GameObject::Start()
+{
+	auto itc = _components.begin();
+	for (; itc != _components.end(); itc++)
+		if ((*itc)->GetActive() == true)
+			(*itc)->Start();
+}
+
 void GameObject::Update()
 {
-	colorTimer = colorTimer < 0 ? 0 : colorTimer - Timer::GetDeltaS();
-	if (colorTimer == 0 && flashing)
-	{
-		ApplyColor(1,1,1);
-		flashing = 0;
-	}
-
 	auto it = _children.begin();
 	for (; it != _children.end(); it++)
 		if ((*it)->GetActive() == true)

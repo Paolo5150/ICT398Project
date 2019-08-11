@@ -51,30 +51,7 @@ bool CollisionChecks::Collision(SphereCollider* s, SphereCollider* b)
 }
 bool CollisionChecks::Collision(BoxCollider* s, BoxCollider* b)
 {
-
-	if (s->GetParent()->transform.GetRotationQuat().x == 0 && s->GetParent()->transform.GetRotationQuat().y == 0 && s->GetParent()->transform.GetRotationQuat().z == 0 && s->GetParent()->transform.GetRotationQuat().w == 1 &&
-		b->GetParent()->transform.GetRotationQuat().x == 0 && b->GetParent()->transform.GetRotationQuat().y == 0 && b->GetParent()->transform.GetRotationQuat().z == 0 && b->GetParent()->transform.GetRotationQuat().w == 1)
-	{
-
-		if (s->transform.GetGlobalPosition().x + s->transform.GetGlobalScale().x  > b->transform.GetGlobalPosition().x - b->transform.GetGlobalScale().x  &&
-			s->transform.GetGlobalPosition().x - s->transform.GetGlobalScale().x  < b->transform.GetGlobalPosition().x + b->transform.GetGlobalScale().x  &&
-			s->transform.GetGlobalPosition().y + s->transform.GetGlobalScale().y  > b->transform.GetGlobalPosition().y - b->transform.GetGlobalScale().y  &&
-			s->transform.GetGlobalPosition().y - s->transform.GetGlobalScale().y  < b->transform.GetGlobalPosition().y + b->transform.GetGlobalScale().y &&
-			s->transform.GetGlobalPosition().z + s->transform.GetGlobalScale().z  > b->transform.GetGlobalPosition().z - b->transform.GetGlobalScale().z  &&
-			s->transform.GetGlobalPosition().z - s->transform.GetGlobalScale().z  < b->transform.GetGlobalPosition().z + b->transform.GetGlobalScale().z)
-			return 1;
-
-		return 0;
-
-	}
-	else
-	{	
-		s->transform.UpdateVectors();
-		b->transform.UpdateVectors();
-		return getCollision(s, b);
-	}
-
-	
+		return getCollision(s, b);	
 }
 
 bool CollisionChecks::getSeparatingPlane(glm::vec3 RPos, glm::vec3 Plane, BoxCollider* box1, BoxCollider* box2)

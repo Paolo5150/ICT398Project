@@ -55,8 +55,7 @@ void PhysicsWorld::FillQuadtree(bool staticToo)
 	{
 		nonStaticQuadtree->AddElement(allNonStaticColliders[i], allNonStaticColliders[i]->transform.GetGlobalPosition().x, allNonStaticColliders[i]->transform.GetGlobalPosition().z,
 			allNonStaticColliders[i]->transform.GetGlobalScale().x, allNonStaticColliders[i]->transform.GetGlobalScale().z);
-	}
-	
+	}	
 
 	if (staticToo)
 	{
@@ -90,15 +89,9 @@ void PhysicsWorld::AddCollider(Collider* rb)
 		allNonStaticColliders.push_back(rb);
 	else
 	{
-
 		allStaticColliders.push_back(rb);
 	}
 }
-
-
-
-
-
 
 void PhysicsWorld::Update()
 {
@@ -108,16 +101,11 @@ void PhysicsWorld::Update()
 		PerformCollisions(false);
 		allNonStaticColliders.clear();
 	}
-
-
-
 }
-
 
 void PhysicsWorld::PerformCollisions(bool staticToo)
 {
 	PerformCollisions(nonStaticQuadtree->root);
-
 	
 	for (unsigned i = 0; i < allNonStaticColliders.size(); i++)
 	{
@@ -130,13 +118,14 @@ void PhysicsWorld::PerformCollisions(bool staticToo)
 				(*it)->GetCollideAgainstLayer() & allNonStaticColliders[i]->GetCollisionLayer())
 			{
 				if ((*it)->GetActive() && allNonStaticColliders[i]->GetActive())
-				{
-
-					if (CollisionChecks::Collision(allNonStaticColliders[i], (*it)))
-					{
-						allNonStaticColliders[i]->collisionCallback((*it)->GetParent());				
-						(*it)->collisionCallback(allNonStaticColliders[i]->GetParent());
-					}
+				{			
+						if (CollisionChecks::Collision(allNonStaticColliders[i], (*it)))
+						{			
+							//TODO: Calculate collision point.
+							allNonStaticColliders[i]->collisionCallback((*it)->GetParent());				
+							(*it)->collisionCallback(allNonStaticColliders[i]->GetParent());
+					
+						}				
 				}
 			}
 		}
@@ -145,10 +134,6 @@ void PhysicsWorld::PerformCollisions(bool staticToo)
 
 	if (staticToo)
 	PerformCollisions(staticQuadtree->root);
-
-	
-	
-
 }
 
 glm::vec3 PhysicsWorld::gravity = glm::vec3(0, 0, 0);
@@ -175,10 +160,17 @@ void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
 				if (*it == *it2) continue;
 				if ((*it)->GetCollideAgainstLayer() & (*it2)->GetCollisionLayer())
 				{
-					if (CollisionChecks::Collision((*it), (*it2)))
+					if ((*it)->GetActive() && (*it2)->GetActive())
 					{
-						(*it)->collisionCallback((*it2)->GetParent());
-					}
+						if (CollisionChecks::Collision((*it), (*it2)))
+						{
+							// Check that the colliders do not belong to the same GameObject
+							if ((*it)->GetParent() != (*it2)->GetParent())
+							{
+								(*it)->collisionCallback((*it2)->GetParent());
+							}
+						}
+					}		
 				}
 			}
 		}

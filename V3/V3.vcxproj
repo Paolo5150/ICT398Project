@@ -183,6 +183,7 @@
     <ClInclude Include="src\Core\Logger.h" />
     <ClInclude Include="src\Core\Timer.h" />
     <ClInclude Include="src\Core\Transform.h" />
+    <ClInclude Include="src\Core\ColliderInfo.h" />
     <ClInclude Include="src\Core\Window.h" />
     <ClInclude Include="src\Events\ApplicationEvents.h" />
     <ClInclude Include="src\Events\Event.h" />
@@ -209,7 +210,10 @@
     <ClInclude Include="src\Physics\CollisionChecks.h" />
     <ClInclude Include="src\Physics\CollisionLayer.h" />
     <ClInclude Include="src\Physics\PhysicsWorld.h" />
+    <ClInclude Include="src\Prefabs\Bench.h" />
+    <ClInclude Include="src\Prefabs\Chair.h" />
     <ClInclude Include="src\Prefabs\MainCamera.h" />
+    <ClInclude Include="src\Prefabs\Table.h" />
     <ClInclude Include="src\Rendering\API_Opengl.h" />
     <ClInclude Include="src\Rendering\ArrayBuffer.h" />
     <ClInclude Include="src\Rendering\ArrayBufferGL.h" />
@@ -307,7 +311,10 @@
     </ClCompile>
     <ClCompile Include="src\Physics\CollisionChecks.cpp" />
     <ClCompile Include="src\Physics\PhysicsWorld.cpp" />
+    <ClCompile Include="src\Prefabs\Bench.cpp" />
+    <ClCompile Include="src\Prefabs\Chair.cpp" />
     <ClCompile Include="src\Prefabs\MainCamera.cpp" />
+    <ClCompile Include="src\Prefabs\Table.cpp" />
     <ClCompile Include="src\Rendering\API_Opengl.cpp" />
     <ClCompile Include="src\Rendering\CubeMapGL.cpp" />
     <ClCompile Include="src\Rendering\EquirectangularMap.cpp" />

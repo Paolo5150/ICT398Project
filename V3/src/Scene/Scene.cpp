@@ -70,8 +70,6 @@ void Scene::UnloadAssets()
 	ContentManager::Instance().Unload<Texture2D>();
 	ContentManager::Instance().Unload<Mesh>();
 	ContentManager::Instance().Unload<CubeMap>();
-
-
 }
 
 
@@ -101,6 +99,7 @@ void Scene::LateUpdate()
 		else
 			it++;
 	}	
+
 }
 
 void Scene::EngineUpdate()
@@ -119,6 +118,10 @@ void Scene::EngineUpdate()
 
 void Scene::LogicUpdate()
 {
+	
+	if (Input::GetKeyDown(GLFW_KEY_R))
+		SceneManager::Instance().ReloadCurrent();
+
 	auto it = m_allGameObjects.begin();
 
 	for (; it != m_allGameObjects.end(); it++)

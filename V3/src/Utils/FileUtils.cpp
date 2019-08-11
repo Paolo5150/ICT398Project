@@ -1,6 +1,9 @@
 #include "pch.h"
 
 #include "FileUtils.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include  <string.h>
 
 
 bool FileUtils::IsFileThere(std::string filePath)
@@ -81,4 +84,99 @@ std::string FileUtils::GetLastFolderNameFromAbsolutePath(std::string path)
 
 	return folderName;
 
+}
+
+std::vector<ColliderInfo> FileUtils::ReadColliderFile(std::string absolutePathToFile)
+{
+	std::vector<ColliderInfo> trans;
+
+	if (!IsFileThere(absolutePathToFile))
+	{
+		Logger::LogError("File", absolutePathToFile, "not found!!");
+		return trans;
+	}
+	char buf[100];
+	FILE* f;
+	f = fopen(absolutePathToFile.c_str(), "r");
+
+	glm::vec3 p, s, r;
+	int rend;
+	int isActive;
+
+	char c;
+	if (f != NULL)
+	{
+		while (!feof(f))
+		{
+			fgets(buf, 100, f);
+			//Logger::LogInfo(buf[0],buf[1]);
+
+			// If box collider
+			if (buf[0] == 'B' && buf[1]=='C')
+			{
+				int lineInd = 5;
+				// Read the next 4 lines
+				while (lineInd > 0)
+				{
+					c = fgetc(f);
+					if (c == 'P')
+					{
+						fscanf(f, "%f %f %f", &p.x, &p.y, &p.z);						
+					}
+					else if (c == 'S')
+					{
+						fscanf(f, "%f %f %f", &s.x, &s.y, &s.z);
+					}
+					else if (c == 'R')
+					{
+						fscanf(f, "%f %f %f", &r.x, &r.y, &r.z);
+					}
+					else if (c == 'D')
+					{
+						fscanf(f, "%d", &rend);
+					}
+					else if (c == 'A')
+					{
+						fscanf(f, "%d", &isActive);
+					}
+					lineInd--;
+					fgets(buf, 512, f);
+				}		
+
+				trans.emplace_back("BC",p, s, r,rend,isActive);
+			}	
+			else 			// If sphere collider
+				if (buf[0] == 'S' && buf[1] == 'C')
+				{
+					int lineInd = 4;
+					// Read the next 3 lines
+					while (lineInd > 0)
+					{
+						c = fgetc(f);
+						if (c == 'P')
+						{
+							fscanf(f, "%f %f %f", &p.x, &p.y, &p.z);
+						}
+						else if (c == 'S')
+						{
+							fscanf(f, "%f %f %f", &s.x, &s.y, &s.z);
+						}
+						else if (c == 'D')
+						{
+							fscanf(f, "%d", &rend);
+						}
+						else if (c == 'A')
+						{
+							fscanf(f, "%d", &isActive);
+						}
+						lineInd--;
+						fgets(buf, 512, f);
+					}
+
+					trans.emplace_back("SC", p, s, rend,isActive);
+				}
+		}
+	}
+
+	return trans;
 }

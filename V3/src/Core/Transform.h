@@ -13,6 +13,7 @@ class GameObject;
 * @date 11/03/2019
 *
 *
+*
 * @bug No known bugs.
 */
 class Transform
@@ -175,6 +176,15 @@ public:
 	*/
 	void SetScale(glm::vec3 r);
 
+	/**
+* @brief		Set the scale of the object for all axis
+* @pre			The game object owning the transform exists
+* @post			The object is scaled
+*
+* @param r		The scale
+*/
+	void SetScale(float r);
+
 
 	/**
 	* @brief		Rotate the object to look at a point
@@ -195,6 +205,17 @@ public:
 	* @param z		The z value of the rotation
 	*/
 	void SetRotation(float x, float y, float z);
+
+	/**
+* @brief		Set the rotation of the object
+* @pre			The game object owning the transform exists
+* @post			The object is rotated
+*
+* @param x		The x value of the rotation
+* @param y		The y value of the rotation
+* @param z		The z value of the rotation
+*/
+	void SetRotation(glm::vec3& rot);
 
 	/**
 	* @brief		Set the rotation of the object

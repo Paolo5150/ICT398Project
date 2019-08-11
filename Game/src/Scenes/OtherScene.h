@@ -5,10 +5,7 @@ class GUIImage;
 class Player;
 class GUIProgressBar;
 /**
-* @class MainScene
-* @brief The application main scene
-*
-*
+* @class OtherScene
 * @author Paolo Ferri
 * @version 01
 * @date 07/03/2019

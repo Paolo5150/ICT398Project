@@ -326,7 +326,7 @@ public:
 
 	virtual void FlashColor(float r, float g, float b);
 
-	virtual void Start() {};
+	virtual void Start();
 
 	/**
 	* @brief		Update the gameobject in the Engine Update loop
@@ -379,6 +379,8 @@ public:
 	* @param mt		The material type
 	*/
 	void ApplyMaterial(Material mat, MaterialType mt = DEFAULT);
+
+	void LoadCollidersFromFile(std::string absolutePathToFile);
 
 	/**
 	* @brief		Apply a color to the gameobject and its children
