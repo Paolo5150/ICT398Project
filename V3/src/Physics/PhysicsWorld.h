@@ -99,6 +99,11 @@ public:
 	* @param staticToo				Whether collision detection should be performed betweem static objects
 	*/
 	void PerformCollisions(bool staticToo);
+
+	/**
+	* @brief						Gravity for physics
+	*/
+	static glm::vec3 gravity;
 private:
 	/**
 	* @brief						Recurdive method that performs collision detection in a quadtree node
