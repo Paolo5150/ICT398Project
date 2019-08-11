@@ -121,7 +121,8 @@ void PhysicsWorld::PerformCollisions(bool staticToo)
 				{			
 						if (CollisionChecks::Collision(allNonStaticColliders[i], (*it)))
 						{			
-							//TODO: Calculate collision point.
+							//TODO: Store collision point for physics calculation
+							CollisionChecks::getCollisionPoint(allNonStaticColliders[i], (*it));
 							allNonStaticColliders[i]->collisionCallback((*it)->GetParent());				
 							(*it)->collisionCallback(allNonStaticColliders[i]->GetParent());
 					

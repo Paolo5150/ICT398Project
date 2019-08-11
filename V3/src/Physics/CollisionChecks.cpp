@@ -79,3 +79,110 @@ bool CollisionChecks::getCollision(BoxCollider* box1, BoxCollider* box2)
 
 	return true;
 }
+
+glm::vec3 CollisionChecks::getCollisionPoint(Collider * s, Collider * b)
+{
+	if (s->colliderType == Collider::BOX && b->colliderType == Collider::BOX)
+		return getCollisionPoint(dynamic_cast<BoxCollider*>(s), dynamic_cast<BoxCollider*>(b));
+
+	else if (s->colliderType == Collider::BOX && b->colliderType == Collider::SPHERE)
+		return getCollisionPoint(dynamic_cast<SphereCollider*>(b), dynamic_cast<BoxCollider*>(s));
+
+	else if (s->colliderType == Collider::SPHERE && b->colliderType == Collider::BOX)
+		return getCollisionPoint(dynamic_cast<SphereCollider*>(s), dynamic_cast<BoxCollider*>(b));
+
+	else if (s->colliderType == Collider::SPHERE && b->colliderType == Collider::SPHERE)
+		return getCollisionPoint(dynamic_cast<SphereCollider*>(s), dynamic_cast<SphereCollider*>(b));
+}
+
+glm::vec3 CollisionChecks::getCollisionPoint(BoxCollider * box1, BoxCollider * box2)
+{
+	static glm::vec3 RPos;
+	RPos = box2->transform.GetGlobalPosition() - box1->transform.GetGlobalPosition();
+
+	std::vector<glm::vec3> vertices = box1->GetWorldPoints();
+
+	std::vector<glm::vec3> collisionPoints = std::vector<glm::vec3>();
+
+	//Determine if any vertice of  box is inside another box
+	for (int i = 0; i < vertices.size(); i++)
+	{
+		if (isPointInBox(vertices[i], box2))
+			collisionPoints.push_back(vertices[i]);
+	}
+
+	vertices = box2->GetWorldPoints();
+
+	for (int i = 0; i < vertices.size(); i++)
+	{
+		if (isPointInBox(vertices[i], box1))
+			collisionPoints.push_back(vertices[i]);
+	}
+
+	float avgX = 0, avgY = 0, avgZ = 0;
+	for (int i = 0; i < collisionPoints.size(); i++)
+	{
+		avgX += collisionPoints[i].x / collisionPoints.size();
+		avgY += collisionPoints[i].y / collisionPoints.size();
+		avgZ += collisionPoints[i].z / collisionPoints.size();
+	}
+
+	glm::vec3 collisionPoint = glm::vec3(avgX, avgY, avgZ);
+
+	if (collisionPoints.size() == 0)
+	{
+		//Simplified point if no vertices of box intersect
+		collisionPoint = (box1->transform.GetGlobalPosition() + box2->transform.GetGlobalPosition()) / 2.0f;
+		collisionPoint = (getClosestPointToBox(collisionPoint, box1) + getClosestPointToBox(collisionPoint, box2)) / 2.0f;
+	}
+
+	return collisionPoint;
+}
+
+glm::vec3 CollisionChecks::getCollisionPoint(SphereCollider * s, BoxCollider * b)
+{
+	return getClosestPointToBox(s->transform.GetGlobalPosition(), b);
+}
+
+glm::vec3 CollisionChecks::getCollisionPoint(SphereCollider * s, SphereCollider * b)
+{
+	return s->transform.GetGlobalPosition() + glm::normalize(s->transform.GetGlobalPosition() - b->transform.GetGlobalPosition()) * (s->transform.GetGlobalScale().x / 2);
+}
+
+bool CollisionChecks::isPointInBox(glm::vec3 point, BoxCollider * box)
+{
+	glm::mat4 rot = box->transform.GetGlobalRotation();
+	rot = glm::inverse(rot);
+	glm::mat4 trans = glm::translate(glm::mat4(1.0f), -box->transform.GetGlobalPosition());
+
+	auto rotVec = trans * rot * glm::vec4(point, 1.0);
+
+	if (rotVec.x >= -(box->transform.GetGlobalScale().x / 2) && rotVec.x <= box->transform.GetGlobalScale().x / 2 &&
+		rotVec.y >= -(box->transform.GetGlobalScale().y / 2) && rotVec.y <= box->transform.GetGlobalScale().y / 2 &&
+		rotVec.z >= -(box->transform.GetGlobalScale().z / 2) && rotVec.z <= box->transform.GetGlobalScale().z / 2)
+			return true;
+
+	return false;
+}
+
+glm::vec3 CollisionChecks::getClosestPointToBox(glm::vec3 point, BoxCollider * box)
+{
+	glm::mat4 rot = box->transform.GetGlobalRotation();
+	rot = glm::inverse(rot);
+	glm::mat4 trans = glm::translate(glm::mat4(1.0f), -box->transform.GetGlobalPosition());
+
+	auto rotVec = trans * rot * glm::vec4(point, 1.0);
+
+	glm::vec3 closestPoint = glm::vec3();
+	for (int i = 0; i < 3; i++)
+	{
+		if (rotVec[i] < -(box->transform.GetGlobalScale()[i] / 2))
+			closestPoint[i] = -(box->transform.GetGlobalScale()[i] / 2);
+		if (rotVec[i] > box->transform.GetGlobalScale()[i] / 2)
+			closestPoint[i] = box->transform.GetGlobalScale()[i] / 2;
+	}
+
+	closestPoint = glm::inverse(trans * rot) * glm::vec4(closestPoint, 1.0);
+
+	return closestPoint;
+}
