@@ -27,13 +27,9 @@ void Terrain::Initialize(int size)
 	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("limestone_ao"), "aoMap");
 	material.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("limestone_metallic"), "metallicMap");
 
-
-
 	material.LoadFloat("UVScale", 2.0);
 	material.LoadFloat("shininess", 18.0f);
 	material.LoadFloat("height_scale", 0.018);
-
-
 
 	SetLayer(0);
 	SetLayer(RenderingLayers::TERRAIN);

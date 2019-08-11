@@ -61,6 +61,6 @@ void MainCamera::Update()
 		blockRotation = false;
 	}
 
-	Logger::LogInfo(transform.ToString());
+	//Logger::LogInfo(transform.ToString());
 	Camera::Update(); //Update last as this will update the view matrix with the new position values
 }
