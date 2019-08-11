@@ -133,7 +133,7 @@ public:
 	glm::vec3 GetVelocity() const;
 
 	/**
-	* @brief		Enables/Disables the gameobject being affected by gravity, gravity value is stored in the **** file
+	* @brief		Enables/Disables the gameobject being affected by gravity, gravity value is stored in the PhysicsWorld file
 	*
 	* @pre			The Rigidbody must exist.
 	* @post			Whether the Rigidbody is affected by gravity will be set.
