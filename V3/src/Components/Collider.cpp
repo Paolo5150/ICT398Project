@@ -27,6 +27,8 @@ void Collider::EngineUpdate()
 void Collider::Start()
 {
 	transform.UpdateHierarchy();
+	if(_parent->GetIsStatic())
+		PhysicsWorld::Instance().AddCollider(this);
 }
 
 void Collider::OnAttach(GameObject* go)
@@ -51,7 +53,7 @@ void Collider::OnAttach(GameObject* go)
 	});
 
 	Initialize();
-	PhysicsWorld::Instance().AddCollider(this);
+	
 	
 	
 }

@@ -136,7 +136,7 @@ void PhysicsWorld::PerformCollisions(bool staticToo)
 	PerformCollisions(staticQuadtree->root);
 }
 
-glm::vec3 PhysicsWorld::gravity = glm::vec3(0, 0, 0);
+glm::vec3 PhysicsWorld::gravity = glm::vec3(0, -9.8, 0);
 
 void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
 {

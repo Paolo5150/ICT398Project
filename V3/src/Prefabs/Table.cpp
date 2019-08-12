@@ -10,11 +10,13 @@ Table::Table() : GameObject("Table")
 	transform.SetScale(0.1);
 	Material m;
 	m.SetShader(ContentManager::Instance().GetAsset<Shader>("PBR"));
-	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("wood_normal"), "normalMap");
-	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("wood_albedo"), "albedoMap");
-	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("wood_roughness"), "roughnessMap");
-	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("wood_metallic"), "metallicMap");
-	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("wood_ao"), "aoMap");
+	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("bamboo_normal"), "normalMap");
+	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("bamboo_albedo"), "albedoMap");
+	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("bamboo_roughness"), "roughnessMap");
+	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("bamboo_ao"), "aoMap");
+	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("bamboo_metallic"), "metallicMap");
+
+
 	m.LoadCubemap(ContentManager::Instance().GetAsset<CubeMap>("SunSet"), "cubemap0");
 	ApplyMaterial(m);
 

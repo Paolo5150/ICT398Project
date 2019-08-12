@@ -25,6 +25,7 @@ struct Material
 vec3 color;
 float shininess;
 float UVScale;
+float height_scale;
 };
 
 // Light buffers
@@ -65,21 +66,26 @@ layout (std140, binding = 2) uniform AllPointLights
 
 uniform Material material;
 uniform sampler2D diffuse0; //Sand
-uniform sampler2D diffuse1; //grass
-uniform sampler2D diffuse2; //Rock
-uniform sampler2D special0; //blend
-uniform sampler2D normal0; // rock normal map
+uniform sampler2D height0;
+
+
 uniform sampler2D shadowMap[MAX_LIGHTS]; //shadowmap
 
 uniform int shadowMapCount;
 
 uniform vec3 AmbientLight;
 
+
 vec3 CalculatePointLights();
 vec3 CalculateDirectionalLights();
-
-
 vec3 NormalToUse;
+
+vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir)
+{ 
+    float height =  texture(height0, texCoords).r;    
+    vec2 p = viewDir.xy / viewDir.z * (height * material.height_scale);
+    return texCoords - p;    
+}
 
 
 
@@ -87,51 +93,11 @@ float rand(vec2 co){
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
 
-vec3 GenerateTerrainColor()
-{
-    vec3 terrainColor = vec3(0.0, 0.0, 0.0);
-    float height = max(0.0f,(HeightRatio));;
-    float regionMin = 0.0;
-    float regionMax = 1.0;
-    float regionRange = 0.0;
-    float regionWeight = 0.0;
-    
-
-    regionMin = 0.0f;
-    regionMax = 0.5f;
-    regionRange = regionMax - regionMin;
-    regionWeight = 0.4 + (regionRange - abs(height - regionMax)) / regionRange;
-    regionWeight = max(0.0, regionWeight);
-    terrainColor += regionWeight * texture(diffuse0,Textcoords * material.UVScale).rgb;
-	
-
-    regionMin = 0.5f;
-    regionMax = 2.0f;
-    regionRange = regionMax - regionMin;
-    regionWeight = (regionRange - abs(height - regionMax)) / regionRange;
-    regionWeight = max(0.0, regionWeight);
-    terrainColor += regionWeight * texture(diffuse2,Textcoords * material.UVScale).rgb;
-	
-	
-    regionMin = 0.1f;
-    regionMax = 0.4f;
-    regionRange = regionMax - regionMin;
-    regionWeight = (regionRange - abs(height - regionMax)) / regionRange;
-    regionWeight = max(0.0, regionWeight);
-	
-    terrainColor += regionWeight * texture(diffuse1,Textcoords * material.UVScale).rgb;
-	
-    return terrainColor;
-}
 
 float ShadowCalculation();
 
 void main()
 {
-
-   
-	vec3 colorRatio = vec3(max(0.4,HeightRatio));
-	colorRatio = clamp(colorRatio,0.0,1.0);
 
    vec3 DirLights =  CalculateDirectionalLights();   
    vec3 PointLights = CalculatePointLights();
@@ -140,9 +106,10 @@ void main()
 	float shadowAlpha = max(0.0,(1000 - length(FragPosition - CameraPosition)) / 1000.0);
 	float shadowColor = (1.0  - shadowFactor* shadowAlpha )  ;
    
-    NormalToUse = normalize(texture(normal0,Textcoords*15).rgb);    
-   vec3 terrainColor =  GenerateTerrainColor();
-   vec3 total =  shadowColor* colorRatio *(AmbientLight + DirLights + PointLights) * terrainColor* material.color * vertexColor;
+   vec3 viewDir = FragPositionTS - CameraPositionTS;
+   vec2 TextureCoordinates = ParallaxMapping(Textcoords,viewDir);
+   vec3 terrainColor =  texture(diffuse0,TextureCoordinates * material.UVScale).rgb;
+   vec3 total =  shadowColor *(AmbientLight + DirLights + PointLights) * terrainColor* material.color;
 
    vec3 mixFog = mix(vec3(0.321,0.3529,0.3550),total,fogVisibility);
 	gl_FragColor =  vec4(total,1.0);
