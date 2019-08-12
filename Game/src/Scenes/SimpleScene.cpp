@@ -18,7 +18,8 @@ void SimpleScene::LoadAssets() {
 	ContentManager::Instance().LoadModel("Assets\\Models\\Bench\\bench.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Chair\\chair.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Table\\table.fbx", false, false);
-
+	ContentManager::Instance().LoadModel("Assets\\Models\\LandfillBin\\landfillbin.obj", false, false);
+	ContentManager::Instance().LoadModel("Assets\\Models\\RecycleBin\\recyclebin.obj", true, false);
 
 	ContentManager::Instance().LoadCubeMap("Assets\\SkyBoxes\\SunSet");
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\grass.jpg");
@@ -80,10 +81,16 @@ void SimpleScene::Initialize() {
 	Timer::SetDisplayFPS(1);
 	LightManager::Instance().SetAmbientLight(0.00, 0.00, 0.00);
 
-	skybox = std::unique_ptr<Skybox>(new Skybox(ContentManager::Instance().GetAsset<CubeMap>("SunSet")));	
+	skybox = std::unique_ptr<Skybox>(new Skybox(ContentManager::Instance().GetAsset<CubeMap>("SunSet")));
+
+	GameObject* g = new GameObject("Bin");
+	ContentManager::Instance().GetAsset<Model>("LandfillBin")->PopulateGameObject(g);
+	g->transform.SetPosition(0, 20, 0);
+	g->transform.SetScale(5);
+	g->PrintHierarchy();
 
 	Bench* bench = new Bench();
-	bench->transform.SetPosition(-30, 0, 0);
+	bench->transform.SetPosition(-30, -10, 0);
 
 	Chair* chair = new Chair();
 	chair->transform.SetPosition(30, 0, 0);
@@ -110,11 +117,13 @@ void SimpleScene::Initialize() {
 	
 	AddGameObject(cam);
 	AddGameObject(dirLight);
-	//AddGameObject(pointLight);
+	AddGameObject(pointLight);
 	AddGameObject(bench);
 	AddGameObject(chair);
 	AddGameObject(table);
 	AddGameObject(terrain);
+	AddGameObject(g);
+
 
 
 }
@@ -129,7 +138,7 @@ void SimpleScene::Start()
 
 void SimpleScene::LogicUpdate()
 {
-	//SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Chair")[0]->transform.Translate(0.05, 0, 0);
+	SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Bench")[0]->transform.Translate(0.05, 0, 0);
 
 	if (Input::GetKeyDown(GLFW_KEY_ESCAPE))
 		EventDispatcher::Instance().DispatchEvent(new QuitRequestEvent());

@@ -26,7 +26,6 @@ Mesh::~Mesh()
 
 void Mesh::Render(Camera& cam)
 {
-
 	vertexArray->RenderArrayTriangles(indices.size());
 }
 void Mesh::Render()
