@@ -416,7 +416,7 @@ public:
 
 	bool GetIsSelfManaged() { return _isSelfManaged; }
 
-	virtual void OnCollision(GameObject* go, glm::vec3 collisionPoint){};
+	virtual void OnCollision(GameObject* go, glm::vec3 collisionPoint, glm::vec3 collisionNormal){};
 
 	virtual void OnAddToScene(Scene& theScene);
 

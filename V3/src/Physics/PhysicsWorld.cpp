@@ -119,14 +119,15 @@ void PhysicsWorld::PerformCollisions(bool staticToo)
 			{
 				if ((*it)->GetActive() && allNonStaticColliders[i]->GetActive())
 				{			
-						if (CollisionChecks::Collision(allNonStaticColliders[i], (*it)))
-						{			
-							//TODO: Store collision point for physics calculation
-							glm::vec3 pos = CollisionChecks::getCollisionPoint(allNonStaticColliders[i], (*it));
-							allNonStaticColliders[i]->collisionCallback((*it)->GetParent(), pos);
-							(*it)->collisionCallback(allNonStaticColliders[i]->GetParent(), pos);
-					
-						}				
+					if (CollisionChecks::Collision(allNonStaticColliders[i], (*it)))
+					{			
+						//TODO: Store collision point for physics calculation
+						glm::vec3 pos = CollisionChecks::getCollisionPoint(allNonStaticColliders[i], (*it));
+						glm::vec3 normal = CollisionChecks::getCollisionNormal(pos, allNonStaticColliders[i]);
+						allNonStaticColliders[i]->collisionCallback((*it)->GetParent(), pos, normal);
+						normal = CollisionChecks::getCollisionNormal(pos, (*it));
+						(*it)->collisionCallback(allNonStaticColliders[i]->GetParent(), pos, normal);
+					}				
 				}
 			}
 		}
@@ -137,7 +138,7 @@ void PhysicsWorld::PerformCollisions(bool staticToo)
 		PerformCollisions(staticQuadtree->root);
 }
 
-glm::vec3 PhysicsWorld::gravity = glm::vec3(0, -9.8, 0);
+glm::vec3 PhysicsWorld::gravity = glm::vec3(5, -9.8, 0);
 
 void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
 {
@@ -169,7 +170,8 @@ void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
 							if ((*it)->GetParent() != (*it2)->GetParent())
 							{
 								glm::vec3 pos = CollisionChecks::getCollisionPoint((*it), (*it2));
-								(*it)->collisionCallback((*it2)->GetParent(), pos);
+								glm::vec3 normal = CollisionChecks::getCollisionNormal(pos, (*it2));
+								(*it)->collisionCallback((*it2)->GetParent(), pos, normal);
 							}
 						}
 					}		

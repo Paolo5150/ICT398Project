@@ -149,6 +149,61 @@ glm::vec3 CollisionChecks::getCollisionPoint(SphereCollider * s, SphereCollider 
 	return s->transform.GetGlobalPosition() + glm::normalize(s->transform.GetGlobalPosition() - b->transform.GetGlobalPosition()) * (s->transform.GetGlobalScale().x / 2);
 }
 
+glm::vec3 CollisionChecks::getCollisionNormal(glm::vec3 point, Collider * col)
+{
+	switch (col->colliderType)
+	{
+	case Collider::BOX:
+		return getCollisionNormal(point, dynamic_cast<BoxCollider*>(col));
+	case Collider::SPHERE:
+		return getCollisionNormal(point, dynamic_cast<SphereCollider*>(col));
+	}
+}
+
+glm::vec3 CollisionChecks::getCollisionNormal(glm::vec3 point, BoxCollider * col)
+{
+	glm::mat4 rot = col->transform.GetGlobalRotation();
+	rot = glm::inverse(rot);
+	glm::mat4 trans = glm::translate(glm::mat4(1.0f), -col->transform.GetGlobalPosition());
+
+	auto rotVec = trans * rot * glm::vec4(point, 1.0);
+
+	glm::vec3 closestAxis = col->transform.GetLocalRight();
+	float dif = abs(rotVec[0] - (col->transform.GetGlobalScale()[0] / 2.0f));
+	float temp = abs(rotVec[0] - -(col->transform.GetGlobalScale()[0] / 2.0f));
+	if (temp < dif)
+	{
+		dif = temp;
+		closestAxis = -col->transform.GetLocalRight();
+	}
+	temp = abs(rotVec[1] - (col->transform.GetGlobalScale()[1] / 2.0f));
+	if (temp < dif)
+	{
+		dif = temp;
+		closestAxis = col->transform.GetLocalUp();
+	}
+	temp = abs(rotVec[2] - -(col->transform.GetGlobalScale()[2] / 2.0f));
+	if (temp < dif)
+	{
+		dif = temp;
+		closestAxis = col->transform.GetLocalFront();
+	}
+
+	temp = abs(rotVec[2] - -(col->transform.GetGlobalScale()[2] / 2.0f));
+	if (temp < dif)
+	{
+		dif = temp;
+		closestAxis = -col->transform.GetLocalFront();
+	}
+
+	return closestAxis;
+}
+
+glm::vec3 CollisionChecks::getCollisionNormal(glm::vec3 point, SphereCollider * col)
+{
+	return glm::normalize(point - col->transform.GetGlobalPosition());
+}
+
 bool CollisionChecks::isPointInBox(glm::vec3 point, BoxCollider * box)
 {
 	glm::mat4 rot = box->transform.GetGlobalRotation();

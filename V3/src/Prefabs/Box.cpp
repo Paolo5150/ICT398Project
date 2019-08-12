@@ -38,12 +38,19 @@ void Box::Start()
 						 // has been added.
 }
 
-void Box::OnCollision(GameObject* g, glm::vec3 collPoint)
+void Box::OnCollision(GameObject* g, glm::vec3 collPoint, glm::vec3 collNormal)
 {
-	glm::vec3 dir = transform.GetGlobalPosition() - collPoint;
+	//glm::vec3 dir = transform.GetGlobalPosition() - collPoint;
+	glm::vec3 dir = rb->GetVelocity();
 	dir = glm::normalize(dir);
-	rb->SetVelocity(dir * glm::abs(rb->GetVelocity()));
-	//transform.set
-	//rb->SetVelocity(-rb->GetVelocity());
-	Logger::LogInfo("Collided against", g->GetName());
+	dir = -dir;
+	glm::vec3 normal = collPoint + collNormal;
+	dir = dir - 2 * glm::dot(dir, normal) * normal;
+	dir = glm::normalize(dir);
+	Logger::LogInfo("BOX COLL POINT: ", collPoint[0], " ", collPoint[1], " ", collPoint[2]);
+	Logger::LogInfo("BOX COLL NORMAL: ", collNormal[0], " ", collNormal[1], " ", collNormal[2]);
+	Logger::LogInfo("BOX COLL REVERT DIR: ", dir[0], " ", dir[1], " ", dir[2]);
+	rb->SetVelocity(dir * glm::length(rb->GetVelocity()));
+
+	
 }

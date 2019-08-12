@@ -4,6 +4,8 @@ class BoxCollider;
 class SphereCollider;
 class Collider;
 
+#include <cmath>
+
 /**
 * @class CollisionChecks
 * @briefCollections of methods for collision detection
@@ -131,6 +133,10 @@ public:
 	* @return The world space point of collision, or as close as possible
 	*/
 	static glm::vec3 getCollisionPoint(SphereCollider* s, SphereCollider* b);
+
+	static glm::vec3 getCollisionNormal(glm::vec3 point, Collider* col);
+	static glm::vec3 getCollisionNormal(glm::vec3 point, SphereCollider* col);
+	static glm::vec3 getCollisionNormal(glm::vec3 point, BoxCollider* col);
 
 private:
 	/**

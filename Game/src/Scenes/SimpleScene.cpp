@@ -90,11 +90,11 @@ void SimpleScene::Initialize() {
 	g->transform.SetScale(5);
 	g->PrintHierarchy();
 
-	Bench* bench = new Bench();
-	bench->transform.SetPosition(-30, -10, 0);
+	//Bench* bench = new Bench();
+	//bench->transform.SetPosition(-30, -10, 0);
 
-	Chair* chair = new Chair();
-	chair->transform.SetPosition(30, 0, 0);
+	//Chair* chair = new Chair();
+	//chair->transform.SetPosition(30, 0, 0);
 
 	Table* table = new Table();
 	table->transform.SetPosition(0, 0, 0);
@@ -122,8 +122,8 @@ void SimpleScene::Initialize() {
 	AddGameObject(cam);
 	AddGameObject(dirLight);
 	AddGameObject(pointLight);
-	AddGameObject(bench);
-	AddGameObject(chair);
+	//AddGameObject(bench);
+	//AddGameObject(chair);
 	AddGameObject(box);
 	AddGameObject(table);
 	AddGameObject(terrain);
@@ -143,7 +143,7 @@ void SimpleScene::Start()
 
 void SimpleScene::LogicUpdate()
 {
-	SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Bench")[0]->transform.Translate(0.05, 0, 0);
+	//SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Bench")[0]->transform.Translate(0.05, 0, 0);
 
 	if (Input::GetKeyDown(GLFW_KEY_ESCAPE))
 		EventDispatcher::Instance().DispatchEvent(new QuitRequestEvent());
