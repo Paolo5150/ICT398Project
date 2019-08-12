@@ -1,19 +1,20 @@
 #pragma once
+
 #include "..\Core\GameObject.h"
+#include "..\Components\Rigidbody.h"
 
-
-
-class Bench : public GameObject
+class Box :
+	public GameObject
 {
-
 public:
-	Bench();
-	~Bench();
+	Box();
+	~Box();
 
 	void Update() override;
 	void Start() override;
 	void OnCollision(GameObject* g, glm::vec3 collPoint) override;
 
 private:
-
+	Rigidbody* rb;
 };
+

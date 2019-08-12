@@ -10,7 +10,7 @@ public:
 
 	void Update() override;
 	void Start() override;
-	void OnCollision(GameObject* g) override;
+	void OnCollision(GameObject* g, glm::vec3 collPoint) override;
 
 private:
 

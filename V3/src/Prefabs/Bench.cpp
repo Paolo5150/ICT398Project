@@ -40,7 +40,7 @@ void Bench::Start()
 						 // has been added.
 }
 
-void Bench::OnCollision(GameObject* g)
+void Bench::OnCollision(GameObject* g, glm::vec3 collPoint)
 {
 	Logger::LogInfo("Collided against", g->GetName());
 }

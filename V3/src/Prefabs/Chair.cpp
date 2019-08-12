@@ -39,7 +39,7 @@ void Chair::Start()
 						 // has been added.
 }
 
-void Chair::OnCollision(GameObject* g)
+void Chair::OnCollision(GameObject* g, glm::vec3 collPoint)
 {
 	Logger::LogInfo("Collided against", g->GetName());
 }

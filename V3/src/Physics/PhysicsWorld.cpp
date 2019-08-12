@@ -122,9 +122,9 @@ void PhysicsWorld::PerformCollisions(bool staticToo)
 						if (CollisionChecks::Collision(allNonStaticColliders[i], (*it)))
 						{			
 							//TODO: Store collision point for physics calculation
-							CollisionChecks::getCollisionPoint(allNonStaticColliders[i], (*it));
-							allNonStaticColliders[i]->collisionCallback((*it)->GetParent());				
-							(*it)->collisionCallback(allNonStaticColliders[i]->GetParent());
+							glm::vec3 pos = CollisionChecks::getCollisionPoint(allNonStaticColliders[i], (*it));
+							allNonStaticColliders[i]->collisionCallback((*it)->GetParent(), pos);
+							(*it)->collisionCallback(allNonStaticColliders[i]->GetParent(), pos);
 					
 						}				
 				}
@@ -134,7 +134,7 @@ void PhysicsWorld::PerformCollisions(bool staticToo)
 	}
 
 	if (staticToo)
-	PerformCollisions(staticQuadtree->root);
+		PerformCollisions(staticQuadtree->root);
 }
 
 glm::vec3 PhysicsWorld::gravity = glm::vec3(0, 0, 0);
@@ -168,7 +168,8 @@ void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
 							// Check that the colliders do not belong to the same GameObject
 							if ((*it)->GetParent() != (*it2)->GetParent())
 							{
-								(*it)->collisionCallback((*it2)->GetParent());
+								glm::vec3 pos = CollisionChecks::getCollisionPoint((*it), (*it2));
+								(*it)->collisionCallback((*it2)->GetParent(), pos);
 							}
 						}
 					}		

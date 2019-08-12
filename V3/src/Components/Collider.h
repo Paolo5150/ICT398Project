@@ -91,7 +91,7 @@ public:
 	/**
 	* @brief		Overridable function pointer invoked when collision occurs
 	*/
-	std::function<void(GameObject*)> collisionCallback;
+	std::function<void(GameObject*, glm::vec3)> collisionCallback;
 
 
 	/**

@@ -39,7 +39,7 @@ void Table::Start()
 						 // has been added.
 }
 
-void Table::OnCollision(GameObject* g)
+void Table::OnCollision(GameObject* g, glm::vec3 collPoint)
 {
 	Logger::LogInfo("Collided against", g->GetName());
 }

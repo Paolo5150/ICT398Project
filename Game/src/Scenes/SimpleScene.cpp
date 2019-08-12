@@ -6,6 +6,7 @@
 #include "Prefabs/Bench.h"
 #include "Prefabs/Chair.h"
 #include "Prefabs/Table.h"
+#include "Prefabs/Box.h"
 
 
 
@@ -62,6 +63,9 @@ void SimpleScene::Initialize() {
 	Table* table = new Table();
 	table->transform.SetPosition(0, 0, 0);
 
+	Box* box = new Box();
+	box->transform.SetPosition(0, 10, 0);
+
 	MainCamera* cam = new MainCamera();
 	cam->transform.SetPosition(0, 10, 50);
 	cam->transform.SetRotation(0, 180, 0);
@@ -80,6 +84,7 @@ void SimpleScene::Initialize() {
 	AddGameObject(pointLight);
 	AddGameObject(bench);
 	AddGameObject(chair);
+	AddGameObject(box);
 	AddGameObject(table);
 
 }
