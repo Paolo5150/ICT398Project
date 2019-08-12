@@ -2,6 +2,7 @@
 #include "Chair.h"
 #include "..\Utils\ContentManager.h"
 #include "..\Components\BoxCollider.h"
+#include "..\Components\Rigidbody.h"
 
 Chair::Chair() : GameObject("Chair")
 {
@@ -35,6 +36,10 @@ void Chair::Start()
 
 	LoadCollidersFromFile("Assets\\Colliders\\Chair.txt");
 
+	Rigidbody* rb = new Rigidbody();
+	rb->UseGravity(true);
+
+	AddComponent(rb);
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider
 						 // has been added.
 }
