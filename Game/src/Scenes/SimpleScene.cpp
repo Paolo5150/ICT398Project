@@ -97,6 +97,8 @@ void SimpleScene::Initialize() {
 	Chair* chair = new Chair();
 	chair->transform.SetPosition(30, 0, 0);
 
+	DiagSphere* s = new DiagSphere();
+
 	Table* table = new Table();
 	table->transform.SetPosition(0, 0, 0);
 
@@ -137,11 +139,14 @@ void SimpleScene::Start()
 	Input::SetCursorMode("disabled");
 	PhysicsWorld::Instance().InitializeQuadtree(0, 0, 5000, 5000);
 
+	glm::vec3 pos = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Bench")[0]->GetComponent<BoxCollider>("BoxCollider")->GetMaxPoint();
+	
+	SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("DiagSphere")[0]->transform.SetPosition(pos);
 }
 
 void SimpleScene::LogicUpdate()
 {
-	SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Bench")[0]->transform.Translate(0.05, 0, 0);
+	//SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Bench")[0]->transform.Translate(0.05, 0, 0);
 
 	if (Input::GetKeyDown(GLFW_KEY_ESCAPE))
 		EventDispatcher::Instance().DispatchEvent(new QuitRequestEvent());
