@@ -7,6 +7,8 @@
 #include "Prefabs/Chair.h"
 #include "Prefabs/Table.h"
 #include "Prefabs/Terrain.h"
+#include "Prefabs/DiagSphere.h"
+
 
 
 SimpleScene::SimpleScene() : Scene("SimpleScene")
@@ -123,6 +125,7 @@ void SimpleScene::Initialize() {
 	AddGameObject(table);
 	AddGameObject(terrain);
 	AddGameObject(g);
+	AddGameObject(s);
 
 
 
