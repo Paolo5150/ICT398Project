@@ -7,9 +7,7 @@
 #include "Prefabs/Chair.h"
 #include "Prefabs/Table.h"
 #include "Prefabs/Terrain.h"
-#include "Prefabs/DiagSphere.h"
-
-
+#include "Diag/DiagRenderer.h"
 
 SimpleScene::SimpleScene() : Scene("SimpleScene")
 {
@@ -97,8 +95,6 @@ void SimpleScene::Initialize() {
 	Chair* chair = new Chair();
 	chair->transform.SetPosition(30, 0, 0);
 
-	DiagSphere* s = new DiagSphere();
-
 	Table* table = new Table();
 	table->transform.SetPosition(0, 0, 0);
 
@@ -127,10 +123,6 @@ void SimpleScene::Initialize() {
 	AddGameObject(table);
 	AddGameObject(terrain);
 	AddGameObject(g);
-	AddGameObject(s);
-
-
-
 }
 
 void SimpleScene::Start()
@@ -140,8 +132,7 @@ void SimpleScene::Start()
 	PhysicsWorld::Instance().InitializeQuadtree(0, 0, 5000, 5000);
 
 	glm::vec3 pos = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Bench")[0]->GetComponent<BoxCollider>("BoxCollider")->GetMaxPoint();
-	
-	SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("DiagSphere")[0]->transform.SetPosition(pos);
+		
 	SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Bench")[0]->GetComponent<BoxCollider>("BoxCollider")->GetMassMomentIntertia();
 }
 
@@ -155,6 +146,8 @@ void SimpleScene::LogicUpdate()
 	if (Input::GetKeyDown(GLFW_KEY_O))
 		SceneManager::Instance().LoadNewScene("OtherScene");
 	
+	DiagRenderer::Instance().RenderSphere(glm::vec3(0, 20, 0), 20,glm::vec3(1,0,0));
+
 	Scene::LogicUpdate(); //Must be last statement!
 }
 

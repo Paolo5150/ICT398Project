@@ -201,7 +201,10 @@
     <ClCompile Include="src\Rendering\GridMesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Prefabs\DiagSphere.cpp">
+    <ClCompile Include="src\Diag\DiagPrefab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Diag\DiagRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -473,7 +476,13 @@
     <ClInclude Include="src\Rendering\GridMesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Prefabs\DiagSphere.h">
+    <ClInclude Include="src\Diag\DiagPrefab.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Diag\DiagSphere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Diag\DiagRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
