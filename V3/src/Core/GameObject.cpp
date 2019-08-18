@@ -172,6 +172,7 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 			bc->transform.SetPosition(t[i].p);
 			bc->transform.SetScale(t[i].s);
 			bc->transform.SetRotation(t[i].r);
+			bc->SetMass(t[i].mass);
 			bc->SetActive(t[i].isActive);
 			AddComponent(bc);
 		}
@@ -182,6 +183,7 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 			sc->transform.SetPosition(t[i].p);
 			sc->transform.SetScale(t[i].s.x, t[i].s.x, t[i].s.x);
 			sc->SetActive(t[i].isActive);
+			sc->SetMass(t[i].mass);
 
 			AddComponent(sc);
 		}

@@ -53,6 +53,6 @@ public:
 	glm::vec3 GetMinPoint();
 	glm::vec3 GetMaxPoint();
 
-
+	glm::vec3 GetMassMomentIntertia() override;
 
 };

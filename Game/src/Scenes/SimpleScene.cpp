@@ -142,6 +142,7 @@ void SimpleScene::Start()
 	glm::vec3 pos = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Bench")[0]->GetComponent<BoxCollider>("BoxCollider")->GetMaxPoint();
 	
 	SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("DiagSphere")[0]->transform.SetPosition(pos);
+	SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Bench")[0]->GetComponent<BoxCollider>("BoxCollider")->GetMassMomentIntertia();
 }
 
 void SimpleScene::LogicUpdate()

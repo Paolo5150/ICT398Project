@@ -40,3 +40,31 @@ glm::vec3 BoxCollider::GetMaxPoint()
 }
 
 
+glm::vec3 BoxCollider::GetMassMomentIntertia()
+{
+	glm::vec3 p;
+
+	glm::vec3 min = GetMinPoint();
+	glm::vec3 max = GetMaxPoint();
+
+	float a = abs(max.y - min.y);
+	float b = abs(max.x - min.x);
+	float l = abs(max.z - min.z);
+	
+	p.x = (1 / 12.0f) * mass * (a * a + l * l);
+	p.y = (1 / 12.0f) * mass * (b * b + l * l);
+	p.z = (1 / 12.0f) * mass * (a * a + b * b);
+
+	Logger::LogInfo("Mass: ", mass);
+
+	Logger::LogInfo("Width (b): ", b);
+	Logger::LogInfo("Height: (a)", a);
+	Logger::LogInfo("Length: (l)", l);
+
+
+	Logger::LogInfo("MOF x:", p.x);
+	Logger::LogInfo("MOF y:", p.y);
+
+
+	return p;
+}
