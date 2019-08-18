@@ -207,6 +207,12 @@
     <ClCompile Include="src\Diag\DiagRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Prefabs\LandfillBin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Prefabs\RecycleBin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h">
@@ -483,6 +489,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Diag\DiagRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Prefabs\LandfillBin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Prefabs\RecycleBin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

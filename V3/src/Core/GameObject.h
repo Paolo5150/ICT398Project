@@ -246,6 +246,18 @@ public:
 	GameObject* GetChild(std::string childName) const;
 
 	/**
+* @brief		Retrieves a child of the GameObject
+*
+* @pre			The GameObject must exist
+* @post			A child of the GameObject will be retrieved, or a nullptr if there is no child
+*
+* @param		childName		Name of child to search for
+*
+* @return		A child of the GameObject, or nullptr if it has no child with that name
+*/
+	GameObject* GetChild(unsigned index) const;
+
+	/**
 	* @brief		Retrieves a component in the GameObject
 	*
 	* @pre			The GameObject must exist

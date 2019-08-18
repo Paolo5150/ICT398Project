@@ -317,6 +317,20 @@ void GameObject::RemoveComponentInChild(std::string childName, std::string compo
 	}
 }
 
+GameObject* GameObject::GetChild(unsigned index) const
+{
+	std::list<GameObject*>::const_iterator it = _children.begin();
+	unsigned c = 0;
+
+	for (; it != _children.end(); it++)
+	{
+		if (c == index)
+			return (*it);
+		else
+			c++;
+	}	
+}
+
 GameObject* GameObject::GetChild(std::string childName) const
 {
 	std::list<GameObject*>::const_iterator it;
