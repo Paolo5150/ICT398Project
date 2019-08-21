@@ -19,28 +19,52 @@ void BoxCollider::Update()
 }
 
 
-std::vector<glm::vec3> BoxCollider::GetWorldPoints()
+glm::vec3 BoxCollider::GetMinPoint()
 {
-	glm::vec3 p0 = transform.GetGlobalPosition() + glm::vec3(transform.GetGlobalScale().x / 2, transform.GetGlobalScale().y / 2, transform.GetGlobalScale().z / 2);
-	glm::vec3 p1 = transform.GetGlobalPosition() + glm::vec3(transform.GetGlobalScale().x / 2, transform.GetGlobalScale().y / 2, -transform.GetGlobalScale().z / 2);
-	glm::vec3 p2 = transform.GetGlobalPosition() + glm::vec3(transform.GetGlobalScale().x / 2, -transform.GetGlobalScale().y / 2, transform.GetGlobalScale().z / 2);
-	glm::vec3 p3 = transform.GetGlobalPosition() + glm::vec3(transform.GetGlobalScale().x / 2, -transform.GetGlobalScale().y / 2, -transform.GetGlobalScale().z / 2);
-	glm::vec3 p4 = transform.GetGlobalPosition() + glm::vec3(-transform.GetGlobalScale().x / 2, transform.GetGlobalScale().y / 2, transform.GetGlobalScale().z / 2);
-	glm::vec3 p5 = transform.GetGlobalPosition() + glm::vec3(-transform.GetGlobalScale().x / 2, transform.GetGlobalScale().y / 2, -transform.GetGlobalScale().z / 2);
-	glm::vec3 p6 = transform.GetGlobalPosition() + glm::vec3(-transform.GetGlobalScale().x / 2, -transform.GetGlobalScale().y / 2, transform.GetGlobalScale().z / 2);
-	glm::vec3 p7 = transform.GetGlobalPosition() + glm::vec3(-transform.GetGlobalScale().x / 2, -transform.GetGlobalScale().y / 2, -transform.GetGlobalScale().z / 2);
 
-	std::vector<glm::vec3> r;
-	r.push_back(p0);
-	r.push_back(p1);
-	r.push_back(p2);
-	r.push_back(p3);
-	r.push_back(p4);
-	r.push_back(p5);
-	r.push_back(p6);
-	r.push_back(p7);
-	return r;
+	glm::vec3 p = transform.GetGlobalPosition() - (transform.GetLocalRight() * transform.GetGlobalScale().x)
+		- (transform.GetLocalUp() * transform.GetGlobalScale().y)
+		- (transform.GetLocalFront() * transform.GetGlobalScale().z);
 
-
+	return p;
 }
 
+glm::vec3 BoxCollider::GetMaxPoint()
+{
+
+	glm::vec3 p = transform.GetGlobalPosition() + (transform.GetLocalRight() * transform.GetGlobalScale().x)
+		+ (transform.GetLocalUp() * transform.GetGlobalScale().y)
+		+ (transform.GetLocalFront() * transform.GetGlobalScale().z);
+
+	return p;
+}
+
+
+glm::vec3 BoxCollider::GetMassMomentIntertia()
+{
+	glm::vec3 p;
+
+	glm::vec3 min = GetMinPoint();
+	glm::vec3 max = GetMaxPoint();
+
+	float a = abs(max.y - min.y);
+	float b = abs(max.x - min.x);
+	float l = abs(max.z - min.z);
+	
+	p.x = (1 / 12.0f) * mass * (a * a + l * l);
+	p.y = (1 / 12.0f) * mass * (b * b + l * l);
+	p.z = (1 / 12.0f) * mass * (a * a + b * b);
+
+	Logger::LogInfo("Mass: ", mass);
+
+	Logger::LogInfo("Width (b): ", b);
+	Logger::LogInfo("Height: (a)", a);
+	Logger::LogInfo("Length: (l)", l);
+
+
+	Logger::LogInfo("MOF x:", p.x);
+	Logger::LogInfo("MOF y:", p.y);
+
+
+	return p;
+}

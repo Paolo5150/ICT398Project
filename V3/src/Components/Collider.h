@@ -159,7 +159,13 @@ public:
 	*/
 	unsigned GetCollideAgainstLayer() { return collideAgainstLayer; }
 
+	void SetMass(float m) { mass = glm::abs(m); }
+	float GetMass() { return mass; }
+	virtual glm::vec3 GetMassMomentIntertia() = 0;
+
+
 protected:
+	float mass;
 	/**
 	* @brief		The collision layer
 	*/

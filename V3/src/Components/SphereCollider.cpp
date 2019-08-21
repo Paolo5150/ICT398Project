@@ -18,5 +18,8 @@ void SphereCollider::Update()
 {
 	Collider::Update();
 }
-
+glm::vec3 SphereCollider::GetMassMomentIntertia()
+{
+	return glm::vec3();
+}
 

@@ -48,5 +48,6 @@ public:
 	* @brief		Initialize collider
 	*/
 	void Initialize(){ transform.SetIgnoreParentRotation(1); };
+	glm::vec3 GetMassMomentIntertia() override;
 
 };

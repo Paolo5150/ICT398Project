@@ -100,6 +100,7 @@ std::vector<ColliderInfo> FileUtils::ReadColliderFile(std::string absolutePathTo
 	f = fopen(absolutePathToFile.c_str(), "r");
 
 	glm::vec3 p, s, r;
+	float mass;
 	int rend;
 	int isActive;
 
@@ -131,6 +132,10 @@ std::vector<ColliderInfo> FileUtils::ReadColliderFile(std::string absolutePathTo
 					{
 						fscanf(f, "%f %f %f", &r.x, &r.y, &r.z);
 					}
+					else if (c == 'M')
+					{
+						fscanf(f, "%f", &mass);
+					}
 					else if (c == 'D')
 					{
 						fscanf(f, "%d", &rend);
@@ -143,7 +148,7 @@ std::vector<ColliderInfo> FileUtils::ReadColliderFile(std::string absolutePathTo
 					fgets(buf, 512, f);
 				}		
 
-				trans.emplace_back("BC",p, s, r,rend,isActive);
+				trans.emplace_back("BC",p, s, r,mass,rend,isActive);
 			}	
 			else 			// If sphere collider
 				if (buf[0] == 'S' && buf[1] == 'C')
@@ -161,6 +166,10 @@ std::vector<ColliderInfo> FileUtils::ReadColliderFile(std::string absolutePathTo
 						{
 							fscanf(f, "%f %f %f", &s.x, &s.y, &s.z);
 						}
+						else if (c == 'M')
+						{
+							fscanf(f, "%f", &mass);
+						}
 						else if (c == 'D')
 						{
 							fscanf(f, "%d", &rend);
@@ -173,7 +182,7 @@ std::vector<ColliderInfo> FileUtils::ReadColliderFile(std::string absolutePathTo
 						fgets(buf, 512, f);
 					}
 
-					trans.emplace_back("SC", p, s, rend,isActive);
+					trans.emplace_back("SC", p, s,mass, rend,isActive);
 				}
 		}
 	}

@@ -9,6 +9,7 @@ Collider::Collider(std::string name) : transform(Transform(GetParent())), Compon
 	collisionLayer = CollisionLayers::DEFAULT;
 	collideAgainstLayer = CollisionLayers::DEFAULT;
 	collisionCallback = nullptr;
+	mass = 1;
 }
 
 
@@ -53,8 +54,6 @@ void Collider::OnAttach(GameObject* go)
 	});
 
 	Initialize();
-	
-	
 	
 }
 
