@@ -159,12 +159,14 @@ public:
 	*/
 	unsigned GetCollideAgainstLayer() { return collideAgainstLayer; }
 
-	void SetMass(float m) { mass = glm::abs(m); }
+	void SetMass(float m) { mass = glm::abs(m); CalculateMomentOfIntertia(); }
 	float GetMass() { return mass; }
-	virtual glm::vec3 GetMassMomentIntertia() = 0;
 
+	glm::vec3& GetMomentOfIntertia() { return momentOfIntertia; };
 
 protected:
+
+	virtual void CalculateMomentOfIntertia() = 0;
 	float mass;
 	/**
 	* @brief		The collision layer
@@ -175,4 +177,6 @@ protected:
 	* @brief		The collision layer the collider can collide against
 	*/
 	int collideAgainstLayer;
+
+	glm::vec3 momentOfIntertia;
 };

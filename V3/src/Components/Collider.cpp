@@ -30,6 +30,8 @@ void Collider::Start()
 	transform.UpdateHierarchy();
 	if(_parent->GetIsStatic())
 		PhysicsWorld::Instance().AddCollider(this);
+
+	CalculateMomentOfIntertia();
 }
 
 void Collider::OnAttach(GameObject* go)

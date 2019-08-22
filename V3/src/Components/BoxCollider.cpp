@@ -40,9 +40,8 @@ glm::vec3 BoxCollider::GetMaxPoint()
 }
 
 
-glm::vec3 BoxCollider::GetMassMomentIntertia()
+void BoxCollider::CalculateMomentOfIntertia()
 {
-	glm::vec3 p;
 
 	glm::vec3 min = GetMinPoint();
 	glm::vec3 max = GetMaxPoint();
@@ -51,20 +50,10 @@ glm::vec3 BoxCollider::GetMassMomentIntertia()
 	float b = abs(max.x - min.x);
 	float l = abs(max.z - min.z);
 	
-	p.x = (1 / 12.0f) * mass * (a * a + l * l);
-	p.y = (1 / 12.0f) * mass * (b * b + l * l);
-	p.z = (1 / 12.0f) * mass * (a * a + b * b);
+	momentOfIntertia.x = (1 / 12.0f) * mass * (a * a + l * l);
+	momentOfIntertia.y = (1 / 12.0f) * mass * (b * b + l * l);
+	momentOfIntertia.z = (1 / 12.0f) * mass * (a * a + b * b);
 
-	Logger::LogInfo("Mass: ", mass);
+	Logger::LogInfo("Intertia:", Maths::Vec3ToString(momentOfIntertia));
 
-	Logger::LogInfo("Width (b): ", b);
-	Logger::LogInfo("Height: (a)", a);
-	Logger::LogInfo("Length: (l)", l);
-
-
-	Logger::LogInfo("MOF x:", p.x);
-	Logger::LogInfo("MOF y:", p.y);
-
-
-	return p;
 }
