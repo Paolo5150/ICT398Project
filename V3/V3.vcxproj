@@ -258,6 +258,7 @@
     <ClInclude Include="src\Utils\AssimpWrapper.h" />
     <ClInclude Include="src\Utils\FileUtils.h" />
     <ClInclude Include="src\Utils\Maths.h" />
+    <ClInclude Include="src\Utils\PrefabFactory.h" />
     <ClInclude Include="src\Utils\Quadtree.h" />
     <ClInclude Include="src\Utils\UBOLibrary.h" />
   </ItemGroup>

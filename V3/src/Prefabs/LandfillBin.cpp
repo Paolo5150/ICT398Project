@@ -58,5 +58,5 @@ void LandfillBin::Start()
 
 void LandfillBin::OnCollision(GameObject* g)
 {
-	Logger::LogInfo("Collided against", g->GetName());
+	//Logger::LogInfo("Collided against", g->GetName());
 }

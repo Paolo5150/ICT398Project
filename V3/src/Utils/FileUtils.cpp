@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include  <string.h>
-#include "..\Prefabs\Bench.h"
+#include "PrefabFactory.h"
 
 
 bool FileUtils::IsFileThere(std::string filePath)
@@ -252,19 +252,19 @@ std::vector<GameObject*> FileUtils::ReadSceneFile(std::string absolutePathToFile
 				fgetc(f); //Get rid of (
 				fscanf(f, "%f,%f,%f", &r.x, &r.y, &r.z);
 				fgetc(f); //Get rid of )
+				break;
 			}
 
 			c = fgetc(f);
-		}
-	
+		}	
 
-		if (strcmp(prefabName,"Bench") == 0)
+		GameObject* b = PrefabFactory::GetPrefabByName(prefabName);
+		if(b != nullptr)
 		{
-			Bench* b = new Bench();
-			b->transform.SetPosition(p);
-			b->transform.SetRotation(r);
-			objs.push_back(b);
-
+		
+		b->transform.SetPosition(p);
+		b->transform.SetRotation(r);
+		objs.push_back(b);	
 		}
 	}
 
