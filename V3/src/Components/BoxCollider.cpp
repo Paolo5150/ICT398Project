@@ -54,6 +54,6 @@ void BoxCollider::CalculateMomentOfIntertia()
 	momentOfIntertia.y = (1 / 12.0f) * mass * (b * b + l * l);
 	momentOfIntertia.z = (1 / 12.0f) * mass * (a * a + b * b);
 
-	Logger::LogInfo("Intertia:", Maths::Vec3ToString(momentOfIntertia));
+	//Logger::LogInfo("Intertia:", Maths::Vec3ToString(momentOfIntertia));
 
 }

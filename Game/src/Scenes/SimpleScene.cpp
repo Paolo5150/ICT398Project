@@ -43,9 +43,7 @@ void SimpleScene::Initialize() {
 
 	skybox = std::unique_ptr<Skybox>(new Skybox(ContentManager::Instance().GetAsset<CubeMap>("SunSet")));
 
-
-	Bench* bench = new Bench();
-	//bench->transform.SetPosition(-30, -10, 0);
+	std::vector<GameObject*> objs = FileUtils::ReadSceneFile("Assets\\SceneFiles\\MainScene.txt");	
 
 	MainCamera* cam = new MainCamera();
 	cam->transform.SetPosition(0, 10, 50);
@@ -63,7 +61,9 @@ void SimpleScene::Initialize() {
 	AddGameObject(cam);
 	AddGameObject(dirLight);
 	AddGameObject(pointLight);
-	AddGameObject(bench);
+
+	for (int i = 0; i < objs.size(); i++)
+		AddGameObject(objs[i]);
 
 
 }
@@ -78,7 +78,7 @@ void SimpleScene::Start()
 
 void SimpleScene::LogicUpdate()
 {
-	glm::vec3 inertia = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Bench")[0]->GetComponent<BoxCollider>("BoxCollider")->GetMomentOfIntertia();
+	//glm::vec3 inertia = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Bench")[0]->GetComponent<BoxCollider>("BoxCollider")->GetMomentOfIntertia();
 
 	if (Input::GetKeyDown(GLFW_KEY_ESCAPE))
 		EventDispatcher::Instance().DispatchEvent(new QuitRequestEvent());
@@ -86,7 +86,7 @@ void SimpleScene::LogicUpdate()
 	if (Input::GetKeyDown(GLFW_KEY_O))
 		SceneManager::Instance().LoadNewScene("OtherScene");
 	
-	DiagRenderer::Instance().RenderSphere(inertia, 0.5,glm::vec3(1,0,0));
+	//DiagRenderer::Instance().RenderSphere(inertia, 0.5,glm::vec3(1,0,0));
 
 	Scene::LogicUpdate(); //Must be last statement!
 }

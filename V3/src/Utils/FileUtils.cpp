@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include  <string.h>
+#include "..\Prefabs\Bench.h"
 
 
 bool FileUtils::IsFileThere(std::string filePath)
@@ -95,7 +96,7 @@ std::vector<ColliderInfo> FileUtils::ReadColliderFile(std::string absolutePathTo
 		Logger::LogError("File", absolutePathToFile, "not found!!");
 		return trans;
 	}
-	char buf[100];
+	char buf[512];
 	FILE* f;
 	f = fopen(absolutePathToFile.c_str(), "r");
 
@@ -109,8 +110,10 @@ std::vector<ColliderInfo> FileUtils::ReadColliderFile(std::string absolutePathTo
 	{
 		while (!feof(f))
 		{
-			fgets(buf, 100, f);
+			fgets(buf, 512, f);
 			//Logger::LogInfo(buf[0],buf[1]);
+
+			if (buf[0] == '#') continue;
 
 			// If box collider
 			if (buf[0] == 'B' && buf[1]=='C')
@@ -189,3 +192,83 @@ std::vector<ColliderInfo> FileUtils::ReadColliderFile(std::string absolutePathTo
 
 	return trans;
 }
+
+
+
+std::vector<GameObject*> FileUtils::ReadSceneFile(std::string absolutePathToFile)
+{
+	std::vector<GameObject*> objs;
+
+	if (!IsFileThere(absolutePathToFile))
+	{
+		Logger::LogError("File", absolutePathToFile, "not found!!");
+		return objs;
+	}
+	char buf[512];
+	FILE* f;
+	f = fopen(absolutePathToFile.c_str(), "r");
+
+	while (!feof(f))
+	{
+		char c = fgetc(f);
+
+		char prefabName[100] = "";
+
+		if (c == '#' || c == '\n')
+		{
+			if(c == '#')
+				fgets(buf, 512, f);
+
+			continue;
+		}
+
+		// Get prefab name
+		for (int j = 0; j < 100; j++)
+			{
+				if (c != ' ')
+					prefabName[j] = c;
+				else
+				{
+					prefabName[j] = '\0';
+					break;
+				}
+				c = fgetc(f);
+			}
+
+		glm::vec3 p, r;
+		
+
+		// Get prefab name
+		for (int j = 0; j < 300; j++)
+		{
+			if (c == 'P')
+			{
+				fgetc(f); //Get rid of (
+				fscanf(f, "%f,%f,%f", &p.x, &p.y, &p.z);
+				fgetc(f); //Get rid of )
+			}
+			else if (c == 'R')
+			{
+				fgetc(f); //Get rid of (
+				fscanf(f, "%f,%f,%f", &r.x, &r.y, &r.z);
+				fgetc(f); //Get rid of )
+			}
+
+			c = fgetc(f);
+		}
+	
+
+		if (strcmp(prefabName,"Bench") == 0)
+		{
+			Bench* b = new Bench();
+			b->transform.SetPosition(p);
+			b->transform.SetRotation(r);
+			objs.push_back(b);
+
+		}
+	}
+
+	return objs;
+
+}
+

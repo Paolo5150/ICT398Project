@@ -1,0 +1,4 @@
+# Main Scene
+# Use the format "PrefabName P(X,Y,Z) R(X,Y,Z)"
+
+Bench P(0,0,0) R(40,50,60)
