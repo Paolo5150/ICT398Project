@@ -259,13 +259,15 @@ std::vector<GameObject*> FileUtils::ReadSceneFile(std::string absolutePathToFile
 		}	
 
 		GameObject* b = PrefabFactory::GetPrefabByName(prefabName);
-		if(b != nullptr)
+		if (b != nullptr)
 		{
-		
-		b->transform.SetPosition(p);
-		b->transform.SetRotation(r);
-		objs.push_back(b);	
+
+			b->transform.SetPosition(p);
+			b->transform.SetRotation(r);
+			objs.push_back(b);
 		}
+		else
+			Logger::LogError("Wrong prefab name in file", absolutePathToFile,": ",prefabName);
 	}
 
 	return objs;

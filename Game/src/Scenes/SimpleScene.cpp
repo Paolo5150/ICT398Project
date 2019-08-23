@@ -82,7 +82,7 @@ void SimpleScene::Initialize() {
 
 	PointLight* pointLight = new PointLight();
 
-	pointLight->SetIntensity(2);
+	pointLight->SetIntensity(20);
 	pointLight->transform.SetPosition(20, 3, 20);
 	
 	AddGameObject(cam);
