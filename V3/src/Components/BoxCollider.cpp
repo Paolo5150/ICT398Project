@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "BoxCollider.h"
 #include "..\Utils\ContentManager.h"
+#include "..\Diag\DiagRenderer.h"
 
 void BoxCollider::InitializeMeshRenderer()
 {
@@ -16,6 +17,21 @@ void BoxCollider::InitializeMeshRenderer()
 void BoxCollider::Update()
 {
 	Collider::Update();
+
+
+	/*float w = abs(GetMaxPoint().x - GetMinPoint().x);
+	Logger::LogInfo("Width flat", w);*/
+}
+
+void BoxCollider::CalculateCubicDimensions()
+{
+	transform.UpdateHierarchy();
+	glm::vec3 min = GetMinPoint();
+	glm::vec3 max = GetMaxPoint();
+
+	this->cubicDimension.x = abs(max.x - min.x);
+	this->cubicDimension.y = abs(max.y - min.y);
+	this->cubicDimension.z = abs(max.z - min.z);
 }
 
 
@@ -26,6 +42,9 @@ glm::vec3 BoxCollider::GetMinPoint()
 		- (transform.GetLocalUp() * transform.GetGlobalScale().y)
 		- (transform.GetLocalFront() * transform.GetGlobalScale().z);
 
+	//DiagRenderer::Instance().RenderSphere(p, 0.5);
+
+
 	return p;
 }
 
@@ -35,6 +54,7 @@ glm::vec3 BoxCollider::GetMaxPoint()
 	glm::vec3 p = transform.GetGlobalPosition() + (transform.GetLocalRight() * transform.GetGlobalScale().x)
 		+ (transform.GetLocalUp() * transform.GetGlobalScale().y)
 		+ (transform.GetLocalFront() * transform.GetGlobalScale().z);
+	//DiagRenderer::Instance().RenderSphere(p, 0.5);
 
 	return p;
 }

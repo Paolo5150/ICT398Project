@@ -11,7 +11,7 @@ Collider::Collider(std::string name) : transform(Transform(GetParent())), Compon
 	OnCollisionEnterCallback = nullptr;
 	OnCollisionStayCallback = nullptr;
 	OnCollisionExitCallback = nullptr;
-
+	cubicDimension = glm::vec3();
 
 	mass = 1;
 }
@@ -36,6 +36,7 @@ void Collider::Start()
 		PhysicsWorld::Instance().AddCollider(this);
 
 	CalculateMomentOfIntertia();
+	CalculateCubicDimensions();
 }
 
 void Collider::OnAttach(GameObject* go)

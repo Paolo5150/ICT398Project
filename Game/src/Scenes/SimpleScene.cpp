@@ -113,7 +113,17 @@ void SimpleScene::LogicUpdate()
 
 	if (Input::GetKeyDown(GLFW_KEY_O))
 		SceneManager::Instance().LoadNewScene("OtherScene");
+
+	//int n = PhysicsWorld::Instance().nonStaticQuadtree->GameObjectInQuadrant(GetGameobjectsByName("LandfillBin")[0]->transform.GetPosition().x, GetGameobjectsByName("LandfillBin")[0]->transform.GetPosition().z);
 	
+	/*static bool done = 0;
+
+	if (!done)
+	{
+		PhysicsWorld::Instance().FillQuadtree(1); // Fill static quadtree
+		done = 1;
+	}*/
+	//Logger::LogInfo("Objects:", n);
 	Scene::LogicUpdate(); //Must be last statement!
 }
 

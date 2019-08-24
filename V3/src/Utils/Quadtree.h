@@ -3,6 +3,7 @@
 #include <list>
 #include <unordered_set>
 #include <set>
+#include <algorithm>
 
 /**
 * @class NodeElement
@@ -545,9 +546,13 @@ void QuadTree<T>::AddElement(T go, float posX, float posZ, float sizeX, float si
 		}
 		else
 		{
-
 			elementsInfo[go] = NodeElementInfo(posX, posZ, sizeX, sizeZ);
-			node->elements.insert(go);
+
+			if (std::find(node->elements.begin(), node->elements.end(), go) == node->elements.end())
+			{
+				//Logger::LogInfo("Added element",node->centerX,node->centerY);
+				node->elements.insert(go);
+			}
 		}
 	}
 }

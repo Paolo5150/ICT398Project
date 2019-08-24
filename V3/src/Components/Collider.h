@@ -174,6 +174,10 @@ public:
 
 	glm::vec3& GetMomentOfIntertia() { return momentOfIntertia; };
 
+	virtual void CalculateCubicDimensions() { cubicDimension = glm::vec3(); };
+	glm::vec3 cubicDimension;
+
+	
 	std::list<Collider*> collidersInCollision;
 protected:
 
@@ -190,5 +194,6 @@ protected:
 	int collideAgainstLayer;
 
 	glm::vec3 momentOfIntertia;
+
 
 };

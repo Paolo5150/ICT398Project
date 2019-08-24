@@ -51,11 +51,11 @@ void PhysicsWorld::FillQuadtree(bool staticToo)
 {
 	nonStaticQuadtree->ClearNodes();
 
-
 	for (unsigned i = 0; i < allNonStaticColliders.size(); i++)
 	{
+		//Logger::LogInfo("Adding", allNonStaticColliders[i]->GetParent()->name);
 		nonStaticQuadtree->AddElement(allNonStaticColliders[i], allNonStaticColliders[i]->transform.GetGlobalPosition().x, allNonStaticColliders[i]->transform.GetGlobalPosition().z,
-			allNonStaticColliders[i]->transform.GetGlobalScale().x, allNonStaticColliders[i]->transform.GetGlobalScale().z);
+			allNonStaticColliders[i]->cubicDimension.x, allNonStaticColliders[i]->cubicDimension.z);
 	}	
 
 	if (staticToo)
@@ -65,7 +65,7 @@ void PhysicsWorld::FillQuadtree(bool staticToo)
 		for (unsigned i = 0; i < allStaticColliders.size(); i++)
 		{
 			staticQuadtree->AddElement(allStaticColliders[i], allStaticColliders[i]->transform.GetGlobalPosition().x, allStaticColliders[i]->transform.GetGlobalPosition().z,
-				allStaticColliders[i]->transform.GetGlobalScale().x, allStaticColliders[i]->transform.GetGlobalScale().z);
+				allStaticColliders[i]->cubicDimension.x, allStaticColliders[i]->cubicDimension.z);
 		}
 
 	}
@@ -96,11 +96,15 @@ void PhysicsWorld::AddCollider(Collider* rb)
 
 void PhysicsWorld::Update()
 {
+
 	if (nonStaticQuadtree && staticQuadtree)
 	{
 		collidersCollisionMapPerFrame.clear(); // Clear collision map each frame!
+
 		FillQuadtree(0);
+
 		PerformCollisions(false);
+
 		allNonStaticColliders.clear();
 	}
 
@@ -135,7 +139,7 @@ bool PhysicsWorld::WereCollidingThisFrame(Collider* c1, Collider* c2)
 
 void PhysicsWorld::PerformCollisions(bool staticToo)
 {
-	Logger::LogWarning("STARTING COLLISION UPDATE");
+	//Logger::LogWarning("STARTING COLLISION UPDATE");
 
 	// Collision between non static vs non static
 	PerformCollisions(nonStaticQuadtree->root);
@@ -147,8 +151,6 @@ void PhysicsWorld::PerformCollisions(bool staticToo)
 		
 		for (auto it = staticCols.begin(); it != staticCols.end(); it++)
 		{
-			if (WereCollidingThisFrame(*it, allNonStaticColliders[i])) continue;
-
 			if (allNonStaticColliders[i]->GetCollideAgainstLayer() & (*it)->GetCollisionLayer() ||
 				(*it)->GetCollideAgainstLayer() & allNonStaticColliders[i]->GetCollisionLayer())
 			{
@@ -164,8 +166,7 @@ void PhysicsWorld::PerformCollisions(bool staticToo)
 	if (staticToo)
 		PerformCollisions(staticQuadtree->root);
 
-	Logger::LogWarning("ENDING COLLISION UPDATE");
-
+	//Logger::LogWarning("ENDING COLLISION UPDATE");
 }
 
 glm::vec3 PhysicsWorld::gravity = glm::vec3(0, -9.8, 0);
@@ -269,6 +270,7 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 
 	collidersCollisionMapPerFrame[it].push_back(it2);
 	collidersCollisionMapPerFrame[it2].push_back(it);
+
 	if (CollisionChecks::Collision((it), (it2)))
 	{
 		// Check if colliders were colliding

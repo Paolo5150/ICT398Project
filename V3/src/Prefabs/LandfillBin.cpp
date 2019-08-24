@@ -62,7 +62,7 @@ void LandfillBin::OnCollisionEnter(Collider* g)
 }
 void LandfillBin::OnCollisionStay(Collider* g)
 {
-	Logger::LogInfo("LandfillBin STAY collision with", g->GetParent()->name);
+	//Logger::LogInfo("LandfillBin STAY collision with", g->GetParent()->name);
 }
 
 void LandfillBin::OnCollisionExit(Collider* g)

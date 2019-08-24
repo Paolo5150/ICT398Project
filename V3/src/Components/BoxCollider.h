@@ -52,6 +52,7 @@ public:
 
 	glm::vec3 GetMinPoint();
 	glm::vec3 GetMaxPoint();
+	void CalculateCubicDimensions() override;
 
 	virtual void CalculateMomentOfIntertia() override;
 
