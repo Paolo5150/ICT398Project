@@ -9,4 +9,4 @@
 #Bench P(-50,10,0) R(40,0,0)
 LandfillBin P(-12,0,0) R(0,0,0)
 RecycleBin P(4.0,0,0) R(0,0,0)
-Chair P(1.2,0,0) R(0,0,0)
+Chair P(0.2,0,0) R(0,0,0)

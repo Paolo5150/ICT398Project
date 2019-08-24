@@ -101,6 +101,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>LIBCMTD.lib</IgnoreSpecificDefaultLibraries>
+      <AssemblyDebug>true</AssemblyDebug>
     </Link>
     <PostBuildEvent>
       <Command>XCOPY "$(ProjectDir)Assets" "$(SolutionDir)bin\$(ProjectName)\$(Configuration)\Assets\" /S /Y</Command>
@@ -141,6 +142,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>LIBCMT.lib</IgnoreSpecificDefaultLibraries>
+      <AssemblyDebug>true</AssemblyDebug>
     </Link>
     <PostBuildEvent>
       <Command>XCOPY "$(ProjectDir)Assets" "$(SolutionDir)bin\$(ProjectName)\$(Configuration)\Assets\" /S /Y</Command>
