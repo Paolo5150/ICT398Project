@@ -6,7 +6,7 @@
 
 Chair::Chair() : GameObject("Chair")
 {
-	//SetIsStatic(false);
+	SetIsStatic(1);
 	ContentManager::Instance().GetAsset<Model>("Chair")->PopulateGameObject(this);
 	transform.SetScale(1.5);
 	Material m;
@@ -57,7 +57,7 @@ void Chair::OnCollisionExit(Collider* g)
 }
 void Chair::OnCollisionStay(Collider* g)
 {
-	//Logger::LogInfo("Collided against", g->GetName());
+	Logger::LogInfo("CHAIR Collided STAY against", g->GetName());
 
 }
 

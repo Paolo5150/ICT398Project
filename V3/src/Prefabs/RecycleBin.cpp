@@ -6,7 +6,7 @@
 
 RecycleBin::RecycleBin() : GameObject("RecycleBin")
 {
-	SetIsStatic(false);
+	SetIsStatic(1);
 	ContentManager::Instance().GetAsset<Model>("RecycleBin")->PopulateGameObject(this);
 	transform.SetScale(2);
 

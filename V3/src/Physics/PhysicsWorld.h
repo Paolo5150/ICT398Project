@@ -112,17 +112,17 @@ private:
 	*/
 	void PerformCollisions(QuadNode<Collider*>* node);
 
-	std::map<Collider*, std::vector<Collider*>> collisionMapPerFrame;
+	void CheckCollision(Collider* it, Collider* it2);
+
 
 	std::map<GameObject*, std::map<GameObject*, std::list<Collider*>>> gameObjectCollisionMap;
 	std::map<Collider*, std::list<Collider*>> collidersCollisionMap;
 
-	std::map<Collider*, Collider*> collidersCollisionMapPerFrame;
-
-
+	std::map<Collider*, std::list<Collider*>> collidersCollisionMapPerFrame;
 
 	bool WereGameObjectsColliding(GameObject* obj1, GameObject* obj2);
 	bool WereCollidersColliding(Collider* obj1, Collider* obj2);
+	bool WereCollidingThisFrame(Collider* c1, Collider* c2);
 
 
 };
