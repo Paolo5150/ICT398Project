@@ -103,12 +103,12 @@ void PhysicsWorld::Update()
 		allNonStaticColliders.clear();
 	}
 
-	//collisionMap.clear(); // Clear collision map each frame!
+	collidersCollisionMapPerFrame.clear(); // Clear collision map each frame!
 }
 
 void PhysicsWorld::PerformCollisions(bool staticToo)
 {
-	//Logger::LogInfo("STARTING COLLISION UPDATE");
+	Logger::LogWarning("STARTING COLLISION UPDATE");
 	PerformCollisions(nonStaticQuadtree->root);
 	
 	// Collision between static vs non static
@@ -139,7 +139,7 @@ void PhysicsWorld::PerformCollisions(bool staticToo)
 	if (staticToo)
 		PerformCollisions(staticQuadtree->root);
 
-	//Logger::LogInfo("ENDING COLLISION UPDATE");
+	Logger::LogWarning("ENDING COLLISION UPDATE");
 
 }
 
@@ -147,24 +147,29 @@ glm::vec3 PhysicsWorld::gravity = glm::vec3(0, -9.8, 0);
 
 bool PhysicsWorld::WereGameObjectsColliding(GameObject* obj1, GameObject* obj2)
 {
-	auto it = collisionMap.find(obj1);
-
-	if (it != collisionMap.end())
 	{
-		auto other = it->second.find(obj2);
+		auto it = gameObjectCollisionMap.find(obj1);
 
-		if (other != it->second.end())
-			return true;
+		if (it != gameObjectCollisionMap.end())
+		{
+			auto it2 = it->second.find(obj2);
+
+			if (it2 != it->second.end())
+				return true;
+		}
 	}
 
-	it = collisionMap.find(obj2);
-	if (it != collisionMap.end())
-		{
-		auto other = it->second.find(obj1);
+	{
+		auto it = gameObjectCollisionMap.find(obj2);
 
-		if (other != it->second.end())
-			return true;
+		if (it != gameObjectCollisionMap.end())
+		{
+			auto it2 = it->second.find(obj1);
+
+			if (it2 != it->second.end())
+				return true;
 		}
+	}
 
 	return false;
 
@@ -172,17 +177,17 @@ bool PhysicsWorld::WereGameObjectsColliding(GameObject* obj1, GameObject* obj2)
 
 bool PhysicsWorld::WereCollidersColliding(Collider* obj1, Collider* obj2)
 {
-	auto it = collidersMap.find(obj1);
+	auto it = collidersCollisionMap.find(obj1);
 
-	if (it != collidersMap.end())
+	if (it != collidersCollisionMap.end())
 	{
 		if (std::find(it->second.begin(), it->second.end(), obj2) != it->second.end())
 			return true;
 	}
 
-	it = collidersMap.find(obj2);
+	it = collidersCollisionMap.find(obj2);
 
-	if (it != collidersMap.end())
+	if (it != collidersCollisionMap.end())
 	{
 		if (std::find(it->second.begin(), it->second.end(), obj1) != it->second.end())
 			return true;
@@ -218,30 +223,56 @@ void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
 						// Check that the colliders do not belong to the same GameObject
 						if ((*it)->GetParent() != (*it2)->GetParent())
 						{
+							// Check if they have been checked for collision this frame
+							// Prevents multiple callbacks per single frame
+							{
+								auto firstOne = collidersCollisionMapPerFrame.find(*it);
+								if (firstOne != collidersCollisionMapPerFrame.end())
+								{
+									if (firstOne->second == *it2) continue;
+								}
+							}
+
+							collidersCollisionMapPerFrame[*it] = *it2;
+							collidersCollisionMapPerFrame[*it2] = *it;
+
+
 							if (CollisionChecks::Collision((*it), (*it2)))
-							{		
-							
+							{								
 								// Check if colliders were colliding
 								if (!WereCollidersColliding((*it), (*it2)))
 								{
-									collidersMap[(*it)].push_back(*it2);
-									collidersMap[(*it2)].push_back(*it);
+									// Record that colliders are now colliding
+									collidersCollisionMap[(*it)].push_back(*it2);
+									collidersCollisionMap[(*it2)].push_back(*it);
 
+									// If the gameobjects were not colliding, call OnCollision enter (this is the first collision)
 									if (!WereGameObjectsColliding((*it)->GetParent(), (*it2)->GetParent()))
 									{
 										(*it)->OnCollisionEnterCallback((*it2));
 										(*it2)->OnCollisionEnterCallback((*it));
 
-										collisionMap[(*it)->GetParent()][(*it2)->GetParent()] = 1;
-										collisionMap[(*it2)->GetParent()][(*it)->GetParent()] = 1;
+										gameObjectCollisionMap[(*it)->GetParent()][(*it2)->GetParent()].push_back((*it2));
+										gameObjectCollisionMap[(*it2)->GetParent()][(*it)->GetParent()].push_back((*it));
+
 									}
 									else
 									{
+										// If the colliders were not colliding, but the GameObjects were
+										// it means that we are colliding with a new collider of the same gameobjects
 										(*it)->OnCollisionStayCallback((*it2));
 										(*it2)->OnCollisionStayCallback((*it));
-										collisionMap[(*it)->GetParent()][(*it2)->GetParent()]++;
-										collisionMap[(*it2)->GetParent()][(*it)->GetParent()]++;									
-									
+
+										if (std::find(gameObjectCollisionMap[(*it)->GetParent()][(*it2)->GetParent()].begin(), gameObjectCollisionMap[(*it)->GetParent()][(*it2)->GetParent()].end(), *it2) == gameObjectCollisionMap[(*it)->GetParent()][(*it2)->GetParent()].end())
+										{
+											gameObjectCollisionMap[(*it)->GetParent()][(*it2)->GetParent()].push_back((*it2));
+										}
+										
+										if (std::find(gameObjectCollisionMap[(*it2)->GetParent()][(*it)->GetParent()].begin(), gameObjectCollisionMap[(*it2)->GetParent()][(*it)->GetParent()].end(), *it) == gameObjectCollisionMap[(*it2)->GetParent()][(*it)->GetParent()].end())
+										{
+											gameObjectCollisionMap[(*it2)->GetParent()][(*it)->GetParent()].push_back((*it));
+										}
+
 									}
 								}	
 								else
@@ -254,47 +285,29 @@ void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
 							{
 								if (WereCollidersColliding((*it), (*it2)))
 								{
-									auto colIt1 = collidersMap.find((*it));
+									// Record that the colliders are no longer in collision
+									collidersCollisionMap[(*it)].remove(*it2);
+									collidersCollisionMap[(*it2)].remove(*it);					
 
-									for (auto collidersAgainst = colIt1->second.begin(); collidersAgainst != colIt1->second.end(); collidersAgainst++)
+									if (std::find(gameObjectCollisionMap[(*it)->GetParent()][(*it2)->GetParent()].begin(), gameObjectCollisionMap[(*it)->GetParent()][(*it2)->GetParent()].end(), *it2) != gameObjectCollisionMap[(*it)->GetParent()][(*it2)->GetParent()].end())
 									{
-										if (*collidersAgainst == (*it2))
-										{
-											colIt1->second.erase(collidersAgainst);
-											break;
-										}
+										gameObjectCollisionMap[(*it)->GetParent()][(*it2)->GetParent()].remove(*it2);										
 									}
 
-									auto colIt2 = collidersMap.find((*it2));
-
-									for (auto collidersAgainst = colIt2->second.begin(); collidersAgainst != colIt2->second.end(); collidersAgainst++)
+									if (std::find(gameObjectCollisionMap[(*it2)->GetParent()][(*it)->GetParent()].begin(), gameObjectCollisionMap[(*it2)->GetParent()][(*it)->GetParent()].end(), *it) != gameObjectCollisionMap[(*it2)->GetParent()][(*it)->GetParent()].end())
 									{
-										if (*collidersAgainst == (*it))
-										{
-											colIt2->second.erase(collidersAgainst);
-											break;
-										}
+										gameObjectCollisionMap[(*it2)->GetParent()][(*it)->GetParent()].remove(*it);
 									}
 
-
-									collisionMap[(*it)->GetParent()][(*it2)->GetParent()]--;
-									collisionMap[(*it2)->GetParent()][(*it)->GetParent()]--;
-
-									if (collisionMap[(*it)->GetParent()][(*it2)->GetParent()] == 0)
+									if (gameObjectCollisionMap[(*it)->GetParent()][(*it2)->GetParent()].size() == 0 &&
+										gameObjectCollisionMap[(*it2)->GetParent()][(*it)->GetParent()].size() == 0)
 									{
-										(*it)->OnCollisionExitCallback((*it2));
+										(*it)->OnCollisionExitCallback(*it2);
+										(*it2)->OnCollisionExitCallback(*it);
 
-										auto mapIt = collisionMap.find((*it)->GetParent());
-										mapIt->second.erase((*it2)->GetParent());
-									}
-
-									if (collisionMap[(*it2)->GetParent()][(*it)->GetParent()] == 0)
-									{
-
-										(*it2)->OnCollisionExitCallback((*it));
-										auto mapIt = collisionMap.find((*it2)->GetParent());
-										mapIt->second.erase((*it)->GetParent());
-									}
+										gameObjectCollisionMap[(*it)->GetParent()].erase((*it2)->GetParent());
+										gameObjectCollisionMap[(*it2)->GetParent()].erase((*it)->GetParent());
+									}									
 								}
 							}
 						}

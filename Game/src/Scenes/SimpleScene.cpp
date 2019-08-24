@@ -107,7 +107,7 @@ void SimpleScene::Start()
 
 void SimpleScene::LogicUpdate()
 {
-	GetGameobjectsByName("LandfillBin")[0]->transform.Translate(0.01, 0, 0);
+	GetGameobjectsByName("LandfillBin")[0]->transform.Translate(0.02, 0, 0);
 	if (Input::GetKeyDown(GLFW_KEY_ESCAPE))
 		EventDispatcher::Instance().DispatchEvent(new QuitRequestEvent());
 
