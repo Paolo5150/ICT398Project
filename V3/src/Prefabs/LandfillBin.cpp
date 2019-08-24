@@ -6,7 +6,7 @@
 
 LandfillBin::LandfillBin() : GameObject("LandfillBin")
 {
-	//SetIsStatic(false);
+	SetIsStatic(false);
 	ContentManager::Instance().GetAsset<Model>("LandfillBin")->PopulateGameObject(this);
 	transform.SetScale(2);
 
@@ -58,5 +58,6 @@ void LandfillBin::Start()
 
 void LandfillBin::OnCollision(GameObject* g)
 {
-	//Logger::LogInfo("Collided against", g->GetName());
+	Logger::LogInfo("I'm am", name, " and I collided against", g->GetName());
+
 }

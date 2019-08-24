@@ -105,15 +105,16 @@ void PhysicsWorld::Update()
 
 void PhysicsWorld::PerformCollisions(bool staticToo)
 {
+	Logger::LogInfo("STARTING COLLISION UPDATE");
 	PerformCollisions(nonStaticQuadtree->root);
 	
+	// Collision between static vs non static
 	for (unsigned i = 0; i < allNonStaticColliders.size(); i++)
 	{
 		std::unordered_set<Collider*>& staticCols = staticQuadtree->GameObjectsAt(allNonStaticColliders[i]->transform.GetGlobalPosition().x, allNonStaticColliders[i]->transform.GetGlobalPosition().z);
 		
 		for (auto it = staticCols.begin(); it != staticCols.end(); it++)
 		{
-
 			if (allNonStaticColliders[i]->GetCollideAgainstLayer() & (*it)->GetCollisionLayer() ||
 				(*it)->GetCollideAgainstLayer() & allNonStaticColliders[i]->GetCollisionLayer())
 			{
@@ -133,7 +134,10 @@ void PhysicsWorld::PerformCollisions(bool staticToo)
 	}
 
 	if (staticToo)
-	PerformCollisions(staticQuadtree->root);
+		PerformCollisions(staticQuadtree->root);
+
+	Logger::LogInfo("ENDING COLLISION UPDATE");
+
 }
 
 glm::vec3 PhysicsWorld::gravity = glm::vec3(0, -9.8, 0);

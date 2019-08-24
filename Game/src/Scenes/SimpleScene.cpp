@@ -18,9 +18,9 @@ SimpleScene::SimpleScene() : Scene("SimpleScene")
 
 void SimpleScene::LoadAssets() {
 
-	ContentManager::Instance().LoadModel("Assets\\Models\\Bench\\bench.obj", false, false);
-	ContentManager::Instance().LoadModel("Assets\\Models\\Table\\table.fbx", false, false);
-	ContentManager::Instance().LoadModel("Assets\\Models\\Chair\\chair.obj", false, false);
+	//ContentManager::Instance().LoadModel("Assets\\Models\\Bench\\bench.obj", false, false);
+	//ContentManager::Instance().LoadModel("Assets\\Models\\Table\\table.fbx", false, false);
+	//ContentManager::Instance().LoadModel("Assets\\Models\\Chair\\chair.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\LandfillBin\\landfillbin.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\RecycleBin\\recyclebin.obj", false, false);
 
@@ -35,7 +35,7 @@ void SimpleScene::LoadAssets() {
 	ContentManager::Instance().LoadCubeMap("Assets\\SkyBoxes\\SunSet");
 
 
-	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_albedo.jpg", 0);
+	/*ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_albedo.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_roughness.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_metallic.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_normal.jpg", 0);	
@@ -50,7 +50,7 @@ void SimpleScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_roughness.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_metallic.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_normal.jpg", 0);
-	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_ao.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_ao.jpg", 0);*/
 
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Metal\\metal_roughness.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Metal\\metal_normal.jpg", 0);
@@ -101,21 +101,19 @@ void SimpleScene::Start()
 	Scene::Start();
 	Input::SetCursorMode("disabled");
 	PhysicsWorld::Instance().InitializeQuadtree(0, 0, 5000, 5000);
+	PhysicsWorld::Instance().FillQuadtree(1); // Fill static quadtree
 
 }
 
 void SimpleScene::LogicUpdate()
 {
-	//glm::vec3 inertia = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Bench")[0]->GetComponent<BoxCollider>("BoxCollider")->GetMomentOfIntertia();
-
+	GetGameobjectsByName("LandfillBin")[0]->transform.Translate(0.01, 0, 0);
 	if (Input::GetKeyDown(GLFW_KEY_ESCAPE))
 		EventDispatcher::Instance().DispatchEvent(new QuitRequestEvent());
 
 	if (Input::GetKeyDown(GLFW_KEY_O))
 		SceneManager::Instance().LoadNewScene("OtherScene");
 	
-	//DiagRenderer::Instance().RenderSphere(inertia, 0.5,glm::vec3(1,0,0));
-
 	Scene::LogicUpdate(); //Must be last statement!
 }
 

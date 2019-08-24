@@ -118,7 +118,7 @@ std::vector<ColliderInfo> FileUtils::ReadColliderFile(std::string absolutePathTo
 			// If box collider
 			if (buf[0] == 'B' && buf[1]=='C')
 			{
-				int lineInd = 5;
+				int lineInd = 6;
 				// Read the next 4 lines
 				while (lineInd > 0)
 				{
@@ -156,7 +156,7 @@ std::vector<ColliderInfo> FileUtils::ReadColliderFile(std::string absolutePathTo
 			else 			// If sphere collider
 				if (buf[0] == 'S' && buf[1] == 'C')
 				{
-					int lineInd = 4;
+					int lineInd = 5;
 					// Read the next 3 lines
 					while (lineInd > 0)
 					{
@@ -189,7 +189,7 @@ std::vector<ColliderInfo> FileUtils::ReadColliderFile(std::string absolutePathTo
 				}
 		}
 	}
-
+	fclose(f);
 	return trans;
 }
 
@@ -271,6 +271,7 @@ std::vector<GameObject*> FileUtils::ReadSceneFile(std::string absolutePathToFile
 		else
 			Logger::LogError("Wrong prefab name in file", absolutePathToFile,": ",prefabName);
 	}
+	fclose(f);
 
 	return objs;
 
