@@ -103,12 +103,12 @@ void PhysicsWorld::Update()
 		allNonStaticColliders.clear();
 	}
 
-	collisionMap.clear(); // Clear collision map each frame!
+	//collisionMap.clear(); // Clear collision map each frame!
 }
 
 void PhysicsWorld::PerformCollisions(bool staticToo)
 {
-	Logger::LogInfo("STARTING COLLISION UPDATE");
+	//Logger::LogInfo("STARTING COLLISION UPDATE");
 	PerformCollisions(nonStaticQuadtree->root);
 	
 	// Collision between static vs non static
@@ -139,11 +139,57 @@ void PhysicsWorld::PerformCollisions(bool staticToo)
 	if (staticToo)
 		PerformCollisions(staticQuadtree->root);
 
-	Logger::LogInfo("ENDING COLLISION UPDATE");
+	//Logger::LogInfo("ENDING COLLISION UPDATE");
 
 }
 
 glm::vec3 PhysicsWorld::gravity = glm::vec3(0, -9.8, 0);
+
+bool PhysicsWorld::WereGameObjectsColliding(GameObject* obj1, GameObject* obj2)
+{
+	auto it = collisionMap.find(obj1);
+
+	if (it != collisionMap.end())
+	{
+		auto other = it->second.find(obj2);
+
+		if (other != it->second.end())
+			return true;
+	}
+
+	it = collisionMap.find(obj2);
+	if (it != collisionMap.end())
+		{
+		auto other = it->second.find(obj1);
+
+		if (other != it->second.end())
+			return true;
+		}
+
+	return false;
+
+}
+
+bool PhysicsWorld::WereCollidersColliding(Collider* obj1, Collider* obj2)
+{
+	auto it = collidersMap.find(obj1);
+
+	if (it != collidersMap.end())
+	{
+		if (std::find(it->second.begin(), it->second.end(), obj2) != it->second.end())
+			return true;
+	}
+
+	it = collidersMap.find(obj2);
+
+	if (it != collidersMap.end())
+	{
+		if (std::find(it->second.begin(), it->second.end(), obj1) != it->second.end())
+			return true;
+	}
+
+	return false;
+}
 
 void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
 {
@@ -168,56 +214,91 @@ void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
 				if ((*it)->GetCollideAgainstLayer() & (*it2)->GetCollisionLayer())
 				{
 					if ((*it)->GetActive() && (*it2)->GetActive())
-					{
-						// Check in the collision map if it and it2 have been check for collision this frame
-						auto mapIt = collisionMap.find((*it));
-						if (mapIt != collisionMap.end())
+					{					
+						// Check that the colliders do not belong to the same GameObject
+						if ((*it)->GetParent() != (*it2)->GetParent())
 						{
-							// If they have collided already in this frame, skip!
-							if (std::find(mapIt->second.begin(), mapIt->second.end(), *it2) != mapIt->second.end())
-							{
-								continue;
-							}
-						}
-				
-						if (CollisionChecks::Collision((*it), (*it2)))
-						{							
-							// Check that the colliders do not belong to the same GameObject
-							if ((*it)->GetParent() != (*it2)->GetParent())
-							{
-								// Check if they were in collisions before, if not, call onCollisionEnter
-								if (std::find((*it)->collidersInCollision.begin(), (*it)->collidersInCollision.end(), (*it2)) == (*it)->collidersInCollision.end())
+							if (CollisionChecks::Collision((*it), (*it2)))
+							{		
+							
+								// Check if colliders were colliding
+								if (!WereCollidersColliding((*it), (*it2)))
 								{
-									(*it)->OnCollisionEnterCallback((*it2));
-									(*it2)->OnCollisionEnterCallback((*it));
+									collidersMap[(*it)].push_back(*it2);
+									collidersMap[(*it2)].push_back(*it);
 
-									(*it)->collidersInCollision.push_back((*it2));
-									(*it2)->collidersInCollision.push_back((*it));
-								}
+									if (!WereGameObjectsColliding((*it)->GetParent(), (*it2)->GetParent()))
+									{
+										(*it)->OnCollisionEnterCallback((*it2));
+										(*it2)->OnCollisionEnterCallback((*it));
+
+										collisionMap[(*it)->GetParent()][(*it2)->GetParent()] = 1;
+										collisionMap[(*it2)->GetParent()][(*it)->GetParent()] = 1;
+									}
+									else
+									{
+										(*it)->OnCollisionStayCallback((*it2));
+										(*it2)->OnCollisionStayCallback((*it));
+										collisionMap[(*it)->GetParent()][(*it2)->GetParent()]++;
+										collisionMap[(*it2)->GetParent()][(*it)->GetParent()]++;									
+									
+									}
+								}	
 								else
-								{									
+								{
 									(*it)->OnCollisionStayCallback((*it2));
 									(*it2)->OnCollisionStayCallback((*it));
+								}
+							}
+							else
+							{
+								if (WereCollidersColliding((*it), (*it2)))
+								{
+									auto colIt1 = collidersMap.find((*it));
 
-									// Update collision map
-									collisionMap[*it].push_back(*it2);
-									collisionMap[*it2].push_back(*it);
+									for (auto collidersAgainst = colIt1->second.begin(); collidersAgainst != colIt1->second.end(); collidersAgainst++)
+									{
+										if (*collidersAgainst == (*it2))
+										{
+											colIt1->second.erase(collidersAgainst);
+											break;
+										}
+									}
 
+									auto colIt2 = collidersMap.find((*it2));
+
+									for (auto collidersAgainst = colIt2->second.begin(); collidersAgainst != colIt2->second.end(); collidersAgainst++)
+									{
+										if (*collidersAgainst == (*it))
+										{
+											colIt2->second.erase(collidersAgainst);
+											break;
+										}
+									}
+
+
+									collisionMap[(*it)->GetParent()][(*it2)->GetParent()]--;
+									collisionMap[(*it2)->GetParent()][(*it)->GetParent()]--;
+
+									if (collisionMap[(*it)->GetParent()][(*it2)->GetParent()] == 0)
+									{
+										(*it)->OnCollisionExitCallback((*it2));
+
+										auto mapIt = collisionMap.find((*it)->GetParent());
+										mapIt->second.erase((*it2)->GetParent());
+									}
+
+									if (collisionMap[(*it2)->GetParent()][(*it)->GetParent()] == 0)
+									{
+
+										(*it2)->OnCollisionExitCallback((*it));
+										auto mapIt = collisionMap.find((*it2)->GetParent());
+										mapIt->second.erase((*it)->GetParent());
+									}
 								}
 							}
 						}
-						else
-						{
-							if (std::find((*it)->collidersInCollision.begin(), (*it)->collidersInCollision.end(), (*it2)) != (*it)->collidersInCollision.end())
-							{
-								(*it)->collidersInCollision.remove((*it2));
-								(*it2)->collidersInCollision.remove((*it));
-
-								(*it)->OnCollisionExitCallback((*it2));
-								(*it2)->OnCollisionExitCallback((*it));
-							}
-
-						}
+					
 					}		
 				}
 			}

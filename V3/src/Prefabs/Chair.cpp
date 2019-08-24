@@ -34,19 +34,25 @@ void Chair::Update()
 void Chair::Start()
 {
 
-	LoadCollidersFromFile("Assets\\Colliders\\Chair.txt");
+	LoadCollidersFromFile("Assets\\Colliders\\Chair2.txt");
 
-	Rigidbody* rb = new Rigidbody();
+	/*Rigidbody* rb = new Rigidbody();
 	rb->UseGravity(true);
 
-	AddComponent(rb);
+	AddComponent(rb);*/
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider
 						 // has been added.
 }
 
 void Chair::OnCollisionEnter(Collider* g)
 {
-	//Logger::LogInfo("Collided against", g->GetName());
+	Logger::LogInfo("CHAIR Collided ENTER against", g->GetName());
+
+}
+
+void Chair::OnCollisionExit(Collider* g)
+{
+	Logger::LogInfo("CHAIR Collided EXIT against", g->GetName());
 
 }
 void Chair::OnCollisionStay(Collider* g)
