@@ -44,12 +44,12 @@ void Chair::Start()
 						 // has been added.
 }
 
-void Chair::OnCollisionEnter(GameObject* g)
+void Chair::OnCollisionEnter(Collider* g)
 {
 	//Logger::LogInfo("Collided against", g->GetName());
 
 }
-void Chair::OnCollisionStay(GameObject* g)
+void Chair::OnCollisionStay(Collider* g)
 {
 	//Logger::LogInfo("Collided against", g->GetName());
 

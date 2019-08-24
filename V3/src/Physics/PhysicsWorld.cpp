@@ -188,16 +188,16 @@ void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
 								// Check if they were in collisions before, if not, call onCollisionEnter
 								if (std::find((*it)->collidersInCollision.begin(), (*it)->collidersInCollision.end(), (*it2)) == (*it)->collidersInCollision.end())
 								{
-									(*it)->OnCollisionEnterCallback((*it2)->GetParent());
-									(*it2)->OnCollisionEnterCallback((*it)->GetParent());
+									(*it)->OnCollisionEnterCallback((*it2));
+									(*it2)->OnCollisionEnterCallback((*it));
 
 									(*it)->collidersInCollision.push_back((*it2));
 									(*it2)->collidersInCollision.push_back((*it));
 								}
 								else
 								{									
-									(*it)->OnCollisionStayCallback((*it2)->GetParent());
-									(*it2)->OnCollisionStayCallback((*it)->GetParent());
+									(*it)->OnCollisionStayCallback((*it2));
+									(*it2)->OnCollisionStayCallback((*it));
 
 									// Update collision map
 									collisionMap[*it].push_back(*it2);
@@ -213,8 +213,8 @@ void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
 								(*it)->collidersInCollision.remove((*it2));
 								(*it2)->collidersInCollision.remove((*it));
 
-								(*it)->OnCollisionExitCallback((*it2)->GetParent());
-								(*it2)->OnCollisionExitCallback((*it)->GetParent());
+								(*it)->OnCollisionExitCallback((*it2));
+								(*it2)->OnCollisionExitCallback((*it));
 							}
 
 						}

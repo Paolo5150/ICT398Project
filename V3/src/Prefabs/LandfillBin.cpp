@@ -56,16 +56,16 @@ void LandfillBin::Start()
 						 // has been added.
 }
 
-void LandfillBin::OnCollisionEnter(GameObject* g)
+void LandfillBin::OnCollisionEnter(Collider* g)
 {
-	Logger::LogInfo("LandfillBin ENTER collision with", g->name);
+	Logger::LogInfo("LandfillBin ENTER collision with", g->GetParent()->name);
 }
-void LandfillBin::OnCollisionStay(GameObject* g)
+void LandfillBin::OnCollisionStay(Collider* g)
 {
-	Logger::LogInfo("LandfillBin STAY collision with", g->name);
+	Logger::LogInfo("LandfillBin STAY collision with", g->GetParent()->name);
 }
 
-void LandfillBin::OnCollisionExit(GameObject* g)
+void LandfillBin::OnCollisionExit(Collider* g)
 {
-	Logger::LogError("LandfillBin EXIT collision with", g->name);
+	Logger::LogError("LandfillBin EXIT collision with", g->GetParent()->name);
 }

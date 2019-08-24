@@ -8,6 +8,8 @@
 #include "..\Utils\Asset.h"
 
 class Component;
+class Collider;
+
 class Shader;
 class Camera;
 class Scene;
@@ -428,9 +430,9 @@ public:
 
 	bool GetIsSelfManaged() { return _isSelfManaged; }
 
-	virtual void OnCollisionEnter(GameObject* go){};
-	virtual void OnCollisionStay(GameObject* go) {};
-	virtual void OnCollisionExit(GameObject* go) {};
+	virtual void OnCollisionEnter(Collider* go){};
+	virtual void OnCollisionStay(Collider* go) {};
+	virtual void OnCollisionExit(Collider* go) {};
 
 
 

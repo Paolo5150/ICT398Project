@@ -41,7 +41,7 @@ void Table::Start()
 						 // has been added.
 }
 
-void Table::OnCollisionEnter(GameObject* g)
+void Table::OnCollisionEnter(Collider* g)
 {}
-void Table::OnCollisionStay(GameObject* g) 
+void Table::OnCollisionStay(Collider* g)
 {}

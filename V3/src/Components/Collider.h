@@ -91,17 +91,17 @@ public:
 	/**
 	* @brief		Overridable function pointer invoked when collision occurs
 	*/
-	std::function<void(GameObject*)> OnCollisionEnterCallback;
+	std::function<void(Collider*)> OnCollisionEnterCallback;
 
 	/**
 	* @brief		Overridable function pointer invoked when collision occurs
 	*/
-	std::function<void(GameObject*)> OnCollisionStayCallback;
+	std::function<void(Collider*)> OnCollisionStayCallback;
 
 	/**
 * @brief		Overridable function pointer invoked when collision occurs
 */
-	std::function<void(GameObject*)> OnCollisionExitCallback;
+	std::function<void(Collider*)> OnCollisionExitCallback;
 
 
 	/**
