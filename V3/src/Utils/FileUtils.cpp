@@ -251,7 +251,9 @@ std::vector<GameObject*> FileUtils::ReadSceneFile(std::string absolutePathToFile
 			{
 				fgetc(f); //Get rid of (
 				fscanf(f, "%f,%f,%f", &r.x, &r.y, &r.z);
-				fgetc(f); //Get rid of )
+				
+				// Rotation is the last thing read, get out of loop
+				fgets(buf, 512, f);
 				break;
 			}
 

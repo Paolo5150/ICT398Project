@@ -82,8 +82,9 @@ void SimpleScene::Initialize() {
 
 	PointLight* pointLight = new PointLight();
 
-	pointLight->SetIntensity(20);
+	pointLight->SetIntensity(50);
 	pointLight->transform.SetPosition(20, 3, 20);
+	pointLight->SetDiffuseColor(1, 0, 0);
 	
 	AddGameObject(cam);
 	AddGameObject(dirLight);
