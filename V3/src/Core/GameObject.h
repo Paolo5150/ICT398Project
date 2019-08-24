@@ -428,7 +428,11 @@ public:
 
 	bool GetIsSelfManaged() { return _isSelfManaged; }
 
-	virtual void OnCollision(GameObject* go){};
+	virtual void OnCollisionEnter(GameObject* go){};
+	virtual void OnCollisionStay(GameObject* go) {};
+	virtual void OnCollisionExit(GameObject* go) {};
+
+
 
 	virtual void OnAddToScene(Scene& theScene);
 

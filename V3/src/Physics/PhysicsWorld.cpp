@@ -4,6 +4,7 @@
 #include "..\Components\SphereCollider.h"
 #include "..\Events\EventDispatcher.h"
 #include "..\Events\ApplicationEvents.h"
+#include <algorithm>
 
 
 namespace
@@ -101,6 +102,8 @@ void PhysicsWorld::Update()
 		PerformCollisions(false);
 		allNonStaticColliders.clear();
 	}
+
+	collisionMap.clear();
 }
 
 void PhysicsWorld::PerformCollisions(bool staticToo)
@@ -123,8 +126,8 @@ void PhysicsWorld::PerformCollisions(bool staticToo)
 						if (CollisionChecks::Collision(allNonStaticColliders[i], (*it)))
 						{			
 							//TODO: Calculate collision point.
-							allNonStaticColliders[i]->collisionCallback((*it)->GetParent());				
-							(*it)->collisionCallback(allNonStaticColliders[i]->GetParent());
+							//allNonStaticColliders[i]->collisionCallback((*it)->GetParent());				
+							//(*it)->collisionCallback(allNonStaticColliders[i]->GetParent());
 					
 						}				
 				}
@@ -166,13 +169,55 @@ void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
 				{
 					if ((*it)->GetActive() && (*it2)->GetActive())
 					{
-						if (CollisionChecks::Collision((*it), (*it2)))
+						auto mapIt = collisionMap.find((*it));
+
+						if (mapIt != collisionMap.end())
 						{
-							// Check that the colliders do not belong to the same GameObject
+							// If they have collided already in this frame, skip!
+							if (std::find(mapIt->second.begin(), mapIt->second.end(), *it2) != mapIt->second.end())
+							{
+								continue;
+							}
+						}
+				
+						if (CollisionChecks::Collision((*it), (*it2)))
+						{							// Check that the colliders do not belong to the same GameObject
 							if ((*it)->GetParent() != (*it2)->GetParent())
 							{
-								(*it)->collisionCallback((*it2)->GetParent());
+
+								// Check if they were in collisions before, if not, call onCollisionEnter
+								if (std::find((*it)->collidersInCollision.begin(), (*it)->collidersInCollision.end(), (*it2)) == (*it)->collidersInCollision.end())
+								{
+									(*it)->OnCollisionEnterCallback((*it2)->GetParent());
+									(*it2)->OnCollisionEnterCallback((*it)->GetParent());
+
+									(*it)->collidersInCollision.push_back((*it2));
+									(*it2)->collidersInCollision.push_back((*it));
+								}
+								else
+								{									
+									(*it)->OnCollisionStayCallback((*it2)->GetParent());
+									(*it2)->OnCollisionStayCallback((*it)->GetParent());
+
+									// Update collision map
+									collisionMap[*it].push_back(*it2);
+									collisionMap[*it2].push_back(*it);
+
+
+								}
 							}
+						}
+						else
+						{
+							if (std::find((*it)->collidersInCollision.begin(), (*it)->collidersInCollision.end(), (*it2)) != (*it)->collidersInCollision.end())
+							{
+								(*it)->collidersInCollision.remove((*it2));
+								(*it2)->collidersInCollision.remove((*it));
+
+								(*it)->OnCollisionExitCallback((*it2)->GetParent());
+								(*it2)->OnCollisionExitCallback((*it)->GetParent());
+							}
+
 						}
 					}		
 				}

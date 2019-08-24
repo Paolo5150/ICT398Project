@@ -40,7 +40,12 @@ void Bench::Start()
 						 // has been added.
 }
 
-void Bench::OnCollision(GameObject* g)
+void Bench::OnCollisionEnter(GameObject* g)
 {
 	//Logger::LogInfo("Collided against", g->GetName());
+}
+
+void Bench::OnCollisionStay(GameObject* g)
+{
+
 }

@@ -56,8 +56,7 @@ void LandfillBin::Start()
 						 // has been added.
 }
 
-void LandfillBin::OnCollision(GameObject* g)
-{
-	Logger::LogInfo("I'm am", name, " and I collided against", g->GetName());
-
-}
+void LandfillBin::OnCollisionEnter(GameObject* g)
+{}
+void LandfillBin::OnCollisionStay(GameObject* g) 
+{}

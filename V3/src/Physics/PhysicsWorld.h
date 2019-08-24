@@ -3,6 +3,7 @@
 
 #include "..\Utils\Quadtree.h"
 #include <list>
+#include <map>
 
 class Collider;
 /**
@@ -110,4 +111,6 @@ private:
 	* @param node					The current quadtree node
 	*/
 	void PerformCollisions(QuadNode<Collider*>* node);
+
+	std::map<Collider*, std::vector<Collider*>> collisionMap;
 };

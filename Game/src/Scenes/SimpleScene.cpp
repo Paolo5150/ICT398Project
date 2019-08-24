@@ -100,7 +100,7 @@ void SimpleScene::Start()
 {
 	Scene::Start();
 	Input::SetCursorMode("disabled");
-	PhysicsWorld::Instance().InitializeQuadtree(0, 0, 5000, 5000);
+	PhysicsWorld::Instance().InitializeQuadtree(0, 0,100, 100);
 	PhysicsWorld::Instance().FillQuadtree(1); // Fill static quadtree
 
 }

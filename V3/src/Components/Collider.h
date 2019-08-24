@@ -91,7 +91,17 @@ public:
 	/**
 	* @brief		Overridable function pointer invoked when collision occurs
 	*/
-	std::function<void(GameObject*)> collisionCallback;
+	std::function<void(GameObject*)> OnCollisionEnterCallback;
+
+	/**
+	* @brief		Overridable function pointer invoked when collision occurs
+	*/
+	std::function<void(GameObject*)> OnCollisionStayCallback;
+
+	/**
+* @brief		Overridable function pointer invoked when collision occurs
+*/
+	std::function<void(GameObject*)> OnCollisionExitCallback;
 
 
 	/**
@@ -164,6 +174,7 @@ public:
 
 	glm::vec3& GetMomentOfIntertia() { return momentOfIntertia; };
 
+	std::list<Collider*> collidersInCollision;
 protected:
 
 	virtual void CalculateMomentOfIntertia() = 0;
@@ -179,4 +190,5 @@ protected:
 	int collideAgainstLayer;
 
 	glm::vec3 momentOfIntertia;
+
 };
