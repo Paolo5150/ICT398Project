@@ -57,6 +57,15 @@ void LandfillBin::Start()
 }
 
 void LandfillBin::OnCollisionEnter(GameObject* g)
-{}
-void LandfillBin::OnCollisionStay(GameObject* g) 
-{}
+{
+	Logger::LogInfo("LandfillBin ENTER collision with", g->name);
+}
+void LandfillBin::OnCollisionStay(GameObject* g)
+{
+	Logger::LogInfo("LandfillBin STAY collision with", g->name);
+}
+
+void LandfillBin::OnCollisionExit(GameObject* g)
+{
+	Logger::LogError("LandfillBin EXIT collision with", g->name);
+}

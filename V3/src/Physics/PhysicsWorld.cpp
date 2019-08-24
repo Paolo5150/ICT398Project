@@ -103,7 +103,7 @@ void PhysicsWorld::Update()
 		allNonStaticColliders.clear();
 	}
 
-	collisionMap.clear();
+	collisionMap.clear(); // Clear collision map each frame!
 }
 
 void PhysicsWorld::PerformCollisions(bool staticToo)
@@ -169,8 +169,8 @@ void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
 				{
 					if ((*it)->GetActive() && (*it2)->GetActive())
 					{
+						// Check in the collision map if it and it2 have been check for collision this frame
 						auto mapIt = collisionMap.find((*it));
-
 						if (mapIt != collisionMap.end())
 						{
 							// If they have collided already in this frame, skip!
@@ -181,10 +181,10 @@ void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
 						}
 				
 						if (CollisionChecks::Collision((*it), (*it2)))
-						{							// Check that the colliders do not belong to the same GameObject
+						{							
+							// Check that the colliders do not belong to the same GameObject
 							if ((*it)->GetParent() != (*it2)->GetParent())
 							{
-
 								// Check if they were in collisions before, if not, call onCollisionEnter
 								if (std::find((*it)->collidersInCollision.begin(), (*it)->collidersInCollision.end(), (*it2)) == (*it)->collidersInCollision.end())
 								{
@@ -202,7 +202,6 @@ void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
 									// Update collision map
 									collisionMap[*it].push_back(*it2);
 									collisionMap[*it2].push_back(*it);
-
 
 								}
 							}

@@ -12,6 +12,8 @@ public:
 	void Start() override;
 	void OnCollisionEnter(GameObject* g) override;
 	void OnCollisionStay(GameObject* g) override;
+	void OnCollisionExit(GameObject* g) override;
+
 
 private:
 
