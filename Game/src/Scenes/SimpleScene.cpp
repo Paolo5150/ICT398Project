@@ -82,8 +82,8 @@ void SimpleScene::Initialize() {
 
 	PointLight* pointLight = new PointLight();
 
-	pointLight->SetIntensity(50);
-	pointLight->transform.SetPosition(20, 3, 20);
+	pointLight->SetIntensity(25);
+	pointLight->transform.SetPosition(5, 0, 5);
 	pointLight->SetDiffuseColor(1, 0, 0);
 	
 	AddGameObject(cam);
@@ -108,11 +108,15 @@ void SimpleScene::Start()
 void SimpleScene::LogicUpdate()
 {
 	GetGameobjectsByName("LandfillBin")[0]->transform.Translate(0.02, 0, 0);
+	((PointLight*)GetGameobjectsByName("PointLight")[0])->RenderDiag();
+	((PointLight*)GetGameobjectsByName("PointLight")[0])->transform.Translate(0, 0, 0.1);
+
 	if (Input::GetKeyDown(GLFW_KEY_ESCAPE))
 		EventDispatcher::Instance().DispatchEvent(new QuitRequestEvent());
 
 	if (Input::GetKeyDown(GLFW_KEY_O))
 		SceneManager::Instance().LoadNewScene("OtherScene");
+
 
 	//int n = PhysicsWorld::Instance().nonStaticQuadtree->GameObjectInQuadrant(GetGameobjectsByName("LandfillBin")[0]->transform.GetPosition().x, GetGameobjectsByName("LandfillBin")[0]->transform.GetPosition().z);
 	

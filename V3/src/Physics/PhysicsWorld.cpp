@@ -139,12 +139,12 @@ bool PhysicsWorld::WereCollidingThisFrame(Collider* c1, Collider* c2)
 
 void PhysicsWorld::PerformCollisions(bool staticToo)
 {
-	static int done = 0;
+	/*static int done = 0;
 	if (done == 0)
 	{
 	Logger::LogWarning("STARTING COLLISION UPDATE");
 	done = 1;
-	}
+	}*/
 
 	// Collision between non static vs non static
 	PerformCollisions(nonStaticQuadtree->root);
