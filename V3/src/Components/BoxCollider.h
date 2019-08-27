@@ -52,7 +52,7 @@ public:
 
 	glm::vec3 GetMinPointWorldSpace();
 	glm::vec3 GetMaxPointWorldSpace();
-	void GetWorldMinMaxPoint(glm::vec3& min, glm::vec3& max);
+	void GetWorldCubicMinMaxPoint(glm::vec3& min, glm::vec3& max);
 
 	void CalculateCubicDimensions() override;
 	std::vector<glm::vec3> GetBoxPoints();

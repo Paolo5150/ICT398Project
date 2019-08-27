@@ -21,31 +21,39 @@ void BoxCollider::Update()
 
 	glm::vec3 min;
 	glm::vec3 max;
-	GetWorldMinMaxPoint(min, max);
+	GetWorldCubicMinMaxPoint(min, max);
+	DiagRenderer::Instance().RenderSphere(min, 0.5,glm::vec3(0));
+	DiagRenderer::Instance().RenderSphere(max, 0.5);
+
 
 	/*float w = abs(GetMaxPoint().x - GetMinPoint().x);
 	Logger::LogInfo("Width flat", w);*/
 }
 
-void BoxCollider::GetWorldMinMaxPoint(glm::vec3& min, glm::vec3& max)
+void BoxCollider::GetWorldCubicMinMaxPoint(glm::vec3& min, glm::vec3& max)
 {
 
 	std::vector<glm::vec3> points = GetBoxPoints();	
+	min = max = points[0];
 
 	for (int i = 0; i < points.size(); i++)
 	{
-		if (points[i].x < min.x && points[i].y < min.y && points[i].z < min.z)
-			min = glm::vec3(points[i]);		
+		if (points[i].x < min.x)
+			min.x = glm::vec3(points[i]).x;
+		if (points[i].y < min.y)
+			min.y = glm::vec3(points[i]).y;
+		if (points[i].z< min.z)
+			min.z = glm::vec3(points[i]).z;
+
+		if (points[i].x > max.x)
+			max.x = glm::vec3(points[i]).x;
+		if (points[i].y > max.y)
+			max.y = glm::vec3(points[i]).y;
+		if (points[i].z > max.z)
+			max.z = glm::vec3(points[i]).z;
 	}
 
 
-	for (int i = 0; i < points.size(); i++)
-	{
-		if (points[i].x > max.x && points[i].y > max.y && points[i].z > max.z)
-			max = glm::vec3(points[i]);
-	}
-
-	DiagRenderer::Instance().RenderSphere(max, 0.5);
 
 
 }
@@ -54,8 +62,9 @@ void BoxCollider::GetWorldMinMaxPoint(glm::vec3& min, glm::vec3& max)
 void BoxCollider::CalculateCubicDimensions()
 {
 	//transform.UpdateHierarchy();
-	glm::vec3 min = GetMinPointWorldSpace();
-	glm::vec3 max = GetMaxPointWorldSpace();
+	glm::vec3 min;
+	glm::vec3 max;
+	GetWorldCubicMinMaxPoint(min, max);
 
 	this->cubicDimension.x = abs(max.x - min.x);
 	this->cubicDimension.y = abs(max.y - min.y);
