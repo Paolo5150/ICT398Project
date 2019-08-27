@@ -32,6 +32,9 @@ PhysicsWorld::PhysicsWorld()
 		staticQuadtree.reset();
 		allNonStaticColliders.clear();
 		allStaticColliders.clear();
+		gameObjectCollisionMap.clear();
+		collidersCollisionMap.clear();
+		collidersCollisionMapPerFrame.clear();
 		return 0;
 	});
 
