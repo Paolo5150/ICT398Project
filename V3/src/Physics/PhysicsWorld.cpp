@@ -7,10 +7,7 @@
 #include <algorithm>
 
 
-namespace
-{
-
-}
+#define CHANGE_COLOR 1
 
 PhysicsWorld&  PhysicsWorld::Instance()
 {
@@ -326,8 +323,12 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 				(it)->OnCollisionStayCallback((it2));
 				(it2)->OnCollisionStayCallback((it));
 
+#ifdef CHANGE_COLOR
 				(it)->meshRenderer->GetMaterial().SetColor(1, 0, 0);
 				(it2)->meshRenderer->GetMaterial().SetColor(1, 0, 0);
+#endif // CHANGE_COLOR
+
+
 
 				if (std::find(gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].begin(), gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].end(), it2) == gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].end())
 				{
@@ -347,8 +348,10 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 			(it)->OnCollisionStayCallback((it2));
 			(it2)->OnCollisionStayCallback((it));
 
+#ifdef CHANGE_COLOR
 			(it)->meshRenderer->GetMaterial().SetColor(1, 0, 0);
 			(it2)->meshRenderer->GetMaterial().SetColor(1, 0, 0);
+#endif // CHANGE_COLOR
 		}
 	}
 	else
@@ -364,13 +367,17 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 			if (std::find(gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].begin(), gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].end(), it2) != gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].end())
 			{
 				gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].remove(it2);
+#ifdef CHANGE_COLOR
 				(it2)->meshRenderer->GetMaterial().SetColor(0, 1, 0);
+#endif // CHANGE_COLOR
 			}
 
 			if (std::find(gameObjectCollisionMap[(it2)->GetParent()][(it)->GetParent()].begin(), gameObjectCollisionMap[(it2)->GetParent()][(it)->GetParent()].end(), it) != gameObjectCollisionMap[(it2)->GetParent()][(it)->GetParent()].end())
 			{
 				gameObjectCollisionMap[(it2)->GetParent()][(it)->GetParent()].remove(it);
+#ifdef CHANGE_COLOR
 				(it)->meshRenderer->GetMaterial().SetColor(0, 1, 0);
+#endif // CHANGE_COLOR
 
 			}
 
@@ -382,9 +389,10 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 				(it)->OnCollisionExitCallback(it2);
 				(it2)->OnCollisionExitCallback(it);
 
+#ifdef CHANGE_COLOR
 				(it2)->meshRenderer->GetMaterial().SetColor(0, 1, 0);
 				(it)->meshRenderer->GetMaterial().SetColor(0, 1, 0);
-
+#endif // CHANGE_COLOR
 
 				gameObjectCollisionMap[(it)->GetParent()].erase((it2)->GetParent());
 				gameObjectCollisionMap[(it2)->GetParent()].erase((it)->GetParent());
