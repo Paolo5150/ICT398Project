@@ -4,7 +4,7 @@
 #include "GameObject.h"
 #include <glm/gtx/rotate_vector.hpp>
 
-Transform::Transform(GameObject* go) : gameObject(go)
+Transform::Transform()
 {
 	scale = glm::vec3(1, 1, 1);
 	SetPosition(0,0,0);

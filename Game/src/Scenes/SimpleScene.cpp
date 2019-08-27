@@ -107,7 +107,7 @@ void SimpleScene::Start()
 
 void SimpleScene::LogicUpdate()
 {
-	GetGameobjectsByName("LandfillBin")[0]->transform.Translate(0.02, 0, 0);
+	GetGameobjectsByName("LandfillBin")[0]->transform.RotateBy(0.1, 0, 0, 1);
 	((PointLight*)GetGameobjectsByName("PointLight")[0])->RenderDiag();
 	((PointLight*)GetGameobjectsByName("PointLight")[0])->transform.Translate(0, 0, 0.1);
 
