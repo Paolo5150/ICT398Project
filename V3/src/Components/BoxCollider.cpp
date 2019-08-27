@@ -18,7 +18,7 @@ void BoxCollider::Update()
 {
 	Collider::Update();
 
-
+	CalculateCubicDimensions();
 	glm::vec3 min;
 	glm::vec3 max;
 	GetWorldCubicMinMaxPoint(min, max);
@@ -52,10 +52,6 @@ void BoxCollider::GetWorldCubicMinMaxPoint(glm::vec3& min, glm::vec3& max)
 		if (points[i].z > max.z)
 			max.z = glm::vec3(points[i]).z;
 	}
-
-
-
-
 }
 
 

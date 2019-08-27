@@ -142,12 +142,12 @@ bool PhysicsWorld::WereCollidingThisFrame(Collider* c1, Collider* c2)
 
 void PhysicsWorld::PerformCollisions(bool staticToo)
 {
-	/*static int done = 0;
+	static int done = 0;
 	if (done == 0)
 	{
 	Logger::LogWarning("STARTING COLLISION UPDATE");
 	done = 1;
-	}*/
+	}
 
 	// Collision between non static vs non static
 	PerformCollisions(nonStaticQuadtree->root);
@@ -155,8 +155,25 @@ void PhysicsWorld::PerformCollisions(bool staticToo)
 	// Collision between static vs non static
 	for (unsigned i = 0; i < allNonStaticColliders.size(); i++)
 	{
-		std::unordered_set<Collider*>& staticCols = staticQuadtree->GameObjectsAt(allNonStaticColliders[i]->transform.GetGlobalPosition().x, allNonStaticColliders[i]->transform.GetGlobalPosition().z);
-		
+		std::unordered_set<Collider*>& p1 = staticQuadtree->GameObjectsAt(allNonStaticColliders[i]->transform.GetGlobalPosition().x + allNonStaticColliders[i]->cubicDimension.x * 0.5,
+			allNonStaticColliders[i]->transform.GetGlobalPosition().z +  allNonStaticColliders[i]->cubicDimension.z * 0.5);
+
+		std::unordered_set<Collider*>& p2 = staticQuadtree->GameObjectsAt(allNonStaticColliders[i]->transform.GetGlobalPosition().x - allNonStaticColliders[i]->cubicDimension.x * 0.5,
+			allNonStaticColliders[i]->transform.GetGlobalPosition().z + allNonStaticColliders[i]->cubicDimension.z * 0.5);
+
+		std::unordered_set<Collider*>& p3 = staticQuadtree->GameObjectsAt(allNonStaticColliders[i]->transform.GetGlobalPosition().x - allNonStaticColliders[i]->cubicDimension.x * 0.5,
+			allNonStaticColliders[i]->transform.GetGlobalPosition().z - allNonStaticColliders[i]->cubicDimension.z * 0.5);
+
+		std::unordered_set<Collider*>& p4 = staticQuadtree->GameObjectsAt(allNonStaticColliders[i]->transform.GetGlobalPosition().x + allNonStaticColliders[i]->cubicDimension.x * 0.5,
+			allNonStaticColliders[i]->transform.GetGlobalPosition().z - allNonStaticColliders[i]->cubicDimension.z * 0.5);
+
+		std::unordered_set<Collider*> staticCols;
+		staticCols.insert(p1.begin(), p1.end());
+		staticCols.insert(p2.begin(), p2.end());
+		staticCols.insert(p3.begin(), p3.end());
+		staticCols.insert(p4.begin(), p4.end());
+
+
 		for (auto it = staticCols.begin(); it != staticCols.end(); it++)
 		{
 			if (allNonStaticColliders[i]->GetCollideAgainstLayer() & (*it)->GetCollisionLayer() ||
@@ -279,6 +296,7 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 	collidersCollisionMapPerFrame[it].push_back(it2);
 	collidersCollisionMapPerFrame[it2].push_back(it);
 
+	
 	if (CollisionChecks::Collision((it), (it2)))
 	{
 		// Check if colliders were colliding
@@ -287,17 +305,17 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 			// Record that colliders are now colliding
 			collidersCollisionMap[(it)].push_back(it2);
 			collidersCollisionMap[(it2)].push_back(it);
-	
+
 			// If the gameobjects were not colliding, call OnCollision enter (this is the first collision)
 			if (!WereGameObjectsColliding((it)->GetParent(), (it2)->GetParent()))
 			{
 				// OnCollisionEnter
 				(it)->OnCollisionEnterCallback((it2));
 				(it2)->OnCollisionEnterCallback((it));
-	
+
 				gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].push_back((it2));
 				gameObjectCollisionMap[(it2)->GetParent()][(it)->GetParent()].push_back((it));
-	
+
 			}
 			else
 			{
@@ -307,17 +325,20 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 				// OnCollisionStay
 				(it)->OnCollisionStayCallback((it2));
 				(it2)->OnCollisionStayCallback((it));
-	
+
+				(it)->meshRenderer->GetMaterial().SetColor(1, 0, 0);
+				(it2)->meshRenderer->GetMaterial().SetColor(1, 0, 0);
+
 				if (std::find(gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].begin(), gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].end(), it2) == gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].end())
 				{
 					gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].push_back((it2));
 				}
-	
+
 				if (std::find(gameObjectCollisionMap[(it2)->GetParent()][(it)->GetParent()].begin(), gameObjectCollisionMap[(it2)->GetParent()][(it)->GetParent()].end(), it) == gameObjectCollisionMap[(it2)->GetParent()][(it)->GetParent()].end())
 				{
 					gameObjectCollisionMap[(it2)->GetParent()][(it)->GetParent()].push_back((it));
 				}
-	
+
 			}
 		}
 		else
@@ -325,26 +346,34 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 			// OnCollisionStay
 			(it)->OnCollisionStayCallback((it2));
 			(it2)->OnCollisionStayCallback((it));
+
+			(it)->meshRenderer->GetMaterial().SetColor(1, 0, 0);
+			(it2)->meshRenderer->GetMaterial().SetColor(1, 0, 0);
 		}
 	}
 	else
 	{
+
+
 		if (WereCollidersColliding((it), (it2)))
 		{
 			// Record that the colliders are no longer in collision
 			collidersCollisionMap[(it)].remove(it2);
 			collidersCollisionMap[(it2)].remove(it);
-	
+
 			if (std::find(gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].begin(), gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].end(), it2) != gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].end())
 			{
 				gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].remove(it2);
+				(it2)->meshRenderer->GetMaterial().SetColor(0, 1, 0);
 			}
-	
+
 			if (std::find(gameObjectCollisionMap[(it2)->GetParent()][(it)->GetParent()].begin(), gameObjectCollisionMap[(it2)->GetParent()][(it)->GetParent()].end(), it) != gameObjectCollisionMap[(it2)->GetParent()][(it)->GetParent()].end())
 			{
 				gameObjectCollisionMap[(it2)->GetParent()][(it)->GetParent()].remove(it);
+				(it)->meshRenderer->GetMaterial().SetColor(0, 1, 0);
+
 			}
-	
+
 			if (gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].size() == 0 &&
 				gameObjectCollisionMap[(it2)->GetParent()][(it)->GetParent()].size() == 0)
 			{
@@ -352,7 +381,11 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 
 				(it)->OnCollisionExitCallback(it2);
 				(it2)->OnCollisionExitCallback(it);
-	
+
+				(it2)->meshRenderer->GetMaterial().SetColor(0, 1, 0);
+				(it)->meshRenderer->GetMaterial().SetColor(0, 1, 0);
+
+
 				gameObjectCollisionMap[(it)->GetParent()].erase((it2)->GetParent());
 				gameObjectCollisionMap[(it2)->GetParent()].erase((it)->GetParent());
 			}

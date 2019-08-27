@@ -65,7 +65,6 @@ void SimpleScene::QuitScene() {
 }
 void SimpleScene::Initialize() {
 
-	Timer::SetDisplayFPS(1);
 	LightManager::Instance().SetAmbientLight(0.00, 0.00, 0.00);
 
 	skybox = std::unique_ptr<Skybox>(new Skybox(ContentManager::Instance().GetAsset<CubeMap>("SunSet")));
