@@ -497,5 +497,8 @@
     <ClInclude Include="src\Prefabs\RecycleBin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Utils\PrefabFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

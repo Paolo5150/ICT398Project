@@ -6,7 +6,7 @@
 
 LandfillBin::LandfillBin() : GameObject("LandfillBin")
 {
-	//SetIsStatic(false);
+	SetIsStatic(false);
 	ContentManager::Instance().GetAsset<Model>("LandfillBin")->PopulateGameObject(this);
 	transform.SetScale(2);
 
@@ -56,7 +56,16 @@ void LandfillBin::Start()
 						 // has been added.
 }
 
-void LandfillBin::OnCollision(GameObject* g)
+void LandfillBin::OnCollisionEnter(Collider* g)
 {
-	Logger::LogInfo("Collided against", g->GetName());
+	Logger::LogInfo("LandfillBin ENTER collision with", g->GetParent()->name);
+}
+void LandfillBin::OnCollisionStay(Collider* g)
+{
+	//Logger::LogInfo("LandfillBin STAY collision with", g->GetParent()->name);
+}
+
+void LandfillBin::OnCollisionExit(Collider* g)
+{
+	Logger::LogError("LandfillBin EXIT collision with", g->GetParent()->name);
 }

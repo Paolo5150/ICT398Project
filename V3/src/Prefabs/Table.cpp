@@ -41,7 +41,7 @@ void Table::Start()
 						 // has been added.
 }
 
-void Table::OnCollision(GameObject* g)
-{
-	Logger::LogInfo("Collided against", g->GetName());
-}
+void Table::OnCollisionEnter(Collider* g)
+{}
+void Table::OnCollisionStay(Collider* g)
+{}

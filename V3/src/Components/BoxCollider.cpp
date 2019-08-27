@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "BoxCollider.h"
 #include "..\Utils\ContentManager.h"
+#include "..\Diag\DiagRenderer.h"
 
 void BoxCollider::InitializeMeshRenderer()
 {
@@ -16,6 +17,21 @@ void BoxCollider::InitializeMeshRenderer()
 void BoxCollider::Update()
 {
 	Collider::Update();
+
+
+	/*float w = abs(GetMaxPoint().x - GetMinPoint().x);
+	Logger::LogInfo("Width flat", w);*/
+}
+
+void BoxCollider::CalculateCubicDimensions()
+{
+	transform.UpdateHierarchy();
+	glm::vec3 min = GetMinPoint();
+	glm::vec3 max = GetMaxPoint();
+
+	this->cubicDimension.x = abs(max.x - min.x);
+	this->cubicDimension.y = abs(max.y - min.y);
+	this->cubicDimension.z = abs(max.z - min.z);
 }
 
 
@@ -26,6 +42,9 @@ glm::vec3 BoxCollider::GetMinPoint()
 		- (transform.GetLocalUp() * transform.GetGlobalScale().y)
 		- (transform.GetLocalFront() * transform.GetGlobalScale().z);
 
+	//DiagRenderer::Instance().RenderSphere(p, 0.5);
+
+
 	return p;
 }
 
@@ -35,14 +54,14 @@ glm::vec3 BoxCollider::GetMaxPoint()
 	glm::vec3 p = transform.GetGlobalPosition() + (transform.GetLocalRight() * transform.GetGlobalScale().x)
 		+ (transform.GetLocalUp() * transform.GetGlobalScale().y)
 		+ (transform.GetLocalFront() * transform.GetGlobalScale().z);
+	//DiagRenderer::Instance().RenderSphere(p, 0.5);
 
 	return p;
 }
 
 
-glm::vec3 BoxCollider::GetMassMomentIntertia()
+void BoxCollider::CalculateMomentOfIntertia()
 {
-	glm::vec3 p;
 
 	glm::vec3 min = GetMinPoint();
 	glm::vec3 max = GetMaxPoint();
@@ -51,20 +70,10 @@ glm::vec3 BoxCollider::GetMassMomentIntertia()
 	float b = abs(max.x - min.x);
 	float l = abs(max.z - min.z);
 	
-	p.x = (1 / 12.0f) * mass * (a * a + l * l);
-	p.y = (1 / 12.0f) * mass * (b * b + l * l);
-	p.z = (1 / 12.0f) * mass * (a * a + b * b);
+	momentOfIntertia.x = (1 / 12.0f) * mass * (a * a + l * l);
+	momentOfIntertia.y = (1 / 12.0f) * mass * (b * b + l * l);
+	momentOfIntertia.z = (1 / 12.0f) * mass * (a * a + b * b);
 
-	Logger::LogInfo("Mass: ", mass);
+	//Logger::LogInfo("Intertia:", Maths::Vec3ToString(momentOfIntertia));
 
-	Logger::LogInfo("Width (b): ", b);
-	Logger::LogInfo("Height: (a)", a);
-	Logger::LogInfo("Length: (l)", l);
-
-
-	Logger::LogInfo("MOF x:", p.x);
-	Logger::LogInfo("MOF y:", p.y);
-
-
-	return p;
 }

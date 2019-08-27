@@ -6,7 +6,7 @@
 
 RecycleBin::RecycleBin() : GameObject("RecycleBin")
 {
-	//SetIsStatic(false);
+	SetIsStatic(0);
 	ContentManager::Instance().GetAsset<Model>("RecycleBin")->PopulateGameObject(this);
 	transform.SetScale(2);
 
@@ -56,7 +56,16 @@ void RecycleBin::Start()
 						 // has been added.
 }
 
-void RecycleBin::OnCollision(GameObject* g)
+void RecycleBin::OnCollisionEnter(Collider* g)
 {
-	Logger::LogInfo("Collided against", g->GetName());
+	Logger::LogInfo("Recycle bin ENTER collision with", g->GetParent()->name);
+}
+void RecycleBin::OnCollisionStay(Collider* g)
+{
+	//Logger::LogInfo("Recycle bin STAY collision with", g->GetParent()->name);
+}
+
+void RecycleBin::OnCollisionExit(Collider* g)
+{
+	Logger::LogError("Recycle bin EXIT collision with", g->GetParent()->name);
 }

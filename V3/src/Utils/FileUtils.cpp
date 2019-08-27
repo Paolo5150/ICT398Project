@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include  <string.h>
+#include "PrefabFactory.h"
 
 
 bool FileUtils::IsFileThere(std::string filePath)
@@ -95,7 +96,7 @@ std::vector<ColliderInfo> FileUtils::ReadColliderFile(std::string absolutePathTo
 		Logger::LogError("File", absolutePathToFile, "not found!!");
 		return trans;
 	}
-	char buf[100];
+	char buf[512];
 	FILE* f;
 	f = fopen(absolutePathToFile.c_str(), "r");
 
@@ -109,13 +110,15 @@ std::vector<ColliderInfo> FileUtils::ReadColliderFile(std::string absolutePathTo
 	{
 		while (!feof(f))
 		{
-			fgets(buf, 100, f);
+			fgets(buf, 512, f);
 			//Logger::LogInfo(buf[0],buf[1]);
+
+			if (buf[0] == '#') continue;
 
 			// If box collider
 			if (buf[0] == 'B' && buf[1]=='C')
 			{
-				int lineInd = 5;
+				int lineInd = 6;
 				// Read the next 4 lines
 				while (lineInd > 0)
 				{
@@ -153,7 +156,7 @@ std::vector<ColliderInfo> FileUtils::ReadColliderFile(std::string absolutePathTo
 			else 			// If sphere collider
 				if (buf[0] == 'S' && buf[1] == 'C')
 				{
-					int lineInd = 4;
+					int lineInd = 5;
 					// Read the next 3 lines
 					while (lineInd > 0)
 					{
@@ -186,6 +189,91 @@ std::vector<ColliderInfo> FileUtils::ReadColliderFile(std::string absolutePathTo
 				}
 		}
 	}
-
+	fclose(f);
 	return trans;
 }
+
+
+
+std::vector<GameObject*> FileUtils::ReadSceneFile(std::string absolutePathToFile)
+{
+	std::vector<GameObject*> objs;
+
+	if (!IsFileThere(absolutePathToFile))
+	{
+		Logger::LogError("File", absolutePathToFile, "not found!!");
+		return objs;
+	}
+	char buf[512];
+	FILE* f;
+	f = fopen(absolutePathToFile.c_str(), "r");
+
+	while (!feof(f))
+	{
+		char c = fgetc(f);
+
+		char prefabName[100] = "";
+
+		if (c == '#' || c == '\n')
+		{
+			if(c == '#')
+				fgets(buf, 512, f);
+
+			continue;
+		}
+
+		// Get prefab name
+		for (int j = 0; j < 100; j++)
+			{
+				if (c != ' ')
+					prefabName[j] = c;
+				else
+				{
+					prefabName[j] = '\0';
+					break;
+				}
+				c = fgetc(f);
+			}
+
+		glm::vec3 p, r;
+		
+
+		// Get prefab name
+		for (int j = 0; j < 300; j++)
+		{
+			if (c == 'P')
+			{
+				fgetc(f); //Get rid of (
+				fscanf(f, "%f,%f,%f", &p.x, &p.y, &p.z);
+				fgetc(f); //Get rid of )
+			}
+			else if (c == 'R')
+			{
+				fgetc(f); //Get rid of (
+				fscanf(f, "%f,%f,%f", &r.x, &r.y, &r.z);
+				
+				// Rotation is the last thing read, get out of loop
+				fgets(buf, 512, f);
+				break;
+			}
+
+			c = fgetc(f);
+		}	
+
+		GameObject* b = PrefabFactory::GetPrefabByName(prefabName);
+		if (b != nullptr)
+		{
+
+			b->transform.SetPosition(p);
+			b->transform.SetRotation(r);
+			objs.push_back(b);
+		}
+		else
+			Logger::LogError("Wrong prefab name in file", absolutePathToFile,": ",prefabName);
+	}
+	fclose(f);
+
+	return objs;
+
+}
+

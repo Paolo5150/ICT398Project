@@ -188,9 +188,8 @@ vec3 CalculateDirectionalLights(vec3 N, vec3 V, vec3 F0, vec3 albedo, float meta
 			
 		vec3 numerator    = NDF * G * F;
 		float denominator = 4.0 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0);
-		vec3 specular     = allDirLights[i].specularColor * allDirLights[i].intensity * numerator / max(denominator, 0.001);  
-				
-			// add to outgoing radiance Lo
+		vec3 specular     = allDirLights[i].intensity * allDirLights[i].specularColor * allDirLights[i].intensity * numerator / max(denominator, 0.001);  
+		
 		float NdotL = max(dot(N, L), 0.0);                
 		Lo += (kD * albedo / PI + specular) * radiance * NdotL; 
 	}
@@ -226,7 +225,7 @@ vec3 CalculatePointLights(vec3 N, vec3 V, vec3 F0, vec3 albedo, float metallic, 
 			
 		vec3 numerator    = NDF * G * F;
 		float denominator = 4.0 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0);
-		vec3 specular     = allPointLights[i].intensity * allPointLights[i].specularColor * numerator / max(denominator, 0.001);  
+		vec3 specular     = attenuation * allPointLights[i].intensity * allPointLights[i].specularColor * numerator / max(denominator, 0.001);  
 				
 			// add to outgoing radiance Lo
 		float NdotL = max(dot(N, L), 0.0);                
