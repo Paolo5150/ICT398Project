@@ -18,16 +18,15 @@ void BoxCollider::Update()
 {
 	Collider::Update();
 
-	CalculateCubicDimensions();
+	//CalculateCubicDimensions(); // For dynamic objet, it should be recalculated every frame
+
+	// Debug
 	glm::vec3 min;
 	glm::vec3 max;
 	GetWorldCubicMinMaxPoint(min, max);
 	DiagRenderer::Instance().RenderSphere(min, 0.5,glm::vec3(0));
 	DiagRenderer::Instance().RenderSphere(max, 0.5);
 
-
-	/*float w = abs(GetMaxPoint().x - GetMinPoint().x);
-	Logger::LogInfo("Width flat", w);*/
 }
 
 void BoxCollider::GetWorldCubicMinMaxPoint(glm::vec3& min, glm::vec3& max)
