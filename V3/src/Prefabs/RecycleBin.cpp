@@ -30,11 +30,6 @@ RecycleBin::RecycleBin() : GameObject("RecycleBin")
 
 	GetChild(1)->ApplyMaterial(m);
 	GetChild(0)->ApplyMaterial(m2);
-
-
-
-	PrintHierarchy();
-
 }
 
 RecycleBin::~RecycleBin()
