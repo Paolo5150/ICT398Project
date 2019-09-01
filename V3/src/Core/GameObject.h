@@ -6,8 +6,11 @@
 #include <string>
 #include "..\Rendering\Material.h"
 #include "..\Utils\Asset.h"
+#include "..\Core\Collision.h"
 
 class Component;
+class Collider;
+
 class Shader;
 class Camera;
 class Scene;
@@ -246,6 +249,18 @@ public:
 	GameObject* GetChild(std::string childName) const;
 
 	/**
+* @brief		Retrieves a child of the GameObject
+*
+* @pre			The GameObject must exist
+* @post			A child of the GameObject will be retrieved, or a nullptr if there is no child
+*
+* @param		childName		Name of child to search for
+*
+* @return		A child of the GameObject, or nullptr if it has no child with that name
+*/
+	GameObject* GetChild(unsigned index) const;
+
+	/**
 	* @brief		Retrieves a component in the GameObject
 	*
 	* @pre			The GameObject must exist
@@ -416,7 +431,10 @@ public:
 
 	bool GetIsSelfManaged() { return _isSelfManaged; }
 
-	virtual void OnCollision(GameObject* go, glm::vec3 collisionPoint, glm::vec3 collisionNormal){};
+	virtual void OnCollisionEnter(Collider* go, Collision collision){};
+	virtual void OnCollisionStay(Collider* go, Collision collision) {};
+	virtual void OnCollisionExit(Collider* go, Collision collision) {};
+
 
 	virtual void OnAddToScene(Scene& theScene);
 

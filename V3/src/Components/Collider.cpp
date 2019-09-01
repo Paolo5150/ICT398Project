@@ -8,7 +8,12 @@ Collider::Collider(std::string name) : transform(Transform(GetParent())), Compon
 	enableRender = 0;
 	collisionLayer = CollisionLayers::DEFAULT;
 	collideAgainstLayer = CollisionLayers::DEFAULT;
-	collisionCallback = nullptr;
+	OnCollisionEnterCallback = nullptr;
+	OnCollisionStayCallback = nullptr;
+	OnCollisionExitCallback = nullptr;
+	cubicDimension = glm::vec3();
+
+	mass = 1;
 }
 
 
@@ -29,6 +34,9 @@ void Collider::Start()
 	transform.UpdateHierarchy();
 	if(_parent->GetIsStatic())
 		PhysicsWorld::Instance().AddCollider(this);
+
+	CalculateMomentOfIntertia();
+	CalculateCubicDimensions();
 }
 
 void Collider::OnAttach(GameObject* go)
@@ -38,8 +46,14 @@ void Collider::OnAttach(GameObject* go)
 	meshRenderer->transform = &transform;
 	meshRenderer->SetParent(go);
 
-	if(collisionCallback == nullptr)
-		collisionCallback = std::bind(&GameObject::OnCollision, go, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+	if(OnCollisionEnterCallback == nullptr)
+		OnCollisionEnterCallback = std::bind(&GameObject::OnCollisionEnter, go, std::placeholders::_1, std::placeholders::_2);
+
+	if (OnCollisionStayCallback == nullptr)
+		OnCollisionStayCallback = std::bind(&GameObject::OnCollisionStay, go, std::placeholders::_1, std::placeholders::_2);
+
+	if (OnCollisionExitCallback == nullptr)
+		OnCollisionExitCallback = std::bind(&GameObject::OnCollisionExit, go, std::placeholders::_1, std::placeholders::_2);
 
 	meshRenderer->AddPreRenderCallback([](Camera& cam, Shader* s){		
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -53,8 +67,6 @@ void Collider::OnAttach(GameObject* go)
 	});
 
 	Initialize();
-	
-	
 	
 }
 

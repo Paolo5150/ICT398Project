@@ -164,7 +164,6 @@ protected:
 	*/
 	std::unique_ptr<Skybox> skybox;
 
-
 };
 
 template <class T>

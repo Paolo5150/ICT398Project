@@ -12,7 +12,7 @@
 #include "..\Lighting\LightingManager.h"
 #include "..\GUI\GUIManager.h"
 #include "..\Physics\PhysicsWorld.h"
-
+#include "..\Diag\DiagRenderer.h"
 
 void Core::Initialize()
 {
@@ -138,7 +138,6 @@ bool Core::LateUpdate(Event* e)
 
 	m_runningApplication->AppLateUpdate();
 	RenderingEngine::Instance().ClearRendererList();
-
 	Input::Update();
 	return 0;
 }

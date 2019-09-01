@@ -6,7 +6,7 @@
 
 Chair::Chair() : GameObject("Chair")
 {
-	//SetIsStatic(false);
+	SetIsStatic(1);
 	ContentManager::Instance().GetAsset<Model>("Chair")->PopulateGameObject(this);
 	transform.SetScale(1.5);
 	Material m;
@@ -36,15 +36,28 @@ void Chair::Start()
 
 	LoadCollidersFromFile("Assets\\Colliders\\Chair.txt");
 
-	Rigidbody* rb = new Rigidbody();
+	/*Rigidbody* rb = new Rigidbody();
 	rb->UseGravity(true);
 
-	AddComponent(rb);
+	AddComponent(rb);*/
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider
 						 // has been added.
 }
 
-void Chair::OnCollision(GameObject* g, glm::vec3 collPoint, glm::vec3 collNormal)
+void Chair::OnCollisionEnter(Collider* g, Collision collision)
 {
-	Logger::LogInfo("Collided against", g->GetName());
+	Logger::LogInfo("CHAIR Collided ENTER against", g->GetName());
+
 }
+
+void Chair::OnCollisionExit(Collider* g, Collision collision)
+{
+	Logger::LogInfo("CHAIR Collided EXIT against", g->GetName());
+
+}
+void Chair::OnCollisionStay(Collider* g, Collision collision)
+{
+	//Logger::LogInfo("CHAIR Collided STAY against", g->GetName());
+
+}
+

@@ -18,5 +18,9 @@ void SphereCollider::Update()
 {
 	Collider::Update();
 }
+void SphereCollider::CalculateMomentOfIntertia()
+{
 
+ //Currently not implemented
 
+}

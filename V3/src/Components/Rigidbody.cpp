@@ -68,6 +68,11 @@ void Rigidbody::UseGravity(bool gravityEnabled)
 	useGravity = gravityEnabled;
 }
 
+bool Rigidbody::GetUseGravity()
+{
+	return useGravity;
+}
+
 void Rigidbody::SetAngularVelocity(float x, float y, float z)
 {
 	angVelocity = glm::vec3(x, y, z);

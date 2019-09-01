@@ -176,6 +176,7 @@
     <ClInclude Include="src\Core\Camera.h" />
     <ClInclude Include="src\Core\CameraOrthogonal.h" />
     <ClInclude Include="src\Core\CameraPerspective.h" />
+    <ClInclude Include="src\Core\Collision.h" />
     <ClInclude Include="src\Core\Component.h" />
     <ClInclude Include="src\Core\Core.h" />
     <ClInclude Include="src\Core\GameObject.h" />
@@ -185,6 +186,9 @@
     <ClInclude Include="src\Core\Transform.h" />
     <ClInclude Include="src\Core\ColliderInfo.h" />
     <ClInclude Include="src\Core\Window.h" />
+    <ClInclude Include="src\Diag\DiagPrefab.h" />
+    <ClInclude Include="src\Diag\DiagRenderer.h" />
+    <ClInclude Include="src\Diag\DiagSphere.h" />
     <ClInclude Include="src\Events\ApplicationEvents.h" />
     <ClInclude Include="src\Events\Event.h" />
     <ClInclude Include="src\Events\EventDispatcher.h" />
@@ -213,7 +217,9 @@
     <ClInclude Include="src\Prefabs\Bench.h" />
     <ClInclude Include="src\Prefabs\Box.h" />
     <ClInclude Include="src\Prefabs\Chair.h" />
+    <ClInclude Include="src\Prefabs\LandfillBin.h" />
     <ClInclude Include="src\Prefabs\MainCamera.h" />
+    <ClInclude Include="src\Prefabs\RecycleBin.h" />
     <ClInclude Include="src\Prefabs\Table.h" />
     <ClInclude Include="src\Prefabs\Terrain.h" />
     <ClInclude Include="src\Rendering\API_Opengl.h" />
@@ -254,6 +260,7 @@
     <ClInclude Include="src\Utils\AssimpWrapper.h" />
     <ClInclude Include="src\Utils\FileUtils.h" />
     <ClInclude Include="src\Utils\Maths.h" />
+    <ClInclude Include="src\Utils\PrefabFactory.h" />
     <ClInclude Include="src\Utils\Quadtree.h" />
     <ClInclude Include="src\Utils\UBOLibrary.h" />
   </ItemGroup>
@@ -267,6 +274,7 @@
     <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Core\Camera.cpp" />
     <ClCompile Include="src\Core\CameraPerspective.cpp" />
+    <ClCompile Include="src\Core\Collision.cpp" />
     <ClCompile Include="src\Core\Component.cpp" />
     <ClCompile Include="src\Core\Core.cpp" />
     <ClCompile Include="src\Core\GameObject.cpp" />
@@ -275,6 +283,8 @@
     <ClCompile Include="src\Core\Timer.cpp" />
     <ClCompile Include="src\Core\Transform.cpp" />
     <ClCompile Include="src\Core\Window.cpp" />
+    <ClCompile Include="src\Diag\DiagPrefab.cpp" />
+    <ClCompile Include="src\Diag\DiagRenderer.cpp" />
     <ClCompile Include="src\Events\EventDispatcher.cpp" />
     <ClCompile Include="src\GUI\Elements\GUICanvas.cpp" />
     <ClCompile Include="src\GUI\GUIManager.cpp" />
@@ -317,7 +327,9 @@
     <ClCompile Include="src\Prefabs\Bench.cpp" />
     <ClCompile Include="src\Prefabs\Box.cpp" />
     <ClCompile Include="src\Prefabs\Chair.cpp" />
+    <ClCompile Include="src\Prefabs\LandfillBin.cpp" />
     <ClCompile Include="src\Prefabs\MainCamera.cpp" />
+    <ClCompile Include="src\Prefabs\RecycleBin.cpp" />
     <ClCompile Include="src\Prefabs\Table.cpp" />
     <ClCompile Include="src\Prefabs\Terrain.cpp" />
     <ClCompile Include="src\Rendering\API_Opengl.cpp" />

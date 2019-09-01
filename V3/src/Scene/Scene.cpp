@@ -168,3 +168,4 @@ bool Scene::RemoveGameobjectsByName(std::string name)
 
 	return deleted;
 }
+

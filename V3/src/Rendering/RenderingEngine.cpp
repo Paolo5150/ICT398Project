@@ -11,7 +11,7 @@
 #include "..\Utils\ContentManager.h"
 //#include "..\GUI\GUIElements\GUIManager.h"
 #include "PostProcessor.h"
-
+#include "..\Diag\DiagRenderer.h"
 #include <algorithm>
 std::vector<Renderer*> RenderingEngine::allRenderers;
 bool RenderingEngine::godRays;
@@ -102,10 +102,15 @@ void RenderingEngine::RenderBufferToTexture(MaterialType mt )
 	PostProcessor::Instance().BindFrameBuffer();
 	Core::Instance().GetGraphicsAPI().ClearColorBuffer();
 	Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
+
+	Camera* mainCam = nullptr;
 	//Render opaque
 	for (int camIndex = 0; camIndex < Camera::GetAllCameras().size(); camIndex++)
 	{
 		Camera& cam = *Camera::GetAllCameras()[camIndex];
+
+		if (cam.name == "Main Camera")
+			mainCam = &cam;
 
 		if (!cam.GetActive()) continue;
 
@@ -116,9 +121,14 @@ void RenderingEngine::RenderBufferToTexture(MaterialType mt )
 		previousDepth = cam.GetDepth();
 
 	}
-	Core::Instance().GetGraphicsAPI().ResetTextures();
-	PostProcessor::Instance().UnbindFrameBuffer();
+
+	if (mainCam)
+	{
+		DiagRenderer::Instance().RenderAll(*mainCam);
+	}
 	
+	Core::Instance().GetGraphicsAPI().ResetTextures();
+	PostProcessor::Instance().UnbindFrameBuffer();	
 	PostProcessor::Instance().RenderToScreen();
 
 	glActiveTexture(GL_TEXTURE0);
@@ -224,6 +234,7 @@ void RenderingEngine::RenderVectorOverrideColor(Camera& cam, std::vector<Rendere
 void RenderingEngine::ClearRendererList()
 {
 	allRenderers.clear();
+	DiagRenderer::Instance().ClearAll();
 
 }
 

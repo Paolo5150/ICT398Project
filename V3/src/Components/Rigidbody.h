@@ -141,6 +141,7 @@ public:
 	* @param		useGravity		whether the Rigidbody should be affected by gravity
 	*/
 	void UseGravity(bool gravityEnabled);
+	bool GetUseGravity();
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	//-- Angular Velocity --//

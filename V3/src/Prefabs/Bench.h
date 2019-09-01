@@ -12,7 +12,8 @@ public:
 
 	void Update() override;
 	void Start() override;
-	void OnCollision(GameObject* g, glm::vec3 collPoint, glm::vec3 collNormal) override;
+	void OnCollisionEnter(Collider* g, Collision collision) override;
+	void OnCollisionStay(Collider* g, Collision collision) override;
 
 private:
 

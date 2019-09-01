@@ -4,6 +4,8 @@ class BoxCollider;
 class SphereCollider;
 class Collider;
 
+#include "..\Core\Collision.h"
+
 #include <cmath>
 
 /**
@@ -79,8 +81,6 @@ public:
 	* @param box2 The second box collider
 	*/
 	static bool getSeparatingPlane(glm::vec3 pos, glm::vec3 Plane, BoxCollider* box1, BoxCollider* box2);
-
-
 	/**
 	* @brief Helpler method to detect OBB collision
 	* @pre  The colliders must exists
@@ -133,12 +133,12 @@ public:
 	* @return The world space point of collision, or as close as possible
 	*/
 	static glm::vec3 getCollisionPoint(SphereCollider* s, SphereCollider* b);
-
 	static glm::vec3 getCollisionNormal(glm::vec3 point, Collider* col);
 	static glm::vec3 getCollisionNormal(glm::vec3 point, SphereCollider* col);
 	static glm::vec3 getCollisionNormal(glm::vec3 point, BoxCollider* col);
 
 private:
+	
 	/**
 	* @brief Helper method for determining if the given point exists within the bounds of the box collider
 	* @pre  The collider must exists

@@ -21,12 +21,12 @@ void MainCamera::Update()
 
 	if (Input::GetKeyDown(GLFW_KEY_KP_ADD))
 	{
-		m_movementSpeed += 0.2;
+		m_movementSpeed += 0.5;
 	}
 
 	if (Input::GetKeyDown(GLFW_KEY_KP_SUBTRACT))
 	{
-		m_movementSpeed = m_movementSpeed < 0 ? 0 : m_movementSpeed - 0.2;
+		m_movementSpeed = m_movementSpeed < 0 ? 0 : m_movementSpeed - 0.5;
 	}
 
 	if (Input::GetKeyDown(GLFW_KEY_W) == true && Input::GetKeyDown(GLFW_KEY_S) == false)

@@ -91,7 +91,17 @@ public:
 	/**
 	* @brief		Overridable function pointer invoked when collision occurs
 	*/
-	std::function<void(GameObject*, glm::vec3, glm::vec3)> collisionCallback;
+	std::function<void(Collider*, Collision)> OnCollisionEnterCallback;
+
+	/**
+	* @brief		Overridable function pointer invoked when collision occurs
+	*/
+	std::function<void(Collider*, Collision)> OnCollisionStayCallback;
+
+	/**
+* @brief		Overridable function pointer invoked when collision occurs
+*/
+	std::function<void(Collider*, Collision)> OnCollisionExitCallback;
 
 
 	/**
@@ -159,7 +169,20 @@ public:
 	*/
 	unsigned GetCollideAgainstLayer() { return collideAgainstLayer; }
 
+	void SetMass(float m) { mass = glm::abs(m); CalculateMomentOfIntertia(); }
+	float GetMass() { return mass; }
+
+	glm::vec3& GetMomentOfIntertia() { return momentOfIntertia; };
+
+	virtual void CalculateCubicDimensions() { cubicDimension = glm::vec3(); };
+	glm::vec3 cubicDimension;
+
+	
+	std::list<Collider*> collidersInCollision;
 protected:
+
+	virtual void CalculateMomentOfIntertia() = 0;
+	float mass;
 	/**
 	* @brief		The collision layer
 	*/
@@ -169,4 +192,8 @@ protected:
 	* @brief		The collision layer the collider can collide against
 	*/
 	int collideAgainstLayer;
+
+	glm::vec3 momentOfIntertia;
+
+
 };

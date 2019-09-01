@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "BoxCollider.h"
 #include "..\Utils\ContentManager.h"
+#include "..\Diag\DiagRenderer.h"
 
 void BoxCollider::InitializeMeshRenderer()
 {
@@ -16,31 +17,63 @@ void BoxCollider::InitializeMeshRenderer()
 void BoxCollider::Update()
 {
 	Collider::Update();
+
+
+	/*float w = abs(GetMaxPoint().x - GetMinPoint().x);
+	Logger::LogInfo("Width flat", w);*/
 }
 
-
-std::vector<glm::vec3> BoxCollider::GetWorldPoints()
+void BoxCollider::CalculateCubicDimensions()
 {
-	glm::vec3 p0 = transform.GetGlobalPosition() + glm::vec3(transform.GetGlobalScale().x / 2, transform.GetGlobalScale().y / 2, transform.GetGlobalScale().z / 2);
-	glm::vec3 p1 = transform.GetGlobalPosition() + glm::vec3(transform.GetGlobalScale().x / 2, transform.GetGlobalScale().y / 2, -transform.GetGlobalScale().z / 2);
-	glm::vec3 p2 = transform.GetGlobalPosition() + glm::vec3(transform.GetGlobalScale().x / 2, -transform.GetGlobalScale().y / 2, transform.GetGlobalScale().z / 2);
-	glm::vec3 p3 = transform.GetGlobalPosition() + glm::vec3(transform.GetGlobalScale().x / 2, -transform.GetGlobalScale().y / 2, -transform.GetGlobalScale().z / 2);
-	glm::vec3 p4 = transform.GetGlobalPosition() + glm::vec3(-transform.GetGlobalScale().x / 2, transform.GetGlobalScale().y / 2, transform.GetGlobalScale().z / 2);
-	glm::vec3 p5 = transform.GetGlobalPosition() + glm::vec3(-transform.GetGlobalScale().x / 2, transform.GetGlobalScale().y / 2, -transform.GetGlobalScale().z / 2);
-	glm::vec3 p6 = transform.GetGlobalPosition() + glm::vec3(-transform.GetGlobalScale().x / 2, -transform.GetGlobalScale().y / 2, transform.GetGlobalScale().z / 2);
-	glm::vec3 p7 = transform.GetGlobalPosition() + glm::vec3(-transform.GetGlobalScale().x / 2, -transform.GetGlobalScale().y / 2, -transform.GetGlobalScale().z / 2);
+	transform.UpdateHierarchy();
+	glm::vec3 min = GetMinPoint();
+	glm::vec3 max = GetMaxPoint();
 
-	std::vector<glm::vec3> r;
-	r.push_back(p0);
-	r.push_back(p1);
-	r.push_back(p2);
-	r.push_back(p3);
-	r.push_back(p4);
-	r.push_back(p5);
-	r.push_back(p6);
-	r.push_back(p7);
-	return r;
-
-
+	this->cubicDimension.x = abs(max.x - min.x);
+	this->cubicDimension.y = abs(max.y - min.y);
+	this->cubicDimension.z = abs(max.z - min.z);
 }
 
+
+glm::vec3 BoxCollider::GetMinPoint()
+{
+
+	glm::vec3 p = transform.GetGlobalPosition() - (transform.GetLocalRight() * transform.GetGlobalScale().x)
+		- (transform.GetLocalUp() * transform.GetGlobalScale().y)
+		- (transform.GetLocalFront() * transform.GetGlobalScale().z);
+
+	//DiagRenderer::Instance().RenderSphere(p, 0.5);
+
+
+	return p;
+}
+
+glm::vec3 BoxCollider::GetMaxPoint()
+{
+
+	glm::vec3 p = transform.GetGlobalPosition() + (transform.GetLocalRight() * transform.GetGlobalScale().x)
+		+ (transform.GetLocalUp() * transform.GetGlobalScale().y)
+		+ (transform.GetLocalFront() * transform.GetGlobalScale().z);
+	//DiagRenderer::Instance().RenderSphere(p, 0.5);
+
+	return p;
+}
+
+
+void BoxCollider::CalculateMomentOfIntertia()
+{
+
+	glm::vec3 min = GetMinPoint();
+	glm::vec3 max = GetMaxPoint();
+
+	float a = abs(max.y - min.y);
+	float b = abs(max.x - min.x);
+	float l = abs(max.z - min.z);
+	
+	momentOfIntertia.x = (1 / 12.0f) * mass * (a * a + l * l);
+	momentOfIntertia.y = (1 / 12.0f) * mass * (b * b + l * l);
+	momentOfIntertia.z = (1 / 12.0f) * mass * (a * a + b * b);
+
+	//Logger::LogInfo("Intertia:", Maths::Vec3ToString(momentOfIntertia));
+
+}

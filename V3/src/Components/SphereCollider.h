@@ -48,5 +48,7 @@ public:
 	* @brief		Initialize collider
 	*/
 	void Initialize(){ transform.SetIgnoreParentRotation(1); };
+	virtual void CalculateMomentOfIntertia() override;
+
 
 };
