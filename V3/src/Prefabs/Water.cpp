@@ -60,7 +60,7 @@ void Water::Initialize(Texture2D* normalMap, Texture2D* distortion)
 	material.LoadCubemap(&SceneManager::Instance().GetCurrentScene().GetSkyBox()->GetCubeMap(),"cubemap0");
 
 	transform.SetRotation(-90, 0, 0);
-	material.LoadFloat("shininess", 200.0f);
+	material.LoadFloat("shininess", 300.0f);
 	material.SetColor(0.8, 0.8f, 1.0f);
 
 	material.LoadFloat("UVScale", 3.0f);

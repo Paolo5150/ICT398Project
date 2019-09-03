@@ -19,8 +19,8 @@ SimpleScene::SimpleScene() : Scene("SimpleScene")
 
 void SimpleScene::LoadAssets() {
 
-	//ContentManager::Instance().LoadModel("Assets\\Models\\Bench\\bench.obj", false, false);
-//	ContentManager::Instance().LoadModel("Assets\\Models\\Table\\table.fbx", false, false);
+	ContentManager::Instance().LoadModel("Assets\\Models\\Bench\\bench.obj", false, false);
+	ContentManager::Instance().LoadModel("Assets\\Models\\Table\\table.fbx", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Chair\\chair.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\LandfillBin\\landfillbin.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\RecycleBin\\recyclebin.obj", false, false);
@@ -36,7 +36,7 @@ void SimpleScene::LoadAssets() {
 	ContentManager::Instance().LoadCubeMap("Assets\\SkyBoxes\\SunSet");
 
 
-/*	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_albedo.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_albedo.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_roughness.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_metallic.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_normal.jpg", 0);	
@@ -45,12 +45,10 @@ void SimpleScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_roughness.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_metallic.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_normal.jpg", 0);
-	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_ao.jpg", 0);*/
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_ao.jpg", 0);
 
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\water_normal.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\dudv.png", 0);
-
-
 
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_albedo.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_roughness.jpg", 0);
@@ -83,7 +81,16 @@ void SimpleScene::Initialize() {
 	
 	DirectionalLight* dirLight = new DirectionalLight(false);
 	dirLight->transform.SetRotation(30,114,-4);
+	dirLight->SetDiffuseColor(1.0, 0.9, 0.9);
+	dirLight->SetSpecularColor(1.0, 0.8, 0.4);
 	dirLight->SetIntensity(1.5);
+
+	DirectionalLight* dirLight2 = new DirectionalLight(false);
+	dirLight2->transform.SetRotation(90,0,0);
+	dirLight2->SetSpecularColor(1.0, 0.8, 0.4);
+
+	dirLight2->SetIntensity(0.2);
+
 
 	PointLight* pointLight = new PointLight();
 
@@ -96,6 +103,8 @@ void SimpleScene::Initialize() {
 	
 	AddGameObject(cam);
 	AddGameObject(dirLight);
+	AddGameObject(dirLight2);
+
 	AddGameObject(pointLight);
 	AddGameObject(water);
 
