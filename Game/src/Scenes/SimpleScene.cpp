@@ -89,7 +89,7 @@ void SimpleScene::Initialize() {
 
 	pointLight->SetIntensity(10);
 	pointLight->transform.SetPosition(5, 10, 5);
-	pointLight->SetDiffuseColor(0, 1, 0);
+
 
 	Water* water = new Water();
 	water->transform.SetScale(100, 100, 1);
