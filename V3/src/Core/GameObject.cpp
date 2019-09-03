@@ -11,7 +11,7 @@
 #include "ColliderInfo.h"
 
 
-GameObject::GameObject(std::string name, bool isActive, unsigned int layer, GameObject* parent) : transform(Transform(this))
+GameObject::GameObject(std::string name, bool isActive, unsigned int layer, GameObject* parent)
 {
 	SetName(name);
 	SetActive(isActive);

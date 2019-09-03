@@ -6,7 +6,7 @@
 
 RecycleBin::RecycleBin() : GameObject("RecycleBin")
 {
-	SetIsStatic(0);
+	SetIsStatic(1);
 	ContentManager::Instance().GetAsset<Model>("RecycleBin")->PopulateGameObject(this);
 	transform.SetScale(2);
 
@@ -30,11 +30,6 @@ RecycleBin::RecycleBin() : GameObject("RecycleBin")
 
 	GetChild(1)->ApplyMaterial(m);
 	GetChild(0)->ApplyMaterial(m2);
-
-
-
-	PrintHierarchy();
-
 }
 
 RecycleBin::~RecycleBin()

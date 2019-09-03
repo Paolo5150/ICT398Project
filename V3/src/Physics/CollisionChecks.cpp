@@ -3,6 +3,8 @@
 #include "..\Components\BoxCollider.h"
 #include "..\Components\SphereCollider.h"
 
+#include "..\Diag\DiagRenderer.h"
+
 bool CollisionChecks::Collision(Collider* s, Collider* b)
 {
 	if (s->colliderType == Collider::BOX && b->colliderType == Collider::BOX)
@@ -100,7 +102,7 @@ glm::vec3 CollisionChecks::getCollisionPoint(BoxCollider * box1, BoxCollider * b
 	static glm::vec3 RPos;
 	RPos = box2->transform.GetGlobalPosition() - box1->transform.GetGlobalPosition();
 
-	std::vector<glm::vec3> vertices = box1->GetWorldPoints();
+	std::vector<glm::vec3> vertices = box1->GetBoxPoints();
 
 	std::vector<glm::vec3> collisionPoints = std::vector<glm::vec3>();
 
@@ -111,10 +113,11 @@ glm::vec3 CollisionChecks::getCollisionPoint(BoxCollider * box1, BoxCollider * b
 			collisionPoints.push_back(vertices[i]);
 	}
 
-	vertices = box2->GetWorldPoints();
+	vertices = box2->GetBoxPoints();
 
 	for (int i = 0; i < vertices.size(); i++)
 	{
+		DiagRenderer::Instance().RenderSphere(vertices[i]);
 		if (isPointInBox(vertices[i], box1))
 			collisionPoints.push_back(vertices[i]);
 	}
@@ -122,6 +125,7 @@ glm::vec3 CollisionChecks::getCollisionPoint(BoxCollider * box1, BoxCollider * b
 	float avgX = 0, avgY = 0, avgZ = 0;
 	for (int i = 0; i < collisionPoints.size(); i++)
 	{
+		DiagRenderer::Instance().RenderSphere(collisionPoints[i]);
 		avgX += collisionPoints[i].x / collisionPoints.size();
 		avgY += collisionPoints[i].y / collisionPoints.size();
 		avgZ += collisionPoints[i].z / collisionPoints.size();

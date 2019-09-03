@@ -6,7 +6,7 @@
 Table::Table() : GameObject("Table")
 {
 	//SetIsStatic(false);
-	ContentManager::Instance().GetAsset<Model>("Table")->PopulateGameObject(this);
+	//ContentManager::Instance().GetAsset<Model>("Table")->PopulateGameObject(this);
 	transform.SetScale(0.1);
 	Material m;
 	m.SetShader(ContentManager::Instance().GetAsset<Shader>("PBR"));

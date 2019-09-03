@@ -18,37 +18,94 @@ void BoxCollider::Update()
 {
 	Collider::Update();
 
+	//CalculateCubicDimensions(); // For dynamic objet, it should be recalculated every frame
 
-	/*float w = abs(GetMaxPoint().x - GetMinPoint().x);
-	Logger::LogInfo("Width flat", w);*/
+	// Debug
+	/*glm::vec3 min;
+	glm::vec3 max;
+	GetWorldCubicMinMaxPoint(min, max);
+	DiagRenderer::Instance().RenderSphere(min, 0.5,glm::vec3(0));
+	DiagRenderer::Instance().RenderSphere(max, 0.5);*/
+
 }
+
+void BoxCollider::GetWorldCubicMinMaxPoint(glm::vec3& min, glm::vec3& max)
+{
+
+	std::vector<glm::vec3> points = GetBoxPoints();	
+	min = max = points[0];
+
+	for (int i = 0; i < points.size(); i++)
+	{
+		if (points[i].x < min.x)
+			min.x = glm::vec3(points[i]).x;
+		if (points[i].y < min.y)
+			min.y = glm::vec3(points[i]).y;
+		if (points[i].z< min.z)
+			min.z = glm::vec3(points[i]).z;
+
+		if (points[i].x > max.x)
+			max.x = glm::vec3(points[i]).x;
+		if (points[i].y > max.y)
+			max.y = glm::vec3(points[i]).y;
+		if (points[i].z > max.z)
+			max.z = glm::vec3(points[i]).z;
+	}
+}
+
 
 void BoxCollider::CalculateCubicDimensions()
 {
-	transform.UpdateHierarchy();
-	glm::vec3 min = GetMinPoint();
-	glm::vec3 max = GetMaxPoint();
+	//transform.UpdateHierarchy();
+	glm::vec3 min;
+	glm::vec3 max;
+	GetWorldCubicMinMaxPoint(min, max);
 
 	this->cubicDimension.x = abs(max.x - min.x);
 	this->cubicDimension.y = abs(max.y - min.y);
 	this->cubicDimension.z = abs(max.z - min.z);
 }
 
+std::vector<glm::vec3> BoxCollider::GetBoxPoints()
+{
+	std::vector<glm::vec3> result;
+	glm::vec3 right = transform.GetLocalRight() * transform.GetGlobalScale().x;
+	glm::vec3 front = transform.GetLocalFront() * transform.GetGlobalScale().z;
+	glm::vec3 up = transform.GetLocalUp() * transform.GetGlobalScale().y;
 
-glm::vec3 BoxCollider::GetMinPoint()
+
+	result.push_back(transform.GetGlobalPosition() - right - up - front);
+	result.push_back(transform.GetGlobalPosition() + right - up - front);
+	result.push_back(transform.GetGlobalPosition() - right + up - front);
+	result.push_back(transform.GetGlobalPosition() + right + up - front);
+	result.push_back(transform.GetGlobalPosition() - right - up + front);
+	result.push_back(transform.GetGlobalPosition() + right - up + front);
+	result.push_back(transform.GetGlobalPosition() - right + up + front);
+	result.push_back(transform.GetGlobalPosition() + right + up + front);
+
+	/*for (int i = 0; i < result.size(); i++)
+		DiagRenderer::Instance().RenderSphere(result[i], 0.5);*/
+
+	return result;
+
+}
+
+
+
+glm::vec3 BoxCollider::GetMinPointWorldSpace()
 {
 
 	glm::vec3 p = transform.GetGlobalPosition() - (transform.GetLocalRight() * transform.GetGlobalScale().x)
 		- (transform.GetLocalUp() * transform.GetGlobalScale().y)
 		- (transform.GetLocalFront() * transform.GetGlobalScale().z);
 
-	//DiagRenderer::Instance().RenderSphere(p, 0.5);
+	//DiagRenderer::Instance().RenderSphere(p, 0.5,glm::vec3(0,0,0));
 
 
 	return p;
 }
 
-glm::vec3 BoxCollider::GetMaxPoint()
+glm::vec3 BoxCollider::GetMaxPointWorldSpace()
 {
 
 	glm::vec3 p = transform.GetGlobalPosition() + (transform.GetLocalRight() * transform.GetGlobalScale().x)
@@ -63,8 +120,8 @@ glm::vec3 BoxCollider::GetMaxPoint()
 void BoxCollider::CalculateMomentOfIntertia()
 {
 
-	glm::vec3 min = GetMinPoint();
-	glm::vec3 max = GetMaxPoint();
+	glm::vec3 min = GetMinPointWorldSpace();
+	glm::vec3 max = GetMaxPointWorldSpace();
 
 	float a = abs(max.y - min.y);
 	float b = abs(max.x - min.x);

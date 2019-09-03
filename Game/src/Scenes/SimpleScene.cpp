@@ -66,7 +66,6 @@ void SimpleScene::QuitScene() {
 }
 void SimpleScene::Initialize() {
 
-	Timer::SetDisplayFPS(1);
 	LightManager::Instance().SetAmbientLight(0.00, 0.00, 0.00);
 
 	skybox = std::unique_ptr<Skybox>(new Skybox(ContentManager::Instance().GetAsset<CubeMap>("SunSet")));
@@ -80,7 +79,7 @@ void SimpleScene::Initialize() {
 	std::vector<GameObject*> objs = FileUtils::ReadSceneFile("Assets\\SceneFiles\\MainScene.txt");	
 
 	MainCamera* cam = new MainCamera();
-	cam->transform.SetPosition(0, 10, 50);
+	cam->transform.SetPosition(0, 10, 20);
 	cam->transform.SetRotation(0, 180, 0);
 	
 	DirectionalLight* dirLight = new DirectionalLight(false);
@@ -101,8 +100,6 @@ void SimpleScene::Initialize() {
 
 	for (int i = 0; i < objs.size(); i++)
 		AddGameObject(objs[i]);
-
-
 }
 
 void SimpleScene::Start()
@@ -116,7 +113,9 @@ void SimpleScene::Start()
 
 void SimpleScene::LogicUpdate()
 {
-	GetGameobjectsByName("LandfillBin")[0]->transform.Translate(0.02, 0, 0);
+	//GetGameobjectsByName("LandfillBin")[0]->transform.RotateBy(0.1, 0, 0, 1);
+	//GetGameobjectsByName("LandfillBin")[0]->transform.Translate(0.01, 0, 0);
+
 	((PointLight*)GetGameobjectsByName("PointLight")[0])->RenderDiag();
 	((PointLight*)GetGameobjectsByName("PointLight")[0])->transform.Translate(0, 0, 0.1);
 
@@ -125,7 +124,6 @@ void SimpleScene::LogicUpdate()
 
 	if (Input::GetKeyDown(GLFW_KEY_O))
 		SceneManager::Instance().LoadNewScene("OtherScene");
-
 
 	//int n = PhysicsWorld::Instance().nonStaticQuadtree->GameObjectInQuadrant(GetGameobjectsByName("LandfillBin")[0]->transform.GetPosition().x, GetGameobjectsByName("LandfillBin")[0]->transform.GetPosition().z);
 	

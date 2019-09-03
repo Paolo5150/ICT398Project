@@ -31,10 +31,6 @@ LandfillBin::LandfillBin() : GameObject("LandfillBin")
 	GetChild(0)->ApplyMaterial(m);
 	GetChild(1)->ApplyMaterial(m2);
 
-
-
-	PrintHierarchy();
-
 }
 
 LandfillBin::~LandfillBin()
