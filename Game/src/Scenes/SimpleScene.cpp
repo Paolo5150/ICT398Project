@@ -81,9 +81,9 @@ void SimpleScene::Initialize() {
 
 	PointLight* pointLight = new PointLight();
 
-	pointLight->SetIntensity(25);
+	pointLight->SetIntensity(100);
 	pointLight->transform.SetPosition(5, 0, 5);
-	pointLight->SetDiffuseColor(1, 0, 0);
+	pointLight->SetDiffuseColor(0, 1, 0);
 	
 	AddGameObject(cam);
 	AddGameObject(dirLight);
@@ -104,8 +104,8 @@ void SimpleScene::Start()
 
 void SimpleScene::LogicUpdate()
 {
-	GetGameobjectsByName("LandfillBin")[0]->transform.RotateBy(0.1, 0, 0, 1);
-	GetGameobjectsByName("LandfillBin")[0]->transform.Translate(0.01, 0, 0);
+	//GetGameobjectsByName("LandfillBin")[0]->transform.RotateBy(0.1, 0, 0, 1);
+	//GetGameobjectsByName("LandfillBin")[0]->transform.Translate(0.01, 0, 0);
 
 	((PointLight*)GetGameobjectsByName("PointLight")[0])->RenderDiag();
 	((PointLight*)GetGameobjectsByName("PointLight")[0])->transform.Translate(0, 0, 0.1);

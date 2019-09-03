@@ -18,7 +18,7 @@ void BoxCollider::Update()
 {
 	Collider::Update();
 
-	//CalculateCubicDimensions(); // For dynamic objet, it should be recalculated every frame
+	CalculateCubicDimensions(); // For dynamic objet, it should be recalculated every frame
 
 	// Debug
 	/*glm::vec3 min;

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CollisionChecks.h"
 #include "..\Components\BoxCollider.h"
+#include "..\Diag\DiagRenderer.h"
 #include "..\Components\SphereCollider.h"
 
 bool CollisionChecks::Collision(Collider* s, Collider* b)
@@ -60,9 +61,42 @@ bool CollisionChecks::getSeparatingPlane(glm::vec3 RPos, glm::vec3 Plane, BoxCol
 		glm::abs(glm::dot((box2->transform.GetLocalRight() *box2->transform.GetGlobalScale().x ), Plane)) + glm::abs(glm::dot((box2->transform.GetLocalUp() *box2->transform.GetGlobalScale().y ), Plane)) + glm::abs(glm::dot((box2->transform.GetLocalFront() *box2->transform.GetGlobalScale().z ), Plane)) ));
 }
 
+void SATtest(glm::vec3& axis, std::vector<glm::vec3> ptSet, float& minAlong, float& maxAlong)
+{
+	minAlong = HUGE, maxAlong = -HUGE;
+	
+	for (int i = 0; i < ptSet.size(); i++)
+	{
+		// just dot it to get the min/max along this axis.
+		float dotVal = glm::dot(ptSet[i],axis);
+		if (dotVal < minAlong)
+		{
+			minAlong = dotVal;
+
+		}
+		if (dotVal > maxAlong) 
+		{ 
+			maxAlong = dotVal;
+		}
+	}
+}
+
+
+
+inline bool isBetweenOrdered(float val, float lowerBound, float upperBound) {
+	return lowerBound < val && val < upperBound;
+}
+
+bool overlaps(float min1, float max1, float min2, float max2)
+{
+	return isBetweenOrdered(min2, min1, max1) || isBetweenOrdered(min1, min2, max2);
+}
+
+
+
 bool CollisionChecks::getCollision(BoxCollider* box1, BoxCollider* box2)
 {
-	static glm::vec3 RPos;
+	/*static glm::vec3 RPos;
 	RPos = box2->transform.GetGlobalPosition() - box1->transform.GetGlobalPosition();
 
 	//Logger::LogInfo("Box front", box2->transform.VectorsToString());
@@ -75,7 +109,69 @@ bool CollisionChecks::getCollision(BoxCollider* box1, BoxCollider* box2)
 		getSeparatingPlane(RPos, glm::int3(box1->transform.GetLocalUp()) ^ glm::int3(box2->transform.GetLocalUp()), box1, box2) || getSeparatingPlane(RPos, glm::int3(box1->transform.GetLocalUp()) ^ glm::int3(box2->transform.GetLocalFront()), box1, box2) ||
 		getSeparatingPlane(RPos, glm::int3(box1->transform.GetLocalFront()) ^ glm::int3(box2->transform.GetLocalRight()), box1, box2) || getSeparatingPlane(RPos, glm::int3(box1->transform.GetLocalFront()) ^ glm::int3(box2->transform.GetLocalUp()), box1, box2) ||
 		getSeparatingPlane(RPos, glm::int3(box1->transform.GetLocalFront()) ^ glm::int3(box2->transform.GetLocalFront()), box1, box2)) return false;
+		
+	return 1;*/
 
+		float shape1Min = 0;
+		float shape1Max = 0;
+		float shape2Min = 0;
+		float shape2Max = 0;
 
-	return true;
+		// B1 right
+		SATtest(box1->transform.GetLocalRight(), box1->GetBoxPoints(), shape1Min, shape1Max);
+		SATtest(box1->transform.GetLocalRight(), box2->GetBoxPoints(), shape2Min, shape2Max);
+
+		if (!overlaps(shape1Min, shape1Max, shape2Min, shape2Max))
+		{
+			return 0; // NO INTERSECTION
+		}
+
+		// B1 front
+		SATtest(box1->transform.GetLocalFront(), box1->GetBoxPoints(), shape1Min, shape1Max);
+		SATtest(box1->transform.GetLocalFront(), box2->GetBoxPoints(), shape2Min, shape2Max);
+
+		if (!overlaps(shape1Min, shape1Max, shape2Min, shape2Max))
+		{
+			return 0; // NO INTERSECTION
+		}
+
+		// B1 up
+		SATtest(box1->transform.GetLocalUp(), box1->GetBoxPoints(), shape1Min, shape1Max);
+		SATtest(box1->transform.GetLocalUp(), box2->GetBoxPoints(), shape2Min, shape2Max);
+
+		if (!overlaps(shape1Min, shape1Max, shape2Min, shape2Max))
+		{
+			return 0; // NO INTERSECTION
+		}
+
+		// TEST SHAPE2.normals as well
+				// B2 right
+		SATtest(box2->transform.GetLocalRight(), box1->GetBoxPoints(), shape1Min, shape1Max);
+		SATtest(box2->transform.GetLocalRight(), box2->GetBoxPoints(), shape2Min, shape2Max);
+
+		if (!overlaps(shape1Min, shape1Max, shape2Min, shape2Max))
+		{
+			return 0; // NO INTERSECTION
+		}
+
+		// B2 front
+		SATtest(box2->transform.GetLocalFront(), box1->GetBoxPoints(), shape1Min, shape1Max);
+		SATtest(box2->transform.GetLocalFront(), box2->GetBoxPoints(), shape2Min, shape2Max);
+
+		if (!overlaps(shape1Min, shape1Max, shape2Min, shape2Max))
+		{
+			return 0; // NO INTERSECTION
+		}
+
+		// B2 up
+		SATtest(box2->transform.GetLocalUp(), box1->GetBoxPoints(), shape1Min, shape1Max);
+		SATtest(box2->transform.GetLocalUp(), box2->GetBoxPoints(), shape2Min, shape2Max);
+
+		if (!overlaps(shape1Min, shape1Max, shape2Min, shape2Max))
+		{
+			return 0; // NO INTERSECTION
+		}
+
+		// if overlap occurred in ALL AXES, then they do intersect
+		return 1;
 }
