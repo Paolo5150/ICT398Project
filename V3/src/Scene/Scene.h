@@ -134,7 +134,7 @@ public:
 	/**
 	* @brief		Returns thr skybox of the scene
 	*/
-//	Skybox* GetSkyBox(){ return skybox; }
+	Skybox* GetSkyBox(){ return skybox.get(); }
 
 	/**
 	* @brief		The name of the scene

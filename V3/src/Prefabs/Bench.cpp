@@ -19,6 +19,11 @@ Bench::Bench() : GameObject("Bench")
 	m.LoadCubemap(ContentManager::Instance().GetAsset<CubeMap>("SunSet"), "cubemap0");
 	ApplyMaterial(m);
 
+	Material m2NoLight;
+	m2NoLight.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStaticNoLight"));
+	m2NoLight.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("iron_albedo"), "diffuse0");
+	ApplyMaterial(m2NoLight, NOLIGHT);
+
 }
 
 Bench::~Bench()

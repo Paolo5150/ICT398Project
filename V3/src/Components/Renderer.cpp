@@ -110,7 +110,7 @@ void Renderer::OnPreRender(Camera& cam, Shader* currentShader )
 	Shader::GetCurrentShader().SetMat4("u_projection", cam.GetProjectionMatrix());
 	Shader::GetCurrentShader().SetVec3("u_cameraPosition", cam.transform.GetPosition());
 	Shader::GetCurrentShader().SetVec3("AmbientLight", LightManager::Instance().GetAmbientLight());
-	//Shader::GetCurrentShader().SetVec4("u_clippingPlane", LightManager::Instance().GetClippingPlane());
+	Shader::GetCurrentShader().SetVec4("u_clippingPlane", LightManager::Instance().GetClippingPlane());
 
 
 
@@ -143,8 +143,28 @@ Material& Renderer::GetMaterial(MaterialType mt)
 }
 void Renderer::SetMaterial(Material m, MaterialType mt) {
 	allMaterials[mt] = m;
-
+/*
 	if (mt == MaterialType::DEFAULT)
-		CreateOtherMaterials(m);
+		CreateOtherMaterials(m);*/
+		
+		//Create a ColorOnly material for all renderers
+	Material co;
+	co.SetShader(ContentManager::Instance().GetAsset<Shader>("ColorOnlyStatic"));
+
+	co.SetColor(0,0,0);
+	{
+		auto it = allMaterials.find(COLORONLY);
+		if (it == allMaterials.end())
+		{
+			allMaterials[COLORONLY] = co;
+		}
+	}
+
+	
+	{
+	auto it = allMaterials.find(NOLIGHT);
+	if(it == allMaterials.end())
+		allMaterials[NOLIGHT] = co;
+	}
 
 };
