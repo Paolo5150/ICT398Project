@@ -96,7 +96,7 @@ bool overlaps(float min1, float max1, float min2, float max2)
 
 bool CollisionChecks::getCollision(BoxCollider* box1, BoxCollider* box2)
 {
-	/*static glm::vec3 RPos;
+	static glm::vec3 RPos;
 	RPos = box2->transform.GetGlobalPosition() - box1->transform.GetGlobalPosition();
 
 	//Logger::LogInfo("Box front", box2->transform.VectorsToString());
@@ -110,9 +110,9 @@ bool CollisionChecks::getCollision(BoxCollider* box1, BoxCollider* box2)
 		getSeparatingPlane(RPos, glm::int3(box1->transform.GetLocalFront()) ^ glm::int3(box2->transform.GetLocalRight()), box1, box2) || getSeparatingPlane(RPos, glm::int3(box1->transform.GetLocalFront()) ^ glm::int3(box2->transform.GetLocalUp()), box1, box2) ||
 		getSeparatingPlane(RPos, glm::int3(box1->transform.GetLocalFront()) ^ glm::int3(box2->transform.GetLocalFront()), box1, box2)) return false;
 		
-	return 1;*/
+	return 1;
 
-		float shape1Min = 0;
+		/*float shape1Min = 0;
 		float shape1Max = 0;
 		float shape2Min = 0;
 		float shape2Max = 0;
@@ -173,5 +173,5 @@ bool CollisionChecks::getCollision(BoxCollider* box1, BoxCollider* box2)
 		}
 
 		// if overlap occurred in ALL AXES, then they do intersect
-		return 1;
+		return 1;*/
 }
