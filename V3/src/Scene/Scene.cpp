@@ -129,8 +129,8 @@ void Scene::LogicUpdate()
 		if((*it)->GetActive() == true)
 			(*it)->Update();
 	}
-
 	PhysicsWorld::Instance().Update();
+
 }
 
 void Scene::QuitScene()
