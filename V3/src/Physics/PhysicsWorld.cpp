@@ -174,11 +174,11 @@ void PhysicsWorld::PerformCollisions(bool staticToo)
 
 		for (auto it = staticCols.begin(); it != staticCols.end(); it++)
 		{
-			if (allNonStaticColliders[i]->GetCollideAgainstLayer() & (*it)->GetCollisionLayer() ||
-				(*it)->GetCollideAgainstLayer() & allNonStaticColliders[i]->GetCollisionLayer())
+			if ((*it)->GetActive() && allNonStaticColliders[i]->GetActive())
 			{
-				if ((*it)->GetActive() && allNonStaticColliders[i]->GetActive())
-				{					
+				if (allNonStaticColliders[i]->GetCollideAgainstLayer() & (*it)->GetCollisionLayer() ||
+					(*it)->GetCollideAgainstLayer() & allNonStaticColliders[i]->GetCollisionLayer())
+				{								
 					CheckCollision(*it, allNonStaticColliders[i]);
 				}
 			}
@@ -265,13 +265,14 @@ void PhysicsWorld::PerformCollisions(QuadNode<Collider*>* node)
 			for (; it2 != node->elements.end(); it2++)
 			{
 				if (*it == *it2) continue;
-				if ((*it)->GetCollideAgainstLayer() & (*it2)->GetCollisionLayer())
+				if ((*it)->GetActive() && (*it2)->GetActive())
 				{
-					if ((*it)->GetActive() && (*it2)->GetActive())
+					// Check that the colliders do not belong to the same GameObject
+					if ((*it)->GetParent() != (*it2)->GetParent())
 					{
-						// Check that the colliders do not belong to the same GameObject
-						if ((*it)->GetParent() != (*it2)->GetParent())
-						{
+						if ((*it)->GetCollideAgainstLayer() & (*it2)->GetCollisionLayer() ||
+							(*it2)->GetCollideAgainstLayer() & (*it)->GetCollisionLayer())
+						{	
 							CheckCollision(*it, *it2);			
 						}
 					
@@ -308,8 +309,11 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 			if (!WereGameObjectsColliding((it)->GetParent(), (it2)->GetParent()))
 			{
 				// OnCollisionEnter
-				(it)->OnCollisionEnterCallback((it2));
-				(it2)->OnCollisionEnterCallback((it));
+				if((it)->GetCollideAgainstLayer() & (it2)->GetCollisionLayer())
+					(it)->OnCollisionEnterCallback((it2));
+
+				if ((it2)->GetCollideAgainstLayer() & (it)->GetCollisionLayer())
+					(it2)->OnCollisionEnterCallback((it));
 
 				gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].push_back((it2));
 				gameObjectCollisionMap[(it2)->GetParent()][(it)->GetParent()].push_back((it));
@@ -321,8 +325,11 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 				// it means that we are colliding with a new collider of the same gameobjects
 
 				// OnCollisionStay
-				(it)->OnCollisionStayCallback((it2));
-				(it2)->OnCollisionStayCallback((it));
+				if ((it)->GetCollideAgainstLayer() & (it2)->GetCollisionLayer())
+					(it)->OnCollisionStayCallback((it2));
+
+				if ((it2)->GetCollideAgainstLayer() & (it)->GetCollisionLayer())
+					(it2)->OnCollisionStayCallback((it));
 
 #ifdef CHANGE_COLOR
 				(it)->meshRenderer->GetMaterial().SetColor(1, 0, 0);
@@ -346,8 +353,11 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 		else
 		{
 			// OnCollisionStay
-			(it)->OnCollisionStayCallback((it2));
-			(it2)->OnCollisionStayCallback((it));
+			if ((it)->GetCollideAgainstLayer() & (it2)->GetCollisionLayer())
+				(it)->OnCollisionStayCallback((it2));
+
+			if ((it2)->GetCollideAgainstLayer() & (it)->GetCollisionLayer())
+				(it2)->OnCollisionStayCallback((it));
 
 #ifdef CHANGE_COLOR
 			(it)->meshRenderer->GetMaterial().SetColor(1, 0, 0);
@@ -386,9 +396,12 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 				gameObjectCollisionMap[(it2)->GetParent()][(it)->GetParent()].size() == 0)
 			{
 				// OnCollisionExit
+				// OnCollisionStay
+				if ((it)->GetCollideAgainstLayer() & (it2)->GetCollisionLayer())
+					(it)->OnCollisionExitCallback((it2));
 
-				(it)->OnCollisionExitCallback(it2);
-				(it2)->OnCollisionExitCallback(it);
+				if ((it2)->GetCollideAgainstLayer() & (it)->GetCollisionLayer())
+					(it2)->OnCollisionExitCallback((it));
 
 #ifdef CHANGE_COLOR
 				(it2)->meshRenderer->GetMaterial().SetColor(0, 1, 0);

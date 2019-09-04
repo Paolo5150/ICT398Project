@@ -11,12 +11,14 @@ MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspect
 	m_rotationSpeed = 20;
 	m_movementSpeed = 40;	
 	blockRotation = false;
+	SetIsStatic(0);
 }
 
 void MainCamera::Start()
 {
 	BoxCollider* bc = new BoxCollider();
 	bc->transform.SetScale(2);
+	//bc->RemoveCollideAgainstLayer(CollisionLayers::DEFAULT);
 	//bc->enableRender = 1;
 	AddComponent(bc);
 
