@@ -31,18 +31,17 @@ RecycleBin::RecycleBin() : GameObject("RecycleBin")
 	Material m1NoLight;
 	m1NoLight.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStaticNoLight"));
 	m1NoLight.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("RB_Frame"), "diffuse0");
-	ApplyMaterial(m1NoLight, NOLIGHT);
 
 	Material m2NoLight;
 	m2NoLight.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStaticNoLight"));
 	m2NoLight.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("RB_Sides"), "diffuse0");
-	ApplyMaterial(m2NoLight, NOLIGHT);
+
 
 	GetChild(1)->ApplyMaterial(m);
 	GetChild(0)->ApplyMaterial(m2);
 
-	GetChild(1)->ApplyMaterial(m1NoLight);
-	GetChild(0)->ApplyMaterial(m2NoLight);
+	GetChild(1)->ApplyMaterial(m1NoLight,NOLIGHT);
+	GetChild(0)->ApplyMaterial(m2NoLight,NOLIGHT);
 }
 
 RecycleBin::~RecycleBin()
