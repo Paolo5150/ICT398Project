@@ -16,16 +16,20 @@ MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspect
 
 void MainCamera::Start()
 {
-	BoxCollider* bc = new BoxCollider();
+
+BoxCollider* bc = new BoxCollider();
 	bc->transform.SetScale(2);
 	//bc->RemoveCollideAgainstLayer(CollisionLayers::DEFAULT);
-	//bc->enableRender = 1;
+	bc->enableRender = 1;
+
 	AddComponent(bc);
 
 	rb = new Rigidbody();
 	rb->UseGravity(false);
 
 	AddComponent(rb);
+	Logger::LogInfo("Camera trans child", transform.transformChildren.size());
+
 }
 
 void MainCamera::OnCollisionEnter(Collider* c)
@@ -105,6 +109,6 @@ void MainCamera::Update()
 	if(glm::length2(rb->GetVelocity()) != 0)
 		rb->SetVelocity(glm::normalize(rb->GetVelocity()) * m_movementSpeed);
 
-	//Logger::LogInfo(transform.ToString());
+
 	Camera::Update(); //Update last as this will update the view matrix with the new position values
 }

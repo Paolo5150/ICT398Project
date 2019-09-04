@@ -151,7 +151,7 @@ vec3 CalculatePointLights(vec3 nm)
 		//Specular
 		vec3 lightToFragTS = FragPosToUse - pointLightsTS[i];
 		float distance = length(lightToFragTS);
-		float attenuation = allPointLights[i].intensity / distance ;
+		float attenuation = allPointLights[i].intensity / (distance * distance) ;
 		vec3 lightdir = normalize(lightToFragTS);
 		vec3 fragToCam = normalize(CamPosToUse - FragPosToUse);
 		vec3 reflection = reflect(lightdir,nm);

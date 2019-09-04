@@ -118,7 +118,7 @@ void Scene::EngineUpdate()
 
 void Scene::LogicUpdate()
 {
-	
+
 	if (Input::GetKeyDown(GLFW_KEY_R))
 		SceneManager::Instance().ReloadCurrent();
 
@@ -126,10 +126,11 @@ void Scene::LogicUpdate()
 
 	for (; it != m_allGameObjects.end(); it++)
 	{
-		if((*it)->GetActive() == true)
+		if((*it)->GetActive() == true && (*it)->GetParent() == nullptr)
 			(*it)->Update();
 	}
 	PhysicsWorld::Instance().Update();
+
 
 }
 

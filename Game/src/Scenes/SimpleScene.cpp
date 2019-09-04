@@ -80,7 +80,7 @@ void SimpleScene::Initialize() {
 	cam->transform.SetRotation(0, 180, 0);
 	
 	DirectionalLight* dirLight = new DirectionalLight(false);
-	dirLight->transform.SetRotation(30,114,-4);
+	dirLight->transform.SetRotation(40,114,-4);
 	dirLight->SetDiffuseColor(1.0, 0.9, 0.9);
 	dirLight->SetSpecularColor(1.0, 0.8, 0.4);
 	dirLight->SetIntensity(1.5);
@@ -91,21 +91,22 @@ void SimpleScene::Initialize() {
 
 	dirLight2->SetIntensity(0.2);
 
+		Water* water = new Water();
+	water->transform.SetScale(100, 100, 1);
+	
 
 	PointLight* pointLight = new PointLight();
 
-	pointLight->SetIntensity(10);
-	pointLight->transform.SetPosition(5, 10, 5);
-
-
-	Water* water = new Water();
-	water->transform.SetScale(100, 100, 1);
+	pointLight->SetIntensity(20);
+	pointLight->transform.SetPosition(0, 0, 15);
 	
+	cam->AddChild(pointLight);
+
 	AddGameObject(cam);
+	AddGameObject(pointLight);
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
 
-	AddGameObject(pointLight);
 	AddGameObject(water);
 
 	for (int i = 0; i < objs.size(); i++)
@@ -126,8 +127,7 @@ void SimpleScene::LogicUpdate()
 	//GetGameobjectsByName("LandfillBin")[0]->transform.RotateBy(0.1, 0, 0, 1);
 	//GetGameobjectsByName("LandfillBin")[0]->transform.Translate(0.01, 0, 0);
 
-	((PointLight*)GetGameobjectsByName("PointLight")[0])->RenderDiag();
-	((PointLight*)GetGameobjectsByName("PointLight")[0])->transform.Translate(0, 0, 0.1);
+	//((PointLight*)GetGameobjectsByName("PointLight")[0])->transform.Translate(0, 0, 0.1);
 
 	if (Input::GetKeyDown(GLFW_KEY_ESCAPE))
 		EventDispatcher::Instance().DispatchEvent(new QuitRequestEvent());
@@ -135,17 +135,10 @@ void SimpleScene::LogicUpdate()
 	if (Input::GetKeyDown(GLFW_KEY_O))
 		SceneManager::Instance().LoadNewScene("OtherScene");
 
-	//int n = PhysicsWorld::Instance().nonStaticQuadtree->GameObjectInQuadrant(GetGameobjectsByName("LandfillBin")[0]->transform.GetPosition().x, GetGameobjectsByName("LandfillBin")[0]->transform.GetPosition().z);
-	
-	/*static bool done = 0;
-
-	if (!done)
-	{
-		PhysicsWorld::Instance().FillQuadtree(1); // Fill static quadtree
-		done = 1;
-	}*/
-	//Logger::LogInfo("Objects:", n);
 	Scene::LogicUpdate(); //Must be last statement!
+
+	((PointLight*)GetGameobjectsByName("PointLight")[0])->RenderDiag();
+
 }
 
 
