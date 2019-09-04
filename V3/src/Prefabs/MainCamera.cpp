@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "MainCamera.h"
 #include "..\Core\Timer.h"
+#include "..\Components\Rigidbody.h"
+#include "..\Components\BoxCollider.h"
+
 
 MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 100000.0f)
 {
@@ -9,6 +12,35 @@ MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspect
 	m_movementSpeed = 40;	
 	blockRotation = false;
 }
+
+void MainCamera::Start()
+{
+	BoxCollider* bc = new BoxCollider();
+	bc->transform.SetScale(2);
+	//bc->enableRender = 1;
+	AddComponent(bc);
+
+	rb = new Rigidbody();
+	rb->UseGravity(false);
+
+	AddComponent(rb);
+}
+
+void MainCamera::OnCollisionEnter(Collider* c)
+{
+
+	transform.Translate(rb->GetVelocity() * -Timer::GetDeltaS());
+
+		
+}
+
+void MainCamera::OnCollisionStay(Collider* c)
+{
+	//Logger::LogInfo("Camera colliding with", c->GetParent()->name);
+	transform.Translate(rb->GetVelocity() * -Timer::GetDeltaS());
+
+}
+
 
 void MainCamera::Update()
 {	
@@ -28,24 +60,32 @@ void MainCamera::Update()
 	{
 		m_movementSpeed = m_movementSpeed < 0 ? 0 : m_movementSpeed - 0.5;
 	}
+	rb->SetVelocity(0, 0, 0);
 
 	if (Input::GetKeyDown(GLFW_KEY_W) == true && Input::GetKeyDown(GLFW_KEY_S) == false)
 	{
-		this->transform.SetPosition(this->transform.GetPosition() + (m_movementSpeed * Timer::GetDeltaS() * this->transform.GetLocalFront()));
+		//this->transform.SetPosition(this->transform.GetPosition() + (m_movementSpeed * Timer::GetDeltaS() * this->transform.GetLocalFront()));
+		rb->SetVelocity(this->transform.GetLocalFront());
 	}
 	else if (Input::GetKeyDown(GLFW_KEY_S) == true && Input::GetKeyDown(GLFW_KEY_W) == false)
 	{
-		this->transform.SetPosition(this->transform.GetPosition() - (m_movementSpeed * Timer::GetDeltaS() * this->transform.GetLocalFront()));
+		//this->transform.SetPosition(this->transform.GetPosition() - (m_movementSpeed * Timer::GetDeltaS() * this->transform.GetLocalFront()));
+		rb->SetVelocity(-this->transform.GetLocalFront());
+
 	}
 
 	//Handle side-to-side movement
 	if (Input::GetKeyDown(GLFW_KEY_D) == true && Input::GetKeyDown(GLFW_KEY_A) == false)
 	{
-		this->transform.SetPosition(this->transform.GetPosition() + (m_movementSpeed * Timer::GetDeltaS() * this->transform.GetLocalRight()));
+		//this->transform.SetPosition(this->transform.GetPosition() + (m_movementSpeed * Timer::GetDeltaS() * this->transform.GetLocalRight()));
+		rb->AddVelocity(this->transform.GetLocalRight());
+
 	}
 	else if (Input::GetKeyDown(GLFW_KEY_A) == true && Input::GetKeyDown(GLFW_KEY_D) == false)
 	{
-		this->transform.SetPosition(this->transform.GetPosition() - (m_movementSpeed * Timer::GetDeltaS() * this->transform.GetLocalRight()));
+		//this->transform.SetPosition(this->transform.GetPosition() - (m_movementSpeed * Timer::GetDeltaS() * this->transform.GetLocalRight()));
+		rb->AddVelocity(-this->transform.GetLocalRight());
+
 	}
 
 	//Common inputs for all scenes
@@ -60,6 +100,8 @@ void MainCamera::Update()
 		Input::SetCursorMode("disabled");
 		blockRotation = false;
 	}
+	if(glm::length2(rb->GetVelocity()) != 0)
+		rb->SetVelocity(glm::normalize(rb->GetVelocity()) * m_movementSpeed);
 
 	//Logger::LogInfo(transform.ToString());
 	Camera::Update(); //Update last as this will update the view matrix with the new position values

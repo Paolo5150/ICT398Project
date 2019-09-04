@@ -108,7 +108,6 @@ void SimpleScene::Initialize() {
 	AddGameObject(pointLight);
 	AddGameObject(water);
 
-
 	for (int i = 0; i < objs.size(); i++)
 		AddGameObject(objs[i]);
 }
