@@ -62,7 +62,7 @@ void LandfillBin::Start()
 
 	rb = new Rigidbody();
 	rb->UseGravity(false);
-	//rb->SetVelocity(2, 0, 0);
+	rb->SetVelocity(2, 0, 0);
 	AddComponent(rb);
 
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider
