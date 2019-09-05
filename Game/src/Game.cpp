@@ -6,6 +6,8 @@
 #include "Scene\SceneManager.h"
 #include "Scenes/SimpleScene.h"
 #include "Scenes/OtherScene.h"
+#include "Scenes/ExitScene.h"
+
 
 
 
@@ -39,6 +41,9 @@ void Game::AppInitialize()
 
 	auto other = std::unique_ptr<Scene>(new OtherScene());
 	SceneManager::Instance().AddScene(other);
+
+	auto exit = std::unique_ptr<Scene>(new ExitScene());
+	SceneManager::Instance().AddScene(exit);
 
 	//Load first scene
 	SceneManager::Instance().LoadNewScene("SimpleScene"); //Scene initialize is called here*/
