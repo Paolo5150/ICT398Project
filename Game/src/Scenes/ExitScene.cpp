@@ -56,7 +56,7 @@ void ExitScene::Initialize() {
 	dirLight2->SetIntensity(0.2);
 
 	Water* water = new Water();
-	water->transform.SetScale(100, 100, 1);
+	water->transform.SetScale(500, 500, 1);
 
 
 	AddGameObject(cam);
@@ -72,6 +72,10 @@ void ExitScene::Start()
 {
 	Scene::Start();
 	Input::SetCursorMode("disabled");
+
+	(GetGameobjectsByName("Main Camera")[0])->transform.RotateBy(90, 0, 1, 0);
+	(GetGameobjectsByName("Main Camera")[0])->transform.SetPosition(0, 2, 0);
+	((MainCamera*)GetGameobjectsByName("Main Camera")[0])->blockRotation = 1;
 
 
 }

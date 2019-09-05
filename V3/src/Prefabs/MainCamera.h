@@ -35,10 +35,10 @@ public:
 	void OnCollisionStay(Collider* c) override;
 
 
+	bool blockRotation;
 private:
 	float m_movementSpeed;
 	float m_rotationSpeed;
-	bool blockRotation;
 	Rigidbody* rb;
 };
 

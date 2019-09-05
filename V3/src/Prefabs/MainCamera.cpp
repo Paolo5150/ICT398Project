@@ -17,10 +17,10 @@ MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspect
 void MainCamera::Start()
 {
 
-BoxCollider* bc = new BoxCollider();
+	BoxCollider* bc = new BoxCollider();
 	bc->transform.SetScale(2);
 	//bc->RemoveCollideAgainstLayer(CollisionLayers::DEFAULT);
-	bc->enableRender = 1;
+	bc->enableRender = 0;
 
 	AddComponent(bc);
 
@@ -28,7 +28,7 @@ BoxCollider* bc = new BoxCollider();
 	rb->UseGravity(false);
 
 	AddComponent(rb);
-	Logger::LogInfo("Camera trans child", transform.transformChildren.size());
+	//Logger::LogInfo("Camera trans child", transform.transformChildren.size());
 
 }
 
