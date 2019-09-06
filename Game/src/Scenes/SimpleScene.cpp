@@ -26,7 +26,7 @@ void SimpleScene::LoadAssets() {
 
 	// Load splash screen
 	GUIImage* image = new GUIImage("SplashImage", ContentManager::Instance().GetAsset<Texture2D>("logo"), 100, 100, 0, 0, 1, 1, 1,1);
-	GUIText* text = new GUIText("LoadingText", "Loading", 3, 95, glm::vec3(1), 2.5,1);
+	GUIText* text = new GUIText("LoadingText", "Loading", 1, 95, glm::vec3(1), 2.5,1);
 
 	GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(image);
 	GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(text);
@@ -128,17 +128,17 @@ void SimpleScene::Initialize() {
 
 	PointLight* pointLight = new PointLight();
 
-	pointLight->SetIntensity(1);
-	pointLight->transform.SetPosition(0, 0, 0);
+	pointLight->SetIntensity(10);
+	pointLight->transform.SetPosition(0, 0, 10);
 	
-	//cam->AddChild(pointLight);
+	cam->AddChild(pointLight);
 
 	AddGameObject(cam);
-	//AddGameObject(pointLight);
+	AddGameObject(pointLight);
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
 
-	//AddGameObject(water);
+	AddGameObject(water);
 
 	for (int i = 0; i < objs.size(); i++)
 		AddGameObject(objs[i]);
@@ -170,7 +170,7 @@ void SimpleScene::LogicUpdate()
 
 	Scene::LogicUpdate(); //Must be last statement!
 
-//	((PointLight*)GetGameobjectsByName("PointLight")[0])->RenderDiag();
+	((PointLight*)GetGameobjectsByName("PointLight")[0])->RenderDiag();
 
 }
 
