@@ -97,17 +97,17 @@ void SimpleScene::Initialize() {
 
 	PointLight* pointLight = new PointLight();
 
-	pointLight->SetIntensity(20);
-	pointLight->transform.SetPosition(0, 0, 15);
+	pointLight->SetIntensity(1);
+	pointLight->transform.SetPosition(0, 0, 0);
 	
-	cam->AddChild(pointLight);
+	//cam->AddChild(pointLight);
 
 	AddGameObject(cam);
-	AddGameObject(pointLight);
+	//AddGameObject(pointLight);
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
 
-	AddGameObject(water);
+	//AddGameObject(water);
 
 	for (int i = 0; i < objs.size(); i++)
 		AddGameObject(objs[i]);
@@ -137,7 +137,7 @@ void SimpleScene::LogicUpdate()
 
 	Scene::LogicUpdate(); //Must be last statement!
 
-	((PointLight*)GetGameobjectsByName("PointLight")[0])->RenderDiag();
+//	((PointLight*)GetGameobjectsByName("PointLight")[0])->RenderDiag();
 
 }
 

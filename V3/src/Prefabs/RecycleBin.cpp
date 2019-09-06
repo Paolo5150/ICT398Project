@@ -8,7 +8,7 @@ RecycleBin::RecycleBin() : GameObject("RecycleBin")
 {
 	SetIsStatic(1);
 	ContentManager::Instance().GetAsset<Model>("RecycleBin")->PopulateGameObject(this);
-	transform.SetScale(2);
+	transform.SetScale(1.5);
 
 	Material m;
 	m.SetShader(ContentManager::Instance().GetAsset<Shader>("PBR"));
