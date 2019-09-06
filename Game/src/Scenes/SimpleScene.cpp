@@ -12,12 +12,31 @@
 #include "Prefabs/Water.h"
 
 #include "Diag/DiagRenderer.h"
+#include "GUI/GUIManager.h"
+#include "GUI/Elements/GUIImage.h"
+#include "GUI/Elements/GUIText.h"
+
+
 
 SimpleScene::SimpleScene() : Scene("SimpleScene")
 {
 }
 
 void SimpleScene::LoadAssets() {
+
+	// Load splash screen
+	GUIImage* image = new GUIImage("SplashImage", ContentManager::Instance().GetAsset<Texture2D>("logo"), 100, 100, 0, 0, 1, 1, 1,1);
+	GUIText* text = new GUIText("LoadingText", "Loading", 3, 95, glm::vec3(1), 2.5,1);
+
+	GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(image);
+	GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(text);
+
+	GUIManager::Instance().SetColorBuffer(0.8, 0.8, 0.8);
+	GUIManager::Instance().Render(true,true);
+
+
+	text->message = "Loading uncomfrotable feelings...";
+	GUIManager::Instance().Render(true);
 
 	ContentManager::Instance().LoadModel("Assets\\Models\\Bench\\bench.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Table\\table.fbx", false, false);
@@ -32,6 +51,8 @@ void SimpleScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\Models\\RecycleBin\\textures\\RB_Sides.png", 0);
 
 
+	
+
 
 	ContentManager::Instance().LoadCubeMap("Assets\\SkyBoxes\\SunSet");
 
@@ -41,6 +62,9 @@ void SimpleScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_metallic.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_normal.jpg", 0);	
 
+	text->message = "Instantiating sense of despair...";
+	GUIManager::Instance().Render(true, true);
+
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_albedo.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_roughness.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_metallic.jpg", 0);
@@ -49,6 +73,9 @@ void SimpleScene::LoadAssets() {
 
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\water_normal.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\dudv.png", 0);
+
+	text->message = "Finalizing feeling of hopelessness...";
+	GUIManager::Instance().Render(true,true);
 
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_albedo.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_roughness.jpg", 0);
@@ -60,6 +87,10 @@ void SimpleScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Metal\\metal_normal.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Metal\\metal_height.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Metal\\metal_ao.jpg", 0);
+
+	image->isActive = 0;
+	text->isActive = 0;
+	text->message = "Loading next scene.."; //Just prepare the message for going to the exit scene
 }
 
 void SimpleScene::QuitScene() {
@@ -131,7 +162,11 @@ void SimpleScene::LogicUpdate()
 
 
 	if (Input::GetKeyDown(GLFW_KEY_ESCAPE))
+	{
+		GUIManager::Instance().GetCanvasByName("MainCanvas")->GetGUIObjectByName("LoadingText")->isActive = 1;
+		GUIManager::Instance().Render(1);
 		SceneManager::Instance().LoadNewScene("ExitScene");
+	}
 
 	Scene::LogicUpdate(); //Must be last statement!
 

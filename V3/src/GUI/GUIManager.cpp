@@ -51,7 +51,7 @@ void GUIManager::CreateAndAddMainCanvas()
 	GUICanvas* mainCanvas = new GUICanvas("MainCanvas");
 	mainCanvas->SetBackgroundColor(1, 0, 0, 0);
 	mainCanvas->AddFlag(ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar);
-	mainCanvas->AddGUIObject(new GUIButton("Test", "Click", []() { Logger::LogInfo("Clicked!"); }));
+	//mainCanvas->AddGUIObject(new GUIButton("Test", "Click", []() { Logger::LogInfo("Clicked!"); }));
 	int x, y;
 	Window::Instance().GetWindowSize(x, y);
 
@@ -92,6 +92,11 @@ void GUIManager::RemoveCanvas(std::string name)
 	}
 }
 
+void GUIManager::SetColorBuffer(float r, float g, float b)
+{
+	Core::Instance().GetGraphicsAPI().SetClearColor(r, g, b);
+
+}
 
 
 void GUIManager::Render(bool forceRefresh, bool forceClear)

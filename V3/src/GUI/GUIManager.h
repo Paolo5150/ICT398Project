@@ -74,7 +74,7 @@ public:
 
 	GUICanvas* GetCanvasByName(std::string name);
 
-
+	void SetColorBuffer(float r, float g, float b);
 
 private:
 

@@ -26,6 +26,7 @@ public:
 	void SetBackgroundColor(float r, float g, float b, float a) { backgroundColor.x = r; backgroundColor.y = g; backgroundColor.z = b; backgroundColor.a = a; }
 
 	void AddGUIObject(GUIObject* obj);
+	GUIObject* GetGUIObjectByName(std::string name);
 	void SetIsActive(bool a) { isActive = a; }
 
 	void ClearAllGUIObjects() { allGUIObjects.clear(); }
