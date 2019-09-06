@@ -129,11 +129,9 @@ void SimpleScene::LogicUpdate()
 
 	//((PointLight*)GetGameobjectsByName("PointLight")[0])->transform.Translate(0, 0, 0.1);
 
-	if (Input::GetKeyDown(GLFW_KEY_ESCAPE))
-		EventDispatcher::Instance().DispatchEvent(new QuitRequestEvent());
 
-	if (Input::GetKeyDown(GLFW_KEY_O))
-		SceneManager::Instance().LoadNewScene("OtherScene");
+	if (Input::GetKeyDown(GLFW_KEY_ESCAPE))
+		SceneManager::Instance().LoadNewScene("ExitScene");
 
 	Scene::LogicUpdate(); //Must be last statement!
 

@@ -28,7 +28,7 @@ void MainCamera::Start()
 	rb->UseGravity(false);
 
 	AddComponent(rb);
-	Logger::LogInfo("Camera trans child", transform.transformChildren.size());
+	//Logger::LogInfo("Camera trans child", transform.transformChildren.size());
 
 }
 
