@@ -431,6 +431,10 @@ public:
 
 	bool GetIsSelfManaged() { return _isSelfManaged; }
 
+	float GetTotalMass() { return totalMass; };
+	glm::vec3 GetCentreOfMass();
+	glm::mat3 GetInertiaTensor() { return inertiaTensor; };
+
 	virtual void OnCollisionEnter(Collider* go, Collision collision){};
 	virtual void OnCollisionStay(Collider* go, Collision collision) {};
 	virtual void OnCollisionExit(Collider* go, Collision collision) {};
@@ -441,6 +445,7 @@ public:
 protected:
 	float colorTimer;
 	bool flashing;
+	
 
 	/**
 	* @param The active state of the object
@@ -483,7 +488,10 @@ protected:
 	*/
 	void PrintHierarchy(int indentation, std::string& output);
 
-
+	private:
+		float totalMass;
+		glm::vec3 centreOfMass;
+		glm::mat3 inertiaTensor;
 };
 
 

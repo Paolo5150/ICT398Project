@@ -294,16 +294,14 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 	collidersCollisionMapPerFrame[it].push_back(it2);
 	collidersCollisionMapPerFrame[it2].push_back(it);
 
-	//Pre-calc collision objects
-	glm::vec3 pos = CollisionChecks::getCollisionPoint(it, it2);
-	glm::vec3 normal = CollisionChecks::getCollisionNormal(pos, it2);
-	Collision col2 = Collision(pos, normal);
-	normal = CollisionChecks::getCollisionNormal(pos, it2);
-	Collision col1 = Collision(pos, normal);
-
 	if (CollisionChecks::Collision((it), (it2)))
 	{
-		
+		//Pre-calc collision objects
+		glm::vec3 pos = CollisionChecks::getCollisionPoint(it, it2);
+		glm::vec3 normal = CollisionChecks::getCollisionNormal(pos, it2);
+		Collision col2 = Collision(pos, normal);
+		normal = CollisionChecks::getCollisionNormal(pos, it2);
+		Collision col1 = Collision(pos, normal);
 
 		// Check if colliders were colliding
 		if (!WereCollidersColliding((it), (it2)))
@@ -391,8 +389,8 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 				gameObjectCollisionMap[(it2)->GetParent()][(it)->GetParent()].size() == 0)
 			{
 				// OnCollisionExit
-				(it)->OnCollisionExitCallback(it2, col1);
-				(it2)->OnCollisionExitCallback(it, col2);
+				//(it)->OnCollisionExitCallback(it2, col1);
+				//(it2)->OnCollisionExitCallback(it, col2);
 
 #ifdef CHANGE_COLOR
 				(it2)->meshRenderer->GetMaterial().SetColor(0, 1, 0);

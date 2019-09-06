@@ -89,6 +89,14 @@ void GameObject::SetIsSelfManaged(bool sm, bool includeChildren)
 	}
 }
 
+glm::vec3 GameObject::GetCentreOfMass()
+{
+	glm::mat4 rot = transform.GetGlobalRotation();
+
+	glm::vec3 rotVec = rot * glm::vec4(centreOfMass, 1.0);
+	return rotVec;
+}
+
 void GameObject::SetActive(bool active, bool includeChildren)
 {
 	_isActive = active;
@@ -163,6 +171,12 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 {
 	std::vector<ColliderInfo> t = FileUtils::ReadColliderFile(absolutePathToFile);
 
+	std::vector<Collider*> colliders = std::vector<Collider*>();
+
+	int count = 0;
+	float overrallMass = 0;
+	glm::vec3 weightedPos = glm::vec3();
+
 	for (int i = 0; i < t.size(); i++)
 	{
 		if (t[i].type == "BC")
@@ -174,7 +188,8 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 			bc->transform.SetRotation(t[i].r);
 			bc->SetMass(t[i].mass);
 			bc->SetActive(t[i].isActive);
-			AddComponent(bc);
+			bc->CalculateMomentOfIntertia();
+			colliders.push_back(dynamic_cast<Collider*>(AddComponent(bc)));
 		}
 		else if (t[i].type == "SC")
 		{
@@ -184,10 +199,15 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 			sc->transform.SetScale(t[i].s.x, t[i].s.x, t[i].s.x);
 			sc->SetActive(t[i].isActive);
 			sc->SetMass(t[i].mass);
-
-			AddComponent(sc);
+			sc->CalculateMomentOfIntertia();
+			colliders.push_back(dynamic_cast<Collider*>(AddComponent(sc)));
 		}
+		else
+			continue;
 
+		//count++;
+		//overrallMass += t[i].mass;
+		//weightedPos += t[i].p * t[i].mass;
 
 		// Uncomment this to see the lamba in action
 		// If "collisionCallback" is reassigned to a lambda, the OnCollision method will be overridden
@@ -198,6 +218,33 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 		};*/
 
 	}
+
+	//Calculate weighted centre of mass
+	for (int i = 0; i < colliders.size(); i++)
+	{
+		overrallMass += colliders[i]->GetMass();
+		weightedPos += colliders[i]->transform.GetPosition() * colliders[i]->GetMass();
+	}
+
+	centreOfMass = weightedPos / overrallMass;
+	centreOfMass /= colliders.size();
+
+	totalMass = overrallMass;
+
+	//Calculate inertia tensor
+	inertiaTensor = glm::mat3();
+
+	for (int i = 0; i < colliders.size(); i++)
+	{
+		glm::vec3 correctedPos = colliders[i]->transform.GetPosition() - centreOfMass;
+		float mass = colliders[i]->GetMass();
+		inertiaTensor[0][0] += mass * (correctedPos.y * correctedPos.y + correctedPos.z * correctedPos.z);
+		inertiaTensor[1][1] += mass * (correctedPos.z * correctedPos.z + correctedPos.x * correctedPos.x);
+		inertiaTensor[2][2] += mass * (correctedPos.x * correctedPos.x + correctedPos.y * correctedPos.y);
+	}
+
+	Logger::LogInfo(inertiaTensor[0][0], inertiaTensor[1][1], inertiaTensor[2][2]);
+
 }
 
 

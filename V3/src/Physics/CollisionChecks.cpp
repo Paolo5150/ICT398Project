@@ -106,9 +106,15 @@ glm::vec3 CollisionChecks::getCollisionPoint(BoxCollider * box1, BoxCollider * b
 
 	std::vector<glm::vec3> collisionPoints = std::vector<glm::vec3>();
 
+	glm::vec3 shortestVert;
+	float shortest = 0;
+
 	//Determine if any vertice of  box is inside another box
 	for (int i = 0; i < vertices.size(); i++)
 	{
+		glm::vec3 temp = box2->transform.GetGlobalPosition() - vertices[i];
+		if (temp.length() < shortest)
+			shortestVert = vertices[i];
 		if (isPointInBox(vertices[i], box2))
 			collisionPoints.push_back(vertices[i]);
 	}
@@ -117,7 +123,9 @@ glm::vec3 CollisionChecks::getCollisionPoint(BoxCollider * box1, BoxCollider * b
 
 	for (int i = 0; i < vertices.size(); i++)
 	{
-		DiagRenderer::Instance().RenderSphere(vertices[i]);
+		glm::vec3 temp = box1->transform.GetGlobalPosition() - vertices[i];
+		if (temp.length() < shortest)
+			shortestVert = vertices[i];
 		if (isPointInBox(vertices[i], box1))
 			collisionPoints.push_back(vertices[i]);
 	}
@@ -125,20 +133,28 @@ glm::vec3 CollisionChecks::getCollisionPoint(BoxCollider * box1, BoxCollider * b
 	float avgX = 0, avgY = 0, avgZ = 0;
 	for (int i = 0; i < collisionPoints.size(); i++)
 	{
-		DiagRenderer::Instance().RenderSphere(collisionPoints[i]);
-		avgX += collisionPoints[i].x / collisionPoints.size();
-		avgY += collisionPoints[i].y / collisionPoints.size();
-		avgZ += collisionPoints[i].z / collisionPoints.size();
+		DiagRenderer::Instance().RenderSphere(collisionPoints[i], 0.1f, glm::vec3(0,1,0));
+		avgX += collisionPoints[i].x;// / collisionPoints.size();
+		avgY += collisionPoints[i].y;// / collisionPoints.size();
+		avgZ += collisionPoints[i].z;// / collisionPoints.size();
 	}
+
+	avgX /= collisionPoints.size();
+	avgY /= collisionPoints.size();
+	avgZ /= collisionPoints.size();
 
 	glm::vec3 collisionPoint = glm::vec3(avgX, avgY, avgZ);
 
 	if (collisionPoints.size() == 0)
 	{
 		//Simplified point if no vertices of box intersect
-		collisionPoint = (box1->transform.GetGlobalPosition() + box2->transform.GetGlobalPosition()) / 2.0f;
-		collisionPoint = (getClosestPointToBox(collisionPoint, box1) + getClosestPointToBox(collisionPoint, box2)) / 2.0f;
+		std::cout << "SIMPLIFIED" << std::endl;
+		collisionPoint = shortestVert;
+		//collisionPoint = (box1->transform.GetGlobalPosition() + box2->transform.GetGlobalPosition()) / 2.0f;
+		//collisionPoint = (getClosestPointToBox(collisionPoint, box1) + getClosestPointToBox(collisionPoint, box2)) / 2.0f;
 	}
+	else
+		std::cout << "COMPLEX" << std::endl;
 
 	return collisionPoint;
 }
@@ -173,27 +189,27 @@ glm::vec3 CollisionChecks::getCollisionNormal(glm::vec3 point, BoxCollider * col
 	auto rotVec = trans * rot * glm::vec4(point, 1.0);
 
 	glm::vec3 closestAxis = col->transform.GetLocalRight();
-	float dif = abs(rotVec[0] - (col->transform.GetGlobalScale()[0] / 2.0f));
-	float temp = abs(rotVec[0] - -(col->transform.GetGlobalScale()[0] / 2.0f));
+	float dif = abs(rotVec[0] - (col->transform.GetGlobalScale()[0]));
+	float temp = abs(rotVec[0] - -(col->transform.GetGlobalScale()[0]));
 	if (temp < dif)
 	{
 		dif = temp;
 		closestAxis = -col->transform.GetLocalRight();
 	}
-	temp = abs(rotVec[1] - (col->transform.GetGlobalScale()[1] / 2.0f));
+	temp = abs(rotVec[1] - (col->transform.GetGlobalScale()[1]));
 	if (temp < dif)
 	{
 		dif = temp;
 		closestAxis = col->transform.GetLocalUp();
 	}
-	temp = abs(rotVec[2] - -(col->transform.GetGlobalScale()[2] / 2.0f));
+	temp = abs(rotVec[2] - -(col->transform.GetGlobalScale()[2]));
 	if (temp < dif)
 	{
 		dif = temp;
 		closestAxis = col->transform.GetLocalFront();
 	}
 
-	temp = abs(rotVec[2] - -(col->transform.GetGlobalScale()[2] / 2.0f));
+	temp = abs(rotVec[2] - -(col->transform.GetGlobalScale()[2]));
 	if (temp < dif)
 	{
 		dif = temp;
@@ -210,17 +226,21 @@ glm::vec3 CollisionChecks::getCollisionNormal(glm::vec3 point, SphereCollider * 
 
 bool CollisionChecks::isPointInBox(glm::vec3 point, BoxCollider * box)
 {
+	
 	glm::mat4 rot = box->transform.GetGlobalRotation();
 	rot = glm::inverse(rot);
 	glm::mat4 trans = glm::translate(glm::mat4(1.0f), -box->transform.GetGlobalPosition());
 
 	auto rotVec = trans * rot * glm::vec4(point, 1.0);
-
-	if (rotVec.x >= -(box->transform.GetGlobalScale().x / 2) && rotVec.x <= box->transform.GetGlobalScale().x / 2 &&
-		rotVec.y >= -(box->transform.GetGlobalScale().y / 2) && rotVec.y <= box->transform.GetGlobalScale().y / 2 &&
-		rotVec.z >= -(box->transform.GetGlobalScale().z / 2) && rotVec.z <= box->transform.GetGlobalScale().z / 2)
-			return true;
-
+	
+	if (rotVec.x >= -(box->transform.GetGlobalScale().x) && rotVec.x <= box->transform.GetGlobalScale().x &&
+		rotVec.y >= -(box->transform.GetGlobalScale().y) && rotVec.y <= box->transform.GetGlobalScale().y &&
+		rotVec.z >= -(box->transform.GetGlobalScale().z) && rotVec.z <= box->transform.GetGlobalScale().z)
+	{
+		DiagRenderer::Instance().RenderSphere(point, 0.1f, glm::vec3(0, 1, 0));
+		return true;
+	}
+	DiagRenderer::Instance().RenderSphere(point, 0.1f, glm::vec3(1, 0, 0));
 	return false;
 }
 
@@ -235,10 +255,10 @@ glm::vec3 CollisionChecks::getClosestPointToBox(glm::vec3 point, BoxCollider * b
 	glm::vec3 closestPoint = glm::vec3();
 	for (int i = 0; i < 3; i++)
 	{
-		if (rotVec[i] < -(box->transform.GetGlobalScale()[i] / 2))
-			closestPoint[i] = -(box->transform.GetGlobalScale()[i] / 2);
-		if (rotVec[i] > box->transform.GetGlobalScale()[i] / 2)
-			closestPoint[i] = box->transform.GetGlobalScale()[i] / 2;
+		if (rotVec[i] < -(box->transform.GetGlobalScale()[i]))
+			closestPoint[i] = -(box->transform.GetGlobalScale()[i]);
+		if (rotVec[i] > box->transform.GetGlobalScale()[i])
+			closestPoint[i] = box->transform.GetGlobalScale()[i];
 	}
 
 	closestPoint = glm::inverse(trans * rot) * glm::vec4(closestPoint, 1.0);

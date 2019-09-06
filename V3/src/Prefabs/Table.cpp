@@ -2,6 +2,7 @@
 #include "Table.h"
 #include "..\Utils\ContentManager.h"
 #include "..\Components\BoxCollider.h"
+#include "..\Diag\DiagRenderer.h"
 
 Table::Table() : GameObject("Table")
 {
