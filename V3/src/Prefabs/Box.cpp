@@ -23,13 +23,14 @@ void Box::Update()
 	GameObject::Update();
 	std::string name = "BoxCollider";
 	BoxCollider* col = GetComponentInChild<BoxCollider>(name, name);
+	std::cout << transform.GetGlobalPosition().x << " " << transform.GetGlobalPosition().y << " " << transform.GetGlobalPosition().z << std::endl;
 	if (col != nullptr)
 	{
-		std::vector<glm::vec3> points = col->GetBoxPoints();
-		for (int i = 0; i < points.size(); i++)
-		{
-			DiagRenderer::Instance().RenderSphere(points[i]);
-		}
+		//std::vector<glm::vec3> points = col->GetBoxPoints();
+		//for (int i = 0; i < points.size(); i++)
+		//{
+			//DiagRenderer::Instance().RenderSphere(points[i]);
+		//}
 	}
 }
 
@@ -70,10 +71,14 @@ void Box::OnCollisionEnter(Collider* g, Collision col)
 	{
 		DiagRenderer::Instance().RenderSphere(col.Point(), 1, glm::vec3(1, 0, 1));
 
-		transform.Translate(-rb->GetVelocity() * Timer::GetDeltaS() * 1.1f); //Update the transform's postion in world space
-		transform.RotateBy(-rb->GetAngularVelocity().z * Timer::GetDeltaS() * 1.1f, 0, 0, 1); //Update the transform's z rotation
-		transform.RotateBy(-rb->GetAngularVelocity().x * Timer::GetDeltaS() * 1.1f, 1, 0, 0); //Update the transform's x rotation
-		transform.RotateBy(-rb->GetAngularVelocity().y * Timer::GetDeltaS() * 1.1f, 0, 1, 0); //Update the transform's y rotation
+		std::cout << "BEFORE COLLISION ADJUST POS: " << transform.GetGlobalPosition().x << " " << transform.GetGlobalPosition().y << " " << transform.GetGlobalPosition().z << std::endl;
+
+		transform.Translate(-rb->GetVelocity() * Timer::GetDeltaS()); //Update the transform's postion in world space
+		transform.RotateBy(-rb->GetAngularVelocity().z * Timer::GetDeltaS(), 0, 0, 1); //Update the transform's z rotation
+		transform.RotateBy(-rb->GetAngularVelocity().x * Timer::GetDeltaS(), 1, 0, 0); //Update the transform's x rotation
+		transform.RotateBy(-rb->GetAngularVelocity().y * Timer::GetDeltaS(), 0, 1, 0); //Update the transform's y rotation
+
+		std::cout << "AFTER COLLISION ADJUST POS: " << transform.GetGlobalPosition().x << " " << transform.GetGlobalPosition().y << " " << transform.GetGlobalPosition().z << std::endl;
 
 		float epsilon = 0.01f;
 
@@ -127,8 +132,8 @@ void Box::OnCollisionEnter(Collider* g, Collision col)
 			otherRB->SetVelocity(otherRB->GetVelocity() - (lambda / g->GetParent()->GetTotalMass()));
 			otherRB->SetAngularVelocity(otherRB->GetAngularVelocity() - lambda * glm::inverse(g->GetParent()->GetInertiaTensor()) * glm::cross(r2, col.Normal()));
 		}
-		if (rb->GetVelocity().length() * Timer::GetDeltaS() <= 0.01)
-			rb->SetVelocity(glm::vec3());
+		//if (rb->GetVelocity().length() * Timer::GetDeltaS() <= 0.01)
+			//rb->SetVelocity(glm::vec3());
 	}
 	//rb->SetActive(false);
 }
@@ -139,11 +144,11 @@ void Box::OnCollisionStay(Collider * g, Collision col)
 	DiagRenderer::Instance().RenderSphere(col.Point(), 0.4f, glm::vec3(1, 0, 0));
 	DiagRenderer::Instance().RenderSphere(col.Point() + col.Normal(), 0.4f, glm::vec3(1, 0, 1));
 	transform.Translate(-rb->GetVelocity() * Timer::GetDeltaS()); //Update the transform's postion in world space
-	transform.RotateBy(-rb->GetAngularVelocity().z * Timer::GetDeltaS() * 1.1f, 0, 0, 1); //Update the transform's z rotation
-	transform.RotateBy(-rb->GetAngularVelocity().x * Timer::GetDeltaS() * 1.1f, 1, 0, 0); //Update the transform's x rotation
-	transform.RotateBy(-rb->GetAngularVelocity().y * Timer::GetDeltaS() * 1.1f, 0, 1, 0);
-	if (rb->GetVelocity().length() * Timer::GetDeltaS() <= 0.01)
-		rb->SetVelocity(glm::vec3());
+	transform.RotateBy(-rb->GetAngularVelocity().z * Timer::GetDeltaS(), 0, 0, 1); //Update the transform's z rotation
+	transform.RotateBy(-rb->GetAngularVelocity().x * Timer::GetDeltaS(), 1, 0, 0); //Update the transform's x rotation
+	transform.RotateBy(-rb->GetAngularVelocity().y * Timer::GetDeltaS(), 0, 1, 0);
+	//if (rb->GetVelocity().length() * Timer::GetDeltaS() <= 0.1)
+		//rb->SetVelocity(glm::vec3());
 	//rb->SetVelocity(-rb->GetVelocity());
 	//rb->SetAngularVelocity(-rb->GetAngularVelocity());
 }

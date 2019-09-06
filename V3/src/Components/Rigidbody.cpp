@@ -121,9 +121,12 @@ void Rigidbody::Update()
 		//SetVelocity(glm::vec3());
 	//else
 	//{
+
+
 		_parent->transform.Translate(velocity * Timer::GetDeltaS()); //Update the transform's postion in world space
 		_parent->transform.RotateBy(angVelocity.x * Timer::GetDeltaS(), 1, 0, 0); //Update the transform's x rotation
 		_parent->transform.RotateBy(angVelocity.y * Timer::GetDeltaS(), 0, 1, 0); //Update the transform's y rotation
 		_parent->transform.RotateBy(angVelocity.z * Timer::GetDeltaS(), 0, 0, 1); //Update the transform's z rotation
+
 	//}
 }

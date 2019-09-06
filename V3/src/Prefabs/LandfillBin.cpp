@@ -48,6 +48,11 @@ void LandfillBin::Start()
 
 	LoadCollidersFromFile("Assets\\Colliders\\LandfillBin.txt");
 
+	rb = new Rigidbody();
+	rb->UseGravity(false);
+	rb->SetVelocity(2, 0, 0);
+	AddComponent(rb);
+
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider
 						 // has been added.
 }
@@ -55,6 +60,7 @@ void LandfillBin::Start()
 void LandfillBin::OnCollisionEnter(Collider* g, Collision col)
 {
 	Logger::LogInfo("LandfillBin ENTER collision with", g->GetParent()->name);
+	rb->AddVelocity(-rb->GetVelocity());
 }
 void LandfillBin::OnCollisionStay(Collider* g, Collision col)
 {

@@ -1,6 +1,8 @@
 #pragma once
 #include "..\Core\GameObject.h"
 
+class Rigidbody;
+
 class LandfillBin : public GameObject
 {
 
@@ -16,5 +18,5 @@ public:
 
 
 private:
-
+	Rigidbody* rb;
 };

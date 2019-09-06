@@ -18,7 +18,7 @@ void BoxCollider::Update()
 {
 	Collider::Update();
 
-	//CalculateCubicDimensions(); // For dynamic objet, it should be recalculated every frame
+	CalculateCubicDimensions(); // For dynamic objet, it should be recalculated every frame
 
 	// Debug
 	/*glm::vec3 min;
@@ -83,8 +83,8 @@ std::vector<glm::vec3> BoxCollider::GetBoxPoints()
 	result.push_back(transform.GetGlobalPosition() - right + up + front);
 	result.push_back(transform.GetGlobalPosition() + right + up + front);
 
-	/*for (int i = 0; i < result.size(); i++)
-		DiagRenderer::Instance().RenderSphere(result[i], 0.5);*/
+	for (int i = 0; i < result.size(); i++)
+		DiagRenderer::Instance().RenderSphere(result[i], 0.5);
 
 	return result;
 
