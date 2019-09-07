@@ -93,7 +93,7 @@ void SimpleScene::LoadAssets() {
 	// Load this stuff as preserved so they can be used in the exit scene (so there's not much loading when transitioning)
 	ContentManager::Instance().LoadModel("Assets\\Models\\Paolo\\paolo.fbx", false,true);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Drew\\drew.fbx", false, true);
-	ContentManager::Instance().LoadModel("Assets\\Models\\Sonic\\sonic.obj", false, true);
+	ContentManager::Instance().LoadModel("Assets\\Models\\Dylan\\dylan.fbx", false, true);
 
 	text->message = "Interpolating misery and regret";
 	GUIManager::Instance().Render(true, true);
@@ -104,6 +104,8 @@ void SimpleScene::LoadAssets() {
 
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Paolo\\textures\\paolo.png",true);
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Drew\\textures\\drew.png", true);
+	ContentManager::Instance().LoadTexture("Assets\\Models\\Dylan\\textures\\Dylan.png", true);
+
 
 	image->isActive = 0;
 	text->isActive = 0;

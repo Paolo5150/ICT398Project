@@ -112,7 +112,7 @@ void ExitScene::LogicUpdate()
 	{
 		p->transform.Translate(0, 15 * Timer::GetDeltaS(), 0);
 		dr->transform.Translate(0, 15* Timer::GetDeltaS(), 0);
-		dy->transform.Translate(0, 18 * Timer::GetDeltaS(), 0);
+		dy->transform.Translate(0, 15 * Timer::GetDeltaS(), 0);
 	}
 	else
 	{

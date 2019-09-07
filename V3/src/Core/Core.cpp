@@ -173,7 +173,7 @@ void Core::LoadBasicAssets()
 	ContentManager::Instance().LoadShader("SkyboxHDR", "Assets\\Shaders\\SkyboxHDR.v", "Assets\\Shaders\\SkyboxHDR.f", true);
 
 	ContentManager::Instance().LoadShader("PBR", "Assets\\Shaders\\PBR.v", "Assets\\Shaders\\PBR.f", true);
-	ContentManager::Instance().LoadShader("PBRHeight", "Assets\\Shaders\\PBR.v", "Assets\\Shaders\\PBRHeight.f", true);
+	//ContentManager::Instance().LoadShader("PBRHeight", "Assets\\Shaders\\PBR.v", "Assets\\Shaders\\PBRHeight.f", true);
 
 	ContentManager::Instance().LoadShader("PostProcess_basic", "Assets\\Shaders\\PostProcess_basic.v", "Assets\\Shaders\\PostProcess_basic.f", true);
 	ContentManager::Instance().LoadShader("PostProcess_hdr", "Assets\\Shaders\\PostProcess_hdr.v", "Assets\\Shaders\\PostProcess_hdr.f", true);
