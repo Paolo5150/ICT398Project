@@ -55,7 +55,7 @@ void ExitScene::Initialize() {
 	//std::vector<GameObject*> objs = FileUtils::ReadSceneFile("Assets\\SceneFiles\\MainScene.txt");
 
 	MainCamera* cam = new MainCamera();
-	cam->transform.SetPosition(100, 5, 0);
+	cam->transform.SetPosition(100, 6, 0);
 	cam->transform.SetRotation(0,-90, 0);
 
 	DirectionalLight* dirLight = new DirectionalLight(false);
