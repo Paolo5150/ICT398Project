@@ -36,6 +36,7 @@ public:
 
 
 	bool blockRotation;
+	bool blockMovement;
 private:
 	float m_movementSpeed;
 	float m_rotationSpeed;

@@ -159,6 +159,8 @@ void Water::OnPreRender(Camera& camera, Shader* currentShader)
 
 	//Logger::LogInfo("Water pre render");
 	currentShader->SetFloat("timer", timer);
+	currentShader->SetFloat("reflectionRefractionRatio", reflectionRefractionRatio);
+
 	currentShader->SetInt("underwater", mainCamera->transform.GetGlobalPosition().y <  transform.GetPosition().y ? 1 : 0);
 
 

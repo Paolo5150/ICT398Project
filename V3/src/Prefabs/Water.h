@@ -83,7 +83,12 @@ public:
 
 	void OnPostRender(Camera& camera, Shader* currentShader = nullptr);
 
-
+	/**
+* @brief		Set to  for default reflection refraction (fresnel)
+				Set to -1 for total reflection
+				Set to 1 for total refraction
+*/
+	float reflectionRefractionRatio;
 	/**
 	* @brief		The mesh renderer component
 	*/

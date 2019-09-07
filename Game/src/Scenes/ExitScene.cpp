@@ -16,6 +16,11 @@
 
 #include "Diag/DiagRenderer.h"
 
+namespace
+{
+	Drew* dr;
+	Paolo* p;
+}
 ExitScene::ExitScene() : Scene("ExitScene")
 {
 }
@@ -54,7 +59,7 @@ void ExitScene::Initialize() {
 	cam->transform.SetRotation(0,-90, 0);
 
 	DirectionalLight* dirLight = new DirectionalLight(false);
-	dirLight->transform.SetRotation(40, 114, -4);
+	dirLight->transform.SetRotation(60, 114, -4);
 	dirLight->SetDiffuseColor(1.0, 0.9, 0.9);
 	dirLight->SetSpecularColor(1.0, 0.8, 0.4);
 	dirLight->SetIntensity(1.5);
@@ -66,15 +71,16 @@ void ExitScene::Initialize() {
 
 	Water* water = new Water();
 	water->transform.SetScale(500, 500, 1);
+	water->reflectionRefractionRatio = -1.0;
 
-	Paolo* p = new Paolo();
+	p = new Paolo();
 	p->transform.RotateBy(90, 0, 1, 0);
-	p->transform.SetPosition(0, 1, 0);
+	p->transform.SetPosition(0, -200, 0);
 
-	Drew* dr = new Drew();
+	dr = new Drew();
 	dr->transform.RotateBy(110, 0, 1, 0);
 
-	dr->transform.SetPosition(0, 1, 40);
+	dr->transform.SetPosition(0, -200, 40);
 
 	AddGameObject(cam);
 
@@ -97,6 +103,8 @@ void ExitScene::Start()
 	//(GetGameobjectsByName("Main Camera")[0])->transform.RotateBy(90, 0, 1, 0);
 	//(GetGameobjectsByName("Main Camera")[0])->transform.SetPosition(0, 2, 0);
 	((MainCamera*)GetGameobjectsByName("Main Camera")[0])->blockRotation = 1;
+	((MainCamera*)GetGameobjectsByName("Main Camera")[0])->blockMovement = 1;
+
 
 
 }
@@ -108,6 +116,12 @@ void ExitScene::LogicUpdate()
 	if (Input::GetKeyDown(GLFW_KEY_ESCAPE))
 		EventDispatcher::Instance().DispatchEvent(new QuitRequestEvent());
 
+	if (p->transform.GetGlobalPosition().y < 1)
+	{
+		p->transform.Translate(0, 15 * Timer::GetDeltaS(), 0);
+		dr->transform.Translate(0, 15* Timer::GetDeltaS(), 0);
+
+	}
 
 	Scene::LogicUpdate(); //Must be last statement!
 

@@ -11,6 +11,7 @@ MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspect
 	m_rotationSpeed = 20;
 	m_movementSpeed = 40;	
 	blockRotation = false;
+	blockMovement = false;
 	SetIsStatic(0);
 }
 
@@ -57,6 +58,9 @@ void MainCamera::Update()
 	transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * m_rotationSpeed, transform.GetLocalRight());
 	}
 
+	if (!blockMovement)
+	{
+
 	if (Input::GetKeyDown(GLFW_KEY_KP_ADD))
 	{
 		m_movementSpeed += 0.5;
@@ -92,6 +96,7 @@ void MainCamera::Update()
 		//this->transform.SetPosition(this->transform.GetPosition() - (m_movementSpeed * Timer::GetDeltaS() * this->transform.GetLocalRight()));
 		rb->AddVelocity(-this->transform.GetLocalRight());
 
+	}
 	}
 
 	//Common inputs for all scenes
