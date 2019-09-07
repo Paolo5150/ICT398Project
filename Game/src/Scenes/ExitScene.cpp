@@ -13,9 +13,9 @@
 #include "Prefabs/Paolo.h"
 #include "Prefabs/Drew.h"
 #include "Prefabs/Dylan.h"
-
-
-
+#include "GUI/GUIManager.h"
+#include "GUI/Elements/GUIImage.h"
+#include "GUI/Elements/GUIText.h"
 #include "Diag/DiagRenderer.h"
 
 namespace
@@ -24,6 +24,7 @@ namespace
 	GameObject* p;
 	GameObject* dy;
 	Water* water;
+	GUIText* text;
 }
 ExitScene::ExitScene() : Scene("ExitScene")
 {
@@ -47,6 +48,12 @@ void ExitScene::QuitScene() {
 
 }
 void ExitScene::Initialize() {
+
+	 text = new GUIText("Quit", "Left click to quit", 80, 1, glm::vec3(1), 2.5, 1);
+	text->isActive = 0;
+	GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(text);
+
+
 
 	LightManager::Instance().SetAmbientLight(0.00, 0.00, 0.00);
 
@@ -105,7 +112,7 @@ void ExitScene::LogicUpdate()
 {
 
 
-	if (Input::GetKeyDown(GLFW_KEY_ESCAPE))
+	if (Input::GetMouseDown(0))
 		EventDispatcher::Instance().DispatchEvent(new QuitRequestEvent());
 
 	if (p->transform.GetGlobalPosition().y < 1)
@@ -116,8 +123,10 @@ void ExitScene::LogicUpdate()
 	}
 	else
 	{
-		if(water->transform.GetGlobalPosition().y > -35)
-		water->transform.Translate(0, -15 * Timer::GetDeltaS(), 0);
+		if (water->transform.GetGlobalPosition().y > -35)
+			water->transform.Translate(0, -15 * Timer::GetDeltaS(), 0);
+		else
+			text->isActive = 1;
 	}
 
 	Scene::LogicUpdate(); //Must be last statement!
