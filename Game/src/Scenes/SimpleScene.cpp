@@ -50,10 +50,7 @@ void SimpleScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\Models\\LandfillBin\\textures\\LB_Sides.png", 0);
 
 	ContentManager::Instance().LoadTexture("Assets\\Models\\RecycleBin\\textures\\RB_Frame.png", 0);
-	ContentManager::Instance().LoadTexture("Assets\\Models\\RecycleBin\\textures\\RB_Sides.png", 0);
-
-
-	
+	ContentManager::Instance().LoadTexture("Assets\\Models\\RecycleBin\\textures\\RB_Sides.png", 0);	
 
 
 	ContentManager::Instance().LoadCubeMap("Assets\\SkyBoxes\\SunSet");
@@ -89,6 +86,13 @@ void SimpleScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Metal\\metal_normal.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Metal\\metal_height.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Metal\\metal_ao.jpg", 0);
+
+	// Load this stuff as preserved so they can be used in the exit scene (so there's not much loading when transitioning)
+	ContentManager::Instance().LoadModel("Assets\\Models\\Paolo\\paolo.fbx", false,true);
+	ContentManager::Instance().LoadModel("Assets\\Models\\Drew\\drew.fbx", false, true);
+
+	ContentManager::Instance().LoadTexture("Assets\\Models\\Paolo\\textures\\paolo.png",true);
+	ContentManager::Instance().LoadTexture("Assets\\Models\\Drew\\textures\\drew.png", true);
 
 	image->isActive = 0;
 	text->isActive = 0;

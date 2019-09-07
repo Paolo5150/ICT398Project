@@ -31,11 +31,7 @@ void ExitScene::LoadAssets() {
 
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\water_normal.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\dudv.png", 0);
-	ContentManager::Instance().LoadModel("Assets\\Models\\Paolo\\paolo.fbx", false, false);
-	ContentManager::Instance().LoadModel("Assets\\Models\\Drew\\drew.fbx", false, false);
 
-	ContentManager::Instance().LoadTexture("Assets\\Models\\Paolo\\textures\\paolo.png", 0);
-	ContentManager::Instance().LoadTexture("Assets\\Models\\Drew\\textures\\drew.png", 0);
 
 
 
@@ -75,12 +71,12 @@ void ExitScene::Initialize() {
 
 	p = new Paolo();
 	p->transform.RotateBy(90, 0, 1, 0);
-	p->transform.SetPosition(0, -200, 0);
+	p->transform.SetPosition(0, -100, 0);
 
 	dr = new Drew();
 	dr->transform.RotateBy(110, 0, 1, 0);
 
-	dr->transform.SetPosition(0, -200, 40);
+	dr->transform.SetPosition(0, -100, 40);
 
 	AddGameObject(cam);
 

@@ -18,12 +18,12 @@ MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspect
 void MainCamera::Start()
 {
 
-BoxCollider* bc = new BoxCollider();
+/*BoxCollider* bc = new BoxCollider();
 	bc->transform.SetScale(2);
 	//bc->RemoveCollideAgainstLayer(CollisionLayers::DEFAULT);
 	bc->enableRender = 1;
 
-	AddComponent(bc);
+	AddComponent(bc);*/
 
 	rb = new Rigidbody();
 	rb->UseGravity(false);
@@ -36,7 +36,7 @@ BoxCollider* bc = new BoxCollider();
 void MainCamera::OnCollisionEnter(Collider* c)
 {
 
-	//transform.Translate(rb->GetVelocity() * -Timer::GetDeltaS());
+	transform.Translate(rb->GetVelocity() * -Timer::GetDeltaS());
 
 		
 }
