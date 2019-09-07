@@ -5,7 +5,7 @@
 
 Bench::Bench() : GameObject("Bench")
 {
-	//SetIsStatic(false);
+	SetIsStatic(false);
 	ContentManager::Instance().GetAsset<Model>("Bench")->PopulateGameObject(this);
 	transform.SetScale(0.08);
 
@@ -47,7 +47,7 @@ void Bench::Start()
 
 void Bench::OnCollisionEnter(Collider* g)
 {
-	//Logger::LogInfo("Collided against", g->GetName());
+	Logger::LogInfo("Collided against", g->GetName());
 }
 
 void Bench::OnCollisionStay(Collider* g)
