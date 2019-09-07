@@ -8,7 +8,7 @@ RecycleBin::RecycleBin() : GameObject("RecycleBin")
 {
 	SetIsStatic(1);
 	ContentManager::Instance().GetAsset<Model>("RecycleBin")->PopulateGameObject(this);
-	transform.SetScale(2);
+	transform.SetScale(1.5);
 
 	Material m;
 	m.SetShader(ContentManager::Instance().GetAsset<Shader>("PBR"));
@@ -28,8 +28,20 @@ RecycleBin::RecycleBin() : GameObject("RecycleBin")
 	m2.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("metal_ao"), "aoMap");
 	m2.LoadCubemap(ContentManager::Instance().GetAsset<CubeMap>("SunSet"), "cubemap0");
 
+	Material m1NoLight;
+	m1NoLight.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStaticNoLight"));
+	m1NoLight.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("RB_Frame"), "diffuse0");
+
+	Material m2NoLight;
+	m2NoLight.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStaticNoLight"));
+	m2NoLight.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("RB_Sides"), "diffuse0");
+
+
 	GetChild(1)->ApplyMaterial(m);
 	GetChild(0)->ApplyMaterial(m2);
+
+	GetChild(1)->ApplyMaterial(m1NoLight,NOLIGHT);
+	GetChild(0)->ApplyMaterial(m2NoLight,NOLIGHT);
 }
 
 RecycleBin::~RecycleBin()

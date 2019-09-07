@@ -196,7 +196,9 @@
     <ClInclude Include="src\Events\WindowEvents.h" />
     <ClInclude Include="src\GUI\Elements\GUIButton.h" />
     <ClInclude Include="src\GUI\Elements\GUICanvas.h" />
+    <ClInclude Include="src\GUI\Elements\GUIImage.h" />
     <ClInclude Include="src\GUI\Elements\GUIObject.h" />
+    <ClInclude Include="src\GUI\Elements\GUIText.h" />
     <ClInclude Include="src\GUI\GUIManager.h" />
     <ClInclude Include="src\GUI\imconfig.h" />
     <ClInclude Include="src\GUI\imgui.h" />
@@ -222,6 +224,7 @@
     <ClInclude Include="src\Prefabs\RecycleBin.h" />
     <ClInclude Include="src\Prefabs\Table.h" />
     <ClInclude Include="src\Prefabs\Terrain.h" />
+    <ClInclude Include="src\Prefabs\Water.h" />
     <ClInclude Include="src\Rendering\API_Opengl.h" />
     <ClInclude Include="src\Rendering\ArrayBuffer.h" />
     <ClInclude Include="src\Rendering\ArrayBufferGL.h" />
@@ -322,7 +325,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\Physics\CollisionChecks.cpp" />
+    <ClCompile Include="src\Physics\CollisionChecks.cpp">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Disabled</Optimization>
+      <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Disabled</InlineFunctionExpansion>
+    </ClCompile>
     <ClCompile Include="src\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="src\Prefabs\Bench.cpp" />
     <ClCompile Include="src\Prefabs\Box.cpp" />
@@ -332,6 +338,7 @@
     <ClCompile Include="src\Prefabs\RecycleBin.cpp" />
     <ClCompile Include="src\Prefabs\Table.cpp" />
     <ClCompile Include="src\Prefabs\Terrain.cpp" />
+    <ClCompile Include="src\Prefabs\Water.cpp" />
     <ClCompile Include="src\Rendering\API_Opengl.cpp" />
     <ClCompile Include="src\Rendering\CubeMapGL.cpp" />
     <ClCompile Include="src\Rendering\EquirectangularMap.cpp" />

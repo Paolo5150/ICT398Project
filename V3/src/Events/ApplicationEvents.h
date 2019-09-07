@@ -26,7 +26,7 @@ public:
 	*
 	* @param s		The new scene
 	*/
-	SceneChangedEvent(Scene* s) :  currentScene(s) {}
+	SceneChangedEvent(Scene* s, bool isReload = 0) :  currentScene(s), isReload(isReload) {}
 
 
 	/**
@@ -42,6 +42,8 @@ public:
 	* @brief		The new scene
 	*/
 	Scene* currentScene;
+
+	bool isReload;
 };
 
 /**

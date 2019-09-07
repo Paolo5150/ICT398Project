@@ -31,8 +31,14 @@ void GUIManager::Initialize()
 
 	// When the scene changes, removes all canvas and recreate the main one as per default
 	EventDispatcher::Instance().SubscribeCallback<SceneChangedEvent>([this](Event* e) {
-	allCanvas.clear();
-		CreateAndAddMainCanvas();
+
+		SceneChangedEvent* cas = (SceneChangedEvent*)e;
+
+		if (!cas->isReload)
+		{
+			allCanvas["MainCanvas"]->ClearAllGUIObjects();
+		}
+
 		Logger::LogInfo("GUIManager reset");
 		return 0;
 	});
@@ -43,6 +49,8 @@ void GUIManager::Initialize()
 		return 0;
 	});
 
+	CreateAndAddMainCanvas();
+
 }
 
 void GUIManager::CreateAndAddMainCanvas()
@@ -51,7 +59,7 @@ void GUIManager::CreateAndAddMainCanvas()
 	GUICanvas* mainCanvas = new GUICanvas("MainCanvas");
 	mainCanvas->SetBackgroundColor(1, 0, 0, 0);
 	mainCanvas->AddFlag(ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar);
-	mainCanvas->AddGUIObject(new GUIButton("Test", "Click", []() { Logger::LogInfo("Clicked!"); }));
+	//mainCanvas->AddGUIObject(new GUIButton("Test", "Click", []() { Logger::LogInfo("Clicked!"); }));
 	int x, y;
 	Window::Instance().GetWindowSize(x, y);
 
@@ -92,6 +100,11 @@ void GUIManager::RemoveCanvas(std::string name)
 	}
 }
 
+void GUIManager::SetColorBuffer(float r, float g, float b)
+{
+	Core::Instance().GetGraphicsAPI().SetClearColor(r, g, b);
+
+}
 
 
 void GUIManager::Render(bool forceRefresh, bool forceClear)

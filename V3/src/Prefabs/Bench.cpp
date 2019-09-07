@@ -5,7 +5,7 @@
 
 Bench::Bench() : GameObject("Bench")
 {
-	//SetIsStatic(false);
+	SetIsStatic(false);
 	ContentManager::Instance().GetAsset<Model>("Bench")->PopulateGameObject(this);
 	transform.SetScale(0.08);
 
@@ -18,6 +18,11 @@ Bench::Bench() : GameObject("Bench")
 	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("bamboo_ao"), "aoMap");
 	m.LoadCubemap(ContentManager::Instance().GetAsset<CubeMap>("SunSet"), "cubemap0");
 	ApplyMaterial(m);
+
+	Material m2NoLight;
+	m2NoLight.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStaticNoLight"));
+	m2NoLight.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("iron_albedo"), "diffuse0");
+	ApplyMaterial(m2NoLight, NOLIGHT);
 
 }
 
@@ -42,7 +47,7 @@ void Bench::Start()
 
 void Bench::OnCollisionEnter(Collider* g, Collision collision)
 {
-	//Logger::LogInfo("Collided against", g->GetName());
+	Logger::LogInfo("Collided against", g->GetName());
 }
 
 void Bench::OnCollisionStay(Collider* g, Collision collision)

@@ -67,7 +67,7 @@ uniform sampler2D special0; //Distortionmap
 uniform samplerCube cubemap0;
 uniform vec3 AmbientLight;
 uniform float timer;
-uniform int underwater;
+
 
 vec3 NormalToUse;
 vec3 FragPosToUse;
@@ -100,14 +100,10 @@ void main()
     vec3 DirLights = CalculateDirectionalLights(normalMap) * CalculateDirectionalLights(normalMap2);
     vec3 PointLights = CalculatePointLights(normalMap) * CalculatePointLights(normalMap2);
 	
-	vec3 camToFrag = normalize(FragPosition - CameraPosition); 
-	
-	
+	vec3 camToFrag = normalize(FragPosition - CameraPosition); 	
 	
 	vec3 totalRef = mix(cubemap,reflectionColor,0.5f);
-	vec3 textureMix = mix(totalRef,refractionColor,dot(camToFrag,-Normal));
-	textureMix = mix(textureMix,refractionColor,underwater);
-	
+	vec3 textureMix = mix(totalRef,refractionColor,dot(camToFrag,-Normal));	
     vec3 total = (AmbientLight + DirLights + PointLights) * textureMix;
 
 	gl_FragColor =  vec4(total,1.0);
@@ -155,7 +151,7 @@ vec3 CalculatePointLights(vec3 nm)
 		//Specular
 		vec3 lightToFragTS = FragPosToUse - pointLightsTS[i];
 		float distance = length(lightToFragTS);
-		float attenuation = allPointLights[i].intensity / distance ;
+		float attenuation = allPointLights[i].intensity / (distance * distance) ;
 		vec3 lightdir = normalize(lightToFragTS);
 		vec3 fragToCam = normalize(CamPosToUse - FragPosToUse);
 		vec3 reflection = reflect(lightdir,nm);

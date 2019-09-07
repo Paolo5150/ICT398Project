@@ -182,6 +182,8 @@ void Core::LoadBasicAssets()
 
 	ContentManager::Instance().LoadShader("TerrainNoLight", "Assets\\Shaders\\TerrainNoLight.v", "Assets\\Shaders\\TerrainNoLight.f", true);
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\errorTexture.png",true);
+	ContentManager::Instance().LoadTexture("Assets\\Textures\\logo.png", true);
+
 	ContentManager::Instance().LoadModel("Assets\\Models\\Quad\\quad.obj",false,true);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Cube\\cube.obj", false, true);
 

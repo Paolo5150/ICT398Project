@@ -52,7 +52,7 @@ void SceneManager::ReloadCurrent()
 			m_currentScene->m_isReady = false;
 		}
 
-		EventDispatcher::Instance().DispatchEvent(new SceneChangedEvent(m_currentScene));
+		EventDispatcher::Instance().DispatchEvent(new SceneChangedEvent(m_currentScene,1));
 
 		m_currentScene->Initialize();
 		m_currentScene->m_isReady = true;

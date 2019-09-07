@@ -17,10 +17,14 @@ MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspect
 void MainCamera::Start()
 {
 
+<<<<<<< HEAD
 /*BoxCollider* bc = new BoxCollider();
+=======
+	BoxCollider* bc = new BoxCollider();
+>>>>>>> pferri_exitScene
 	bc->transform.SetScale(2);
 	//bc->RemoveCollideAgainstLayer(CollisionLayers::DEFAULT);
-	bc->enableRender = 1;
+	bc->enableRender = 0;
 
 	AddComponent(bc);*/
 
@@ -32,7 +36,7 @@ void MainCamera::Start()
 
 }
 
-void MainCamera::OnCollisionEnter(Collider* c, Collision collision)
+void MainCamera::OnCollisionEnter(Collider* c)
 {
 
 	transform.Translate(rb->GetVelocity() * -Timer::GetDeltaS());
@@ -40,7 +44,7 @@ void MainCamera::OnCollisionEnter(Collider* c, Collision collision)
 		
 }
 
-void MainCamera::OnCollisionStay(Collider* c, Collision collision)
+void MainCamera::OnCollisionStay(Collider* c)
 {
 	//Logger::LogInfo("Camera colliding with", c->GetParent()->name);
 	transform.Translate(rb->GetVelocity() * -Timer::GetDeltaS());

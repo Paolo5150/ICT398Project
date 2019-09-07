@@ -12,6 +12,7 @@ Skybox::Skybox(CubeMap* cubemap)
 	material.LoadCubemap(cubemap);
 	
 	dummy = std::unique_ptr<GameObject>(new GameObject("SkyboxDummyGameObject"));
+	dummy->SetLayer(0);
 	dummy->SetLayer(RenderingLayers::SKYBOX);
 
 	meshRenderer =new MeshRenderer(ContentManager::Instance().GetAsset<Model>("Cube")->GetMeshes()[0],material);
@@ -31,6 +32,8 @@ Skybox::Skybox(EquirectangularMap* cubemap)
 	material.LoadEquirectangularMap(cubemap);
 
 	dummy = std::unique_ptr<GameObject>(new GameObject("SkyboxDummyGameObject"));
+	dummy->SetLayer(0);
+
 	dummy->SetLayer(RenderingLayers::SKYBOX);
 
 	meshRenderer = new MeshRenderer(ContentManager::Instance().GetAsset<Model>("Cube")->GetMeshes()[0], material);

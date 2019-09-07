@@ -10,8 +10,14 @@
 #include "Prefabs/Terrain.h"
 #include "Prefabs/LandfillBin.h"
 #include "Prefabs/RecycleBin.h"
+#include "Prefabs/Water.h"
 
 #include "Diag/DiagRenderer.h"
+#include "GUI/GUIManager.h"
+#include "GUI/Elements/GUIImage.h"
+#include "GUI/Elements/GUIText.h"
+
+
 
 SimpleScene::SimpleScene() : Scene("SimpleScene")
 {
@@ -19,8 +25,22 @@ SimpleScene::SimpleScene() : Scene("SimpleScene")
 
 void SimpleScene::LoadAssets() {
 
-	//ContentManager::Instance().LoadModel("Assets\\Models\\Bench\\bench.obj", false, false);
-	//ContentManager::Instance().LoadModel("Assets\\Models\\Table\\table.fbx", false, false);
+	// Load splash screen
+	GUIImage* image = new GUIImage("SplashImage", ContentManager::Instance().GetAsset<Texture2D>("logo"), 100, 100, 0, 0, 1, 1, 1,1);
+	GUIText* text = new GUIText("LoadingText", "Loading", 1, 95, glm::vec3(1), 2.5,1);
+
+	GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(image);
+	GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(text);
+
+	GUIManager::Instance().SetColorBuffer(0.8, 0.8, 0.8);
+	GUIManager::Instance().Render(true,true);
+
+
+	text->message = "Loading uncomfrotable feelings...";
+	GUIManager::Instance().Render(true);
+
+	ContentManager::Instance().LoadModel("Assets\\Models\\Bench\\bench.obj", false, false);
+	ContentManager::Instance().LoadModel("Assets\\Models\\Table\\table.fbx", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Chair\\chair.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\LandfillBin\\landfillbin.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\RecycleBin\\recyclebin.obj", false, false);
@@ -32,20 +52,31 @@ void SimpleScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\Models\\RecycleBin\\textures\\RB_Sides.png", 0);
 
 
+	
+
 
 	ContentManager::Instance().LoadCubeMap("Assets\\SkyBoxes\\SunSet");
 
 
-	/*ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_albedo.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_albedo.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_roughness.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_metallic.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_normal.jpg", 0);	
+
+	text->message = "Instantiating sense of despair...";
+	GUIManager::Instance().Render(true, true);
 
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_albedo.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_roughness.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_metallic.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_normal.jpg", 0);
-	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_ao.jpg", 0);*/
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_ao.jpg", 0);
+
+	ContentManager::Instance().LoadTexture("Assets\\Textures\\water_normal.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\Textures\\dudv.png", 0);
+
+	text->message = "Finalizing feeling of hopelessness...";
+	GUIManager::Instance().Render(true,true);
 
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_albedo.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_roughness.jpg", 0);
@@ -57,6 +88,10 @@ void SimpleScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Metal\\metal_normal.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Metal\\metal_height.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Metal\\metal_ao.jpg", 0);
+
+	image->isActive = 0;
+	text->isActive = 0;
+	text->message = "Loading next scene.."; //Just prepare the message for going to the exit scene
 }
 
 void SimpleScene::QuitScene() {
@@ -65,6 +100,7 @@ void SimpleScene::QuitScene() {
 
 }
 void SimpleScene::Initialize() {
+
 
 	LightManager::Instance().SetAmbientLight(0.00, 0.00, 0.00);
 
@@ -75,12 +111,12 @@ void SimpleScene::Initialize() {
 	table->transform.SetRotation(0, 0, 0);
 
 	Box* box = new Box();
-	box->transform.SetPosition(0, 5, 0);
+	box->transform.SetPosition(0, 10, 0);
 	box->transform.SetRotation(0, 0, 0);
 
-	//Box* box2 = new Box();
-	//box2->transform.SetPosition(-6, 10, 0);
-	//box2->transform.SetRotation(0, 0, 0);
+	Box* box2 = new Box();
+	box2->transform.SetPosition(-6, 10, 0);
+	box2->transform.SetRotation(0, 0, 0);
 
 	std::vector<GameObject*> objs = FileUtils::ReadSceneFile("Assets\\SceneFiles\\MainScene.txt");	
 
@@ -89,21 +125,37 @@ void SimpleScene::Initialize() {
 	cam->transform.SetRotation(0, 180, 0);
 	
 	DirectionalLight* dirLight = new DirectionalLight(false);
-	dirLight->transform.SetRotation(30,114,-4);
+	dirLight->transform.SetRotation(40,114,-4);
+	dirLight->SetDiffuseColor(1.0, 0.9, 0.9);
+	dirLight->SetSpecularColor(1.0, 0.8, 0.4);
 	dirLight->SetIntensity(1.5);
+
+	DirectionalLight* dirLight2 = new DirectionalLight(false);
+	dirLight2->transform.SetRotation(90,0,0);
+	dirLight2->SetSpecularColor(1.0, 0.8, 0.4);
+
+	dirLight2->SetIntensity(0.2);
+
+		Water* water = new Water();
+	water->transform.SetScale(100, 100, 1);
+	
 
 	PointLight* pointLight = new PointLight();
 
-	pointLight->SetIntensity(100);
-	pointLight->transform.SetPosition(5, 0, 5);
-	pointLight->SetDiffuseColor(0, 1, 0);
+	pointLight->SetIntensity(10);
+	pointLight->transform.SetPosition(0, 0, 10);
 	
+	//cam->AddChild(pointLight);
+
 	AddGameObject(cam);
-	AddGameObject(dirLight);
 	AddGameObject(pointLight);
 	AddGameObject(box);
-	//AddGameObject(box2);
+	AddGameObject(box2);
 	AddGameObject(table);
+	//AddGameObject(dirLight);
+	//AddGameObject(dirLight2);
+
+	//AddGameObject(water);
 
 	for (int i = 0; i < objs.size(); i++)
 		AddGameObject(objs[i]);
@@ -123,26 +175,21 @@ void SimpleScene::LogicUpdate()
 	//GetGameobjectsByName("LandfillBin")[0]->transform.RotateBy(0.1, 0, 0, 1);
 	//GetGameobjectsByName("LandfillBin")[0]->transform.Translate(0.01, 0, 0);
 
-	((PointLight*)GetGameobjectsByName("PointLight")[0])->RenderDiag();
-	((PointLight*)GetGameobjectsByName("PointLight")[0])->transform.Translate(0, 0, 0.1);
+	//((PointLight*)GetGameobjectsByName("PointLight")[0])->transform.Translate(0, 0, 0.1);
+
 
 	if (Input::GetKeyDown(GLFW_KEY_ESCAPE))
-		EventDispatcher::Instance().DispatchEvent(new QuitRequestEvent());
-
-	if (Input::GetKeyDown(GLFW_KEY_O))
-		SceneManager::Instance().LoadNewScene("OtherScene");
-
-	//int n = PhysicsWorld::Instance().nonStaticQuadtree->GameObjectInQuadrant(GetGameobjectsByName("LandfillBin")[0]->transform.GetPosition().x, GetGameobjectsByName("LandfillBin")[0]->transform.GetPosition().z);
-	
-	/*static bool done = 0;
-
-	if (!done)
 	{
-		PhysicsWorld::Instance().FillQuadtree(1); // Fill static quadtree
-		done = 1;
-	}*/
-	//Logger::LogInfo("Objects:", n);
+		GUIManager::Instance().GetCanvasByName("MainCanvas")->GetGUIObjectByName("LoadingText")->isActive = 1;
+		GUIManager::Instance().Render(1);
+		SceneManager::Instance().LoadNewScene("ExitScene");
+		return;
+	}
+
 	Scene::LogicUpdate(); //Must be last statement!
+
+	((PointLight*)GetGameobjectsByName("PointLight")[0])->RenderDiag();
+
 }
 
 

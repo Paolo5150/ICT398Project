@@ -12,6 +12,7 @@ Transform::Transform()
 	parent = nullptr;
 	ignoreParentRotation = 0;
 	modelMatrix = GetTranslateMatrix()* rotationMatrix * GetScaleMatrix();
+	transformChildren.clear();
 
 }
 

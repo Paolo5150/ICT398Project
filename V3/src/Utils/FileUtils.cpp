@@ -235,7 +235,7 @@ std::vector<GameObject*> FileUtils::ReadSceneFile(std::string absolutePathToFile
 				c = fgetc(f);
 			}
 
-		glm::vec3 p, r;
+		glm::vec3 p, r,s;
 		
 
 		// Get prefab name
@@ -251,8 +251,14 @@ std::vector<GameObject*> FileUtils::ReadSceneFile(std::string absolutePathToFile
 			{
 				fgetc(f); //Get rid of (
 				fscanf(f, "%f,%f,%f", &r.x, &r.y, &r.z);
-				
-				// Rotation is the last thing read, get out of loop
+				fgetc(f); //Get rid of )
+			}
+			else if (c == 'S')
+			{
+				fgetc(f); //Get rid of (
+				fscanf(f, "%f,%f,%f", &s.x, &s.y, &s.z);
+
+				// Scale is the last thing read, get out of loop
 				fgets(buf, 512, f);
 				break;
 			}
@@ -266,6 +272,7 @@ std::vector<GameObject*> FileUtils::ReadSceneFile(std::string absolutePathToFile
 
 			b->transform.SetPosition(p);
 			b->transform.SetRotation(r);
+			b->transform.SetScale(b->transform.GetScale().x * s.x, b->transform.GetScale().y * s.y, b->transform.GetScale().z * s.z);
 			objs.push_back(b);
 		}
 		else

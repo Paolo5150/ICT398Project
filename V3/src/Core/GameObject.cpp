@@ -291,7 +291,7 @@ void GameObject::AddChild(GameObject* child)
 			child->transform.parent = &transform;
 			_children.push_back(child);
 			transform.transformChildren.push_back(&child->transform);
-			transform.UpdateHierarchy();
+
 		}
 	}
 
@@ -441,9 +441,9 @@ void GameObject::EngineUpdate()
 {
 
 
-	auto it = _children.begin();
+	/*auto it = _children.begin();
 	for (; it != _children.end(); it++)
-		(*it)->EngineUpdate();
+		(*it)->EngineUpdate();*/
 
 	auto itc = _components.begin();
 	for (; itc != _components.end(); itc++)

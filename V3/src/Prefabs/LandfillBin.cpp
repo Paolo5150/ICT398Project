@@ -19,6 +19,11 @@ LandfillBin::LandfillBin() : GameObject("LandfillBin")
 	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("metal_ao"), "aoMap");
 	m.LoadCubemap(ContentManager::Instance().GetAsset<CubeMap>("SunSet"), "cubemap0");
 
+	Material m1NoLight;
+	m1NoLight.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStaticNoLight"));
+	m1NoLight.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("LB_Frame"), "diffuse0");
+
+
 	Material m2;
 	m2.SetShader(ContentManager::Instance().GetAsset<Shader>("PBR"));
 	m2.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("LB_Sides"), "albedoMap");
@@ -27,9 +32,16 @@ LandfillBin::LandfillBin() : GameObject("LandfillBin")
 	m2.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("metal_metallic"), "metallicMap");
 	m2.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("metal_ao"), "aoMap");
 	m2.LoadCubemap(ContentManager::Instance().GetAsset<CubeMap>("SunSet"), "cubemap0");
+
+	Material m2NoLight;
+	m2NoLight.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStaticNoLight"));
+	m2NoLight.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("LB_Sides"), "diffuse0");
 	
 	GetChild(0)->ApplyMaterial(m);
+	GetChild(0)->ApplyMaterial(m1NoLight,NOLIGHT);
+
 	GetChild(1)->ApplyMaterial(m2);
+	GetChild(1)->ApplyMaterial(m2NoLight, NOLIGHT);
 
 }
 
@@ -50,7 +62,7 @@ void LandfillBin::Start()
 
 	rb = new Rigidbody();
 	rb->UseGravity(false);
-	rb->SetVelocity(2, 0, 0);
+	rb->SetVelocity(0, -1.0, 0);
 	AddComponent(rb);
 
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider

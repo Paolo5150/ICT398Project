@@ -42,6 +42,17 @@ void GUICanvas::AddGUIObject(GUIObject* obj)
 	allGUIObjects[obj->name] = std::unique_ptr<GUIObject>(obj);
 }
 
+GUIObject* GUICanvas::GetGUIObjectByName(std::string name)
+{
+	auto it = allGUIObjects.find(name);
+
+	if (it != allGUIObjects.end())
+		return (*it).second.get();
+	else
+		return nullptr;
+}
+
+
 
 void GUICanvas::AddFlag(int flag)
 {
