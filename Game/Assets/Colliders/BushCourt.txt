@@ -7,37 +7,64 @@
 # "SC" to identify the starting point of a new box collider
 # "A" is the "isActive" parameter
 # For Sphere colliders, onle the X value of Scale is used as Radius
+#Floor
 BC
-P 0 0 0
-S 65 3 35
+P 0 -5 0
+S 200 5 200
 R 0 0 0
 M 1.0
 D 1
 A 1
+
+#East1
 BC
-P -60 -35 -30
-S 3 35 3
+P 82.8 5 -79.5
+S 10 20 50
 R 0 0 0
 M 1.0
 D 1
 A 1
+
+#East2
 BC
-P 60 -35 -30
-S 3 35 3
+P 83.8 5 25
+S 10 20 70
 R 0 0 0
 M 1.0
 D 1
 A 1
+
+#West
 BC
-P -60 -35 30
-S 3 35 3
+P -84.2 5 -20
+S 10 20 100
 R 0 0 0
 M 1.0
 D 1
 A 1
+
+#North
 BC
-P 60 -35 30
-S 3 35 3
+P 0 5 85
+S 100 20 10
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+#South
+BC
+P 0 5 -85
+S 100 20 10
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+#Column1
+BC
+P 64.6 5 -74.5
+S 0.8 10 0.8
 R 0 0 0
 M 1.0
 D 1

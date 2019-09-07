@@ -234,6 +234,9 @@
     <ClCompile Include="src\Prefabs\DrewText.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Prefabs\BushCourt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h">
@@ -546,6 +549,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Prefabs\DrewText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Prefabs\BushCourt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

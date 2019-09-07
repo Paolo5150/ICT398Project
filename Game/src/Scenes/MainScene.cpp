@@ -117,7 +117,7 @@ void MainScene::Initialize() {
 
 	std::vector<GameObject*> objs = FileUtils::ReadSceneFile("Assets\\SceneFiles\\MainScene.txt");	
 
-	MainCamera* cam = new MainCamera();
+	cam = new MainCamera();
 	cam->transform.SetPosition(0, 10, 50);
 	cam->transform.SetRotation(0, 180, 0);
 	
@@ -139,6 +139,8 @@ void MainScene::Initialize() {
 
 	PointLight* pointLight = new PointLight();
 
+	BushCourt* bushCourt = new BushCourt();
+
 	pointLight->SetIntensity(10);
 	pointLight->transform.SetPosition(0, 0, 10);
 	
@@ -147,7 +149,8 @@ void MainScene::Initialize() {
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
 
-	AddGameObject(water);
+	//AddGameObject(water);
+	AddGameObject(bushCourt);
 
 	for (int i = 0; i < objs.size(); i++)
 		AddGameObject(objs[i]);
@@ -173,6 +176,9 @@ void MainScene::LogicUpdate()
 		SceneManager::Instance().LoadNewScene("ExitScene");
 		return;
 	}
+
+	if (Input::GetKeyDown(GLFW_KEY_SPACE))
+		std::cout << "X: " << cam->transform.GetGlobalPosition().x << " Y: " << cam->transform.GetGlobalPosition().y << " Z: " << cam->transform.GetGlobalPosition().z << std::endl;
 
 	Scene::LogicUpdate(); //Must be last statement!
 

@@ -57,6 +57,6 @@ public:
 	*/
 	virtual void LogicUpdate() override;
 
-
+	MainCamera* cam;
 
 };
