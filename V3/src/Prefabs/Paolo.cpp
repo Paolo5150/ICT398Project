@@ -13,6 +13,7 @@ Paolo::Paolo() : GameObject("Paolo")
 	Material m;
 	m.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStatic"));
 	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("paolo"));
+	m.LoadFloat("shininess", 400.0f);
 
 	Material m1NoLight;
 	m1NoLight.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStaticNoLight"));
@@ -21,7 +22,7 @@ Paolo::Paolo() : GameObject("Paolo")
 	ApplyMaterial(m);
 	ApplyMaterial(m1NoLight,NOLIGHT);
 
-
+	transform.SetRotation(-90, 0, 0);
 
 
 }

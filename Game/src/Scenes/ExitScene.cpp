@@ -10,6 +10,9 @@
 #include "Prefabs/LandfillBin.h"
 #include "Prefabs/RecycleBin.h"
 #include "Prefabs/Water.h"
+#include "Prefabs/Paolo.h"
+#include "Prefabs/Drew.h"
+
 
 #include "Diag/DiagRenderer.h"
 
@@ -47,8 +50,8 @@ void ExitScene::Initialize() {
 	//std::vector<GameObject*> objs = FileUtils::ReadSceneFile("Assets\\SceneFiles\\MainScene.txt");
 
 	MainCamera* cam = new MainCamera();
-	cam->transform.SetPosition(0, 10, 50);
-	cam->transform.SetRotation(0, 180, 0);
+	cam->transform.SetPosition(100, 5, 0);
+	cam->transform.SetRotation(0,-90, 0);
 
 	DirectionalLight* dirLight = new DirectionalLight(false);
 	dirLight->transform.SetRotation(40, 114, -4);
@@ -57,19 +60,30 @@ void ExitScene::Initialize() {
 	dirLight->SetIntensity(1.5);
 
 	DirectionalLight* dirLight2 = new DirectionalLight(false);
-	dirLight2->transform.SetRotation(90, 0, 0);
-	dirLight2->SetSpecularColor(1.0, 0.8, 0.4);
-
-	dirLight2->SetIntensity(0.2);
+	dirLight2->transform.SetRotation(cam->transform.GetRotation());
+	dirLight2->transform.RotateBy(20, dirLight2->transform.GetLocalRight());
+	dirLight2->SetIntensity(1.8);
 
 	Water* water = new Water();
 	water->transform.SetScale(500, 500, 1);
 
+	Paolo* p = new Paolo();
+	p->transform.RotateBy(90, 0, 1, 0);
+	p->transform.SetPosition(0, 1, 0);
+
+	Drew* dr = new Drew();
+	dr->transform.RotateBy(110, 0, 1, 0);
+
+	dr->transform.SetPosition(0, 1, 40);
 
 	AddGameObject(cam);
 
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
+	AddGameObject(p);
+	AddGameObject(dr);
+
+
 
 	AddGameObject(water);
 
@@ -80,8 +94,8 @@ void ExitScene::Start()
 	Scene::Start();
 	Input::SetCursorMode("disabled");
 
-	(GetGameobjectsByName("Main Camera")[0])->transform.RotateBy(90, 0, 1, 0);
-	(GetGameobjectsByName("Main Camera")[0])->transform.SetPosition(0, 2, 0);
+	//(GetGameobjectsByName("Main Camera")[0])->transform.RotateBy(90, 0, 1, 0);
+	//(GetGameobjectsByName("Main Camera")[0])->transform.SetPosition(0, 2, 0);
 	((MainCamera*)GetGameobjectsByName("Main Camera")[0])->blockRotation = 1;
 
 
