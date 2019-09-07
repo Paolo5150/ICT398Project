@@ -148,6 +148,8 @@ public:
 
 	bool RemoveGameobjectsByName(std::string name); //returns true if any objects were removed
 
+	void LoadGameObjectsFromFile(std::string filePath);
+
 protected:
 	/**
 	* @brief		The list of gameobjects in the scene

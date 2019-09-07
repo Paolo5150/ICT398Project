@@ -12,14 +12,18 @@
 #include "Prefabs/Water.h"
 #include "Prefabs/Paolo.h"
 #include "Prefabs/Drew.h"
+#include "Prefabs/Dylan.h"
+
 
 
 #include "Diag/DiagRenderer.h"
 
 namespace
 {
-	Drew* dr;
-	Paolo* p;
+	GameObject* dr;
+	GameObject* p;
+	GameObject* dy;
+	Water* water;
 }
 ExitScene::ExitScene() : Scene("ExitScene")
 {
@@ -65,27 +69,19 @@ void ExitScene::Initialize() {
 	dirLight2->transform.RotateBy(20, dirLight2->transform.GetLocalRight());
 	dirLight2->SetIntensity(1.8);
 
-	Water* water = new Water();
-	water->transform.SetScale(500, 500, 1);
-	water->reflectionRefractionRatio = -1.0;
-
-	p = new Paolo();
-	p->transform.RotateBy(90, 0, 1, 0);
-	p->transform.SetPosition(0, -100, 0);
-
-	dr = new Drew();
-	dr->transform.RotateBy(110, 0, 1, 0);
-
-	dr->transform.SetPosition(0, -100, 40);
+	water = new Water();
+	water->transform.SetScale(1000, 1000, 1);
+	water->reflectionRefractionRatio = -1.0;	
 
 	AddGameObject(cam);
-
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
-	AddGameObject(p);
-	AddGameObject(dr);
 
+	LoadGameObjectsFromFile("Assets\\SceneFiles\\ExitScene.txt");
 
+	p = GetGameobjectsByName("Paolo")[0];
+	dr = GetGameobjectsByName("Drew")[0];
+	dy = GetGameobjectsByName("Dylan")[0];
 
 	AddGameObject(water);
 
@@ -116,7 +112,12 @@ void ExitScene::LogicUpdate()
 	{
 		p->transform.Translate(0, 15 * Timer::GetDeltaS(), 0);
 		dr->transform.Translate(0, 15* Timer::GetDeltaS(), 0);
-
+		dy->transform.Translate(0, 18 * Timer::GetDeltaS(), 0);
+	}
+	else
+	{
+		if(water->transform.GetGlobalPosition().y > -35)
+		water->transform.Translate(0, -15 * Timer::GetDeltaS(), 0);
 	}
 
 	Scene::LogicUpdate(); //Must be last statement!

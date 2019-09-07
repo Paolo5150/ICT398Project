@@ -56,10 +56,10 @@ void SimpleScene::LoadAssets() {
 	ContentManager::Instance().LoadCubeMap("Assets\\SkyBoxes\\SunSet");
 
 
-	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_albedo.jpg", 0);
-	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_roughness.jpg", 0);
-	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_metallic.jpg", 0);
-	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_normal.jpg", 0);	
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_albedo.jpg", 1);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_roughness.jpg", 1);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_metallic.jpg", 1);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_normal.jpg", 1);	
 
 	text->message = "Instantiating sense of despair...";
 	GUIManager::Instance().Render(true, true);
@@ -68,12 +68,12 @@ void SimpleScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_roughness.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_metallic.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_normal.jpg", 0);
-	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_ao.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_ao.jpg", 1);
 
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\water_normal.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\dudv.png", 0);
 
-	text->message = "Finalizing feeling of hopelessness...";
+	text->message = "Deserializing sadness and sorrow...";
 	GUIManager::Instance().Render(true,true);
 
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_albedo.jpg", 0);
@@ -82,14 +82,25 @@ void SimpleScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_normal.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_ao.jpg", 0);
 
+
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Metal\\metal_roughness.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Metal\\metal_normal.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Metal\\metal_height.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Metal\\metal_ao.jpg", 0);
 
+	text->message = "Finalizing feeling of hopelessness...";
+	GUIManager::Instance().Render(true, true);
 	// Load this stuff as preserved so they can be used in the exit scene (so there's not much loading when transitioning)
 	ContentManager::Instance().LoadModel("Assets\\Models\\Paolo\\paolo.fbx", false,true);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Drew\\drew.fbx", false, true);
+	ContentManager::Instance().LoadModel("Assets\\Models\\Sonic\\sonic.obj", false, true);
+
+	text->message = "Interpolating misery and regret";
+	GUIManager::Instance().Render(true, true);
+	ContentManager::Instance().LoadModel("Assets\\Models\\PaoloText\\PaoloText.obj", false, true);
+	ContentManager::Instance().LoadModel("Assets\\Models\\DrewText\\DrewText.obj", false, true);
+	ContentManager::Instance().LoadModel("Assets\\Models\\DylanText\\DylanText.obj", false, true);
+
 
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Paolo\\textures\\paolo.png",true);
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Drew\\textures\\drew.png", true);
@@ -111,7 +122,6 @@ void SimpleScene::Initialize() {
 
 	skybox = std::unique_ptr<Skybox>(new Skybox(ContentManager::Instance().GetAsset<CubeMap>("SunSet")));
 
-	std::vector<GameObject*> objs = FileUtils::ReadSceneFile("Assets\\SceneFiles\\MainScene.txt");	
 
 	MainCamera* cam = new MainCamera();
 	cam->transform.SetPosition(0, 10, 50);
@@ -147,8 +157,10 @@ void SimpleScene::Initialize() {
 
 	AddGameObject(water);
 
-	for (int i = 0; i < objs.size(); i++)
-		AddGameObject(objs[i]);
+	LoadGameObjectsFromFile("Assets\\SceneFiles\\MainScene.txt");
+
+
+
 }
 
 void SimpleScene::Start()

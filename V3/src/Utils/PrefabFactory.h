@@ -5,8 +5,13 @@
 #include "..\Prefabs\RecycleBin.h"
 #include "..\Prefabs\Table.h"
 #include "..\Prefabs\Terrain.h"
-
-
+#include "..\Prefabs\Water.h"
+#include "..\Prefabs\Dylan.h"
+#include "..\Prefabs\Drew.h"
+#include "..\Prefabs\Paolo.h"
+#include "..\Prefabs\DylanText.h"
+#include "..\Prefabs\DrewText.h"
+#include "..\Prefabs\PaoloText.h"
 
 class PrefabFactory
 {
@@ -33,6 +38,35 @@ public:
 		{
 			return new Table();
 		}
+		else if (name == "Dylan")
+		{
+			return new Dylan();
+		}
+		else if (name == "Paolo")
+		{
+			return new Paolo();
+		}
+		else if (name == "Drew")
+		{
+			return new Drew();
+		}
+		else if (name == "Water")
+		{
+			return new Water();
+		}
+		else if (name == "DylanText")
+		{
+			return new DylanText();
+		}
+		else if (name == "DrewText")
+		{
+			return new DrewText();
+		}
+		else if (name == "PaoloText")
+		{
+			return new PaoloText();
+		}
+
 
 		return nullptr;
 

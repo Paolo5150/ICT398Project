@@ -170,3 +170,10 @@ bool Scene::RemoveGameobjectsByName(std::string name)
 	return deleted;
 }
 
+void Scene::LoadGameObjectsFromFile(std::string filePath)
+{
+	std::vector<GameObject*> objs = FileUtils::ReadSceneFile(filePath);
+	for (int i = 0; i < objs.size(); i++)
+		AddGameObject(objs[i]);
+}
+
