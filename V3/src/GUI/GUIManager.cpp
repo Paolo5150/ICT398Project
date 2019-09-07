@@ -31,8 +31,14 @@ void GUIManager::Initialize()
 
 	// When the scene changes, removes all canvas and recreate the main one as per default
 	EventDispatcher::Instance().SubscribeCallback<SceneChangedEvent>([this](Event* e) {
-		allCanvas.clear();
-		CreateAndAddMainCanvas();
+
+		SceneChangedEvent* cas = (SceneChangedEvent*)e;
+
+		if (!cas->isReload)
+		{
+			allCanvas["MainCanvas"]->ClearAllGUIObjects();
+		}
+
 		Logger::LogInfo("GUIManager reset");
 		return 0;
 	});
@@ -42,6 +48,8 @@ void GUIManager::Initialize()
 		// Resize canvas
 		return 0;
 	});
+
+	CreateAndAddMainCanvas();
 
 }
 

@@ -100,12 +100,6 @@ void SimpleScene::QuitScene() {
 }
 void SimpleScene::Initialize() {
 
-	GUIImage* image = new GUIImage("SplashImage", ContentManager::Instance().GetAsset<Texture2D>("logo"), 100, 100, 0, 0, 1, 1, 1, 1);
-	GUIText* text = new GUIText("LoadingText", "Loading", 1, 95, glm::vec3(1), 2.5, 1);
-	image->isActive = 0;
-	text->isActive = 0;
-	GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(image);
-	GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(text);
 
 	LightManager::Instance().SetAmbientLight(0.00, 0.00, 0.00);
 
