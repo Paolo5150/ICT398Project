@@ -1,0 +1,44 @@
+# This can be used as comments
+# Use "P" to specify position, followed by XYZ
+# Use "S" to specify scale, followed by XYZ
+# Use "R" to specify rotation, followed by XYZ
+# Use "D" to specify whether to draw the collider or not (use as boolean 1 or )
+# "BC" to identify the starting point of a new box collider
+# "SC" to identify the starting point of a new box collider
+# "A" is the "isActive" parameter
+# For Sphere colliders, onle the X value of Scale is used as Radius
+BC
+P 0 0 0
+S 65 3 35
+R 0 0 0
+M 1.0
+D 1
+A 1
+BC
+P -60 -35 -30
+S 3 35 3
+R 0 0 0
+M 1.0
+D 1
+A 1
+BC
+P 60 -35 -30
+S 3 35 3
+R 0 0 0
+M 1.0
+D 1
+A 1
+BC
+P -60 -35 30
+S 3 35 3
+R 0 0 0
+M 1.0
+D 1
+A 1
+BC
+P 60 -35 30
+S 3 35 3
+R 0 0 0
+M 1.0
+D 1
+A 1
