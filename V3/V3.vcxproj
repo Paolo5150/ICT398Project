@@ -217,8 +217,10 @@
     <ClInclude Include="src\Physics\PhysicsWorld.h" />
     <ClInclude Include="src\Prefabs\Bench.h" />
     <ClInclude Include="src\Prefabs\Chair.h" />
+    <ClInclude Include="src\Prefabs\Drew.h" />
     <ClInclude Include="src\Prefabs\LandfillBin.h" />
     <ClInclude Include="src\Prefabs\MainCamera.h" />
+    <ClInclude Include="src\Prefabs\Paolo.h" />
     <ClInclude Include="src\Prefabs\RecycleBin.h" />
     <ClInclude Include="src\Prefabs\Table.h" />
     <ClInclude Include="src\Prefabs\Terrain.h" />
@@ -329,8 +331,10 @@
     <ClCompile Include="src\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="src\Prefabs\Bench.cpp" />
     <ClCompile Include="src\Prefabs\Chair.cpp" />
+    <ClCompile Include="src\Prefabs\Drew.cpp" />
     <ClCompile Include="src\Prefabs\LandfillBin.cpp" />
     <ClCompile Include="src\Prefabs\MainCamera.cpp" />
+    <ClCompile Include="src\Prefabs\Paolo.cpp" />
     <ClCompile Include="src\Prefabs\RecycleBin.cpp" />
     <ClCompile Include="src\Prefabs\Table.cpp" />
     <ClCompile Include="src\Prefabs\Terrain.cpp" />

@@ -23,6 +23,13 @@ void ExitScene::LoadAssets() {
 
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\water_normal.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\dudv.png", 0);
+	ContentManager::Instance().LoadModel("Assets\\Models\\Paolo\\paolo.fbx", false, false);
+	ContentManager::Instance().LoadModel("Assets\\Models\\Drew\\drew.fbx", false, false);
+
+	ContentManager::Instance().LoadTexture("Assets\\Models\\Paolo\\textures\\paolo.png", 0);
+	ContentManager::Instance().LoadTexture("Assets\\Models\\Drew\\textures\\drew.png", 0);
+
+
 
 }
 

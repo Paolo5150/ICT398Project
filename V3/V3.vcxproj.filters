@@ -216,6 +216,12 @@
     <ClCompile Include="src\Prefabs\Water.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Prefabs\Paolo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Prefabs\Drew.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h">
@@ -510,6 +516,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\GUI\Elements\GUIText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Prefabs\Paolo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Prefabs\Drew.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
