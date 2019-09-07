@@ -38,6 +38,10 @@ class Scene
 {
 public:
 	friend class SceneManager;
+	friend class Application;
+	friend class RenderingEngine;
+
+
 
 	/**
 	* @brief		Creates the scene object
@@ -165,6 +169,8 @@ protected:
 	* @brief		The skybox of the scene
 	*/
 	std::unique_ptr<Skybox> skybox;
+	
+	bool isPaused;
 
 };
 

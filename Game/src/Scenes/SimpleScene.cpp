@@ -16,7 +16,10 @@
 #include "GUI/Elements/GUIImage.h"
 #include "GUI/Elements/GUIText.h"
 
-
+namespace
+{
+	PointLight* pointLight;
+}
 
 SimpleScene::SimpleScene() : Scene("SimpleScene")
 {
@@ -141,23 +144,19 @@ void SimpleScene::Initialize() {
 
 	dirLight2->SetIntensity(0.2);
 
-		Water* water = new Water();
-	water->transform.SetScale(100, 100, 1);
-	
 
-	PointLight* pointLight = new PointLight();
+	 pointLight = new PointLight();
 
 	pointLight->SetIntensity(10);
 	pointLight->transform.SetPosition(0, 0, 10);
 	
-	//cam->AddChild(pointLight);
+	cam->AddChild(pointLight);
 
 	AddGameObject(cam);
 	AddGameObject(pointLight);
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
 
-	AddGameObject(water);
 
 	LoadGameObjectsFromFile("Assets\\SceneFiles\\MainScene.txt");
 
@@ -190,9 +189,18 @@ void SimpleScene::LogicUpdate()
 		return;
 	}
 
+	if (Input::GetMouseDown(0))
+	{
+		pointLight->transform.Translate(0, 0, 5 * Timer::GetDeltaS());
+	}
+	if (Input::GetMouseDown(1))
+	{
+		pointLight->transform.Translate(0, 0, -5 * Timer::GetDeltaS());
+	}
+
 	Scene::LogicUpdate(); //Must be last statement!
 
-	((PointLight*)GetGameobjectsByName("PointLight")[0])->RenderDiag();
+	pointLight->RenderDiag();
 
 }
 

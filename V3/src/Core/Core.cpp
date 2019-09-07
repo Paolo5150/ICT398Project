@@ -13,6 +13,7 @@
 #include "..\GUI\GUIManager.h"
 #include "..\Physics\PhysicsWorld.h"
 #include "..\Diag\DiagRenderer.h"
+#include "..\Scene\SceneManager.h"
 
 void Core::Initialize()
 {
@@ -136,8 +137,12 @@ bool Core::LateUpdate(Event* e)
 {
 	//Logger::LogInfo("Core late update");
 
+
 	m_runningApplication->AppLateUpdate();
 	RenderingEngine::Instance().ClearRendererList();
+	
+
+
 	Input::Update();
 	return 0;
 }
