@@ -13,6 +13,7 @@
 #include "..\GUI\GUIManager.h"
 #include "..\Physics\PhysicsWorld.h"
 #include "..\Diag\DiagRenderer.h"
+#include "..\Scene\SceneManager.h"
 
 void Core::Initialize()
 {
@@ -49,7 +50,7 @@ void Core::Initialize()
 	m_runningApplication = CreateApplication();
 	//WINDOW
 	// Set up windows after flew initialization (and after the context has been set).
-	Window::Instance().SetWindowSize(1200,800);
+	Window::Instance().SetWindowSize(1600,1000);
 	
 	LoadBasicAssets();
 
@@ -136,8 +137,12 @@ bool Core::LateUpdate(Event* e)
 {
 	//Logger::LogInfo("Core late update");
 
+
 	m_runningApplication->AppLateUpdate();
 	RenderingEngine::Instance().ClearRendererList();
+	
+
+
 	Input::Update();
 	return 0;
 }
@@ -173,7 +178,7 @@ void Core::LoadBasicAssets()
 	ContentManager::Instance().LoadShader("SkyboxHDR", "Assets\\Shaders\\SkyboxHDR.v", "Assets\\Shaders\\SkyboxHDR.f", true);
 
 	ContentManager::Instance().LoadShader("PBR", "Assets\\Shaders\\PBR.v", "Assets\\Shaders\\PBR.f", true);
-	ContentManager::Instance().LoadShader("PBRHeight", "Assets\\Shaders\\PBR.v", "Assets\\Shaders\\PBRHeight.f", true);
+	//ContentManager::Instance().LoadShader("PBRHeight", "Assets\\Shaders\\PBR.v", "Assets\\Shaders\\PBRHeight.f", true);
 
 	ContentManager::Instance().LoadShader("PostProcess_basic", "Assets\\Shaders\\PostProcess_basic.v", "Assets\\Shaders\\PostProcess_basic.f", true);
 	ContentManager::Instance().LoadShader("PostProcess_hdr", "Assets\\Shaders\\PostProcess_hdr.v", "Assets\\Shaders\\PostProcess_hdr.f", true);

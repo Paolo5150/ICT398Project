@@ -16,7 +16,10 @@
 #include "GUI/Elements/GUIImage.h"
 #include "GUI/Elements/GUIText.h"
 
-
+namespace
+{
+	PointLight* pointLight;
+}
 
 SimpleScene::SimpleScene() : Scene("SimpleScene")
 {
@@ -93,7 +96,7 @@ void SimpleScene::LoadAssets() {
 	// Load this stuff as preserved so they can be used in the exit scene (so there's not much loading when transitioning)
 	ContentManager::Instance().LoadModel("Assets\\Models\\Paolo\\paolo.fbx", false,true);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Drew\\drew.fbx", false, true);
-	ContentManager::Instance().LoadModel("Assets\\Models\\Sonic\\sonic.obj", false, true);
+	ContentManager::Instance().LoadModel("Assets\\Models\\Dylan\\dylan.fbx", false, true);
 
 	text->message = "Interpolating misery and regret";
 	GUIManager::Instance().Render(true, true);
@@ -104,6 +107,8 @@ void SimpleScene::LoadAssets() {
 
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Paolo\\textures\\paolo.png",true);
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Drew\\textures\\drew.png", true);
+	ContentManager::Instance().LoadTexture("Assets\\Models\\Dylan\\textures\\Dylan.png", true);
+
 
 	image->isActive = 0;
 	text->isActive = 0;
@@ -139,23 +144,19 @@ void SimpleScene::Initialize() {
 
 	dirLight2->SetIntensity(0.2);
 
-		Water* water = new Water();
-	water->transform.SetScale(100, 100, 1);
-	
 
-	PointLight* pointLight = new PointLight();
+	 pointLight = new PointLight();
 
 	pointLight->SetIntensity(10);
 	pointLight->transform.SetPosition(0, 0, 10);
 	
-	//cam->AddChild(pointLight);
+	cam->AddChild(pointLight);
 
 	AddGameObject(cam);
 	AddGameObject(pointLight);
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
 
-	AddGameObject(water);
 
 	LoadGameObjectsFromFile("Assets\\SceneFiles\\MainScene.txt");
 
@@ -188,9 +189,18 @@ void SimpleScene::LogicUpdate()
 		return;
 	}
 
+	if (Input::GetMouseDown(0))
+	{
+		pointLight->transform.Translate(0, 0, 5 * Timer::GetDeltaS());
+	}
+	if (Input::GetMouseDown(1))
+	{
+		pointLight->transform.Translate(0, 0, -5 * Timer::GetDeltaS());
+	}
+
 	Scene::LogicUpdate(); //Must be last statement!
 
-	((PointLight*)GetGameobjectsByName("PointLight")[0])->RenderDiag();
+	pointLight->RenderDiag();
 
 }
 

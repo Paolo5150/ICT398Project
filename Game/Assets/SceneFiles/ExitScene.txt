@@ -1,9 +1,9 @@
 # Main Scene
-# Use the format "PrefabName P(X,Y,Z) R(X,Y,Z)"
+# Use the format "PrefabName P(X,Y,Z) R(X,Y,Z) S(X,Y,Z)"
 
-Paolo P(0,-100,0) R(-90,90,0) S(1,1,1)
+Paolo P(0,-70,0) R(-90,90,0) S(1,1,1)
 PaoloText P(0,-15,0) R(0,90,-90) S(1.2,1.2,1.2)
-Drew P(0,-100,40) R(-90,90,0) S(1,1,1)
-DrewText P(0,-15,40) R(0,90,-90) S(1.2,1.2,1.2)
-Dylan P(0,-100,-40) R(0,90,0) S(1,1,1)
-DylanText P(0,-15,-40) R(0,90,-90) S(1.2,1.2,1.2)
+Drew P(0,-70,50) R(-90,110,0) S(1,1,1)
+DrewText P(0,-15,50) R(0,90,-90) S(1.2,1.2,1.2)
+Dylan P(0,-70,-50) R(-90,70,0) S(0.9,0.9,0.9)
+DylanText P(0,-15,-50) R(0,90,-90) S(1.2,1.2,1.2)
