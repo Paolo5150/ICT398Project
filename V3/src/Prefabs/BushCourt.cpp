@@ -9,12 +9,8 @@ BushCourt::BushCourt() : GameObject("BushCourt")
 	ContentManager::Instance().GetAsset<Model>("BushCourt")->PopulateGameObject(this);
 	//transform.SetScale(0.1);
 	Material m;
-	m.SetShader(ContentManager::Instance().GetAsset<Shader>("PBR"));
-	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("bamboo_normal"), "normalMap");
-	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("bushcourt"), "albedoMap");
-	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("bamboo_roughness"), "roughnessMap");
-	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("bamboo_ao"), "aoMap");
-	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("bamboo_metallic"), "metallicMap");
+	m.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStatic"));
+	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("BushCourt"), "diffuse0");
 
 
 	m.LoadCubemap(ContentManager::Instance().GetAsset<CubeMap>("SunSet"), "cubemap0");
@@ -22,7 +18,7 @@ BushCourt::BushCourt() : GameObject("BushCourt")
 
 	Material m2NoLight;
 	m2NoLight.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStaticNoLight"));
-	m2NoLight.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("bamboo_albedo"), "diffuse0");
+	m2NoLight.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("BushCourt"), "diffuse0");
 	ApplyMaterial(m2NoLight, NOLIGHT);
 
 }
