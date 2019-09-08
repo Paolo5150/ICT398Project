@@ -59,5 +59,6 @@ public:
 
 	virtual void CalculateMomentOfIntertia() override;
 
+	void CalculateInertiaTensor();
 
 };

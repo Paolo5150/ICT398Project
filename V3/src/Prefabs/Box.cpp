@@ -44,8 +44,8 @@ void Box::Start()
 	//rb->SetAngularVelocity(10, 0, 0);
 	if (id == 0)
 	{
-		rb->SetVelocity(-1, 0, 0);
-		rb->SetAngularVelocity(10, 20, 0);
+		rb->SetVelocity(5, 0, 0);
+		//rb->SetAngularVelocity(10, 20, 0);
 	}
 	else
 	{
@@ -71,32 +71,26 @@ void Box::OnCollisionEnter(Collider* g, Collision col)
 	{
 		DiagRenderer::Instance().RenderSphere(col.Point(), 1, glm::vec3(1, 0, 1));
 
-		float epsilon = 0.5f;
+		float epsilon = 0.1f;
 
 		Rigidbody* otherRB = g->GetParent()->GetComponent<Rigidbody>("Rigidbody");
 		glm::vec3 otherVel = glm::vec3();
 		glm::vec3 otherAngVel = glm::vec3();
-
 		if (otherRB != nullptr)
 		{
-			std::cout << "IM SAFE!" << std::endl;
-			g->GetParent()->transform.Translate(-otherRB->GetVelocity() * Timer::GetDeltaS()); //Update the transform's postion in world space
-			g->GetParent()->transform.RotateBy(-otherRB->GetAngularVelocity().z * Timer::GetDeltaS(), 0, 0, 1); //Update the transform's z rotation
-			g->GetParent()->transform.RotateBy(-otherRB->GetAngularVelocity().x * Timer::GetDeltaS(), 1, 0, 0); //Update the transform's x rotation
-			g->GetParent()->transform.RotateBy(-otherRB->GetAngularVelocity().y * Timer::GetDeltaS(), 0, 1, 0); //Update the transform's y rotation
-
 			otherVel = otherRB->GetVelocity();
-			otherAngVel = otherRB-> GetAngularVelocity();
+			otherAngVel = glm::radians(otherRB->GetAngularVelocity());
 		}
 
 		glm::vec3 r1 = col.Point() - (transform.GetGlobalPosition() + GetCentreOfMass());
 		//std::cout << "CENTRE OF MASS: " << GetCentreOfMass().x << " " << GetCentreOfMass().y << " " << GetCentreOfMass().z;
 		glm::vec3 r2 = col.Point() - (g->GetParent()->transform.GetGlobalPosition() + g->GetParent()->GetCentreOfMass());
 		glm::vec3 normal = col.Normal();
+		glm::vec3 angularVel;
 		//glm::vec3 normal = col.Point() + col.Normal();
 
 		float top = -(1 + epsilon) * (glm::dot(normal, rb->GetVelocity() - otherVel)
-			+ glm::dot(rb->GetAngularVelocity(), glm::cross(r1, normal))
+			+ glm::dot(glm::radians(rb->GetAngularVelocity()), glm::cross(r1, normal))
 			- glm::dot(otherAngVel, glm::cross(r2, normal)));
 		//Logger::LogInfo("TOP: ", top);
 		std::cout << "MASS 1: " << GetTotalMass() << " MASS 2: " << g->GetParent()->GetTotalMass() << std::endl;
@@ -123,6 +117,18 @@ void Box::OnCollisionEnter(Collider* g, Collision col)
 		transform.RotateBy(-rb->GetAngularVelocity().z * Timer::GetDeltaS(), 0, 0, 1); //Update the transform's z rotation
 		transform.RotateBy(-rb->GetAngularVelocity().x * Timer::GetDeltaS(), 1, 0, 0); //Update the transform's x rotation
 		transform.RotateBy(-rb->GetAngularVelocity().y * Timer::GetDeltaS(), 0, 1, 0); //Update the transform's y rotation
+
+		if (otherRB != nullptr)
+		{
+			std::cout << "IM SAFE!" << std::endl;
+			g->GetParent()->transform.Translate(-otherRB->GetVelocity() * Timer::GetDeltaS()); //Update the transform's postion in world space
+			g->GetParent()->transform.RotateBy(-otherRB->GetAngularVelocity().z * Timer::GetDeltaS(), 0, 0, 1); //Update the transform's z rotation
+			g->GetParent()->transform.RotateBy(-otherRB->GetAngularVelocity().x * Timer::GetDeltaS(), 1, 0, 0); //Update the transform's x rotation
+			g->GetParent()->transform.RotateBy(-otherRB->GetAngularVelocity().y * Timer::GetDeltaS(), 0, 1, 0); //Update the transform's y rotation
+
+			otherVel = otherRB->GetVelocity();
+			otherAngVel = otherRB->GetAngularVelocity();
+		}
 
 		std::cout << "AFTER COLLISION ADJUST POS: " << transform.GetGlobalPosition().x << " " << transform.GetGlobalPosition().y << " " << transform.GetGlobalPosition().z << std::endl;
 		//Velocity of this object after contact

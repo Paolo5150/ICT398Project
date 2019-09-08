@@ -433,7 +433,7 @@ public:
 
 	float GetTotalMass() { return totalMass; };
 	glm::vec3 GetCentreOfMass();
-	glm::mat3 GetInertiaTensor() { return inertiaTensor; };
+	glm::mat3 GetInertiaTensor();
 
 	virtual void OnCollisionEnter(Collider* go, Collision collision){};
 	virtual void OnCollisionStay(Collider* go, Collision collision) {};

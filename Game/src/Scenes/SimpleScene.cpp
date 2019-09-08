@@ -107,16 +107,16 @@ void SimpleScene::Initialize() {
 	skybox = std::unique_ptr<Skybox>(new Skybox(ContentManager::Instance().GetAsset<CubeMap>("SunSet")));
 
 	Table* table = new Table();
-	table->transform.SetPosition(0, 0, 0);
-	table->transform.SetRotation(0, 0, 0);
+	table->transform.SetPosition(10, 10, 0);
+	table->transform.SetRotation(0, 0, 90);
 
 	Box* box = new Box();
 	box->transform.SetPosition(0, 10, 0);
 	box->transform.SetRotation(0, 0, 0);
 
-	Box* box2 = new Box();
-	box2->transform.SetPosition(-6, 10, 0);
-	box2->transform.SetRotation(0, 0, 0);
+	//Box* box2 = new Box();
+	//box2->transform.SetPosition(-6, 10, 0);
+	//box2->transform.SetRotation(0, 0, 0);
 
 	std::vector<GameObject*> objs = FileUtils::ReadSceneFile("Assets\\SceneFiles\\MainScene.txt");	
 
@@ -150,7 +150,7 @@ void SimpleScene::Initialize() {
 	AddGameObject(cam);
 	AddGameObject(pointLight);
 	AddGameObject(box);
-	AddGameObject(box2);
+	//AddGameObject(box2);
 	AddGameObject(table);
 	//AddGameObject(dirLight);
 	//AddGameObject(dirLight2);

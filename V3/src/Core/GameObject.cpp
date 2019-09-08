@@ -97,6 +97,11 @@ glm::vec3 GameObject::GetCentreOfMass()
 	return rotVec;
 }
 
+glm::mat3 GameObject::GetInertiaTensor()
+{
+	return inertiaTensor;
+}
+
 void GameObject::SetActive(bool active, bool includeChildren)
 {
 	_isActive = active;
@@ -232,18 +237,22 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 	totalMass = overrallMass;
 
 	//Calculate inertia tensor
-	inertiaTensor = glm::mat3();
+	inertiaTensor = glm::mat3(0);
 
 	for (int i = 0; i < colliders.size(); i++)
 	{
+		glm::vec3 inertia = colliders[i]->GetMomentOfIntertia();
 		glm::vec3 correctedPos = colliders[i]->transform.GetPosition() - centreOfMass;
+		Logger::LogInfo(GetName() + " INERTIA TENSOR 3:", inertia.x, inertia.y, inertia.z);
 		float mass = colliders[i]->GetMass();
-		inertiaTensor[0][0] += mass * (correctedPos.y * correctedPos.y + correctedPos.z * correctedPos.z);
-		inertiaTensor[1][1] += mass * (correctedPos.z * correctedPos.z + correctedPos.x * correctedPos.x);
-		inertiaTensor[2][2] += mass * (correctedPos.x * correctedPos.x + correctedPos.y * correctedPos.y);
+		inertiaTensor[0][0] += inertia.x + mass * (correctedPos.y * correctedPos.y + correctedPos.z * correctedPos.z);
+		inertiaTensor[1][1] += inertia.y + mass * (correctedPos.z * correctedPos.z + correctedPos.x * correctedPos.x);
+		inertiaTensor[2][2] += inertia.z + mass * (correctedPos.x * correctedPos.x + correctedPos.y * correctedPos.y);
 	}
 
-	Logger::LogInfo(inertiaTensor[0][0], inertiaTensor[1][1], inertiaTensor[2][2]);
+	Logger::LogInfo(GetName() + " INERTIA TENSOR 1:",  inertiaTensor[0][0], inertiaTensor[0][1], inertiaTensor[0][2]);
+	Logger::LogInfo(GetName() + " INERTIA TENSOR 2:",  inertiaTensor[1][0], inertiaTensor[1][1], inertiaTensor[1][2]);
+	Logger::LogInfo(GetName() + " INERTIA TENSOR 3:",  inertiaTensor[2][0], inertiaTensor[2][1], inertiaTensor[2][2]);
 
 }
 
