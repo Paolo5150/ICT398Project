@@ -5,13 +5,13 @@
 
 BushCourt::BushCourt() : GameObject("BushCourt")
 {
-	//SetIsStatic(false);
+	SetIsStatic(true);
 	ContentManager::Instance().GetAsset<Model>("BushCourt")->PopulateGameObject(this);
-	//transform.SetScale(0.1);
+	//transform.SetScale(1.5);
 	Material m;
 	m.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStatic"));
 	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("BushCourt"), "diffuse0");
-
+	m.LoadFloat("shininess", 300.0f);
 
 	m.LoadCubemap(ContentManager::Instance().GetAsset<CubeMap>("SunSet"), "cubemap0");
 	ApplyMaterial(m);

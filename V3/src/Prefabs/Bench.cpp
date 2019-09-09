@@ -5,7 +5,7 @@
 
 Bench::Bench() : GameObject("Bench")
 {
-	SetIsStatic(false);
+	SetIsStatic(true);
 	ContentManager::Instance().GetAsset<Model>("Bench")->PopulateGameObject(this);
 	transform.SetScale(0.08);
 

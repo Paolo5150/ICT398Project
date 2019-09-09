@@ -5,7 +5,7 @@
 
 Table::Table() : GameObject("Table")
 {
-	//SetIsStatic(false);
+	SetIsStatic(1);
 	ContentManager::Instance().GetAsset<Model>("Table")->PopulateGameObject(this);
 	transform.SetScale(0.1);
 	Material m;

@@ -6,7 +6,7 @@
 
 LandfillBin::LandfillBin() : GameObject("LandfillBin")
 {
-	SetIsStatic(false);
+	SetIsStatic(true);
 	ContentManager::Instance().GetAsset<Model>("LandfillBin")->PopulateGameObject(this);
 	transform.SetScale(2);
 
