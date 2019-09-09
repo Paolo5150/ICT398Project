@@ -136,7 +136,7 @@ void MainScene::Initialize() {
 	dirLight2->SetIntensity(1.5);
 
 	DirectionalLight* dirLight3 = new DirectionalLight(false);
-	dirLight3->transform.SetRotation(45, 0, 0);
+	dirLight3->transform.SetRotation(70, 0, 0);
 	//dirLight3->SetSpecularColor(0.3,0.3,0.3);
 	//dirLight3->SetDiffuseColor(0.1,0.1,0.1);
 
@@ -149,7 +149,7 @@ void MainScene::Initialize() {
 	pointLight->SetIntensity(10);
 	pointLight->transform.SetPosition(0, 0, 10);
 	
-	cam->AddChild(pointLight);
+	//cam->AddChild(pointLight);
 
 	AddGameObject(cam);
 	AddGameObject(pointLight);
