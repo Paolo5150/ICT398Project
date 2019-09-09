@@ -133,8 +133,14 @@ void MainScene::Initialize() {
 	DirectionalLight* dirLight2 = new DirectionalLight(false);
 	dirLight2->transform.SetRotation(0, -60,0);
 	dirLight2->SetSpecularColor(0,0,0);
-
 	dirLight2->SetIntensity(1.5);
+
+	DirectionalLight* dirLight3 = new DirectionalLight(false);
+	dirLight3->transform.SetRotation(45, 0, 0);
+	//dirLight3->SetSpecularColor(0.3,0.3,0.3);
+	//dirLight3->SetDiffuseColor(0.1,0.1,0.1);
+
+	dirLight3->SetIntensity(0.4);
 
 	PointLight* pointLight = new PointLight();
 
@@ -149,6 +155,8 @@ void MainScene::Initialize() {
 	AddGameObject(pointLight);
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
+	AddGameObject(dirLight3);
+
 	AddGameObject(bushCourt);
 	
 	LoadGameObjectsFromFile("Assets\\SceneFiles\\MainScene.txt");

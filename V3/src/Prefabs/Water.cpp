@@ -37,7 +37,7 @@ void Water::Initialize(Texture2D* normalMap, Texture2D* distortion)
 	waterCamera->RemoveAllMaskLayers();
 	waterCamera->AddLayerMask(RenderingLayers::DEFAULT);
 	waterCamera->AddLayerMask(RenderingLayers::TERRAIN);
-	//waterCamera->AddLayerMask(RenderingLayers::SKYBOX);
+	//
 
 
 	waterCamera->SetActive(false);
@@ -106,6 +106,7 @@ void Water::Update()
 	glm::vec3 color = glm::vec3(0.5,0.5,0.5);
 
 	//Refraction
+	//waterCamera->RemoveLayerMask(RenderingLayers::SKYBOX);
 	refractionBuffer->Bind();
 	Core::Instance().GetGraphicsAPI().SetClearColor(0.321, 0.3529, 0.3550);
 	Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
@@ -120,7 +121,6 @@ void Water::Update()
 	refractionBuffer->Unbind();
 
 	//Reflection
-	
 	reflectionBuffer->Bind();
 	Core::Instance().GetGraphicsAPI().SetClearColor(0.321, 0.3529, 0.3550);
 	Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
@@ -134,9 +134,12 @@ void Water::Update()
 	float heightDiff = transform.GetPosition().y - mainCamera->transform.GetPosition().y;
 	waterCamera->transform.SetPosition(glm::vec3(mainCamera->transform.GetPosition().x, mainCamera->transform.GetPosition().y + heightDiff * 2.0, mainCamera->transform.GetPosition().z));
 
+
 	waterCamera->transform.LookAt(waterCamera->transform.GetPosition() + ref);
 	waterCamera->Update();
 	LightManager::Instance().SetClippingPlane(glm::vec4(0, 1, 0, -transform.GetGlobalPosition().y));
+
+
 	RenderingEngine::Instance().RenderBuffer(waterCamera.get(),MaterialType::NOLIGHT);
 
 	reflectionBuffer->Unbind();

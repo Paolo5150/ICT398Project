@@ -18,12 +18,12 @@ MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspect
 void MainCamera::Start()
 {
 
-/*BoxCollider* bc = new BoxCollider();
-	bc->transform.SetScale(2);
+BoxCollider* bc = new BoxCollider();
+	bc->transform.SetScale(0.5,0.5,1.0);
 	//bc->RemoveCollideAgainstLayer(CollisionLayers::DEFAULT);
 	bc->enableRender = 1;
 
-	AddComponent(bc);*/
+	AddComponent(bc);
 
 	rb = new Rigidbody();
 	rb->UseGravity(false);
@@ -116,4 +116,6 @@ void MainCamera::Update()
 
 
 	Camera::Update(); //Update last as this will update the view matrix with the new position values
+
+	//transform.SetPosition(transform.GetPosition().x,5,transform.GetPosition().z);
 }

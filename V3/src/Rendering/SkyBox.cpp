@@ -16,6 +16,8 @@ Skybox::Skybox(CubeMap* cubemap)
 	dummy->SetLayer(RenderingLayers::SKYBOX);
 
 	meshRenderer =new MeshRenderer(ContentManager::Instance().GetAsset<Model>("Cube")->GetMeshes()[0],material);
+	meshRenderer->SetMaterial(material, NOLIGHT);
+
 	meshRenderer->SetIsCullable(false);
 
 	meshRenderer->AddPreRenderCallback(std::bind(&Skybox::OnPreRender, this, std::placeholders::_1, std::placeholders::_2));
@@ -37,6 +39,7 @@ Skybox::Skybox(EquirectangularMap* cubemap)
 	dummy->SetLayer(RenderingLayers::SKYBOX);
 
 	meshRenderer = new MeshRenderer(ContentManager::Instance().GetAsset<Model>("Cube")->GetMeshes()[0], material);
+	meshRenderer->SetMaterial(material, NOLIGHT);
 	meshRenderer->SetIsCullable(false);
 
 	meshRenderer->AddPreRenderCallback(std::bind(&Skybox::OnPreRender, this, std::placeholders::_1, std::placeholders::_2));

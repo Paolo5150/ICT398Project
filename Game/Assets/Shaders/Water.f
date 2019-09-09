@@ -93,7 +93,7 @@ void main()
     vec3 normalMap2 = normalize(texture(normal0,(totalDistortion - Textcoords + vec2(timer/3000,-timer/5000))* material.UVScale).rgb *2.0 -1.0);
 
 	vec3 FragToCam = normalize(FragPosition - CameraPosition);
-    vec3 cubemap = texture(cubemap0,reflect(FragToCam,Normal)).rgb;
+    vec3 cubemap = texture(cubemap0,vec3(totalDistortion,0.0) + reflect(FragToCam,Normal)).rgb;
 	FragPosToUse = FragPositionTS;
 	CamPosToUse = CameraPositionTS;
 
