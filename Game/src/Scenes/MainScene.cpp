@@ -115,31 +115,26 @@ void MainScene::QuitScene() {
 void MainScene::Initialize() {
 
 
-	LightManager::Instance().SetAmbientLight(0.00, 0.00, 0.00);
+	LightManager::Instance().SetAmbientLight(0.4, 0.4, 0.4);
 
 	skybox = std::unique_ptr<Skybox>(new Skybox(ContentManager::Instance().GetAsset<CubeMap>("SunSet")));
 
-	std::vector<GameObject*> objs = FileUtils::ReadSceneFile("Assets\\SceneFiles\\MainScene.txt");	
 
 	cam = new MainCamera();
 	cam->transform.SetPosition(0, 10, 50);
 	cam->transform.SetRotation(0, 180, 0);
 	
 	DirectionalLight* dirLight = new DirectionalLight(false);
-	dirLight->transform.SetRotation(40,114,-4);
+	dirLight->transform.SetRotation(20,114,-4);
 	dirLight->SetDiffuseColor(1.0, 0.9, 0.9);
 	dirLight->SetSpecularColor(1.0, 0.8, 0.4);
 	dirLight->SetIntensity(1.5);
 
 	DirectionalLight* dirLight2 = new DirectionalLight(false);
-	dirLight2->transform.SetRotation(90,0,0);
-	dirLight2->SetSpecularColor(1.0, 0.8, 0.4);
+	dirLight2->transform.SetRotation(0, -60,0);
+	dirLight2->SetSpecularColor(0,0,0);
 
-	dirLight2->SetIntensity(0.2);
-
-		Water* water = new Water();
-	water->transform.SetScale(100, 100, 1);
-	
+	dirLight2->SetIntensity(1.5);
 
 	PointLight* pointLight = new PointLight();
 
@@ -148,16 +143,15 @@ void MainScene::Initialize() {
 	pointLight->SetIntensity(10);
 	pointLight->transform.SetPosition(0, 0, 10);
 	
+	cam->AddChild(pointLight);
+
 	AddGameObject(cam);
 	AddGameObject(pointLight);
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
-
-	//AddGameObject(water);
 	AddGameObject(bushCourt);
-
-	for (int i = 0; i < objs.size(); i++)
-		AddGameObject(objs[i]);
+	
+	LoadGameObjectsFromFile("Assets\\SceneFiles\\MainScene.txt");
 }
 
 void MainScene::Start()
@@ -171,8 +165,6 @@ void MainScene::Start()
 
 void MainScene::LogicUpdate()
 {
-
-
 	if (Input::GetKeyDown(GLFW_KEY_ESCAPE))
 	{
 		GUIManager::Instance().GetCanvasByName("MainCanvas")->GetGUIObjectByName("LoadingText")->isActive = 1;

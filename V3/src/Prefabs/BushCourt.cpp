@@ -9,11 +9,16 @@ BushCourt::BushCourt() : GameObject("BushCourt")
 	ContentManager::Instance().GetAsset<Model>("BushCourt")->PopulateGameObject(this);
 	//transform.SetScale(1.5);
 	Material m;
-	m.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStatic"));
-	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("BushCourt"), "diffuse0");
-	m.LoadFloat("shininess", 300.0f);
-
+	//m.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStatic"));
+	m.SetShader(ContentManager::Instance().GetAsset<Shader>("PBR"));
+	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("BushCourt"), "albedoMap");
+	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("metal_normal"), "normalMap");
+	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("wood_roughness"), "roughnessMap");
+	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("wood_metallic"), "metallicMap");
+	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("metal_ao"), "aoMap");
 	m.LoadCubemap(ContentManager::Instance().GetAsset<CubeMap>("SunSet"), "cubemap0");
+	//m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("BushCourt"), "diffuse0");
+//	m.LoadFloat("shininess", 300.0f);
 	ApplyMaterial(m);
 
 	Material m2NoLight;

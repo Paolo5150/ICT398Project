@@ -115,8 +115,8 @@ void main()
 	rgbReflection *= computeFresnelTerm(0.5, -CamToFrag, normalize(Normal)) ; ;
 	rgbReflection = min(rgbReflection, skyboxColor) ; // conservation of energy
 	
-    vec3 ambient = AmbientLight  * ao;
-    vec3 color = ambient + Lo + rgbReflection ;
+    vec3 ambient =  (0.1 * AmbientLight)  * ao;
+    vec3 color =  ambient + Lo + rgbReflection ;
 	
     color = color / (color + vec3(1.0));
     color = pow(color, vec3(1.0/2.2));  
