@@ -171,6 +171,7 @@
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Scenes\ExitScene.h" />
+    <ClInclude Include="src\Scenes\MainScene.h" />
     <ClInclude Include="src\Scenes\OtherScene.h" />
     <ClInclude Include="src\Scenes\SimpleScene.h" />
   </ItemGroup>
@@ -184,6 +185,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Scenes\ExitScene.cpp" />
+    <ClCompile Include="src\Scenes\MainScene.cpp" />
     <ClCompile Include="src\Scenes\OtherScene.cpp" />
     <ClCompile Include="src\Scenes\SimpleScene.cpp" />
   </ItemGroup>

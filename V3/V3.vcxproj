@@ -216,6 +216,7 @@
     <ClInclude Include="src\Physics\CollisionLayer.h" />
     <ClInclude Include="src\Physics\PhysicsWorld.h" />
     <ClInclude Include="src\Prefabs\Bench.h" />
+    <ClInclude Include="src\Prefabs\BushCourt.h" />
     <ClInclude Include="src\Prefabs\Chair.h" />
     <ClInclude Include="src\Prefabs\Drew.h" />
     <ClInclude Include="src\Prefabs\DrewText.h" />
@@ -334,6 +335,7 @@
     </ClCompile>
     <ClCompile Include="src\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="src\Prefabs\Bench.cpp" />
+    <ClCompile Include="src\Prefabs\BushCourt.cpp" />
     <ClCompile Include="src\Prefabs\Chair.cpp" />
     <ClCompile Include="src\Prefabs\Drew.cpp" />
     <ClCompile Include="src\Prefabs\DrewText.cpp" />
