@@ -9,7 +9,7 @@ MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspect
 {
 	this->SetName("Main Camera");
 	m_rotationSpeed = 20;
-	m_movementSpeed = 40;	
+	m_movementSpeed = 20;	
 	blockRotation = false;
 	blockMovement = false;
 	SetIsStatic(0);
@@ -19,7 +19,7 @@ void MainCamera::Start()
 {
 
 BoxCollider* bc = new BoxCollider();
-	bc->transform.SetScale(0.5,0.5,1.0);
+	bc->transform.SetScale(0.5,3.0,1.0);
 	//bc->RemoveCollideAgainstLayer(CollisionLayers::DEFAULT);
 	bc->enableRender = 1;
 
@@ -117,5 +117,5 @@ void MainCamera::Update()
 
 	Camera::Update(); //Update last as this will update the view matrix with the new position values
 
-	transform.SetPosition(transform.GetPosition().x,5,transform.GetPosition().z);
+	transform.SetPosition(transform.GetPosition().x,4,transform.GetPosition().z);
 }

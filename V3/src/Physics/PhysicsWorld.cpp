@@ -7,7 +7,7 @@
 #include <algorithm>
 
 
-#define CHANGE_COLOR 1
+#define CHANGE_COLOR 0
 
 PhysicsWorld&  PhysicsWorld::Instance()
 {
