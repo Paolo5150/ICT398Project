@@ -11,6 +11,8 @@
 #include "Prefabs/RecycleBin.h"
 #include "Prefabs/Water.h"
 #include "Prefabs/BushCourt.h"
+#include "Prefabs/Lantern.h"
+
 
 #include "Diag/DiagRenderer.h"
 #include "GUI/GUIManager.h"
@@ -45,6 +47,9 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadModel("Assets\\Models\\LandfillBin\\landfillbin.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\RecycleBin\\recyclebin.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\BushCourt\\bushcourt.obj", false, false);
+	ContentManager::Instance().LoadModel("Assets\\Models\\Lantern\\lantern.obj", false, false);
+	ContentManager::Instance().LoadTexture("Assets\\Models\\Lantern\\textures\\Lantern.png", 0);
+
 
 	ContentManager::Instance().LoadTexture("Assets\\Models\\LandfillBin\\textures\\LB_Frame.png", 0);
 	ContentManager::Instance().LoadTexture("Assets\\Models\\LandfillBin\\textures\\LB_Sides.png", 0);
@@ -137,25 +142,20 @@ void MainScene::Initialize() {
 
 	DirectionalLight* dirLight3 = new DirectionalLight(false);
 	dirLight3->transform.SetRotation(70, 0, 0);
-	//dirLight3->SetSpecularColor(0.3,0.3,0.3);
-	//dirLight3->SetDiffuseColor(0.1,0.1,0.1);
-
 	dirLight3->SetIntensity(0.4);
-
-	PointLight* pointLight = new PointLight();
 
 	BushCourt* bushCourt = new BushCourt();
 
-	pointLight->SetIntensity(10);
-	pointLight->transform.SetPosition(0, 0, 10);
-	
-	//cam->AddChild(pointLight);
+	Lantern* lantern = new Lantern();
+	lantern->transform.SetPosition(0, 0,0);	
 
 	AddGameObject(cam);
-	AddGameObject(pointLight);
+
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
 	AddGameObject(dirLight3);
+	AddGameObject(lantern);
+
 
 	AddGameObject(bushCourt);
 	
