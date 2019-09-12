@@ -4,7 +4,6 @@
 #include "Core\Window.h"
 #include "Core\Logger.h"
 #include "Scene\SceneManager.h"
-#include "Scenes/SimpleScene.h"
 #include "Scenes\PhysicsDemoScene.h"
 #include "Scenes/MainScene.h"
 #include "Scenes/OtherScene.h"

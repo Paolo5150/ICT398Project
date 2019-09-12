@@ -160,8 +160,6 @@ void SimpleScene::Initialize() {
 
 	LoadGameObjectsFromFile("Assets\\SceneFiles\\MainScene.txt");
 
-
-
 }
 
 void SimpleScene::Start()
