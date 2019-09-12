@@ -134,9 +134,9 @@ void BoxCollider::CalculateMomentOfIntertia()
 	momentOfIntertia.z = (1 / 12.0f) * mass * (a * a + b * b);*/
 
 
-	float a = transform.GetGlobalScale().y;
-	float b = transform.GetGlobalScale().x;
-	float l = transform.GetGlobalScale().z;
+	float a = glm::length((transform.GetGlobalPosition() + transform.GetLocalFront() * transform.GetGlobalScale().y) - (transform.GetGlobalPosition() - transform.GetLocalFront() * transform.GetGlobalScale().y));
+	float b = glm::length((transform.GetGlobalPosition() + transform.GetLocalRight() * transform.GetGlobalScale().x) - (transform.GetGlobalPosition() - transform.GetLocalRight() * transform.GetGlobalScale().x));
+	float l = glm::length((transform.GetGlobalPosition() + transform.GetLocalFront() * transform.GetGlobalScale().z) - (transform.GetGlobalPosition() - transform.GetLocalFront() * transform.GetGlobalScale().z));
 
 	momentOfIntertia.x = (1 / 12.0f) * mass * (a * a + l * l);
 	momentOfIntertia.y = (1 / 12.0f) * mass * (b * b + l * l);
