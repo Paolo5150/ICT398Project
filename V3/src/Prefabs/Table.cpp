@@ -6,9 +6,9 @@
 
 Table::Table() : GameObject("Table")
 {
-	//SetIsStatic(false);
+	SetIsStatic(false);
 	//ContentManager::Instance().GetAsset<Model>("Table")->PopulateGameObject(this);
-	//`transform.SetScale(0.1);
+	transform.SetScale(0.1);
 	Material m;
 	m.SetShader(ContentManager::Instance().GetAsset<Shader>("PBR"));
 	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("bamboo_normal"), "normalMap");
@@ -45,8 +45,6 @@ void Table::Start()
 
 	rb = new Rigidbody();
 	AddComponent(rb);
-	//rb->SetVelocity(1, 0, 0);
-	//rb->SetAngularVelocity(45, 0, 0);
 	rb->UseGravity(false);
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider
 						 // has been added.

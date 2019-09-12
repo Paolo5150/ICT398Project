@@ -115,20 +115,11 @@ glm::vec3 Rigidbody::GetAngularVelocity() const
 void Rigidbody::Update()
 {
 	if(useGravity)
-		AddVelocity(PhysicsWorld::Instance().gravity * Timer::GetDeltaS()); //If enabled, add gravity to the velocity vector
+		AddVelocity(PhysicsWorld::Instance().gravity * _parent->GetTotalMass() * Timer::GetDeltaS()); //If enabled, add gravity to the velocity vector
 
-	//if (velocity.length() * Timer::GetDeltaS() <= 0.001f)
-		//SetVelocity(glm::vec3());
-	//else
-	//{
+	_parent->transform.Translate(velocity * Timer::GetDeltaS()); //Update the transform's postion in world space
+	_parent->transform.RotateBy(angVelocity.x * Timer::GetDeltaS(), 1, 0, 0); //Update the transform's x rotation
+	_parent->transform.RotateBy(angVelocity.y * Timer::GetDeltaS(), 0, 1, 0); //Update the transform's y rotation
+	_parent->transform.RotateBy(angVelocity.z * Timer::GetDeltaS(), 0, 0, 1); //Update the transform's z rotation
 
-	std::cout << _parent->GetName() << " BEFORE PHYSICS POS: " << _parent->transform.GetGlobalPosition().x << " " << _parent->transform.GetGlobalPosition().y << " " << _parent->transform.GetGlobalPosition().z << std::endl;
-
-		_parent->transform.Translate(velocity * Timer::GetDeltaS()); //Update the transform's postion in world space
-		_parent->transform.RotateBy(angVelocity.x * Timer::GetDeltaS(), 1, 0, 0); //Update the transform's x rotation
-		_parent->transform.RotateBy(angVelocity.y * Timer::GetDeltaS(), 0, 1, 0); //Update the transform's y rotation
-		_parent->transform.RotateBy(angVelocity.z * Timer::GetDeltaS(), 0, 0, 1); //Update the transform's z rotation
-
-		std::cout << _parent->GetName() << " AFTER PHYSICS POS: " << _parent->transform.GetGlobalPosition().x << " " << _parent->transform.GetGlobalPosition().y << " " << _parent->transform.GetGlobalPosition().z << std::endl;
-	//}
 }

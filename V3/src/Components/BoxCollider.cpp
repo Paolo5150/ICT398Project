@@ -83,9 +83,6 @@ std::vector<glm::vec3> BoxCollider::GetBoxPoints()
 	result.push_back(transform.GetGlobalPosition() - right + up + front);
 	result.push_back(transform.GetGlobalPosition() + right + up + front);
 
-	for (int i = 0; i < result.size(); i++)
-		//DiagRenderer::Instance().RenderSphere(result[i], 0.5);
-
 	return result;
 
 }
@@ -99,8 +96,6 @@ glm::vec3 BoxCollider::GetMinPointWorldSpace()
 		- (transform.GetLocalUp() * transform.GetGlobalScale().y)
 		- (transform.GetLocalFront() * transform.GetGlobalScale().z);
 
-	//DiagRenderer::Instance().RenderSphere(p, 0.5,glm::vec3(0,0,0));
-
 
 	return p;
 }
@@ -111,7 +106,6 @@ glm::vec3 BoxCollider::GetMaxPointWorldSpace()
 	glm::vec3 p = transform.GetGlobalPosition() + (transform.GetLocalRight() * transform.GetGlobalScale().x)
 		+ (transform.GetLocalUp() * transform.GetGlobalScale().y)
 		+ (transform.GetLocalFront() * transform.GetGlobalScale().z);
-	//DiagRenderer::Instance().RenderSphere(p, 0.5);
 
 	return p;
 }
@@ -120,17 +114,12 @@ glm::vec3 BoxCollider::GetMaxPointWorldSpace()
 void BoxCollider::CalculateMomentOfIntertia()
 {
 
-	glm::vec3 min = GetMinPointWorldSpace();
-	glm::vec3 max = GetMaxPointWorldSpace();
+	float a = glm::length((transform.GetGlobalPosition() + transform.GetLocalFront() * transform.GetGlobalScale().y) - (transform.GetGlobalPosition() - transform.GetLocalFront() * transform.GetGlobalScale().y));
+	float b = glm::length((transform.GetGlobalPosition() + transform.GetLocalRight() * transform.GetGlobalScale().x) - (transform.GetGlobalPosition() - transform.GetLocalRight() * transform.GetGlobalScale().x));
+	float l = glm::length((transform.GetGlobalPosition() + transform.GetLocalFront() * transform.GetGlobalScale().z) - (transform.GetGlobalPosition() - transform.GetLocalFront() * transform.GetGlobalScale().z));
 
-	float a = abs(max.y - min.y);
-	float b = abs(max.x - min.x);
-	float l = abs(max.z - min.z);
-	
 	momentOfIntertia.x = (1 / 12.0f) * mass * (a * a + l * l);
 	momentOfIntertia.y = (1 / 12.0f) * mass * (b * b + l * l);
 	momentOfIntertia.z = (1 / 12.0f) * mass * (a * a + b * b);
-
-	//Logger::LogInfo("Intertia:", Maths::Vec3ToString(momentOfIntertia));
 
 }

@@ -3,12 +3,12 @@
 #include "..\Core\GameObject.h"
 #include "..\Components\Rigidbody.h"
 
-class Box :
+class Box2 :
 	public GameObject
 {
 public:
-	Box();
-	~Box();
+	Box2();
+	~Box2();
 
 	void Update() override;
 	void Start() override;

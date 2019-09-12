@@ -218,6 +218,7 @@
     <ClInclude Include="src\Physics\PhysicsWorld.h" />
     <ClInclude Include="src\Prefabs\Bench.h" />
     <ClInclude Include="src\Prefabs\Box.h" />
+    <ClInclude Include="src\Prefabs\Box2.h" />
     <ClInclude Include="src\Prefabs\Chair.h" />
     <ClInclude Include="src\Prefabs\LandfillBin.h" />
     <ClInclude Include="src\Prefabs\MainCamera.h" />
@@ -332,6 +333,7 @@
     <ClCompile Include="src\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="src\Prefabs\Bench.cpp" />
     <ClCompile Include="src\Prefabs\Box.cpp" />
+    <ClCompile Include="src\Prefabs\Box2.cpp" />
     <ClCompile Include="src\Prefabs\Chair.cpp" />
     <ClCompile Include="src\Prefabs\LandfillBin.cpp" />
     <ClCompile Include="src\Prefabs\MainCamera.cpp" />

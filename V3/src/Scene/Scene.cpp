@@ -104,8 +104,6 @@ void Scene::LateUpdate()
 
 void Scene::EngineUpdate()
 {
-	std::cout << "FRAME START" << std::endl;
-	//Logger::LogError("Updating", m_allGameObjects.size());
 	if (skybox != nullptr)
 		skybox->EngineUpdate(); // Call engine update to the skybox so the cube (its renderer component) is sent to the rendering engine for rendering
 

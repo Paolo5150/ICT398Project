@@ -1,28 +1,26 @@
 #include "pch.h"
-#include "Box.h"
+#include "Box2.h"
 
-#include "..\Components\BoxCollider.h"
-
-Box::Box() : GameObject("Box")
+Box2::Box2() : GameObject("Box")
 {
 	SetIsStatic(false);
 	rb = new Rigidbody();
 	AddComponent(rb);
 	rb->UseGravity(false);
-	LoadCollidersFromFile("Assets\\Colliders\\Box.txt");
+	LoadCollidersFromFile("Assets\\Colliders\\Box2.txt");
 }
 
-Box::~Box()
+Box2::~Box2()
 {
 
 }
 
-void Box::Update()
+void Box2::Update()
 {
 	GameObject::Update();
 }
 
-void Box::Start()
+void Box2::Start()
 {
 	PrintHierarchy();
 
@@ -30,11 +28,11 @@ void Box::Start()
 						 // has been added.
 }
 
-void Box::OnCollisionEnter(Collider* g, Collision col)
+void Box2::OnCollisionEnter(Collider* g, Collision col)
 {
 }
 
-void Box::OnCollisionStay(Collider * g, Collision col)
+void Box2::OnCollisionStay(Collider * g, Collision col)
 {
 }
 

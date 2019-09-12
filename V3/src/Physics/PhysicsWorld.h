@@ -11,8 +11,10 @@ class Collider;
 * @brief Singleto class that manages collisions
 *
 *
-* @author Paolo Ferri
+* @author Paolo Ferri, Drew Paridaens
 * @version 01
+* @version 02
+* -Added Physics implementation methods
 * @date 1/05/2019
 *
 *
