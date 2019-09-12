@@ -119,7 +119,9 @@ glm::vec3 BoxCollider::GetMaxPointWorldSpace()
 
 void BoxCollider::CalculateMomentOfIntertia()
 {
-
+	/*
+	Old version, Pretty sure it's incorrect using min and max point
+	as if it's rotated we get different values
 	glm::vec3 min = GetMinPointWorldSpace();
 	glm::vec3 max = GetMaxPointWorldSpace();
 
@@ -129,8 +131,16 @@ void BoxCollider::CalculateMomentOfIntertia()
 	
 	momentOfIntertia.x = (1 / 12.0f) * mass * (a * a + l * l);
 	momentOfIntertia.y = (1 / 12.0f) * mass * (b * b + l * l);
-	momentOfIntertia.z = (1 / 12.0f) * mass * (a * a + b * b);
+	momentOfIntertia.z = (1 / 12.0f) * mass * (a * a + b * b);*/
 
+
+	float a = transform.GetGlobalScale().y;
+	float b = transform.GetGlobalScale().x;
+	float l = transform.GetGlobalScale().z;
+
+	momentOfIntertia.x = (1 / 12.0f) * mass * (a * a + l * l);
+	momentOfIntertia.y = (1 / 12.0f) * mass * (b * b + l * l);
+	momentOfIntertia.z = (1 / 12.0f) * mass * (a * a + b * b);
 	//Logger::LogInfo("Intertia:", Maths::Vec3ToString(momentOfIntertia));
 
 }
