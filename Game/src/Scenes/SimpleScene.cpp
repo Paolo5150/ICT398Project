@@ -106,22 +106,22 @@ void SimpleScene::Initialize() {
 
 	skybox = std::unique_ptr<Skybox>(new Skybox(ContentManager::Instance().GetAsset<CubeMap>("SunSet")));
 
-	Table* table = new Table();
-	table->transform.SetPosition(10, 10, 0);
-	table->transform.SetRotation(0, 0, 90);
+	//Table* table = new Table();
+	//table->transform.SetPosition(0, 0, 0);
+	//table->transform.SetRotation(0, 0, 0);
 
 	Box* box = new Box();
-	box->transform.SetPosition(0, 10, 0);
+	box->transform.SetPosition(0, 8, 0);
 	box->transform.SetRotation(0, 0, 0);
 
-	//Box* box2 = new Box();
-	//box2->transform.SetPosition(-6, 10, 0);
-	//box2->transform.SetRotation(0, 0, 0);
+	Box* box2 = new Box();
+	box2->transform.SetPosition(-6, 10, 0);
+	box2->transform.SetRotation(0, 0, 0);
 
 	std::vector<GameObject*> objs = FileUtils::ReadSceneFile("Assets\\SceneFiles\\MainScene.txt");	
 
 	MainCamera* cam = new MainCamera();
-	cam->transform.SetPosition(0, 5, 20);
+	cam->transform.SetPosition(-3, 10, 20);
 	cam->transform.SetRotation(0, 180, 0);
 	
 	DirectionalLight* dirLight = new DirectionalLight(false);
@@ -150,8 +150,8 @@ void SimpleScene::Initialize() {
 	AddGameObject(cam);
 	AddGameObject(pointLight);
 	AddGameObject(box);
-	//AddGameObject(box2);
-	AddGameObject(table);
+	AddGameObject(box2);
+	//AddGameObject(table);
 	//AddGameObject(dirLight);
 	//AddGameObject(dirLight2);
 

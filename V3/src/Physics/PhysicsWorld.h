@@ -114,6 +114,9 @@ private:
 
 	void CheckCollision(Collider* it, Collider* it2);
 
+	void PhysicsCalculation(Collider* col1, Collider* col2, Collision collision);
+	void MoveTransform(Transform& tf, glm::vec3 vel, glm::vec3 angVel);
+	void ZeroOutVelocity(Collider* col);
 
 	std::map<GameObject*, std::map<GameObject*, std::list<Collider*>>> gameObjectCollisionMap;
 	std::map<Collider*, std::list<Collider*>> collidersCollisionMap;

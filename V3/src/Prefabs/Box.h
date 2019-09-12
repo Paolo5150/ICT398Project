@@ -14,10 +14,10 @@ public:
 	void Start() override;
 	void OnCollisionEnter(Collider* g, Collision col) override;
 	void OnCollisionStay(Collider* g, Collision col) override;
-
+	int id = 0;
 
 private:
 	Rigidbody* rb;
 	static int count;
-	int id = 0;
+	
 };

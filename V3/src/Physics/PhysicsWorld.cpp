@@ -5,6 +5,9 @@
 #include "..\Components\SphereCollider.h"
 #include "..\Events\EventDispatcher.h"
 #include "..\Events\ApplicationEvents.h"
+#include "..\Components\Rigidbody.h"
+#include "../Prefabs/Box.h"
+#include "..\Diag\DiagRenderer.h"
 #include <algorithm>
 
 
@@ -315,6 +318,7 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 			// If the gameobjects were not colliding, call OnCollision enter (this is the first collision)
 			if (!WereGameObjectsColliding((it)->GetParent(), (it2)->GetParent()))
 			{
+				PhysicsCalculation((it), (it2), col1);
 				// OnCollisionEnter
 				if((it)->GetCollideAgainstLayer() & (it2)->GetCollisionLayer())
 					(it)->OnCollisionEnterCallback((it2), col1);
@@ -337,11 +341,26 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 
 				//if ((it2)->GetCollideAgainstLayer() & (it)->GetCollisionLayer())
 					//(it2)->OnCollisionStayCallback((it), col2);
+
+				//PhysicsCalculation((it), (it2), col1);
+				Rigidbody* rb1 = it->GetParent()->GetComponent<Rigidbody>("Rigidbody");
+				Rigidbody* rb2 = it2->GetParent()->GetComponent<Rigidbody>("Rigidbody");
+				if (rb1 != nullptr)
+				{
+					MoveTransform(it->GetParent()->transform, -rb1->GetVelocity(), -rb1->GetAngularVelocity());
+					//ZeroOutVelocity((it));
+				}
+				if (rb2 != nullptr)
+				{
+					MoveTransform(it2->GetParent()->transform, -rb2->GetVelocity(), -rb2->GetAngularVelocity());
+					//ZeroOutVelocity((it2));
+				}
+
 				if ((it)->GetCollideAgainstLayer() & (it2)->GetCollisionLayer())
 					(it)->OnCollisionEnterCallback((it2), col1);
 
 				if ((it2)->GetCollideAgainstLayer() & (it)->GetCollisionLayer())
-					(it2)->OnCollisionEnterCallback((it), col2);
+					(it2)->OnCollisionEnterCallback((it), col1);
 
 #ifdef CHANGE_COLOR
 				(it)->meshRenderer->GetMaterial().SetColor(1, 0, 0);
@@ -367,6 +386,21 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 
 			//if ((it2)->GetCollideAgainstLayer() & (it)->GetCollisionLayer())
 				//(it2)->OnCollisionStayCallback((it), col2);
+
+			//PhysicsCalculation((it), (it2), col1);
+			Rigidbody* rb1 = it->GetParent()->GetComponent<Rigidbody>("Rigidbody");
+			Rigidbody* rb2 = it2->GetParent()->GetComponent<Rigidbody>("Rigidbody");
+			if (rb1 != nullptr)
+			{
+				MoveTransform(it->GetParent()->transform, -rb1->GetVelocity(), -rb1->GetAngularVelocity());
+				//ZeroOutVelocity((it));
+			}
+			if (rb2 != nullptr)
+			{
+				MoveTransform(it2->GetParent()->transform, -rb2->GetVelocity(), -rb2->GetAngularVelocity());
+				//ZeroOutVelocity((it2));
+			}
+			
 			if ((it)->GetCollideAgainstLayer() & (it2)->GetCollisionLayer())
 				(it)->OnCollisionEnterCallback((it2), col1);
 
@@ -426,6 +460,106 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 				gameObjectCollisionMap[(it2)->GetParent()].erase((it)->GetParent());
 			}
 		}
+	}
+}
+
+void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, Collision collision)
+{
+	float epsilon = 0.8f;
+
+	GameObject* obj1 = col1->GetParent();
+	GameObject* obj2 = col2->GetParent();
+
+	Rigidbody* rb1 = obj1->GetComponent<Rigidbody>("Rigidbody");
+	Rigidbody* rb2 = obj2->GetComponent<Rigidbody>("Rigidbody");
+
+	glm::vec3 vel1 = glm::vec3();
+	glm::vec3 vel2 = glm::vec3();
+	glm::vec3 angVel1 = glm::vec3();
+	glm::vec3 angVel2 = glm::vec3();
+
+	if (rb1 != nullptr)
+	{
+		vel1 = rb1->GetVelocity();
+		angVel1 = glm::radians(rb1->GetAngularVelocity());
+	}
+
+	if (rb2 != nullptr)
+	{
+		vel2 = rb2->GetVelocity();
+		angVel2 = glm::radians(rb2->GetAngularVelocity());
+	}
+
+	DiagRenderer::Instance().RenderSphere(obj1->transform.GetGlobalPosition() + obj1->GetCentreOfMass());
+	DiagRenderer::Instance().RenderSphere(obj2->transform.GetGlobalPosition() + obj2->GetCentreOfMass());
+
+	glm::vec3 r1 = collision.Point() - (obj1->transform.GetGlobalPosition() + obj1->GetCentreOfMass());
+	glm::vec3 r2 = collision.Point() - (obj2->transform.GetGlobalPosition() + obj2->GetCentreOfMass());
+	glm::vec3 normal = collision.Normal();
+	glm::vec3 angularVel;
+
+	float top = -(1 + epsilon) * (glm::dot(normal, vel1 - vel2)
+		+ glm::dot(angVel1, glm::cross(r1, normal))
+		- glm::dot(angVel2, glm::cross(r2, normal)));
+	glm::vec3 bottom = (1 / obj1->GetTotalMass())
+		+ (1 / obj2->GetTotalMass())
+		+ ((glm::cross(r1, normal) * glm::inverse(obj1->GetInertiaTensor()) * glm::cross(r1, normal))
+			+ (glm::cross(r2, normal) * glm::inverse(obj2->GetInertiaTensor()) * glm::cross(r2, normal)));
+
+	glm::vec3 lambda;
+
+	lambda = top / bottom * normal;
+
+	if (rb1 != nullptr)
+	{
+		MoveTransform(obj1->transform, -vel1, -angVel1);
+
+		rb1->SetVelocity(vel1 + (lambda / obj1->GetTotalMass()));
+		rb1->SetAngularVelocity(rb1->GetAngularVelocity() + lambda * glm::inverse(obj1->GetInertiaTensor()) * glm::cross(r1, normal));
+		glm::mat4 invInertTensor = glm::inverse(obj1->GetInertiaTensor());
+		glm::vec3 cross = glm::cross(r1, normal);
+		std::cout << "LAMBDA: " << lambda.x << " " << lambda.y << " " << lambda.z << std::endl;
+		std::cout << "CROSS: " << cross.x << " " << cross.y << " " << cross.z << std::endl;
+		std::cout << "INERTIA TENSOR: \t" << invInertTensor[0][0] << " " << invInertTensor[0][1] << " " << invInertTensor[0][2] << std::endl;
+		std::cout << "\t\t" << invInertTensor[1][0] << " " << invInertTensor[1][1] << " " << invInertTensor[1][2] << std::endl;
+		std::cout << "\t\t" << invInertTensor[2][0] << " " << invInertTensor[2][1] << " " << invInertTensor[2][2] << std::endl;
+	}
+
+	if (rb2 != nullptr)
+	{
+		MoveTransform(obj2->transform, -vel2, -angVel2);
+
+		rb2->SetVelocity(vel2 - (lambda / obj2->GetTotalMass()));
+		rb2->SetAngularVelocity(rb2->GetAngularVelocity() - lambda * glm::inverse(obj1->GetInertiaTensor()) * glm::cross(r2, normal));
+		glm::mat4 invInertTensor = glm::inverse(obj2->GetInertiaTensor());
+		glm::vec3 cross = glm::cross(r2, normal);
+		std::cout << "LAMBDA: " << lambda.x << " " << lambda.y << " " << lambda.z << std::endl;
+		std::cout << "CROSS: " << cross.x << " " << cross.y << " " << cross.z << std::endl;
+		std::cout << "INERTIA TENSOR: \t" << invInertTensor[0][0] << " " << invInertTensor[0][1] << " " << invInertTensor[0][2] << std::endl;
+		std::cout << "\t\t" << invInertTensor[1][0] << " " << invInertTensor[1][1] << " " << invInertTensor[1][2] << std::endl;
+		std::cout << "\t\t" << invInertTensor[2][0] << " " << invInertTensor[2][1] << " " << invInertTensor[2][2] << std::endl;
+	}
+}
+
+void PhysicsWorld::MoveTransform(Transform& tf, glm::vec3 vel, glm::vec3 angVel)
+{
+	tf.Translate(vel * Timer::GetDeltaS() * 3.0f); //Update the transform's postion in world space
+	tf.RotateBy(angVel.z * Timer::GetDeltaS() * 3.0f, 0, 0, 1); //Update the transform's z rotation
+	tf.RotateBy(angVel.x * Timer::GetDeltaS() * 3.0f, 1, 0, 0); //Update the transform's x rotation
+	tf.RotateBy(angVel.y * Timer::GetDeltaS() * 3.0f, 0, 1, 0); //Update the transform's y rotation
+
+}
+
+void PhysicsWorld::ZeroOutVelocity(Collider * col)
+{
+	GameObject* obj = col->GetParent();
+
+	Rigidbody* rb = obj->GetComponent<Rigidbody>("Rigidbody");
+
+	if (rb != nullptr)
+	{
+		rb->SetVelocity(glm::vec3());
+		rb->SetAngularVelocity(glm::vec3());
 	}
 }
 

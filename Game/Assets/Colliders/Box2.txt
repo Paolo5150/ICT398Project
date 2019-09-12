@@ -9,7 +9,7 @@
 # For Sphere colliders, onle the X value of Scale is used as Radius
 BC
 P 0 0 0
-S 1 1 1
+S 1 5 2.5
 R 0 0 0
 M 10.0
 D 1

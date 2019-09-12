@@ -20,7 +20,7 @@ PointLight::~PointLight()
 
 void PointLight::RenderDiag()
 {
-	DiagRenderer::Instance().RenderSphere(transform.GetGlobalPosition(), 0.5f, GetDiffuseColor());
+	//DiagRenderer::Instance().RenderSphere(transform.GetGlobalPosition(), 0.5f, GetDiffuseColor());
 }
 
 

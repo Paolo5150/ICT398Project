@@ -44,16 +44,17 @@ void Box::Start()
 	//rb->SetAngularVelocity(10, 0, 0);
 	if (id == 0)
 	{
-		rb->SetVelocity(5, 0, 0);
-		//rb->SetAngularVelocity(10, 20, 0);
+		rb->SetVelocity(-1, 0, 0);
+		rb->SetAngularVelocity(45, -20, 100);
+		LoadCollidersFromFile("Assets\\Colliders\\Box.txt");
 	}
 	else
 	{
-		rb->SetVelocity(1, 0, 0);
-		//rb->SetAngularVelocity(-10, 0, 0);
+		rb->SetVelocity(0, 0, 0);
+		rb->SetAngularVelocity(0, 0, 0);
+		LoadCollidersFromFile("Assets\\Colliders\\Box2.txt");
 	}
 	rb->UseGravity(false);
-	LoadCollidersFromFile("Assets\\Colliders\\Box.txt");
 
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider
 						 // has been added.
@@ -61,15 +62,17 @@ void Box::Start()
 
 void Box::OnCollisionEnter(Collider* g, Collision col)
 {
+	/*
 	//if (rb->GetUseGravity())
 		//rb->AddVelocity(-PhysicsWorld::Instance().gravity * Timer::GetDeltaS()); //If enabled, add gravity to the velocity vector
 	
 	//Calculate lambda value
-
 	//This object treated as object 1, collided object as object 2
-	if (id == 0)
+	if (id == 1)
 	{
-		DiagRenderer::Instance().RenderSphere(col.Point(), 1, glm::vec3(1, 0, 1));
+		//DiagRenderer::Instance().RenderSphere(col.Point(), 1, glm::vec3(1, 0, 1));
+		DiagRenderer::Instance().RenderSphere(col.Point(), 0.4f, glm::vec3(1, 0, 0));
+		DiagRenderer::Instance().RenderSphere(col.Point() + col.Normal(), 0.4f, glm::vec3(1, 0, 1));
 
 		float epsilon = 0.1f;
 
@@ -113,18 +116,18 @@ void Box::OnCollisionEnter(Collider* g, Collision col)
 
 		std::cout << "BEFORE COLLISION ADJUST POS: " << transform.GetGlobalPosition().x << " " << transform.GetGlobalPosition().y << " " << transform.GetGlobalPosition().z << std::endl;
 
-		transform.Translate(-rb->GetVelocity() * Timer::GetDeltaS()); //Update the transform's postion in world space
-		transform.RotateBy(-rb->GetAngularVelocity().z * Timer::GetDeltaS(), 0, 0, 1); //Update the transform's z rotation
-		transform.RotateBy(-rb->GetAngularVelocity().x * Timer::GetDeltaS(), 1, 0, 0); //Update the transform's x rotation
-		transform.RotateBy(-rb->GetAngularVelocity().y * Timer::GetDeltaS(), 0, 1, 0); //Update the transform's y rotation
+		transform.Translate(-rb->GetVelocity() * Timer::GetDeltaS() * 3.0f); //Update the transform's postion in world space
+		transform.RotateBy(-rb->GetAngularVelocity().z * Timer::GetDeltaS() * 3.0f, 0, 0, 1); //Update the transform's z rotation
+		transform.RotateBy(-rb->GetAngularVelocity().x * Timer::GetDeltaS() * 3.0f, 1, 0, 0); //Update the transform's x rotation
+		transform.RotateBy(-rb->GetAngularVelocity().y * Timer::GetDeltaS() * 3.0f, 0, 1, 0); //Update the transform's y rotation
 
 		if (otherRB != nullptr)
 		{
 			std::cout << "IM SAFE!" << std::endl;
-			g->GetParent()->transform.Translate(-otherRB->GetVelocity() * Timer::GetDeltaS()); //Update the transform's postion in world space
-			g->GetParent()->transform.RotateBy(-otherRB->GetAngularVelocity().z * Timer::GetDeltaS(), 0, 0, 1); //Update the transform's z rotation
-			g->GetParent()->transform.RotateBy(-otherRB->GetAngularVelocity().x * Timer::GetDeltaS(), 1, 0, 0); //Update the transform's x rotation
-			g->GetParent()->transform.RotateBy(-otherRB->GetAngularVelocity().y * Timer::GetDeltaS(), 0, 1, 0); //Update the transform's y rotation
+			g->GetParent()->transform.Translate(-otherRB->GetVelocity() * Timer::GetDeltaS() * 3.0f); //Update the transform's postion in world space
+			g->GetParent()->transform.RotateBy(-otherRB->GetAngularVelocity().z * Timer::GetDeltaS() * 3.0f, 0, 0, 1); //Update the transform's z rotation
+			g->GetParent()->transform.RotateBy(-otherRB->GetAngularVelocity().x * Timer::GetDeltaS() * 3.0f, 1, 0, 0); //Update the transform's x rotation
+			g->GetParent()->transform.RotateBy(-otherRB->GetAngularVelocity().y * Timer::GetDeltaS() * 3.0f, 0, 1, 0); //Update the transform's y rotation
 
 			otherVel = otherRB->GetVelocity();
 			otherAngVel = otherRB->GetAngularVelocity();
@@ -144,15 +147,16 @@ void Box::OnCollisionEnter(Collider* g, Collision col)
 			otherRB->SetAngularVelocity(otherRB->GetAngularVelocity() - lambda * glm::inverse(g->GetParent()->GetInertiaTensor()) * glm::cross(r2, normal));
 		}
 		//rb->SetVelocity(-rb->GetVelocity() * 0.2f);
-	}
+		}
+		*/
 }
 
 void Box::OnCollisionStay(Collider * g, Collision col)
 {
 	std::cout << "CALLED" << std::endl;
 	std::cout << "PRE-COLLISION STAY POS: " << transform.GetGlobalPosition().x << " " << transform.GetGlobalPosition().y << " " << transform.GetGlobalPosition().z << std::endl;
-	DiagRenderer::Instance().RenderSphere(col.Point(), 0.4f, glm::vec3(1, 0, 0));
-	DiagRenderer::Instance().RenderSphere(col.Point() + col.Normal(), 0.4f, glm::vec3(1, 0, 1));
+	//DiagRenderer::Instance().RenderSphere(col.Point(), 0.4f, glm::vec3(1, 0, 0));
+	//DiagRenderer::Instance().RenderSphere(col.Point() + col.Normal(), 0.4f, glm::vec3(1, 0, 1));
 	//transform.Translate(-rb->GetVelocity() * Timer::GetDeltaS()); //Update the transform's postion in world space
 	//transform.RotateBy(-rb->GetAngularVelocity().z * Timer::GetDeltaS(), 0, 0, 1); //Update the transform's z rotation
 	//transform.RotateBy(-rb->GetAngularVelocity().x * Timer::GetDeltaS(), 1, 0, 0); //Update the transform's x rotation

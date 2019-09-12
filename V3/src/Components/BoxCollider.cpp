@@ -84,7 +84,7 @@ std::vector<glm::vec3> BoxCollider::GetBoxPoints()
 	result.push_back(transform.GetGlobalPosition() + right + up + front);
 
 	for (int i = 0; i < result.size(); i++)
-		DiagRenderer::Instance().RenderSphere(result[i], 0.5);
+		//DiagRenderer::Instance().RenderSphere(result[i], 0.5);
 
 	return result;
 

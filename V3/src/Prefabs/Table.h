@@ -1,5 +1,6 @@
 #pragma once
 #include "..\Core\GameObject.h"
+#include "..\Components\Rigidbody.h"
 
 class Table : public GameObject
 {
@@ -14,5 +15,5 @@ public:
 	void OnCollisionStay(Collider* g, Collision collision) override;
 
 private:
-
+	Rigidbody* rb;
 };
