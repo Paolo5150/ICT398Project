@@ -150,8 +150,8 @@ void Renderer::SetMaterial(Material m, MaterialType mt) {
 		//Create a ColorOnly material for all renderers
 	Material co;
 	co.SetShader(ContentManager::Instance().GetAsset<Shader>("ColorOnlyStatic"));
-
 	co.SetColor(0,0,0);
+
 	{
 		auto it = allMaterials.find(COLORONLY);
 		if (it == allMaterials.end())

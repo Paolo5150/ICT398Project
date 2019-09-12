@@ -34,6 +34,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Scenes\PhysicsDemoScene.cpp">
+	  <Filter>Source Files</Filter>
+	</ClCompile>
+    <ClCompile Include="src\Scenes\MainScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Scenes\PhysicsDemoScene.h">
+	  <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\MainScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

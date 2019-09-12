@@ -9,7 +9,7 @@
 #include <algorithm>
 
 
-#define CHANGE_COLOR 1
+#define CHANGE_COLOR 0
 
 PhysicsWorld&  PhysicsWorld::Instance()
 {
@@ -460,13 +460,13 @@ void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, Collisio
 	glm::vec3 angVel1 = glm::vec3();
 	glm::vec3 angVel2 = glm::vec3();
 
-	if (rb1 != nullptr)
+	if (rb1 != nullptr && rb1->GetUseDynamicPhysics())
 	{
 		vel1 = rb1->GetVelocity();
 		angVel1 = glm::radians(rb1->GetAngularVelocity());
 	}
 
-	if (rb2 != nullptr)
+	if (rb2 != nullptr && rb2->GetUseDynamicPhysics())
 	{
 		vel2 = rb2->GetVelocity();
 		angVel2 = glm::radians(rb2->GetAngularVelocity());
@@ -489,7 +489,7 @@ void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, Collisio
 
 	lambda = top / bottom * normal;
 
-	if (rb1 != nullptr)
+	if (rb1 != nullptr && rb1->GetUseDynamicPhysics())
 	{
 		MoveTransform(obj1->transform, -vel1, -angVel1);
 
@@ -497,7 +497,7 @@ void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, Collisio
 		rb1->SetAngularVelocity(glm::degrees(angVel1 + glm::cross(lambda, r1) * glm::inverse(obj1->GetInertiaTensor()) * glm::cross(r1, normal)));
 	}
 
-	if (rb2 != nullptr)
+	if (rb2 != nullptr && rb2->GetUseDynamicPhysics())
 	{
 		MoveTransform(obj2->transform, -vel2, -angVel2);
 

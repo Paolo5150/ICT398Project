@@ -112,8 +112,6 @@ void PhysicsDemoScene::Initialize() {
 	box2->transform.SetPosition(-6, 10, 0);
 	box2->transform.SetRotation(0, 0, 0);
 
-	std::vector<GameObject*> objs = FileUtils::ReadSceneFile("Assets\\SceneFiles\\MainScene.txt");
-
 	MainCamera* cam = new MainCamera();
 	cam->transform.SetPosition(-3, 10, 20);
 	cam->transform.SetRotation(0, 180, 0);
@@ -130,7 +128,6 @@ void PhysicsDemoScene::Initialize() {
 
 	dirLight2->SetIntensity(0.2);
 
-
 	PointLight* pointLight = new PointLight();
 
 	pointLight->SetIntensity(10);
@@ -140,9 +137,6 @@ void PhysicsDemoScene::Initialize() {
 	AddGameObject(pointLight);
 	AddGameObject(box);
 	AddGameObject(box2);
-
-	for (int i = 0; i < objs.size(); i++)
-		AddGameObject(objs[i]);
 }
 
 void PhysicsDemoScene::Start()

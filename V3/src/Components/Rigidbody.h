@@ -225,9 +225,12 @@ public:
 	* @brief		Overridden method for logic update
 	*/
 	void Update() override;
+	bool GetUseDynamicPhysics();
+	void SetUseDynamicPhysics(bool useDynamicPhysics);
 
 private:
 	glm::vec3 velocity; //Velocity vector
 	glm::vec3 angVelocity; //Angular velocity vector
 	bool useGravity; //Whether to be affected by gravity
+	bool useDynamicPhysics = true;
 };

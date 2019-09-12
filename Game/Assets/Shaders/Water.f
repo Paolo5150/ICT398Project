@@ -67,6 +67,7 @@ uniform sampler2D special0; //Distortionmap
 uniform samplerCube cubemap0;
 uniform vec3 AmbientLight;
 uniform float timer;
+uniform float reflectionRefractionRatio;
 
 
 vec3 NormalToUse;
@@ -92,7 +93,7 @@ void main()
     vec3 normalMap2 = normalize(texture(normal0,(totalDistortion - Textcoords + vec2(timer/3000,-timer/5000))* material.UVScale).rgb *2.0 -1.0);
 
 	vec3 FragToCam = normalize(FragPosition - CameraPosition);
-    vec3 cubemap = texture(cubemap0,reflect(FragToCam,Normal)).rgb;
+    vec3 cubemap = texture(cubemap0,vec3(totalDistortion,0.0) + reflect(FragToCam,Normal)).rgb;
 	FragPosToUse = FragPositionTS;
 	CamPosToUse = CameraPositionTS;
 
@@ -103,7 +104,9 @@ void main()
 	vec3 camToFrag = normalize(FragPosition - CameraPosition); 	
 	
 	vec3 totalRef = mix(cubemap,reflectionColor,0.5f);
-	vec3 textureMix = mix(totalRef,refractionColor,dot(camToFrag,-Normal));	
+	float offsetRefrRefl = dot(camToFrag,-Normal)+ reflectionRefractionRatio;
+	offsetRefrRefl = clamp(offsetRefrRefl,0.0,1.0) ;
+	vec3 textureMix = mix(totalRef,refractionColor,offsetRefrRefl);	
     vec3 total = (AmbientLight + DirLights + PointLights) * textureMix;
 
 	gl_FragColor =  vec4(total,1.0);

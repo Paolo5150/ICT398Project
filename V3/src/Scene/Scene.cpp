@@ -117,8 +117,9 @@ void Scene::EngineUpdate()
 
 void Scene::LogicUpdate()
 {
-	if (Input::GetKeyDown(GLFW_KEY_R))
+	if (Input::GetKeyPressed(GLFW_KEY_R))
 		SceneManager::Instance().ReloadCurrent();
+
 
 	auto it = m_allGameObjects.begin();
 
@@ -166,5 +167,12 @@ bool Scene::RemoveGameobjectsByName(std::string name)
 	}
 
 	return deleted;
+}
+
+void Scene::LoadGameObjectsFromFile(std::string filePath)
+{
+	std::vector<GameObject*> objs = FileUtils::ReadSceneFile(filePath);
+	for (int i = 0; i < objs.size(); i++)
+		AddGameObject(objs[i]);
 }
 

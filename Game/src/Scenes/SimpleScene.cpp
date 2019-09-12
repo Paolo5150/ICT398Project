@@ -17,7 +17,10 @@
 #include "GUI/Elements/GUIImage.h"
 #include "GUI/Elements/GUIText.h"
 
-
+namespace
+{
+	PointLight* pointLight;
+}
 
 SimpleScene::SimpleScene() : Scene("SimpleScene")
 {
@@ -45,23 +48,22 @@ void SimpleScene::LoadAssets() {
 	ContentManager::Instance().LoadModel("Assets\\Models\\LandfillBin\\landfillbin.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\RecycleBin\\recyclebin.obj", false, false);
 
+
+
 	ContentManager::Instance().LoadTexture("Assets\\Models\\LandfillBin\\textures\\LB_Frame.png", 0);
 	ContentManager::Instance().LoadTexture("Assets\\Models\\LandfillBin\\textures\\LB_Sides.png", 0);
 
 	ContentManager::Instance().LoadTexture("Assets\\Models\\RecycleBin\\textures\\RB_Frame.png", 0);
-	ContentManager::Instance().LoadTexture("Assets\\Models\\RecycleBin\\textures\\RB_Sides.png", 0);
-
-
-	
+	ContentManager::Instance().LoadTexture("Assets\\Models\\RecycleBin\\textures\\RB_Sides.png", 0);	
 
 
 	ContentManager::Instance().LoadCubeMap("Assets\\SkyBoxes\\SunSet");
 
 
-	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_albedo.jpg", 0);
-	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_roughness.jpg", 0);
-	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_metallic.jpg", 0);
-	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_normal.jpg", 0);	
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_albedo.jpg", 1);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_roughness.jpg", 1);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_metallic.jpg", 1);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_normal.jpg", 1);	
 
 	text->message = "Instantiating sense of despair...";
 	GUIManager::Instance().Render(true, true);
@@ -70,12 +72,12 @@ void SimpleScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_roughness.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_metallic.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_normal.jpg", 0);
-	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_ao.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_ao.jpg", 1);
 
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\water_normal.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\dudv.png", 0);
 
-	text->message = "Finalizing feeling of hopelessness...";
+	text->message = "Deserializing sadness and sorrow...";
 	GUIManager::Instance().Render(true,true);
 
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_albedo.jpg", 0);
@@ -84,10 +86,30 @@ void SimpleScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_normal.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_ao.jpg", 0);
 
+
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Metal\\metal_roughness.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Metal\\metal_normal.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Metal\\metal_height.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Metal\\metal_ao.jpg", 0);
+
+	text->message = "Finalizing feeling of hopelessness...";
+	GUIManager::Instance().Render(true, true);
+	// Load this stuff as preserved so they can be used in the exit scene (so there's not much loading when transitioning)
+	ContentManager::Instance().LoadModel("Assets\\Models\\Paolo\\paolo.fbx", false,true);
+	ContentManager::Instance().LoadModel("Assets\\Models\\Drew\\drew.fbx", false, true);
+	ContentManager::Instance().LoadModel("Assets\\Models\\Dylan\\dylan.fbx", false, true);
+
+	text->message = "Interpolating misery and regret";
+	GUIManager::Instance().Render(true, true);
+	ContentManager::Instance().LoadModel("Assets\\Models\\PaoloText\\PaoloText.obj", false, true);
+	ContentManager::Instance().LoadModel("Assets\\Models\\DrewText\\DrewText.obj", false, true);
+	ContentManager::Instance().LoadModel("Assets\\Models\\DylanText\\DylanText.obj", false, true);
+
+
+	ContentManager::Instance().LoadTexture("Assets\\Models\\Paolo\\textures\\paolo.png",true);
+	ContentManager::Instance().LoadTexture("Assets\\Models\\Drew\\textures\\drew.png", true);
+	ContentManager::Instance().LoadTexture("Assets\\Models\\Dylan\\textures\\Dylan.png", true);
+
 
 	image->isActive = 0;
 	text->isActive = 0;
@@ -106,20 +128,6 @@ void SimpleScene::Initialize() {
 
 	skybox = std::unique_ptr<Skybox>(new Skybox(ContentManager::Instance().GetAsset<CubeMap>("SunSet")));
 
-	//Table* table = new Table();
-	//table->transform.SetPosition(0, 0, 0);
-	//table->transform.SetRotation(0, 0, 0);
-
-	Box* box = new Box();
-	box->transform.SetPosition(0, 8, 0);
-	box->transform.SetRotation(0, 0, 0);
-
-	Box* box2 = new Box();
-	box2->transform.SetPosition(-6, 10, 0);
-	box2->transform.SetRotation(0, 0, 0);
-
-	std::vector<GameObject*> objs = FileUtils::ReadSceneFile("Assets\\SceneFiles\\MainScene.txt");	
-
 	MainCamera* cam = new MainCamera();
 	cam->transform.SetPosition(-3, 10, 20);
 	cam->transform.SetRotation(0, 180, 0);
@@ -136,29 +144,24 @@ void SimpleScene::Initialize() {
 
 	dirLight2->SetIntensity(0.2);
 
-		Water* water = new Water();
-	water->transform.SetScale(100, 100, 1);
-	
 
-	PointLight* pointLight = new PointLight();
+	 pointLight = new PointLight();
 
 	pointLight->SetIntensity(10);
 	pointLight->transform.SetPosition(0, 0, 10);
 	
-	//cam->AddChild(pointLight);
+	cam->AddChild(pointLight);
 
 	AddGameObject(cam);
 	AddGameObject(pointLight);
-	AddGameObject(box);
-	AddGameObject(box2);
-	//AddGameObject(table);
 	//AddGameObject(dirLight);
 	//AddGameObject(dirLight2);
 
-	//AddGameObject(water);
 
-	for (int i = 0; i < objs.size(); i++)
-		AddGameObject(objs[i]);
+	LoadGameObjectsFromFile("Assets\\SceneFiles\\MainScene.txt");
+
+
+
 }
 
 void SimpleScene::Start()
@@ -186,9 +189,18 @@ void SimpleScene::LogicUpdate()
 		return;
 	}
 
+	if (Input::GetMouseDown(0))
+	{
+		pointLight->transform.Translate(0, 0, 5 * Timer::GetDeltaS());
+	}
+	if (Input::GetMouseDown(1))
+	{
+		pointLight->transform.Translate(0, 0, -5 * Timer::GetDeltaS());
+	}
+
 	Scene::LogicUpdate(); //Must be last statement!
 
-	((PointLight*)GetGameobjectsByName("PointLight")[0])->RenderDiag();
+	pointLight->RenderDiag();
 
 }
 

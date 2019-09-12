@@ -68,6 +68,8 @@ void Collider::OnAttach(GameObject* go)
 
 	Initialize();
 	
+	// Disable render
+	enableRender = 1;
 }
 
 

@@ -6,7 +6,7 @@
 
 LandfillBin::LandfillBin() : GameObject("LandfillBin")
 {
-	SetIsStatic(false);
+	SetIsStatic(true);
 	ContentManager::Instance().GetAsset<Model>("LandfillBin")->PopulateGameObject(this);
 	transform.SetScale(2);
 
@@ -60,10 +60,10 @@ void LandfillBin::Start()
 
 	LoadCollidersFromFile("Assets\\Colliders\\LandfillBin.txt");
 
-	rb = new Rigidbody();
-	rb->UseGravity(false);
-	rb->SetVelocity(0, -1.0, 0);
-	AddComponent(rb);
+	//rb = new Rigidbody();
+	//rb->UseGravity(false);
+	//rb->SetVelocity(1.0,0, 0);
+	//AddComponent(rb);
 
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider
 						 // has been added.
@@ -72,14 +72,14 @@ void LandfillBin::Start()
 void LandfillBin::OnCollisionEnter(Collider* g, Collision col)
 {
 	Logger::LogInfo("LandfillBin ENTER collision with", g->GetParent()->name);
-	rb->AddVelocity(-rb->GetVelocity());
+	//rb->AddVelocity(-rb->GetVelocity());
 }
 void LandfillBin::OnCollisionStay(Collider* g, Collision col)
 {
-	//Logger::LogInfo("LandfillBin STAY collision with", g->GetParent()->name);
+	Logger::LogInfo("LandfillBin STAY collision with", g->GetParent()->name);
 }
 
 void LandfillBin::OnCollisionExit(Collider* g, Collision col)
 {
-	Logger::LogError("LandfillBin EXIT collision with", g->GetParent()->name);
+	Logger::LogInfo("LandfillBin EXIT collision with", g->GetParent()->name);
 }

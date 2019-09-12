@@ -123,3 +123,13 @@ void Rigidbody::Update()
 	_parent->transform.RotateBy(angVelocity.z * Timer::GetDeltaS(), 0, 0, 1); //Update the transform's z rotation
 
 }
+
+bool Rigidbody::GetUseDynamicPhysics()
+{
+	return useDynamicPhysics;
+}
+
+void Rigidbody::SetUseDynamicPhysics(bool useDynamicPhysics)
+{
+	this->useDynamicPhysics = useDynamicPhysics;
+}

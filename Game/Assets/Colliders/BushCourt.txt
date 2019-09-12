@@ -1,0 +1,214 @@
+# This can be used as comments
+# Use "P" to specify position, followed by XYZ
+# Use "S" to specify scale, followed by XYZ
+# Use "R" to specify rotation, followed by XYZ
+# Use "D" to specify whether to draw the collider or not (use as boolean 1 or )
+# "BC" to identify the starting point of a new box collider
+# "SC" to identify the starting point of a new box collider
+# "A" is the "isActive" parameter
+# For Sphere colliders, onle the X value of Scale is used as Radius
+#Floor
+BC
+P 0 -5 0
+S 200 5 200
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+#East1
+BC
+P 82.8 5 -79.5
+S 10 20 50
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+#East2
+BC
+P 83.8 5 25
+S 10 20 70
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+#West
+BC
+P -84.2 5 -20
+S 10 20 100
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+#North
+BC
+P 0 5 85
+S 100 20 10
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+#South
+BC
+P 0 5 -85
+S 100 20 10
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+#West Columns
+BC
+P 64.6 5 -74.5
+S 0.8 10 0.8
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+
+BC
+P 64.6 5 -53.3
+S 0.8 10 0.8
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+BC
+P 64.6 5 -29.3
+S 0.8 10 0.8
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+
+BC
+P 64.6 5 -5.3
+S 0.8 10 0.8
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+
+BC
+P 64.6 5 18.7
+S 0.8 10 0.8
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+BC
+P 64.6 5 42.7
+S 0.8 10 0.8
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+#East Columns
+BC
+P -64.6 5 -56.3
+S 0.8 10 0.8
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+BC
+P -64.6 5 -34.0
+S 0.8 10 0.8
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+
+BC
+P -64.6 5 -10.0
+S 0.8 10 0.8
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+
+BC
+P -64.6 5 14.0
+S 0.8 10 0.8
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+BC
+P -64.6 5 38.0
+S 0.8 10 0.8
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+BC
+P -64.6 5 65.3
+S 0.8 10 0.8
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+#North Columns
+BC
+P 63.5 5 65.4
+S 0.8 10 0.8
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+BC
+P 48.3 5 65.4
+S 0.8 10 0.8
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+BC
+P 24.2 5 65.4
+S 0.8 10 0.8
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+BC
+P 0.3 5 65.4
+S 0.8 10 0.8
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+BC
+P -23.7 5 65.4
+S 0.8 10 0.8
+R 0 0 0
+M 1.0
+D 1
+A 1
+
+BC
+P -47.8 5 65.4
+S 0.8 10 0.8
+R 0 0 0
+M 1.0
+D 1
+A 1
