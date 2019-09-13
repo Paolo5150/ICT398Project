@@ -334,12 +334,12 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 
 				Rigidbody* rb1 = it->GetParent()->GetComponent<Rigidbody>("Rigidbody");
 				Rigidbody* rb2 = it2->GetParent()->GetComponent<Rigidbody>("Rigidbody");
-				if (rb1 != nullptr)
+				if (rb1 != nullptr && rb1->GetUseDynamicPhysics())
 				{
 					MoveTransform(it->GetParent()->transform, -rb1->GetVelocity(), -rb1->GetAngularVelocity());
 					ZeroOutVelocity((it));
 				}
-				if (rb2 != nullptr)
+				if (rb2 != nullptr && rb2->GetUseDynamicPhysics())
 				{
 					MoveTransform(it2->GetParent()->transform, -rb2->GetVelocity(), -rb2->GetAngularVelocity());
 					ZeroOutVelocity((it2));
@@ -372,12 +372,12 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 		{
 			Rigidbody* rb1 = it->GetParent()->GetComponent<Rigidbody>("Rigidbody");
 			Rigidbody* rb2 = it2->GetParent()->GetComponent<Rigidbody>("Rigidbody");
-			if (rb1 != nullptr)
+			if (rb1 != nullptr && rb1->GetUseDynamicPhysics())
 			{
 				MoveTransform(it->GetParent()->transform, -rb1->GetVelocity(), -rb1->GetAngularVelocity());
 				ZeroOutVelocity((it));
 			}
-			if (rb2 != nullptr)
+			if (rb2 != nullptr && rb2->GetUseDynamicPhysics())
 			{
 				MoveTransform(it2->GetParent()->transform, -rb2->GetVelocity(), -rb2->GetAngularVelocity());
 				ZeroOutVelocity((it2));
@@ -460,13 +460,13 @@ void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, Collisio
 	glm::vec3 angVel1 = glm::vec3();
 	glm::vec3 angVel2 = glm::vec3();
 
-	if (rb1 != nullptr && rb1->GetUseDynamicPhysics())
+	if (rb1 != nullptr)
 	{
 		vel1 = rb1->GetVelocity();
 		angVel1 = glm::radians(rb1->GetAngularVelocity());
 	}
 
-	if (rb2 != nullptr && rb2->GetUseDynamicPhysics())
+	if (rb2 != nullptr)
 	{
 		vel2 = rb2->GetVelocity();
 		angVel2 = glm::radians(rb2->GetAngularVelocity());

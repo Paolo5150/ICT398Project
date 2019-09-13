@@ -1,5 +1,7 @@
 #pragma once
-#include "C:\Users\Dutchy\Documents\ICT398Project\V3\src\Scene\Scene.h"
+#include "..\Scenes\PhysicsDemoScene.h"
+#include "Scene\Scene.h"
+
 class PhysicsDemoScene :
 	public Scene
 {
