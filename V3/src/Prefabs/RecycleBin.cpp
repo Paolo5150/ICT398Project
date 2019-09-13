@@ -65,16 +65,16 @@ void RecycleBin::Start()
 						 // has been added.
 }
 
-void RecycleBin::OnCollisionEnter(Collider* g)
+void RecycleBin::OnCollisionEnter(Collider* g, Collision col)
 {
 	Logger::LogInfo("Recycle bin ENTER collision with", g->GetParent()->name);
 }
-void RecycleBin::OnCollisionStay(Collider* g)
+void RecycleBin::OnCollisionStay(Collider* g, Collision col)
 {
 	//Logger::LogInfo("Recycle bin STAY collision with", g->GetParent()->name);
 }
 
-void RecycleBin::OnCollisionExit(Collider* g)
+void RecycleBin::OnCollisionExit(Collider* g, Collision col)
 {
 	Logger::LogError("Recycle bin EXIT collision with", g->GetParent()->name);
 }

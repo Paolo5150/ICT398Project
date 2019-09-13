@@ -104,7 +104,6 @@ void Scene::LateUpdate()
 
 void Scene::EngineUpdate()
 {
-	//Logger::LogError("Updating", m_allGameObjects.size());
 	if (skybox != nullptr)
 		skybox->EngineUpdate(); // Call engine update to the skybox so the cube (its renderer component) is sent to the rendering engine for rendering
 
@@ -118,7 +117,6 @@ void Scene::EngineUpdate()
 
 void Scene::LogicUpdate()
 {
-
 	if (Input::GetKeyPressed(GLFW_KEY_R))
 		SceneManager::Instance().ReloadCurrent();
 
@@ -130,8 +128,8 @@ void Scene::LogicUpdate()
 		if((*it)->GetActive() == true && (*it)->GetParent() == nullptr)
 			(*it)->Update();
 	}
+	
 	PhysicsWorld::Instance().Update();
-
 
 }
 

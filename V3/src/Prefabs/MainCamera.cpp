@@ -27,13 +27,13 @@ BoxCollider* bc = new BoxCollider();
 
 	rb = new Rigidbody();
 	rb->UseGravity(false);
-
+	rb->SetUseDynamicPhysics(false);
 	AddComponent(rb);
 	//Logger::LogInfo("Camera trans child", transform.transformChildren.size());
 
 }
 
-void MainCamera::OnCollisionEnter(Collider* c)
+void MainCamera::OnCollisionEnter(Collider* c, Collision collision)
 {
 
 	transform.Translate(rb->GetVelocity() * -Timer::GetDeltaS());
@@ -41,7 +41,7 @@ void MainCamera::OnCollisionEnter(Collider* c)
 		
 }
 
-void MainCamera::OnCollisionStay(Collider* c)
+void MainCamera::OnCollisionStay(Collider* c, Collision collision)
 {
 	//Logger::LogInfo("Camera colliding with", c->GetParent()->name);
 	transform.Translate(rb->GetVelocity() * -Timer::GetDeltaS());

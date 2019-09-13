@@ -6,6 +6,7 @@
 #include <string>
 #include "..\Rendering\Material.h"
 #include "..\Utils\Asset.h"
+#include "..\Core\Collision.h"
 
 class Component;
 class Collider;
@@ -430,10 +431,13 @@ public:
 
 	bool GetIsSelfManaged() { return _isSelfManaged; }
 
-	virtual void OnCollisionEnter(Collider* go){};
-	virtual void OnCollisionStay(Collider* go) {};
-	virtual void OnCollisionExit(Collider* go) {};
+	float GetTotalMass() { return totalMass; };
+	glm::vec3 GetCentreOfMass();
+	glm::mat3 GetInertiaTensor();
 
+	virtual void OnCollisionEnter(Collider* go, Collision collision){};
+	virtual void OnCollisionStay(Collider* go, Collision collision) {};
+	virtual void OnCollisionExit(Collider* go, Collision collision) {};
 
 
 	virtual void OnAddToScene(Scene& theScene);
@@ -441,6 +445,7 @@ public:
 protected:
 	float colorTimer;
 	bool flashing;
+	
 
 	/**
 	* @param The active state of the object
@@ -483,7 +488,10 @@ protected:
 	*/
 	void PrintHierarchy(int indentation, std::string& output);
 
-
+	private:
+		float totalMass;
+		glm::vec3 centreOfMass;
+		glm::mat3 inertiaTensor;
 };
 
 

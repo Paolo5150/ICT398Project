@@ -68,6 +68,11 @@ void Rigidbody::UseGravity(bool gravityEnabled)
 	useGravity = gravityEnabled;
 }
 
+bool Rigidbody::GetUseGravity()
+{
+	return useGravity;
+}
+
 void Rigidbody::SetAngularVelocity(float x, float y, float z)
 {
 	angVelocity = glm::vec3(x, y, z);
@@ -110,10 +115,21 @@ glm::vec3 Rigidbody::GetAngularVelocity() const
 void Rigidbody::Update()
 {
 	if(useGravity)
-		AddVelocity(PhysicsWorld::Instance().gravity * Timer::GetDeltaS()); //If enabled, add gravity to the velocity vector
+		AddVelocity(PhysicsWorld::Instance().gravity * _parent->GetTotalMass() * Timer::GetDeltaS()); //If enabled, add gravity to the velocity vector
 
 	_parent->transform.Translate(velocity * Timer::GetDeltaS()); //Update the transform's postion in world space
 	_parent->transform.RotateBy(angVelocity.x * Timer::GetDeltaS(), 1, 0, 0); //Update the transform's x rotation
 	_parent->transform.RotateBy(angVelocity.y * Timer::GetDeltaS(), 0, 1, 0); //Update the transform's y rotation
 	_parent->transform.RotateBy(angVelocity.z * Timer::GetDeltaS(), 0, 0, 1); //Update the transform's z rotation
+
+}
+
+bool Rigidbody::GetUseDynamicPhysics()
+{
+	return useDynamicPhysics;
+}
+
+void Rigidbody::SetUseDynamicPhysics(bool useDynamicPhysics)
+{
+	this->useDynamicPhysics = useDynamicPhysics;
 }

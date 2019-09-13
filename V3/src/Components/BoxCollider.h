@@ -59,5 +59,4 @@ public:
 
 	virtual void CalculateMomentOfIntertia() override;
 
-
 };

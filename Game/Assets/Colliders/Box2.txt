@@ -9,36 +9,8 @@
 # For Sphere colliders, onle the X value of Scale is used as Radius
 BC
 P 0 0 0
-S 65 3 35
+S 1 5 2.5
 R 0 0 0
-M 20.0
-D 1
-A 1
-BC
-P -60 -35 -30
-S 3 35 3
-R 0 0 0
-M 3.0
-D 1
-A 1
-BC
-P 60 -35 -30
-S 3 35 3
-R 0 0 0
-M 3.0
-D 1
-A 1
-BC
-P -60 -35 30
-S 3 35 3
-R 0 0 0
-M 3.0
-D 1
-A 1
-BC
-P 60 -35 30
-S 3 35 3
-R 0 0 0
-M 3.0
+M 12.5
 D 1
 A 1

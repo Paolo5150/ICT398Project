@@ -4,6 +4,7 @@
 #include "Core\Window.h"
 #include "Core\Logger.h"
 #include "Scene\SceneManager.h"
+#include "Scenes\PhysicsDemoScene.h"
 #include "Scenes/MainScene.h"
 #include "Scenes/OtherScene.h"
 #include "Scenes/ExitScene.h"
@@ -38,6 +39,9 @@ void Game::AppInitialize()
 
 	auto main = std::unique_ptr<Scene>(new MainScene());
 	SceneManager::Instance().AddScene(main);
+
+	auto physics = std::unique_ptr<Scene>(new PhysicsDemoScene());
+	SceneManager::Instance().AddScene(physics);
 
 	auto other = std::unique_ptr<Scene>(new OtherScene());
 	SceneManager::Instance().AddScene(other);

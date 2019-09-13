@@ -125,7 +125,7 @@
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
@@ -176,6 +176,7 @@
     <ClInclude Include="src\Core\Camera.h" />
     <ClInclude Include="src\Core\CameraOrthogonal.h" />
     <ClInclude Include="src\Core\CameraPerspective.h" />
+    <ClInclude Include="src\Core\Collision.h" />
     <ClInclude Include="src\Core\Component.h" />
     <ClInclude Include="src\Core\Core.h" />
     <ClInclude Include="src\Core\GameObject.h" />
@@ -216,6 +217,8 @@
     <ClInclude Include="src\Physics\CollisionLayer.h" />
     <ClInclude Include="src\Physics\PhysicsWorld.h" />
     <ClInclude Include="src\Prefabs\Bench.h" />
+    <ClInclude Include="src\Prefabs\Box.h" />
+    <ClInclude Include="src\Prefabs\Box2.h" />
     <ClInclude Include="src\Prefabs\BushCourt.h" />
     <ClInclude Include="src\Prefabs\Chair.h" />
     <ClInclude Include="src\Prefabs\Drew.h" />
@@ -283,6 +286,7 @@
     <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Core\Camera.cpp" />
     <ClCompile Include="src\Core\CameraPerspective.cpp" />
+    <ClCompile Include="src\Core\Collision.cpp" />
     <ClCompile Include="src\Core\Component.cpp" />
     <ClCompile Include="src\Core\Core.cpp" />
     <ClCompile Include="src\Core\GameObject.cpp" />
@@ -336,6 +340,8 @@
     </ClCompile>
     <ClCompile Include="src\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="src\Prefabs\Bench.cpp" />
+    <ClCompile Include="src\Prefabs\Box.cpp" />
+    <ClCompile Include="src\Prefabs\Box2.cpp" />
     <ClCompile Include="src\Prefabs\BushCourt.cpp" />
     <ClCompile Include="src\Prefabs\Chair.cpp" />
     <ClCompile Include="src\Prefabs\Drew.cpp" />

@@ -1,0 +1,4 @@
+# Main Scene
+# Use the format "PrefabName P(X,Y,Z) R(X,Y,Z) S(X,Y,Z)"
+
+#Chair P(20,0,0) R(0,0,0) S(1,1,1)

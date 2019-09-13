@@ -2,6 +2,7 @@
 #include "Table.h"
 #include "..\Utils\ContentManager.h"
 #include "..\Components\BoxCollider.h"
+#include "..\Diag\DiagRenderer.h"
 
 Table::Table() : GameObject("Table")
 {
@@ -42,11 +43,14 @@ void Table::Start()
 
 	LoadCollidersFromFile("Assets\\Colliders\\Table.txt");
 
+	rb = new Rigidbody();
+	AddComponent(rb);
+	rb->UseGravity(false);
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider
 						 // has been added.
 }
 
-void Table::OnCollisionEnter(Collider* g)
+void Table::OnCollisionEnter(Collider* g, Collision collision)
 {}
-void Table::OnCollisionStay(Collider* g)
+void Table::OnCollisionStay(Collider* g, Collision collision)
 {}

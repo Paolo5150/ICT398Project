@@ -33,6 +33,9 @@
     <ClCompile Include="src\Scenes\ExitScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Scenes\PhysicsDemoScene.cpp">
+	  <Filter>Source Files</Filter>
+	</ClCompile>
     <ClCompile Include="src\Scenes\MainScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -52,6 +55,9 @@
     </ClInclude>
     <ClInclude Include="src\Scenes\ExitScene.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Scenes\PhysicsDemoScene.h">
+	  <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Scenes\MainScene.h">
       <Filter>Header Files</Filter>

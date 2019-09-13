@@ -1,9 +1,11 @@
 #include "pch.h"
 #include "PhysicsWorld.h"
+#include "..\Core\Collision.h"
 #include "..\Components\BoxCollider.h"
 #include "..\Components\SphereCollider.h"
 #include "..\Events\EventDispatcher.h"
 #include "..\Events\ApplicationEvents.h"
+#include "..\Components\Rigidbody.h"
 #include <algorithm>
 
 
@@ -96,7 +98,6 @@ void PhysicsWorld::AddCollider(Collider* rb)
 
 void PhysicsWorld::Update()
 {
-
 	if (nonStaticQuadtree && staticQuadtree)
 	{
 		collidersCollisionMapPerFrame.clear(); // Clear collision map each frame!
@@ -192,7 +193,7 @@ void PhysicsWorld::PerformCollisions(bool staticToo)
 	//Logger::LogWarning("ENDING COLLISION UPDATE");
 }
 
-glm::vec3 PhysicsWorld::gravity = glm::vec3(0, -9.8, 0);
+glm::vec3 PhysicsWorld::gravity = glm::vec3(0.01, -3.8, 0);
 
 bool PhysicsWorld::WereGameObjectsColliding(GameObject* obj1, GameObject* obj2)
 {
@@ -295,9 +296,15 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 	collidersCollisionMapPerFrame[it].push_back(it2);
 	collidersCollisionMapPerFrame[it2].push_back(it);
 
-	
 	if (CollisionChecks::Collision((it), (it2)))
 	{
+		//Pre-calc collision objects
+		glm::vec3 pos = CollisionChecks::getCollisionPoint(it, it2);
+		glm::vec3 normal = CollisionChecks::getCollisionNormal(pos, it2);
+		Collision col2 = Collision(pos, normal);
+		normal = CollisionChecks::getCollisionNormal(pos, it2);
+		Collision col1 = Collision(pos, normal);
+
 		// Check if colliders were colliding
 		if (!WereCollidersColliding((it), (it2)))
 		{
@@ -308,12 +315,13 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 			// If the gameobjects were not colliding, call OnCollision enter (this is the first collision)
 			if (!WereGameObjectsColliding((it)->GetParent(), (it2)->GetParent()))
 			{
+				PhysicsCalculation((it), (it2), col1);
 				// OnCollisionEnter
 				if((it)->GetCollideAgainstLayer() & (it2)->GetCollisionLayer())
-					(it)->OnCollisionEnterCallback((it2));
+					(it)->OnCollisionEnterCallback((it2), col1);
 
 				if ((it2)->GetCollideAgainstLayer() & (it)->GetCollisionLayer())
-					(it2)->OnCollisionEnterCallback((it));
+					(it2)->OnCollisionEnterCallback((it), col2);
 
 				gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].push_back((it2));
 				gameObjectCollisionMap[(it2)->GetParent()][(it)->GetParent()].push_back((it));
@@ -324,20 +332,30 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 				// If the colliders were not colliding, but the GameObjects were
 				// it means that we are colliding with a new collider of the same gameobjects
 
+				Rigidbody* rb1 = it->GetParent()->GetComponent<Rigidbody>("Rigidbody");
+				Rigidbody* rb2 = it2->GetParent()->GetComponent<Rigidbody>("Rigidbody");
+				if (rb1 != nullptr && rb1->GetUseDynamicPhysics())
+				{
+					MoveTransform(it->GetParent()->transform, -rb1->GetVelocity(), -rb1->GetAngularVelocity());
+					ZeroOutVelocity((it));
+				}
+				if (rb2 != nullptr && rb2->GetUseDynamicPhysics())
+				{
+					MoveTransform(it2->GetParent()->transform, -rb2->GetVelocity(), -rb2->GetAngularVelocity());
+					ZeroOutVelocity((it2));
+				}
+
 				// OnCollisionStay
 				if ((it)->GetCollideAgainstLayer() & (it2)->GetCollisionLayer())
-					(it)->OnCollisionStayCallback((it2));
+					(it)->OnCollisionStayCallback((it2), col1);
 
 				if ((it2)->GetCollideAgainstLayer() & (it)->GetCollisionLayer())
-					(it2)->OnCollisionStayCallback((it));
+					(it2)->OnCollisionStayCallback((it), col2);
 
 #ifdef CHANGE_COLOR
 				(it)->meshRenderer->GetMaterial().SetColor(1, 0, 0);
 				(it2)->meshRenderer->GetMaterial().SetColor(1, 0, 0);
 #endif // CHANGE_COLOR
-
-
-
 				if (std::find(gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].begin(), gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].end(), it2) == gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].end())
 				{
 					gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].push_back((it2));
@@ -352,12 +370,24 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 		}
 		else
 		{
+			Rigidbody* rb1 = it->GetParent()->GetComponent<Rigidbody>("Rigidbody");
+			Rigidbody* rb2 = it2->GetParent()->GetComponent<Rigidbody>("Rigidbody");
+			if (rb1 != nullptr && rb1->GetUseDynamicPhysics())
+			{
+				MoveTransform(it->GetParent()->transform, -rb1->GetVelocity(), -rb1->GetAngularVelocity());
+				ZeroOutVelocity((it));
+			}
+			if (rb2 != nullptr && rb2->GetUseDynamicPhysics())
+			{
+				MoveTransform(it2->GetParent()->transform, -rb2->GetVelocity(), -rb2->GetAngularVelocity());
+				ZeroOutVelocity((it2));
+			}
 			// OnCollisionStay
 			if ((it)->GetCollideAgainstLayer() & (it2)->GetCollisionLayer())
-				(it)->OnCollisionStayCallback((it2));
+				(it)->OnCollisionStayCallback((it2), col1);
 
 			if ((it2)->GetCollideAgainstLayer() & (it)->GetCollisionLayer())
-				(it2)->OnCollisionStayCallback((it));
+				(it2)->OnCollisionStayCallback((it), col2);
 
 #ifdef CHANGE_COLOR
 			(it)->meshRenderer->GetMaterial().SetColor(1, 0, 0);
@@ -367,8 +397,6 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 	}
 	else
 	{
-
-
 		if (WereCollidersColliding((it), (it2)))
 		{
 			// Record that the colliders are no longer in collision
@@ -392,16 +420,18 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 
 			}
 
+			Collision col1 = Collision(glm::vec3(), glm::vec3());
+			Collision col2 = Collision(col1);
+
 			if (gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].size() == 0 &&
 				gameObjectCollisionMap[(it2)->GetParent()][(it)->GetParent()].size() == 0)
 			{
 				// OnCollisionExit
-				// OnCollisionStay
 				if ((it)->GetCollideAgainstLayer() & (it2)->GetCollisionLayer())
-					(it)->OnCollisionExitCallback((it2));
+					(it)->OnCollisionExitCallback(it2, col1);
 
 				if ((it2)->GetCollideAgainstLayer() & (it)->GetCollisionLayer())
-					(it2)->OnCollisionExitCallback((it));
+					(it2)->OnCollisionExitCallback(it, col2);
 
 #ifdef CHANGE_COLOR
 				(it2)->meshRenderer->GetMaterial().SetColor(0, 1, 0);
@@ -413,6 +443,90 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 			}
 		}
 	}
+}
+
+void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, Collision collision)
+{
+	float epsilon = 0.8f;
+
+	GameObject* obj1 = col1->GetParent();
+	GameObject* obj2 = col2->GetParent();
+
+	Rigidbody* rb1 = obj1->GetComponent<Rigidbody>("Rigidbody");
+	Rigidbody* rb2 = obj2->GetComponent<Rigidbody>("Rigidbody");
+
+	glm::vec3 vel1 = glm::vec3();
+	glm::vec3 vel2 = glm::vec3();
+	glm::vec3 angVel1 = glm::vec3();
+	glm::vec3 angVel2 = glm::vec3();
+
+	if (rb1 != nullptr)
+	{
+		vel1 = rb1->GetVelocity();
+		angVel1 = glm::radians(rb1->GetAngularVelocity());
+	}
+
+	if (rb2 != nullptr)
+	{
+		vel2 = rb2->GetVelocity();
+		angVel2 = glm::radians(rb2->GetAngularVelocity());
+	}
+
+	glm::vec3 r1 = collision.Point() - (obj1->transform.GetGlobalPosition() + obj1->GetCentreOfMass());
+	glm::vec3 r2 = collision.Point() - (obj2->transform.GetGlobalPosition() + obj2->GetCentreOfMass());
+	glm::vec3 normal = collision.Normal();
+	glm::vec3 angularVel;
+
+	float top = -(1 + epsilon) * (glm::dot(normal, vel1 - vel2)
+		+ glm::dot(angVel1, glm::cross(r1, normal))
+		- glm::dot(angVel2, glm::cross(r2, normal)));
+	glm::vec3 bottom = (1 / obj1->GetTotalMass())
+		+ (1 / obj2->GetTotalMass())
+		+ ((glm::cross(r1, normal) * glm::inverse(obj1->GetInertiaTensor()) * glm::cross(r1, normal))
+			+ (glm::cross(r2, normal) * glm::inverse(obj2->GetInertiaTensor()) * glm::cross(r2, normal)));
+
+	glm::vec3 lambda;
+
+	lambda = top / bottom * normal;
+
+	if (rb1 != nullptr && rb1->GetUseDynamicPhysics())
+	{
+		MoveTransform(obj1->transform, -vel1, -angVel1);
+
+		rb1->SetVelocity(vel1 + (lambda / obj1->GetTotalMass()));
+		rb1->SetAngularVelocity(glm::degrees(angVel1 + glm::cross(lambda, r1) * glm::inverse(obj1->GetInertiaTensor()) * glm::cross(r1, normal)));
+	}
+
+	if (rb2 != nullptr && rb2->GetUseDynamicPhysics())
+	{
+		MoveTransform(obj2->transform, -vel2, -angVel2);
+
+		rb2->SetVelocity(vel2 - (lambda / obj2->GetTotalMass()));
+		rb2->SetAngularVelocity(glm::degrees(angVel2 - glm::cross(lambda, r2) * glm::inverse(obj2->GetInertiaTensor()) * glm::cross(r2, normal)));
+	}
+	
+}
+
+void PhysicsWorld::MoveTransform(Transform& tf, glm::vec3 vel, glm::vec3 angVel)
+{
+	tf.Translate(vel * Timer::GetDeltaS() * 3.0f);
+	tf.RotateBy(angVel.z * Timer::GetDeltaS() * 3.0f, 0, 0, 1);
+	tf.RotateBy(angVel.x * Timer::GetDeltaS() * 3.0f, 1, 0, 0);
+	tf.RotateBy(angVel.y * Timer::GetDeltaS() * 3.0f, 0, 1, 0);
+}
+
+void PhysicsWorld::ZeroOutVelocity(Collider * col)
+{
+	GameObject* obj = col->GetParent();
+
+	Rigidbody* rb = obj->GetComponent<Rigidbody>("Rigidbody");
+
+	if (rb != nullptr)
+	{
+		rb->SetVelocity(glm::vec3());
+		rb->SetAngularVelocity(glm::vec3());
+	}
+	
 }
 
 

@@ -11,8 +11,10 @@ class Collider;
 * @brief Singleto class that manages collisions
 *
 *
-* @author Paolo Ferri
+* @author Paolo Ferri, Drew Paridaens
 * @version 01
+* @version 02
+* -Added Physics implementation methods
 * @date 1/05/2019
 *
 *
@@ -114,6 +116,9 @@ private:
 
 	void CheckCollision(Collider* it, Collider* it2);
 
+	void PhysicsCalculation(Collider* col1, Collider* col2, Collision collision);
+	void MoveTransform(Transform& tf, glm::vec3 vel, glm::vec3 angVel);
+	void ZeroOutVelocity(Collider* col);
 
 	std::map<GameObject*, std::map<GameObject*, std::list<Collider*>>> gameObjectCollisionMap;
 	std::map<Collider*, std::list<Collider*>> collidersCollisionMap;

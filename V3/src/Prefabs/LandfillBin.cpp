@@ -69,17 +69,17 @@ void LandfillBin::Start()
 						 // has been added.
 }
 
-void LandfillBin::OnCollisionEnter(Collider* g)
+void LandfillBin::OnCollisionEnter(Collider* g, Collision col)
 {
 	Logger::LogInfo("LandfillBin ENTER collision with", g->GetParent()->name);
 	//rb->AddVelocity(-rb->GetVelocity());
 }
-void LandfillBin::OnCollisionStay(Collider* g)
+void LandfillBin::OnCollisionStay(Collider* g, Collision col)
 {
 	Logger::LogInfo("LandfillBin STAY collision with", g->GetParent()->name);
 }
 
-void LandfillBin::OnCollisionExit(Collider* g)
+void LandfillBin::OnCollisionExit(Collider* g, Collision col)
 {
 	Logger::LogInfo("LandfillBin EXIT collision with", g->GetParent()->name);
 }

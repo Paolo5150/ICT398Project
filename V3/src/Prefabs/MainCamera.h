@@ -31,8 +31,8 @@ public:
 
 	void Update() override;
 	void Start() override;
-	void OnCollisionEnter(Collider* c) override;
-	void OnCollisionStay(Collider* c) override;
+	void OnCollisionEnter(Collider* c, Collision collision) override;
+	void OnCollisionStay(Collider* c, Collision collision) override;
 
 
 	bool blockRotation;

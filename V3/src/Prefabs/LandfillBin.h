@@ -12,9 +12,9 @@ public:
 
 	void Update() override;
 	void Start() override;
-	void OnCollisionEnter(Collider* g) override;
-	void OnCollisionStay(Collider* g) override;
-	void OnCollisionExit(Collider* g) override;
+	void OnCollisionEnter(Collider* g, Collision col) override;
+	void OnCollisionStay(Collider* g, Collision col) override;
+	void OnCollisionExit(Collider* g, Collision col) override;
 
 
 private:

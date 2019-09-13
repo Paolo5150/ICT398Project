@@ -195,6 +195,9 @@
     <ClCompile Include="src\Prefabs\Table.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Prefabs\Box.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\Prefabs\Terrain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -213,8 +216,14 @@
     <ClCompile Include="src\Prefabs\RecycleBin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\Collision.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\Prefabs\Water.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Prefabs\Box2.cpp">
+	  <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Prefabs\Paolo.cpp">
       <Filter>Source Files</Filter>
@@ -503,6 +512,9 @@
     <ClInclude Include="src\Prefabs\Table.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Prefabs\Box.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\Prefabs\Terrain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -527,6 +539,9 @@
     <ClInclude Include="src\Utils\PrefabFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Core\Collision.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\Prefabs\Water.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -535,6 +550,9 @@
     </ClInclude>
     <ClInclude Include="src\GUI\Elements\GUIText.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Prefabs\Box2.h">
+	  <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Prefabs\Paolo.h">
       <Filter>Header Files</Filter>

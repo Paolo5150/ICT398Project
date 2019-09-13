@@ -10,8 +10,6 @@ public:
 
 	void Update() override;
 	void Start() override;
-	void OnCollisionEnter(Collider* g) override;
-	void OnCollisionStay(Collider* g) override;
 
 private:
 

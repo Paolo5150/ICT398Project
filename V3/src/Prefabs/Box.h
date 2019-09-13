@@ -1,21 +1,21 @@
 #pragma once
+
 #include "..\Core\GameObject.h"
+#include "..\Components\Rigidbody.h"
 
-class RecycleBin : public GameObject
+class Box :
+	public GameObject
 {
-
 public:
-	RecycleBin();
-	~RecycleBin();
+	Box();
+	~Box();
 
 	void Update() override;
 	void Start() override;
 	void OnCollisionEnter(Collider* g, Collision col) override;
 	void OnCollisionStay(Collider* g, Collision col) override;
-	void OnCollisionExit(Collider* g, Collision col) override;
-
 
 private:
-
+	Rigidbody* rb;
+	
 };
-
