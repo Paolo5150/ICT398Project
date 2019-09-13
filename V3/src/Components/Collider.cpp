@@ -53,7 +53,7 @@ void Collider::OnAttach(GameObject* go)
 		OnCollisionStayCallback = std::bind(&GameObject::OnCollisionStay, go, std::placeholders::_1, std::placeholders::_2);
 
 	if (OnCollisionExitCallback == nullptr)
-		OnCollisionExitCallback = std::bind(&GameObject::OnCollisionExit, go, std::placeholders::_1, std::placeholders::_2);
+		OnCollisionExitCallback = std::bind(&GameObject::OnCollisionExit, go, std::placeholders::_1);
 
 	meshRenderer->AddPreRenderCallback([](Camera& cam, Shader* s){		
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

@@ -49,18 +49,18 @@ void Chair::Start()
 						 // has been added.
 }
 
-void Chair::OnCollisionEnter(Collider* g, Collision collision)
+void Chair::OnCollisionEnter(Collider* g, Collision& collision)
 {
 	Logger::LogInfo("CHAIR Collided ENTER against", g->GetName());
 
 }
 
-void Chair::OnCollisionExit(Collider* g, Collision collision)
+void Chair::OnCollisionExit(Collider* g)
 {
 	Logger::LogInfo("CHAIR Collided EXIT against", g->GetName());
 
 }
-void Chair::OnCollisionStay(Collider* g, Collision collision)
+void Chair::OnCollisionStay(Collider* g, Collision& collision)
 {
 	//Logger::LogInfo("CHAIR Collided STAY against", g->GetName());
 

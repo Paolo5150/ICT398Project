@@ -337,12 +337,12 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 				if (rb1 != nullptr && rb1->GetUseDynamicPhysics())
 				{
 					MoveTransform(it->GetParent()->transform, -rb1->GetVelocity(), -rb1->GetAngularVelocity());
-					ZeroOutVelocity((it));
+					ZeroOutVelocity(rb1);
 				}
 				if (rb2 != nullptr && rb2->GetUseDynamicPhysics())
 				{
 					MoveTransform(it2->GetParent()->transform, -rb2->GetVelocity(), -rb2->GetAngularVelocity());
-					ZeroOutVelocity((it2));
+					ZeroOutVelocity(rb2);
 				}
 
 				// OnCollisionStay
@@ -375,12 +375,12 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 			if (rb1 != nullptr && rb1->GetUseDynamicPhysics())
 			{
 				MoveTransform(it->GetParent()->transform, -rb1->GetVelocity(), -rb1->GetAngularVelocity());
-				ZeroOutVelocity((it));
+				ZeroOutVelocity(rb1);
 			}
 			if (rb2 != nullptr && rb2->GetUseDynamicPhysics())
 			{
 				MoveTransform(it2->GetParent()->transform, -rb2->GetVelocity(), -rb2->GetAngularVelocity());
-				ZeroOutVelocity((it2));
+				ZeroOutVelocity(rb2);
 			}
 			// OnCollisionStay
 			if ((it)->GetCollideAgainstLayer() & (it2)->GetCollisionLayer())
@@ -420,18 +420,15 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 
 			}
 
-			Collision col1 = Collision(glm::vec3(), glm::vec3());
-			Collision col2 = Collision(col1);
-
 			if (gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].size() == 0 &&
 				gameObjectCollisionMap[(it2)->GetParent()][(it)->GetParent()].size() == 0)
 			{
 				// OnCollisionExit
 				if ((it)->GetCollideAgainstLayer() & (it2)->GetCollisionLayer())
-					(it)->OnCollisionExitCallback(it2, col1);
+					(it)->OnCollisionExitCallback(it2);
 
 				if ((it2)->GetCollideAgainstLayer() & (it)->GetCollisionLayer())
-					(it2)->OnCollisionExitCallback(it, col2);
+					(it2)->OnCollisionExitCallback(it);
 
 #ifdef CHANGE_COLOR
 				(it2)->meshRenderer->GetMaterial().SetColor(0, 1, 0);
@@ -445,7 +442,7 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 	}
 }
 
-void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, Collision collision)
+void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, const Collision& collision)
 {
 	float epsilon = 0.8f;
 
@@ -507,7 +504,7 @@ void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, Collisio
 	
 }
 
-void PhysicsWorld::MoveTransform(Transform& tf, glm::vec3 vel, glm::vec3 angVel)
+void PhysicsWorld::MoveTransform(Transform& tf, const glm::vec3& vel, const glm::vec3& angVel)
 {
 	tf.Translate(vel * Timer::GetDeltaS() * 3.0f);
 	tf.RotateBy(angVel.z * Timer::GetDeltaS() * 3.0f, 0, 0, 1);
@@ -515,18 +512,10 @@ void PhysicsWorld::MoveTransform(Transform& tf, glm::vec3 vel, glm::vec3 angVel)
 	tf.RotateBy(angVel.y * Timer::GetDeltaS() * 3.0f, 0, 1, 0);
 }
 
-void PhysicsWorld::ZeroOutVelocity(Collider * col)
+void PhysicsWorld::ZeroOutVelocity(Rigidbody * rb)
 {
-	GameObject* obj = col->GetParent();
-
-	Rigidbody* rb = obj->GetComponent<Rigidbody>("Rigidbody");
-
-	if (rb != nullptr)
-	{
-		rb->SetVelocity(glm::vec3());
-		rb->SetAngularVelocity(glm::vec3());
-	}
-	
+	rb->SetVelocity(glm::vec3());
+	rb->SetAngularVelocity(glm::vec3());
 }
 
 

@@ -18,8 +18,8 @@ class Collision
 public:
 	Collision(glm::vec3 collisionPoint, glm::vec3 collisionNormal);
 	~Collision();
-	glm::vec3 Point();
-	glm::vec3 Normal();
+	glm::vec3 Point() const;
+	glm::vec3 Normal() const;
 
 private:
 	glm::vec3 collisionPoint;

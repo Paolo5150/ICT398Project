@@ -28,11 +28,11 @@ void Box2::Start()
 						 // has been added.
 }
 
-void Box2::OnCollisionEnter(Collider* g, Collision col)
+void Box2::OnCollisionEnter(Collider* g, Collision& col)
 {
 }
 
-void Box2::OnCollisionStay(Collider * g, Collision col)
+void Box2::OnCollisionStay(Collider * g, Collision& col)
 {
 }
 

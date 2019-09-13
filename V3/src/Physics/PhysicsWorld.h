@@ -1,11 +1,11 @@
 #pragma once
 
-
 #include "..\Utils\Quadtree.h"
 #include <list>
 #include <map>
 
 class Collider;
+class Rigidbody;
 /**
 * @class PhysicsWorld
 * @brief Singleto class that manages collisions
@@ -116,9 +116,28 @@ private:
 
 	void CheckCollision(Collider* it, Collider* it2);
 
-	void PhysicsCalculation(Collider* col1, Collider* col2, Collision collision);
-	void MoveTransform(Transform& tf, glm::vec3 vel, glm::vec3 angVel);
-	void ZeroOutVelocity(Collider* col);
+	/**
+	* @brief						Applies dynamic physics formula to participating objects
+	* @param col1					The first collider involved in the calculation
+	* @param col2					The second collider involved in the calculation
+	* @param collision				A reference to the collision that occurred
+	*/
+	void PhysicsCalculation(Collider* col1, Collider* col2, const Collision& collision);
+	/**
+	* @brief						Moves the transform by the given vel and angVel across time (for separating collided objects)
+	* @param tf						The transform to move
+	* @param vel					The velocity to move the object by
+	* @param angVel					The angular velocity to move the object by
+	*/
+	void MoveTransform(Transform& tf, const glm::vec3& vel, const glm::vec3& angVel);
+	/**
+	* @brief						Zeros the objects velocity (for the objects that continue to collided after a physics update)
+	* @param rb						A reference to the rigidbody to zero the velocity on
+	* @param vel					The velocity to move the object by
+	* @param angVel					The angular velocity to move the object by
+	* @pre							The given rigidbody pointer is not nullptr
+	*/
+	void ZeroOutVelocity(Rigidbody* rb);
 
 	std::map<GameObject*, std::map<GameObject*, std::list<Collider*>>> gameObjectCollisionMap;
 	std::map<Collider*, std::list<Collider*>> collidersCollisionMap;

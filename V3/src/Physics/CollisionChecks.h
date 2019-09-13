@@ -133,9 +133,33 @@ public:
 	* @return The world space point of collision, or as close as possible
 	*/
 	static glm::vec3 getCollisionPoint(SphereCollider* s, SphereCollider* b);
-	static glm::vec3 getCollisionNormal(glm::vec3 point, Collider* col);
-	static glm::vec3 getCollisionNormal(glm::vec3 point, SphereCollider* col);
-	static glm::vec3 getCollisionNormal(glm::vec3 point, BoxCollider* col);
+	/**
+	* @brief Generic method for getting the normal of the given collision point
+	* @pre  Collider must exist
+	* @post Collision normal is calculated
+	* @param point	A reference to the point of collision
+	* @param col	A reference to the collider
+	* @return The normal of the collision point relative to the given collider
+	*/
+	static glm::vec3 getCollisionNormal(const glm::vec3& point, Collider* col);
+	/**
+	* @brief Generic method for getting the normal of the given collision point for a Sphere collider
+	* @pre  Collider must exist
+	* @post Collision normal is calculated
+	* @param point	A reference to the point of collision
+	* @param col	A reference to the collider
+	* @return The normal of the collision point relative to the given collider
+	*/
+	static glm::vec3 getCollisionNormal(const glm::vec3& point, SphereCollider* col);
+	/**
+	* @brief Generic method for getting the normal of the given collision point for a Box collider
+	* @pre  Collider must exist
+	* @post Collision normal is calculated
+	* @param point	A reference to the point of collision
+	* @param col	A reference to the collider
+	* @return The normal of the collision point relative to the given collider
+	*/
+	static glm::vec3 getCollisionNormal(const glm::vec3& point, BoxCollider* col);
 
 private:
 	
@@ -147,7 +171,7 @@ private:
 	* @param box The box collider
 	* @return true if the point does exist within the boxes bounding space
 	*/
-	static bool isPointInBox(glm::vec3 point, BoxCollider* box);
+	static bool isPointInBox(const glm::vec3& point, BoxCollider* box);
 
 	/**
 	* @brief Helper method for getting the closest point that exists in the boxes bound to the given point
@@ -157,5 +181,5 @@ private:
 	* @param box The box collider
 	* @return The position of the closest point in box space to the given point
 	*/
-	static glm::vec3 getClosestPointToBox(glm::vec3 point, BoxCollider* box);
+	static glm::vec3 getClosestPointToBox(const glm::vec3& point, BoxCollider* box);
 };

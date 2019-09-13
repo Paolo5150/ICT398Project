@@ -11,12 +11,12 @@ Collision::~Collision()
 {
 }
 
-glm::vec3 Collision::Point()
+glm::vec3 Collision::Point() const
 {
 	return collisionPoint;
 }
 
-glm::vec3 Collision::Normal()
+glm::vec3 Collision::Normal() const
 {
 	return collisionNormal;
 }

@@ -430,14 +430,28 @@ public:
 	void SetIsSelfManaged(bool sm, bool includeChildren = false);
 
 	bool GetIsSelfManaged() { return _isSelfManaged; }
-
+	/**
+	* @brief		Accessor for total mass member
+	*
+	* @return total mass of object
+	*/
 	float GetTotalMass() { return totalMass; };
+	/**
+	* @brief		Accessor for Centre of mass
+	*
+	* @return centre of mass of object
+	*/
 	glm::vec3 GetCentreOfMass();
+	/**
+	* @brief		Accessor for inertia tensor member
+	*
+	* @return intertia tensor for object
+	*/
 	glm::mat3 GetInertiaTensor();
 
-	virtual void OnCollisionEnter(Collider* go, Collision collision){};
-	virtual void OnCollisionStay(Collider* go, Collision collision) {};
-	virtual void OnCollisionExit(Collider* go, Collision collision) {};
+	virtual void OnCollisionEnter(Collider* go, Collision& collision){};
+	virtual void OnCollisionStay(Collider* go, Collision& collision) {};
+	virtual void OnCollisionExit(Collider* go) {};
 
 
 	virtual void OnAddToScene(Scene& theScene);

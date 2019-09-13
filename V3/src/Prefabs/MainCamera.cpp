@@ -33,7 +33,7 @@ BoxCollider* bc = new BoxCollider();
 
 }
 
-void MainCamera::OnCollisionEnter(Collider* c, Collision collision)
+void MainCamera::OnCollisionEnter(Collider* c, Collision& collision)
 {
 
 	transform.Translate(rb->GetVelocity() * -Timer::GetDeltaS());
@@ -41,7 +41,7 @@ void MainCamera::OnCollisionEnter(Collider* c, Collision collision)
 		
 }
 
-void MainCamera::OnCollisionStay(Collider* c, Collision collision)
+void MainCamera::OnCollisionStay(Collider* c, Collision& collision)
 {
 	//Logger::LogInfo("Camera colliding with", c->GetParent()->name);
 	transform.Translate(rb->GetVelocity() * -Timer::GetDeltaS());

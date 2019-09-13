@@ -50,7 +50,7 @@ void Table::Start()
 						 // has been added.
 }
 
-void Table::OnCollisionEnter(Collider* g, Collision collision)
+void Table::OnCollisionEnter(Collider* g, Collision& collision)
 {}
-void Table::OnCollisionStay(Collider* g, Collision collision)
+void Table::OnCollisionStay(Collider* g, Collision& collision)
 {}

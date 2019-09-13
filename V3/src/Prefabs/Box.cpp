@@ -30,11 +30,11 @@ void Box::Start()
 						 // has been added.
 }
 
-void Box::OnCollisionEnter(Collider* g, Collision col)
+void Box::OnCollisionEnter(Collider* g, Collision& col)
 {
 }
 
-void Box::OnCollisionStay(Collider * g, Collision col)
+void Box::OnCollisionStay(Collider * g, Collision& col)
 {
 }
 

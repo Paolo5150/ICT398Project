@@ -458,7 +458,7 @@ glm::vec3 CollisionChecks::getCollisionPoint(SphereCollider * s, SphereCollider 
 	return s->transform.GetGlobalPosition() + glm::normalize(s->transform.GetGlobalPosition() - b->transform.GetGlobalPosition()) * (s->transform.GetScale().x / 2);
 }
 
-glm::vec3 CollisionChecks::getCollisionNormal(glm::vec3 point, Collider * col)
+glm::vec3 CollisionChecks::getCollisionNormal(const glm::vec3& point, Collider * col)
 {
 	switch (col->colliderType)
 	{
@@ -469,7 +469,7 @@ glm::vec3 CollisionChecks::getCollisionNormal(glm::vec3 point, Collider * col)
 	}
 }
 
-glm::vec3 CollisionChecks::getCollisionNormal(glm::vec3 point, BoxCollider * col)
+glm::vec3 CollisionChecks::getCollisionNormal(const glm::vec3& point, BoxCollider * col)
 {
 	glm::mat4 rot = col->transform.GetGlobalRotation();
 	rot = glm::inverse(rot);
@@ -508,12 +508,12 @@ glm::vec3 CollisionChecks::getCollisionNormal(glm::vec3 point, BoxCollider * col
 	return closestAxis;
 }
 
-glm::vec3 CollisionChecks::getCollisionNormal(glm::vec3 point, SphereCollider * col)
+glm::vec3 CollisionChecks::getCollisionNormal(const glm::vec3& point, SphereCollider * col)
 {
 	return glm::normalize(point - col->transform.GetGlobalPosition());
 }
 
-bool CollisionChecks::isPointInBox(glm::vec3 point, BoxCollider * box)
+bool CollisionChecks::isPointInBox(const glm::vec3& point, BoxCollider * box)
 {
 	
 	glm::mat4 rot = box->transform.GetGlobalRotation();
@@ -531,7 +531,7 @@ bool CollisionChecks::isPointInBox(glm::vec3 point, BoxCollider * box)
 	return false;
 }
 
-glm::vec3 CollisionChecks::getClosestPointToBox(glm::vec3 point, BoxCollider * box)
+glm::vec3 CollisionChecks::getClosestPointToBox(const glm::vec3& point, BoxCollider * box)
 {
 	glm::mat4 rot = glm::inverse(box->transform.GetGlobalRotation());
 	glm::mat4 inverseRot = box->transform.GetGlobalRotation();
