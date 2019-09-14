@@ -146,17 +146,12 @@ void MainScene::Initialize() {
 
 	BushCourt* bushCourt = new BushCourt();
 
-	Lantern* lantern = new Lantern();
-	lantern->transform.SetPosition(0, 0,0);	
 
 	AddGameObject(cam);
 
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
 	AddGameObject(dirLight3);
-	AddGameObject(lantern);
-
-
 	AddGameObject(bushCourt);
 	
 	LoadGameObjectsFromFile("Assets\\SceneFiles\\MainScene.txt");
@@ -186,7 +181,6 @@ void MainScene::LogicUpdate()
 
 	Scene::LogicUpdate(); //Must be last statement!
 
-	((PointLight*)GetGameobjectsByName("PointLight")[0])->RenderDiag();
 
 }
 

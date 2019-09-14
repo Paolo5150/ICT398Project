@@ -8,6 +8,8 @@ public:
 	Lantern();
 	~Lantern();
 
+	void Start() override;
+
 private:
 
 };

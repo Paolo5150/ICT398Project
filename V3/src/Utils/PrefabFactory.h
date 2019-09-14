@@ -12,6 +12,7 @@
 #include "..\Prefabs\DylanText.h"
 #include "..\Prefabs\DrewText.h"
 #include "..\Prefabs\PaoloText.h"
+#include "..\Prefabs\Lantern.h"
 
 class PrefabFactory
 {
@@ -66,7 +67,10 @@ public:
 		{
 			return new PaoloText();
 		}
-
+		else if (name == "Lantern")
+		{
+			return new Lantern();
+		}
 
 		return nullptr;
 

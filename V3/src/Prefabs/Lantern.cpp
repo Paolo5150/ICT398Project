@@ -29,9 +29,21 @@ Lantern::Lantern() : GameObject("Lantern")
 	pl->SetIntensity(10);
 
 	AddChild(pl);
-
-
 }
+
+
+void Lantern::Start()
+{
+	LoadCollidersFromFile("Assets\\Colliders\\Lantern.txt");
+
+
+	Rigidbody* rb = new Rigidbody();
+	rb = new Rigidbody();
+	rb->UseGravity(true);
+	rb->SetVelocity(1.0,0, 0);
+	AddComponent(rb);
+}
+
 
 Lantern::~Lantern()
 {
