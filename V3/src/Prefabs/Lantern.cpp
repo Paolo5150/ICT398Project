@@ -40,7 +40,6 @@ void Lantern::Start()
 	 rb = new Rigidbody();
 	rb = new Rigidbody();
 	rb->UseGravity(true);
-	rb->SetVelocity(1.0,0, 0);
 	AddComponent(rb);
 }
 

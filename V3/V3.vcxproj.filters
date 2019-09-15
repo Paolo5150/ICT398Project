@@ -223,7 +223,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Prefabs\Box2.cpp">
-	  <Filter>Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Prefabs\Paolo.cpp">
       <Filter>Source Files</Filter>
@@ -552,7 +552,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Prefabs\Box2.h">
-	  <Filter>Header Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Prefabs\Paolo.h">
       <Filter>Header Files</Filter>
@@ -576,6 +576,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Prefabs\Lantern.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Dependencies\qu3e\src\q3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -41,14 +41,14 @@ void MainScene::LoadAssets() {
 	text->message = "Loading uncomfortable feelings...";
 	GUIManager::Instance().Render(true);
 
-	ContentManager::Instance().LoadModel("Assets\\Models\\Bench\\bench.obj", false, false);
-	ContentManager::Instance().LoadModel("Assets\\Models\\Table\\table.fbx", false, false);
-	ContentManager::Instance().LoadModel("Assets\\Models\\Chair\\chair.obj", false, false);
+	//ContentManager::Instance().LoadModel("Assets\\Models\\Bench\\bench.obj", false, false);
+	//ContentManager::Instance().LoadModel("Assets\\Models\\Table\\table.fbx", false, false);
+	//ContentManager::Instance().LoadModel("Assets\\Models\\Chair\\chair.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\LandfillBin\\landfillbin.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\RecycleBin\\recyclebin.obj", false, false);
-	ContentManager::Instance().LoadModel("Assets\\Models\\BushCourt\\bushcourt.obj", false, false);
-	ContentManager::Instance().LoadModel("Assets\\Models\\Lantern\\lantern.obj", false, false);
-	ContentManager::Instance().LoadTexture("Assets\\Models\\Lantern\\textures\\Lantern.png", 0);
+	//ContentManager::Instance().LoadModel("Assets\\Models\\BushCourt\\bushcourt.obj", false, false);
+//	ContentManager::Instance().LoadModel("Assets\\Models\\Lantern\\lantern.obj", false, false);
+	//ContentManager::Instance().LoadTexture("Assets\\Models\\Lantern\\textures\\Lantern.png", 0);
 
 
 	ContentManager::Instance().LoadTexture("Assets\\Models\\LandfillBin\\textures\\LB_Frame.png", 0);
@@ -57,35 +57,35 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\Models\\RecycleBin\\textures\\RB_Frame.png", 0);
 	ContentManager::Instance().LoadTexture("Assets\\Models\\RecycleBin\\textures\\RB_Sides.png", 0);	
 
-	ContentManager::Instance().LoadTexture("Assets\\Textures\\BushCourt\\BushCourt.png", 0);	
+//	ContentManager::Instance().LoadTexture("Assets\\Textures\\BushCourt\\BushCourt.png", 0);	
 	ContentManager::Instance().LoadCubeMap("Assets\\SkyBoxes\\SunSet");
 
 	// Preserve these as they are used in the exit scene
-	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_albedo.jpg", 1);
+	/*ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_albedo.jpg", 1);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_roughness.jpg", 1);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_metallic.jpg", 1);
-	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_normal.jpg", 1);	
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_normal.jpg", 1);	*/
 
 	text->message = "Instantiating sense of despair...";
 	GUIManager::Instance().Render(true, true);
 
-	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_albedo.jpg", 0);
+	/*ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_albedo.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_roughness.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_metallic.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_normal.jpg", 0);
-	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_ao.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_ao.jpg", 0);*/
 
-	ContentManager::Instance().LoadTexture("Assets\\Textures\\water_normal.jpg", 0);
-	ContentManager::Instance().LoadTexture("Assets\\Textures\\dudv.png", 0);
+/*	ContentManager::Instance().LoadTexture("Assets\\Textures\\water_normal.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\Textures\\dudv.png", 0);*/
 
 	text->message = "Finalizing feeling of hopelessness...";
 	GUIManager::Instance().Render(true,true);
 
-	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_albedo.jpg", 0);
+/*	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_albedo.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_roughness.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_metallic.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_normal.jpg", 0);
-	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_ao.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_ao.jpg", 0);*/
 
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Metal\\metal_roughness.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Metal\\metal_normal.jpg", 0);
@@ -144,15 +144,12 @@ void MainScene::Initialize() {
 	dirLight3->transform.SetRotation(70, 0, 0);
 	dirLight3->SetIntensity(0.4);
 
-	BushCourt* bushCourt = new BushCourt();
-
 
 	AddGameObject(cam);
 
 	AddGameObject(dirLight);
 	AddGameObject(dirLight2);
 	AddGameObject(dirLight3);
-	AddGameObject(bushCourt);
 	
 	LoadGameObjectsFromFile("Assets\\SceneFiles\\MainScene.txt");
 }

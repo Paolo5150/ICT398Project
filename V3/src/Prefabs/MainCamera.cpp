@@ -129,5 +129,5 @@ void MainCamera::Update()
 
 	Camera::Update(); //Update last as this will update the view matrix with the new position values
 
-	transform.SetPosition(transform.GetPosition().x,4,transform.GetPosition().z);
+	//transform.SetPosition(transform.GetPosition().x,4,transform.GetPosition().z);
 }

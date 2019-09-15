@@ -7,6 +7,7 @@
 #include "..\Events\ApplicationEvents.h"
 #include "..\Components\Rigidbody.h"
 #include "..\Diag\DiagRenderer.h"
+#include "..\..\Dependencies\qu3e\src\q3.h"
 #include <algorithm>
 
 
@@ -297,11 +298,12 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 	collidersCollisionMapPerFrame[it].push_back(it2);
 	collidersCollisionMapPerFrame[it2].push_back(it);
 
+
 	if (CollisionChecks::Collision((it), (it2)))
 	{
 		//Pre-calc collision objects
 		glm::vec3 pos = CollisionChecks::getCollisionPoint(it, it2);
-		glm::vec3 normal = glm::normalize(CollisionChecks::getCollisionNormal(pos, it2));
+		glm::vec3 normal = CollisionChecks::getCollisionNormal(pos, it2);
 
 		DiagRenderer::Instance().RenderSphere(pos, 0.5, glm::vec3(1, 0, 0));
 
@@ -319,7 +321,6 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 			// If the gameobjects were not colliding, call OnCollision enter (this is the first collision)
 			if (!WereGameObjectsColliding((it)->GetParent(), (it2)->GetParent()))
 			{
-				PhysicsCalculation((it), (it2), col1);
 				// OnCollisionEnter
 				if((it)->GetCollideAgainstLayer() & (it2)->GetCollisionLayer())
 					(it)->OnCollisionEnterCallback((it2), col1);
@@ -329,12 +330,6 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 
 				gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].push_back((it2));
 				gameObjectCollisionMap[(it2)->GetParent()][(it)->GetParent()].push_back((it));
-
-			}
-			else
-			{
-				// If the colliders were not colliding, but the GameObjects were
-				// it means that we are colliding with a new collider of the same gameobjects
 
 				Rigidbody* rb1 = it->GetParent()->GetComponent<Rigidbody>("Rigidbody");
 				Rigidbody* rb2 = it2->GetParent()->GetComponent<Rigidbody>("Rigidbody");
@@ -348,6 +343,16 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 					MoveTransform(it2->GetParent()->transform, -rb2->GetVelocity(), -rb2->GetAngularVelocity());
 					ZeroOutVelocity(rb2);
 				}
+				PhysicsCalculation((it), (it2), col1);
+
+
+			}
+			else
+			{
+				// If the colliders were not colliding, but the GameObjects were
+				// it means that we are colliding with a new collider of the same gameobjects
+
+				
 
 				// OnCollisionStay
 				if ((it)->GetCollideAgainstLayer() & (it2)->GetCollisionLayer())
@@ -374,18 +379,7 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 		}
 		else
 		{
-			Rigidbody* rb1 = it->GetParent()->GetComponent<Rigidbody>("Rigidbody");
-			Rigidbody* rb2 = it2->GetParent()->GetComponent<Rigidbody>("Rigidbody");
-			if (rb1 != nullptr && rb1->GetUseDynamicPhysics())
-			{
-				MoveTransform(it->GetParent()->transform, -rb1->GetVelocity(), -rb1->GetAngularVelocity());
-				ZeroOutVelocity(rb1);
-			}
-			if (rb2 != nullptr && rb2->GetUseDynamicPhysics())
-			{
-				MoveTransform(it2->GetParent()->transform, -rb2->GetVelocity(), -rb2->GetAngularVelocity());
-				ZeroOutVelocity(rb2);
-			}
+			
 			// OnCollisionStay
 			if ((it)->GetCollideAgainstLayer() & (it2)->GetCollisionLayer())
 				(it)->OnCollisionStayCallback((it2), col1);
