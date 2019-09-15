@@ -2,6 +2,6 @@
 # Use the format "PrefabName P(X,Y,Z) R(X,Y,Z) S(X,Y,Z)"
 
 
-RecycleBin P(0,0,1) R(40,0,40) S(1,1,1)
+RecycleBin P(0,0,1) R(-40,0,40) S(1,1,1)
 LandfillBin P(-10,0,0) R(-40,0,-40) S(1,1,1)
 

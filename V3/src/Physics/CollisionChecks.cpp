@@ -484,11 +484,6 @@ bool CollisionChecks::getCollision(BoxCollider* box1, BoxCollider* box2)
 		isEdgeEdge = 1;
 	}
 
-	Logger::LogInfo("Min Axis", Maths::Vec3ToString(minAxis));
-	Logger::LogInfo("Overlap", overlap);
-	Logger::LogInfo("Is EdgeEdge", isEdgeEdge);
-
-
 	return 1;
 }
 

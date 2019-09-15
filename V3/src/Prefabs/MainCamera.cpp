@@ -24,7 +24,7 @@ BoxCollider* bc = new BoxCollider();
 	//bc->RemoveCollideAgainstLayer(CollisionLayers::DEFAULT);
 	bc->enableRender = 1;
 
-	AddComponent(bc);
+	//AddComponent(bc);
 
 	rb = new Rigidbody();
 	rb->UseGravity(false);
