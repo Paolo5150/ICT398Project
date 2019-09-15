@@ -484,12 +484,12 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 				if (rb1 != nullptr && rb1->GetUseDynamicPhysics())
 				{
 					MoveTransform(it->GetParent()->transform, -rb1->GetVelocity(), -rb1->GetAngularVelocity());
-					//ZeroOutVelocity(rb1);
+					ZeroOutVelocity(rb1);
 				}
 				if (rb2 != nullptr && rb2->GetUseDynamicPhysics())
 				{
 					MoveTransform(it2->GetParent()->transform, -rb2->GetVelocity(), -rb2->GetAngularVelocity());
-					//ZeroOutVelocity(rb2);
+					ZeroOutVelocity(rb2);
 				}			
 
 				// OnCollisionStay
@@ -522,12 +522,12 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 			if (rb1 != nullptr && rb1->GetUseDynamicPhysics())
 			{
 				MoveTransform(it->GetParent()->transform, -rb1->GetVelocity(), -rb1->GetAngularVelocity());
-				//ZeroOutVelocity(rb1);
+				ZeroOutVelocity(rb1);
 			}
 			if (rb2 != nullptr && rb2->GetUseDynamicPhysics())
 			{
 				MoveTransform(it2->GetParent()->transform, -rb2->GetVelocity(), -rb2->GetAngularVelocity());
-				//ZeroOutVelocity(rb2);
+				ZeroOutVelocity(rb2);
 			}
 			// OnCollisionStay
 			if ((it)->GetCollideAgainstLayer() & (it2)->GetCollisionLayer())
