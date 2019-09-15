@@ -3,7 +3,6 @@
 
 #include "..\Core\Component.h"
 #include "..\Core\Timer.h"
-#include "..\Prefabs\Terrain.h"
 
 class AIBase : public Component
 {
@@ -27,12 +26,12 @@ public:
 	AIBase(Transform& targetTransform);
 
 	/**
-	* @brief		Destructor
+	* @brief		Virtual Destructor
 	*
 	* @pre			The aibase object must exist
 	* @post			The aibase object is destroyed
 	*/
-	~AIBase();
+	virtual ~AIBase();
 
 	/**
 	* @brief		Sets the target for the aibase
@@ -61,6 +60,9 @@ public:
 	*/
 	float GetRotationToTarget() const;
 
+	//------------------------------
+	//Considered for removal
+	//------------------------------
 	/**
 	* @brief		Returns the reversed rotation to the target transform
 	*
@@ -68,7 +70,7 @@ public:
 	*
 	* @return		reversed rotation to the target transform
 	*/
-	float GetReverseRotationToTarget() const; //Same as above but reversed by 180 degrees
+	//float GetReverseRotationToTarget() const; //Same as above but reversed by 180 degrees
 
 	/**
 	* @brief		Returns the distance to the pathfinding node
@@ -77,7 +79,7 @@ public:
 	*
 	* @return		distance to the pathfinding node
 	*/
-	float GetDistanceToNode() const;
+	//float GetDistanceToNode() const;
 
 	/**
 	* @brief		Returns the rotation to the pathfinding node
@@ -86,7 +88,7 @@ public:
 	*
 	* @return		rotation to the pathfinding node
 	*/
-	float GetRotationToNode() const;
+	//float GetRotationToNode() const;
 
 	/**
 	* @brief		Returns the reversed rotation to the pathfinding node
@@ -95,7 +97,8 @@ public:
 	*
 	* @return		reversed rotation to the pathfinding node
 	*/
-	float GetReverseRotationToNode() const; //Same as above but reversed by 180 degrees
+	//float GetReverseRotationToNode() const; //Same as above but reversed by 180 degrees
+	//------------------------------
 
 	/**
 	* @brief		Returns the aibase's target transform
@@ -186,7 +189,7 @@ public:
 	*
 	* @param		index	index of the animation
 	*/
-	[[deprecated("Animations not supported as of the creation of this component")]]
+	[[deprecated("Animations not currently supported with this component")]]
 	void SetAnimation(int index = 0);
 
 	/**
@@ -203,24 +206,14 @@ public:
 	*/
 	virtual void OnAttach(GameObject* go) override;
 
-	/**
-	* @brief		dumps all the aibase variables to the logger
-	*/
-	void DumpVariables();
-
 private:
 	std::string _state;
 	Transform* _parentTransform;
 	Transform* _targetTransform;
-	glm::vec3 _otherTarget; //Postition that can be used for wandering/patrolling or any other location based logic
 	glm::vec3 _nextNode;
 	bool _eventReceived;
 
-	std::string _scriptPath;
-
 	float _lastStateChange; //Time since the last succesful state change
-	float _randomTimer; //Timer for managing random state changes
-	float _updateTimer;
 
 	//AI Functions
 	/**
@@ -228,5 +221,13 @@ private:
 	*/
 	virtual void Think() = 0;
 	//----------
+
+	//------------------------------
+	//Considered for removal
+	//------------------------------
+	//glm::vec3 _otherTarget; //Postition that can be used for wandering/patrolling or any other location based logic
+	//float _randomTimer; //Timer for managing random state changes
+	//float _updateTimer;
+	//------------------------------
 };
 
