@@ -59,6 +59,11 @@ void RecycleBin::Start()
 
 	LoadCollidersFromFile("Assets\\Colliders\\RecycleBin.txt");
 
+	Rigidbody* rb = new Rigidbody();
+	rb->UseGravity(false);
+
+	rb->SetUseDynamicPhysics(false);
+	AddComponent(rb);
 
 
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider

@@ -6,7 +6,7 @@
 
 LandfillBin::LandfillBin() : GameObject("LandfillBin")
 {
-	SetIsStatic(false);
+	SetIsStatic(true);
 	ContentManager::Instance().GetAsset<Model>("LandfillBin")->PopulateGameObject(this);
 	transform.SetScale(2);
 
@@ -62,7 +62,7 @@ void LandfillBin::Start()
 
 	rb = new Rigidbody();
 	rb->UseGravity(false);
-	rb->SetVelocity(1.0,0, 0);
+	//rb->SetVelocity(1.0,0, 0);
 	rb->SetUseDynamicPhysics(false);
 	AddComponent(rb);
 
@@ -73,7 +73,7 @@ void LandfillBin::Start()
 void LandfillBin::OnCollisionEnter(Collider* g, Collision& col)
 {
 	//Logger::LogInfo("LandfillBin ENTER collision with", g->GetParent()->name);
-	rb->AddVelocity(-rb->GetVelocity());
+	//rb->AddVelocity(-rb->GetVelocity());
 }
 void LandfillBin::OnCollisionStay(Collider* g, Collision& col)
 {
