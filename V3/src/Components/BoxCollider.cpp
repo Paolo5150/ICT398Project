@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "BoxCollider.h"
 #include "..\Utils\ContentManager.h"
+#include "..\Diag\DiagRenderer.h"
 
 void BoxCollider::InitializeMeshRenderer()
 {
@@ -16,31 +17,119 @@ void BoxCollider::InitializeMeshRenderer()
 void BoxCollider::Update()
 {
 	Collider::Update();
+
+	CalculateCubicDimensions(); // For dynamic objet, it should be recalculated every frame
+
+	// Debug
+	/*glm::vec3 min;
+	glm::vec3 max;
+	GetWorldCubicMinMaxPoint(min, max);
+	DiagRenderer::Instance().RenderSphere(min, 0.5,glm::vec3(0));
+	DiagRenderer::Instance().RenderSphere(max, 0.5);*/
+
 }
 
-
-std::vector<glm::vec3> BoxCollider::GetWorldPoints()
+void BoxCollider::GetWorldCubicMinMaxPoint(glm::vec3& min, glm::vec3& max)
 {
-	glm::vec3 p0 = transform.GetGlobalPosition() + glm::vec3(transform.GetGlobalScale().x / 2, transform.GetGlobalScale().y / 2, transform.GetGlobalScale().z / 2);
-	glm::vec3 p1 = transform.GetGlobalPosition() + glm::vec3(transform.GetGlobalScale().x / 2, transform.GetGlobalScale().y / 2, -transform.GetGlobalScale().z / 2);
-	glm::vec3 p2 = transform.GetGlobalPosition() + glm::vec3(transform.GetGlobalScale().x / 2, -transform.GetGlobalScale().y / 2, transform.GetGlobalScale().z / 2);
-	glm::vec3 p3 = transform.GetGlobalPosition() + glm::vec3(transform.GetGlobalScale().x / 2, -transform.GetGlobalScale().y / 2, -transform.GetGlobalScale().z / 2);
-	glm::vec3 p4 = transform.GetGlobalPosition() + glm::vec3(-transform.GetGlobalScale().x / 2, transform.GetGlobalScale().y / 2, transform.GetGlobalScale().z / 2);
-	glm::vec3 p5 = transform.GetGlobalPosition() + glm::vec3(-transform.GetGlobalScale().x / 2, transform.GetGlobalScale().y / 2, -transform.GetGlobalScale().z / 2);
-	glm::vec3 p6 = transform.GetGlobalPosition() + glm::vec3(-transform.GetGlobalScale().x / 2, -transform.GetGlobalScale().y / 2, transform.GetGlobalScale().z / 2);
-	glm::vec3 p7 = transform.GetGlobalPosition() + glm::vec3(-transform.GetGlobalScale().x / 2, -transform.GetGlobalScale().y / 2, -transform.GetGlobalScale().z / 2);
 
-	std::vector<glm::vec3> r;
-	r.push_back(p0);
-	r.push_back(p1);
-	r.push_back(p2);
-	r.push_back(p3);
-	r.push_back(p4);
-	r.push_back(p5);
-	r.push_back(p6);
-	r.push_back(p7);
-	return r;
+	std::vector<glm::vec3> points = GetBoxPoints();	
+	min = max = points[0];
 
+	for (int i = 0; i < points.size(); i++)
+	{
+		if (points[i].x < min.x)
+			min.x = glm::vec3(points[i]).x;
+		if (points[i].y < min.y)
+			min.y = glm::vec3(points[i]).y;
+		if (points[i].z< min.z)
+			min.z = glm::vec3(points[i]).z;
+
+		if (points[i].x > max.x)
+			max.x = glm::vec3(points[i]).x;
+		if (points[i].y > max.y)
+			max.y = glm::vec3(points[i]).y;
+		if (points[i].z > max.z)
+			max.z = glm::vec3(points[i]).z;
+	}
+}
+
+
+void BoxCollider::CalculateCubicDimensions()
+{
+	//transform.UpdateHierarchy();
+	glm::vec3 min;
+	glm::vec3 max;
+	GetWorldCubicMinMaxPoint(min, max);
+
+	this->cubicDimension.x = abs(max.x - min.x);
+	this->cubicDimension.y = abs(max.y - min.y);
+	this->cubicDimension.z = abs(max.z - min.z);
+}
+
+std::vector<glm::vec3> BoxCollider::GetBoxPoints()
+{
+	std::vector<glm::vec3> result;
+	glm::vec3 right = transform.GetLocalRight() * transform.GetGlobalScale().x;
+	glm::vec3 front = transform.GetLocalFront() * transform.GetGlobalScale().z;
+	glm::vec3 up = transform.GetLocalUp() * transform.GetGlobalScale().y;
+
+
+	result.push_back(transform.GetGlobalPosition() - right - up - front);
+	result.push_back(transform.GetGlobalPosition() + right - up - front);
+	result.push_back(transform.GetGlobalPosition() - right + up - front);
+	result.push_back(transform.GetGlobalPosition() + right + up - front);
+	result.push_back(transform.GetGlobalPosition() - right - up + front);
+	result.push_back(transform.GetGlobalPosition() + right - up + front);
+	result.push_back(transform.GetGlobalPosition() - right + up + front);
+	result.push_back(transform.GetGlobalPosition() + right + up + front);
+
+	return result;
 
 }
 
+
+
+glm::vec3 BoxCollider::GetMinPointWorldSpace()
+{
+
+	glm::vec3 p = transform.GetGlobalPosition() - (transform.GetLocalRight() * transform.GetGlobalScale().x)
+		- (transform.GetLocalUp() * transform.GetGlobalScale().y)
+		- (transform.GetLocalFront() * transform.GetGlobalScale().z);
+
+
+	return p;
+}
+
+glm::vec3 BoxCollider::GetMaxPointWorldSpace()
+{
+
+	glm::vec3 p = transform.GetGlobalPosition() + (transform.GetLocalRight() * transform.GetGlobalScale().x)
+		+ (transform.GetLocalUp() * transform.GetGlobalScale().y)
+		+ (transform.GetLocalFront() * transform.GetGlobalScale().z);
+
+	return p;
+}
+
+
+void BoxCollider::CalculateMomentOfIntertia()
+{
+	/*
+	Old version, Pretty sure it's incorrect using min and max point
+	as if it's rotated we get different values
+	glm::vec3 min = GetMinPointWorldSpace();
+	glm::vec3 max = GetMaxPointWorldSpace();
+
+	momentOfIntertia.x = (1 / 12.0f) * mass * (a * a + l * l);
+	momentOfIntertia.y = (1 / 12.0f) * mass * (b * b + l * l);
+	momentOfIntertia.z = (1 / 12.0f) * mass * (a * a + b * b);*/
+
+
+	float a = glm::length((transform.GetGlobalPosition() + transform.GetLocalFront() * transform.GetGlobalScale().y) - (transform.GetGlobalPosition() - transform.GetLocalFront() * transform.GetGlobalScale().y));
+	float b = glm::length((transform.GetGlobalPosition() + transform.GetLocalRight() * transform.GetGlobalScale().x) - (transform.GetGlobalPosition() - transform.GetLocalRight() * transform.GetGlobalScale().x));
+	float l = glm::length((transform.GetGlobalPosition() + transform.GetLocalFront() * transform.GetGlobalScale().z) - (transform.GetGlobalPosition() - transform.GetLocalFront() * transform.GetGlobalScale().z));
+
+	momentOfIntertia.x = (1 / 12.0f) * mass * (a * a + l * l);
+	momentOfIntertia.y = (1 / 12.0f) * mass * (b * b + l * l);
+	momentOfIntertia.z = (1 / 12.0f) * mass * (a * a + b * b);
+
+}

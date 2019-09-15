@@ -10,7 +10,9 @@ public:
 
 	void Update() override;
 	void Start() override;
-	void OnCollision(GameObject* g) override;
+	void OnCollisionEnter(Collider* g, Collision& collision) override;
+	void OnCollisionStay(Collider* g, Collision& collision) override;
+	void OnCollisionExit(Collider* g) override;
 
 private:
 

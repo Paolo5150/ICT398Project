@@ -25,7 +25,6 @@ public:
 	*/
 	Transform* parent;
 
-	GameObject* gameObject;
 
 	std::list<Transform*> transformChildren;
 
@@ -36,7 +35,7 @@ public:
 	* @post			The transform object is created
 	*
 	*/
-	Transform(GameObject* go);
+	Transform();
 
 	~Transform();
 

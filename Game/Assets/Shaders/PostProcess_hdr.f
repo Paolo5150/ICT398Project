@@ -7,7 +7,7 @@ in vec2 Textcoords;
 
 uniform sampler2D sceneTexture;
 
-const float gamma     = 0.8;
+const float gamma     = 0.65;
 const float exposure  = 1.2;
 const float pureWhite = 1.0;
 

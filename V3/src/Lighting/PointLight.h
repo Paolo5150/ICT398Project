@@ -30,5 +30,6 @@ public:
 	*/
 	~PointLight();
 
+	void RenderDiag();
 
 };

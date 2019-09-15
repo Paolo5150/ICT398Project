@@ -50,10 +50,13 @@ public:
 	*/
 	void Initialize(){ transform.SetIgnoreParentRotation(0); };
 
-	/**
-	* @return	The box points in world spaced
-	*/
-	std::vector<glm::vec3> GetWorldPoints();
+	glm::vec3 GetMinPointWorldSpace();
+	glm::vec3 GetMaxPointWorldSpace();
+	void GetWorldCubicMinMaxPoint(glm::vec3& min, glm::vec3& max);
 
+	void CalculateCubicDimensions() override;
+	std::vector<glm::vec3> GetBoxPoints();
+
+	virtual void CalculateMomentOfIntertia() override;
 
 };

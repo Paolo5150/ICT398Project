@@ -38,6 +38,10 @@ class Scene
 {
 public:
 	friend class SceneManager;
+	friend class Application;
+	friend class RenderingEngine;
+
+
 
 	/**
 	* @brief		Creates the scene object
@@ -134,7 +138,7 @@ public:
 	/**
 	* @brief		Returns thr skybox of the scene
 	*/
-//	Skybox* GetSkyBox(){ return skybox; }
+	Skybox* GetSkyBox(){ return skybox.get(); }
 
 	/**
 	* @brief		The name of the scene
@@ -147,6 +151,8 @@ public:
 	std::vector<T*> GetGameobjectsByName(std::string name);
 
 	bool RemoveGameobjectsByName(std::string name); //returns true if any objects were removed
+
+	void LoadGameObjectsFromFile(std::string filePath);
 
 protected:
 	/**
@@ -163,7 +169,8 @@ protected:
 	* @brief		The skybox of the scene
 	*/
 	std::unique_ptr<Skybox> skybox;
-
+	
+	bool isPaused;
 
 };
 

@@ -6,8 +6,11 @@
 #include <string>
 #include "..\Rendering\Material.h"
 #include "..\Utils\Asset.h"
+#include "..\Core\Collision.h"
 
 class Component;
+class Collider;
+
 class Shader;
 class Camera;
 class Scene;
@@ -246,6 +249,18 @@ public:
 	GameObject* GetChild(std::string childName) const;
 
 	/**
+* @brief		Retrieves a child of the GameObject
+*
+* @pre			The GameObject must exist
+* @post			A child of the GameObject will be retrieved, or a nullptr if there is no child
+*
+* @param		childName		Name of child to search for
+*
+* @return		A child of the GameObject, or nullptr if it has no child with that name
+*/
+	GameObject* GetChild(unsigned index) const;
+
+	/**
 	* @brief		Retrieves a component in the GameObject
 	*
 	* @pre			The GameObject must exist
@@ -415,14 +430,36 @@ public:
 	void SetIsSelfManaged(bool sm, bool includeChildren = false);
 
 	bool GetIsSelfManaged() { return _isSelfManaged; }
+	/**
+	* @brief		Accessor for total mass member
+	*
+	* @return total mass of object
+	*/
+	float GetTotalMass() { return totalMass; };
+	/**
+	* @brief		Accessor for Centre of mass
+	*
+	* @return centre of mass of object
+	*/
+	glm::vec3 GetCentreOfMass();
+	/**
+	* @brief		Accessor for inertia tensor member
+	*
+	* @return intertia tensor for object
+	*/
+	glm::mat3 GetInertiaTensor();
 
-	virtual void OnCollision(GameObject* go){};
+	virtual void OnCollisionEnter(Collider* go, Collision& collision){};
+	virtual void OnCollisionStay(Collider* go, Collision& collision) {};
+	virtual void OnCollisionExit(Collider* go) {};
+
 
 	virtual void OnAddToScene(Scene& theScene);
 
 protected:
 	float colorTimer;
 	bool flashing;
+	
 
 	/**
 	* @param The active state of the object
@@ -465,7 +502,10 @@ protected:
 	*/
 	void PrintHierarchy(int indentation, std::string& output);
 
-
+	private:
+		float totalMass;
+		glm::vec3 centreOfMass;
+		glm::mat3 inertiaTensor;
 };
 
 

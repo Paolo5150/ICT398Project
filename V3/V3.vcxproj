@@ -125,7 +125,7 @@
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
@@ -177,6 +177,7 @@
     <ClInclude Include="src\Core\Camera.h" />
     <ClInclude Include="src\Core\CameraOrthogonal.h" />
     <ClInclude Include="src\Core\CameraPerspective.h" />
+    <ClInclude Include="src\Core\Collision.h" />
     <ClInclude Include="src\Core\Component.h" />
     <ClInclude Include="src\Core\Core.h" />
     <ClInclude Include="src\Core\GameObject.h" />
@@ -186,6 +187,9 @@
     <ClInclude Include="src\Core\Transform.h" />
     <ClInclude Include="src\Core\ColliderInfo.h" />
     <ClInclude Include="src\Core\Window.h" />
+    <ClInclude Include="src\Diag\DiagPrefab.h" />
+    <ClInclude Include="src\Diag\DiagRenderer.h" />
+    <ClInclude Include="src\Diag\DiagSphere.h" />
     <ClInclude Include="src\Events\ApplicationEvents.h" />
     <ClInclude Include="src\Events\Event.h" />
     <ClInclude Include="src\Events\EventDispatcher.h" />
@@ -193,7 +197,9 @@
     <ClInclude Include="src\Events\WindowEvents.h" />
     <ClInclude Include="src\GUI\Elements\GUIButton.h" />
     <ClInclude Include="src\GUI\Elements\GUICanvas.h" />
+    <ClInclude Include="src\GUI\Elements\GUIImage.h" />
     <ClInclude Include="src\GUI\Elements\GUIObject.h" />
+    <ClInclude Include="src\GUI\Elements\GUIText.h" />
     <ClInclude Include="src\GUI\GUIManager.h" />
     <ClInclude Include="src\GUI\imconfig.h" />
     <ClInclude Include="src\GUI\imgui.h" />
@@ -212,10 +218,23 @@
     <ClInclude Include="src\Physics\CollisionLayer.h" />
     <ClInclude Include="src\Physics\PhysicsWorld.h" />
     <ClInclude Include="src\Prefabs\Bench.h" />
+    <ClInclude Include="src\Prefabs\Box.h" />
+    <ClInclude Include="src\Prefabs\Box2.h" />
+    <ClInclude Include="src\Prefabs\BushCourt.h" />
     <ClInclude Include="src\Prefabs\Chair.h" />
+    <ClInclude Include="src\Prefabs\Drew.h" />
+    <ClInclude Include="src\Prefabs\DrewText.h" />
+    <ClInclude Include="src\Prefabs\Dylan.h" />
+    <ClInclude Include="src\Prefabs\DylanText.h" />
+    <ClInclude Include="src\Prefabs\LandfillBin.h" />
+    <ClInclude Include="src\Prefabs\Lantern.h" />
     <ClInclude Include="src\Prefabs\MainCamera.h" />
+    <ClInclude Include="src\Prefabs\Paolo.h" />
+    <ClInclude Include="src\Prefabs\PaoloText.h" />
+    <ClInclude Include="src\Prefabs\RecycleBin.h" />
     <ClInclude Include="src\Prefabs\Table.h" />
     <ClInclude Include="src\Prefabs\Terrain.h" />
+    <ClInclude Include="src\Prefabs\Water.h" />
     <ClInclude Include="src\Rendering\API_Opengl.h" />
     <ClInclude Include="src\Rendering\ArrayBuffer.h" />
     <ClInclude Include="src\Rendering\ArrayBufferGL.h" />
@@ -254,6 +273,7 @@
     <ClInclude Include="src\Utils\AssimpWrapper.h" />
     <ClInclude Include="src\Utils\FileUtils.h" />
     <ClInclude Include="src\Utils\Maths.h" />
+    <ClInclude Include="src\Utils\PrefabFactory.h" />
     <ClInclude Include="src\Utils\Quadtree.h" />
     <ClInclude Include="src\Utils\UBOLibrary.h" />
   </ItemGroup>
@@ -268,6 +288,7 @@
     <ClCompile Include="src\Core\Application.cpp" />
     <ClCompile Include="src\Core\Camera.cpp" />
     <ClCompile Include="src\Core\CameraPerspective.cpp" />
+    <ClCompile Include="src\Core\Collision.cpp" />
     <ClCompile Include="src\Core\Component.cpp" />
     <ClCompile Include="src\Core\Core.cpp" />
     <ClCompile Include="src\Core\GameObject.cpp" />
@@ -276,6 +297,8 @@
     <ClCompile Include="src\Core\Timer.cpp" />
     <ClCompile Include="src\Core\Transform.cpp" />
     <ClCompile Include="src\Core\Window.cpp" />
+    <ClCompile Include="src\Diag\DiagPrefab.cpp" />
+    <ClCompile Include="src\Diag\DiagRenderer.cpp" />
     <ClCompile Include="src\Events\EventDispatcher.cpp" />
     <ClCompile Include="src\GUI\Elements\GUICanvas.cpp" />
     <ClCompile Include="src\GUI\GUIManager.cpp" />
@@ -313,13 +336,29 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\Physics\CollisionChecks.cpp" />
+    <ClCompile Include="src\Physics\CollisionChecks.cpp">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Disabled</Optimization>
+      <InlineFunctionExpansion Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Disabled</InlineFunctionExpansion>
+    </ClCompile>
     <ClCompile Include="src\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="src\Prefabs\Bench.cpp" />
+    <ClCompile Include="src\Prefabs\Box.cpp" />
+    <ClCompile Include="src\Prefabs\Box2.cpp" />
+    <ClCompile Include="src\Prefabs\BushCourt.cpp" />
     <ClCompile Include="src\Prefabs\Chair.cpp" />
+    <ClCompile Include="src\Prefabs\Drew.cpp" />
+    <ClCompile Include="src\Prefabs\DrewText.cpp" />
+    <ClCompile Include="src\Prefabs\Dylan.cpp" />
+    <ClCompile Include="src\Prefabs\DylanText.cpp" />
+    <ClCompile Include="src\Prefabs\LandfillBin.cpp" />
+    <ClCompile Include="src\Prefabs\Lantern.cpp" />
     <ClCompile Include="src\Prefabs\MainCamera.cpp" />
+    <ClCompile Include="src\Prefabs\Paolo.cpp" />
+    <ClCompile Include="src\Prefabs\PaoloText.cpp" />
+    <ClCompile Include="src\Prefabs\RecycleBin.cpp" />
     <ClCompile Include="src\Prefabs\Table.cpp" />
     <ClCompile Include="src\Prefabs\Terrain.cpp" />
+    <ClCompile Include="src\Prefabs\Water.cpp" />
     <ClCompile Include="src\Rendering\API_Opengl.cpp" />
     <ClCompile Include="src\Rendering\CubeMapGL.cpp" />
     <ClCompile Include="src\Rendering\EquirectangularMap.cpp" />

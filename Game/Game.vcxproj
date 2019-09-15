@@ -101,6 +101,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>LIBCMTD.lib</IgnoreSpecificDefaultLibraries>
+      <AssemblyDebug>true</AssemblyDebug>
     </Link>
     <PostBuildEvent>
       <Command>XCOPY "$(ProjectDir)Assets" "$(SolutionDir)bin\$(ProjectName)\$(Configuration)\Assets\" /S /Y</Command>
@@ -141,6 +142,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>LIBCMT.lib</IgnoreSpecificDefaultLibraries>
+      <AssemblyDebug>true</AssemblyDebug>
     </Link>
     <PostBuildEvent>
       <Command>XCOPY "$(ProjectDir)Assets" "$(SolutionDir)bin\$(ProjectName)\$(Configuration)\Assets\" /S /Y</Command>
@@ -168,7 +170,10 @@
   <ItemGroup>
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Scenes\ExitScene.h" />
+    <ClInclude Include="src\Scenes\MainScene.h" />
     <ClInclude Include="src\Scenes\OtherScene.h" />
+    <ClInclude Include="src\Scenes\PhysicsDemoScene.h" />
     <ClInclude Include="src\Scenes\SimpleScene.h" />
   </ItemGroup>
   <ItemGroup>
@@ -180,7 +185,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Scenes\ExitScene.cpp" />
+    <ClCompile Include="src\Scenes\MainScene.cpp" />
     <ClCompile Include="src\Scenes\OtherScene.cpp" />
+    <ClCompile Include="src\Scenes\PhysicsDemoScene.cpp" />
     <ClCompile Include="src\Scenes\SimpleScene.cpp" />
   </ItemGroup>
   <ItemGroup>

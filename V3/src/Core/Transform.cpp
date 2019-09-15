@@ -4,7 +4,7 @@
 #include "GameObject.h"
 #include <glm/gtx/rotate_vector.hpp>
 
-Transform::Transform(GameObject* go) : gameObject(go)
+Transform::Transform()
 {
 	scale = glm::vec3(1, 1, 1);
 	SetPosition(0,0,0);
@@ -12,6 +12,7 @@ Transform::Transform(GameObject* go) : gameObject(go)
 	parent = nullptr;
 	ignoreParentRotation = 0;
 	modelMatrix = GetTranslateMatrix()* rotationMatrix * GetScaleMatrix();
+	transformChildren.clear();
 
 }
 

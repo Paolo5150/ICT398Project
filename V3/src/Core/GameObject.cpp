@@ -11,7 +11,7 @@
 #include "ColliderInfo.h"
 
 
-GameObject::GameObject(std::string name, bool isActive, unsigned int layer, GameObject* parent) : transform(Transform(this))
+GameObject::GameObject(std::string name, bool isActive, unsigned int layer, GameObject* parent)
 {
 	SetName(name);
 	SetActive(isActive);
@@ -89,6 +89,19 @@ void GameObject::SetIsSelfManaged(bool sm, bool includeChildren)
 	}
 }
 
+glm::vec3 GameObject::GetCentreOfMass()
+{
+	glm::mat4 rot = transform.GetGlobalRotation();
+
+	glm::vec3 rotVec = rot * glm::vec4(centreOfMass, 1.0);
+	return rotVec;
+}
+
+glm::mat3 GameObject::GetInertiaTensor()
+{
+	return inertiaTensor;
+}
+
 void GameObject::SetActive(bool active, bool includeChildren)
 {
 	_isActive = active;
@@ -163,6 +176,12 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 {
 	std::vector<ColliderInfo> t = FileUtils::ReadColliderFile(absolutePathToFile);
 
+	std::vector<Collider*> colliders = std::vector<Collider*>();
+
+	int count = 0;
+	float overrallMass = 0;
+	glm::vec3 weightedPos = glm::vec3();
+
 	for (int i = 0; i < t.size(); i++)
 	{
 		if (t[i].type == "BC")
@@ -172,8 +191,10 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 			bc->transform.SetPosition(t[i].p);
 			bc->transform.SetScale(t[i].s);
 			bc->transform.SetRotation(t[i].r);
+			bc->SetMass(t[i].mass);
 			bc->SetActive(t[i].isActive);
-			AddComponent(bc);
+			bc->CalculateMomentOfIntertia();
+			colliders.push_back(dynamic_cast<Collider*>(AddComponent(bc)));
 		}
 		else if (t[i].type == "SC")
 		{
@@ -182,10 +203,16 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 			sc->transform.SetPosition(t[i].p);
 			sc->transform.SetScale(t[i].s.x, t[i].s.x, t[i].s.x);
 			sc->SetActive(t[i].isActive);
-
-			AddComponent(sc);
+			sc->SetMass(t[i].mass);
+			sc->CalculateMomentOfIntertia();
+			colliders.push_back(dynamic_cast<Collider*>(AddComponent(sc)));
 		}
+		else
+			continue;
 
+		//count++;
+		//overrallMass += t[i].mass;
+		//weightedPos += t[i].p * t[i].mass;
 
 		// Uncomment this to see the lamba in action
 		// If "collisionCallback" is reassigned to a lambda, the OnCollision method will be overridden
@@ -195,6 +222,32 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 			Logger::LogInfo("Greetings, I'm a lambda callback and I collided against", g->GetName());
 		};*/
 
+	}
+
+	//Calculate weighted centre of mass
+	for (int i = 0; i < colliders.size(); i++)
+	{
+		overrallMass += colliders[i]->GetMass();
+		weightedPos += colliders[i]->transform.GetPosition() * colliders[i]->GetMass();
+	}
+
+	centreOfMass = weightedPos / overrallMass;
+	centreOfMass /= colliders.size();
+
+	totalMass = overrallMass;
+
+	//Calculate inertia tensor
+	inertiaTensor = glm::mat3(0);
+
+	for (int i = 0; i < colliders.size(); i++)
+	{
+		glm::vec3 inertia = colliders[i]->GetMomentOfIntertia();
+		glm::vec3 correctedPos = colliders[i]->transform.GetPosition() - centreOfMass;
+
+		float mass = colliders[i]->GetMass();
+		inertiaTensor[0][0] += inertia.x + mass * (correctedPos.y * correctedPos.y + correctedPos.z * correctedPos.z);
+		inertiaTensor[1][1] += inertia.y + mass * (correctedPos.z * correctedPos.z + correctedPos.x * correctedPos.x);
+		inertiaTensor[2][2] += inertia.z + mass * (correctedPos.x * correctedPos.x + correctedPos.y * correctedPos.y);
 	}
 }
 
@@ -242,7 +295,7 @@ void GameObject::AddChild(GameObject* child)
 			child->transform.parent = &transform;
 			_children.push_back(child);
 			transform.transformChildren.push_back(&child->transform);
-			transform.UpdateHierarchy();
+
 		}
 	}
 
@@ -315,6 +368,20 @@ void GameObject::RemoveComponentInChild(std::string childName, std::string compo
 	}
 }
 
+GameObject* GameObject::GetChild(unsigned index) const
+{
+	std::list<GameObject*>::const_iterator it = _children.begin();
+	unsigned c = 0;
+
+	for (; it != _children.end(); it++)
+	{
+		if (c == index)
+			return (*it);
+		else
+			c++;
+	}	
+}
+
 GameObject* GameObject::GetChild(std::string childName) const
 {
 	std::list<GameObject*>::const_iterator it;
@@ -378,9 +445,9 @@ void GameObject::EngineUpdate()
 {
 
 
-	auto it = _children.begin();
+	/*auto it = _children.begin();
 	for (; it != _children.end(); it++)
-		(*it)->EngineUpdate();
+		(*it)->EngineUpdate();*/
 
 	auto itc = _components.begin();
 	for (; itc != _components.end(); itc++)

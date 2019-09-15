@@ -6,34 +6,40 @@
 # "BC" to identify the starting point of a new box collider
 # "SC" to identify the starting point of a new box collider
 # "A" is the "isActive" parameter
+# "M" is the mass parameter
 # For Sphere colliders, onle the X value of Scale is used as Radius
 BC
 P 0 65 -45
 S 120 10 45
 R 0 0 0
+M 1
 D 1
 A 1
 BC
 P 115 55 -45
 S 5 55 45
 R 0 0 0
+M 1
 D 1
 A 1
 BC
 P -115 55 -45
 S 5 55 45
 R 0 0 0
+M 1
 D 1
 A 1
 BC
 P 0 120 -90
 S 125 50 10
 R -10 0 0
+M 1
 D 1
 A 1
 #Sphere colliders do not have R (rotation)
 SC
 P 20 0 0
 S 50 0 0
+M 1
 D 0
 A 0

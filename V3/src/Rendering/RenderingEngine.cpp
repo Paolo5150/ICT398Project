@@ -6,13 +6,14 @@
 #include "..\Events\ApplicationEvents.h"
 #include "..\Components\Renderer.h"
 #include "..\Core\Camera.h"
-//#include "..\Lighting\LightingManager.h"
+#include "..\Lighting\LightingManager.h"
 #include "FrameBuffer.h"
 #include "..\Utils\ContentManager.h"
 //#include "..\GUI\GUIElements\GUIManager.h"
 #include "PostProcessor.h"
-
+#include "..\Diag\DiagRenderer.h"
 #include <algorithm>
+#include "..\Scene\SceneManager.h"
 std::vector<Renderer*> RenderingEngine::allRenderers;
 bool RenderingEngine::godRays;
 
@@ -102,10 +103,15 @@ void RenderingEngine::RenderBufferToTexture(MaterialType mt )
 	PostProcessor::Instance().BindFrameBuffer();
 	Core::Instance().GetGraphicsAPI().ClearColorBuffer();
 	Core::Instance().GetGraphicsAPI().ClearDepthBuffer();
+
+	Camera* mainCam = nullptr;
 	//Render opaque
 	for (int camIndex = 0; camIndex < Camera::GetAllCameras().size(); camIndex++)
 	{
 		Camera& cam = *Camera::GetAllCameras()[camIndex];
+
+		if (cam.name == "Main Camera")
+			mainCam = &cam;
 
 		if (!cam.GetActive()) continue;
 
@@ -116,9 +122,14 @@ void RenderingEngine::RenderBufferToTexture(MaterialType mt )
 		previousDepth = cam.GetDepth();
 
 	}
-	Core::Instance().GetGraphicsAPI().ResetTextures();
-	PostProcessor::Instance().UnbindFrameBuffer();
+
+	if (mainCam)
+	{
+		DiagRenderer::Instance().RenderAll(*mainCam);
+	}
 	
+	Core::Instance().GetGraphicsAPI().ResetTextures();
+	PostProcessor::Instance().UnbindFrameBuffer();	
 	PostProcessor::Instance().RenderToScreen();
 
 	glActiveTexture(GL_TEXTURE0);
@@ -210,7 +221,7 @@ void RenderingEngine::RenderVectorOverrideColor(Camera& cam, std::vector<Rendere
 		{			
 			r[i]->GetMaterial(m).BindMaterial();
 			r[i]->GetMaterial(m).SetColor(color.x, color.y, color.z);
-			//r[i]->GetMaterial(m).GetShader().SetVec3("AmbientLight", LightManager::Instance().GetAmbientLight());
+			r[i]->GetMaterial(m).GetShader().SetVec3("AmbientLight", LightManager::Instance().GetAmbientLight());
 			r[i]->OnPreRender(cam, &r[i]->GetMaterial(m).GetShader());
 			r[i]->Render(cam);
 			r[i]->OnPostRender(cam, &r[i]->GetMaterial(m).GetShader());
@@ -224,6 +235,6 @@ void RenderingEngine::RenderVectorOverrideColor(Camera& cam, std::vector<Rendere
 void RenderingEngine::ClearRendererList()
 {
 	allRenderers.clear();
-
+	DiagRenderer::Instance().ClearAll();
 }
 

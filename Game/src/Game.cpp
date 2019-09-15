@@ -4,8 +4,11 @@
 #include "Core\Window.h"
 #include "Core\Logger.h"
 #include "Scene\SceneManager.h"
-#include "Scenes/SimpleScene.h"
+#include "Scenes\PhysicsDemoScene.h"
+#include "Scenes/MainScene.h"
 #include "Scenes/OtherScene.h"
+#include "Scenes/ExitScene.h"
+
 
 
 
@@ -34,14 +37,20 @@ void Game::AppInitialize()
 	SceneManager::Instance().AddScene(new ExitScene());
 	SceneManager::Instance().AddScene(new MainMenuScene());*/
 
-	auto simple = std::unique_ptr<Scene>(new SimpleScene());
-	SceneManager::Instance().AddScene(simple);
+	auto main = std::unique_ptr<Scene>(new MainScene());
+	SceneManager::Instance().AddScene(main);
+
+	auto physics = std::unique_ptr<Scene>(new PhysicsDemoScene());
+	SceneManager::Instance().AddScene(physics);
 
 	auto other = std::unique_ptr<Scene>(new OtherScene());
 	SceneManager::Instance().AddScene(other);
 
+	auto exit = std::unique_ptr<Scene>(new ExitScene());
+	SceneManager::Instance().AddScene(exit);
+
 	//Load first scene
-	SceneManager::Instance().LoadNewScene("SimpleScene"); //Scene initialize is called here*/
+	SceneManager::Instance().LoadNewScene("MainScene"); //Scene initialize is called here*/
 
 
 	

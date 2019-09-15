@@ -2,10 +2,11 @@
 #include "Table.h"
 #include "..\Utils\ContentManager.h"
 #include "..\Components\BoxCollider.h"
+#include "..\Diag\DiagRenderer.h"
 
 Table::Table() : GameObject("Table")
 {
-	//SetIsStatic(false);
+	SetIsStatic(1);
 	ContentManager::Instance().GetAsset<Model>("Table")->PopulateGameObject(this);
 	transform.SetScale(0.1);
 	Material m;
@@ -19,6 +20,11 @@ Table::Table() : GameObject("Table")
 
 	m.LoadCubemap(ContentManager::Instance().GetAsset<CubeMap>("SunSet"), "cubemap0");
 	ApplyMaterial(m);
+
+	Material m2NoLight;
+	m2NoLight.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStaticNoLight"));
+	m2NoLight.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("bamboo_albedo"), "diffuse0");
+	ApplyMaterial(m2NoLight, NOLIGHT);
 
 }
 
@@ -37,11 +43,14 @@ void Table::Start()
 
 	LoadCollidersFromFile("Assets\\Colliders\\Table.txt");
 
+	rb = new Rigidbody();
+	AddComponent(rb);
+	rb->UseGravity(false);
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider
 						 // has been added.
 }
 
-void Table::OnCollision(GameObject* g)
-{
-	Logger::LogInfo("Collided against", g->GetName());
-}
+void Table::OnCollisionEnter(Collider* g, Collision& collision)
+{}
+void Table::OnCollisionStay(Collider* g, Collision& collision)
+{}

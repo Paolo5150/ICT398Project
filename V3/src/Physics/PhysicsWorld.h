@@ -1,17 +1,20 @@
 #pragma once
 
-
 #include "..\Utils\Quadtree.h"
 #include <list>
+#include <map>
 
 class Collider;
+class Rigidbody;
 /**
 * @class PhysicsWorld
 * @brief Singleto class that manages collisions
 *
 *
-* @author Paolo Ferri
+* @author Paolo Ferri, Drew Paridaens
 * @version 01
+* @version 02
+* -Added Physics implementation methods
 * @date 1/05/2019
 *
 *
@@ -110,4 +113,40 @@ private:
 	* @param node					The current quadtree node
 	*/
 	void PerformCollisions(QuadNode<Collider*>* node);
+
+	void CheckCollision(Collider* it, Collider* it2);
+
+	/**
+	* @brief						Applies dynamic physics formula to participating objects
+	* @param col1					The first collider involved in the calculation
+	* @param col2					The second collider involved in the calculation
+	* @param collision				A reference to the collision that occurred
+	*/
+	void PhysicsCalculation(Collider* col1, Collider* col2, const Collision& collision);
+	/**
+	* @brief						Moves the transform by the given vel and angVel across time (for separating collided objects)
+	* @param tf						The transform to move
+	* @param vel					The velocity to move the object by
+	* @param angVel					The angular velocity to move the object by
+	*/
+	void MoveTransform(Transform& tf, const glm::vec3& vel, const glm::vec3& angVel);
+	/**
+	* @brief						Zeros the objects velocity (for the objects that continue to collided after a physics update)
+	* @param rb						A reference to the rigidbody to zero the velocity on
+	* @param vel					The velocity to move the object by
+	* @param angVel					The angular velocity to move the object by
+	* @pre							The given rigidbody pointer is not nullptr
+	*/
+	void ZeroOutVelocity(Rigidbody* rb);
+
+	std::map<GameObject*, std::map<GameObject*, std::list<Collider*>>> gameObjectCollisionMap;
+	std::map<Collider*, std::list<Collider*>> collidersCollisionMap;
+
+	std::map<Collider*, std::list<Collider*>> collidersCollisionMapPerFrame;
+
+	bool WereGameObjectsColliding(GameObject* obj1, GameObject* obj2);
+	bool WereCollidersColliding(Collider* obj1, Collider* obj2);
+	bool WereCollidingThisFrame(Collider* c1, Collider* c2);
+
+
 };
