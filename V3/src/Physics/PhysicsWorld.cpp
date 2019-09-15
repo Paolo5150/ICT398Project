@@ -6,6 +6,7 @@
 #include "..\Events\EventDispatcher.h"
 #include "..\Events\ApplicationEvents.h"
 #include "..\Components\Rigidbody.h"
+#include "..\Diag\DiagRenderer.h"
 #include <algorithm>
 
 
@@ -193,7 +194,7 @@ void PhysicsWorld::PerformCollisions(bool staticToo)
 	//Logger::LogWarning("ENDING COLLISION UPDATE");
 }
 
-glm::vec3 PhysicsWorld::gravity = glm::vec3(0.01, -3.8, 0);
+glm::vec3 PhysicsWorld::gravity = glm::vec3(0.0, -3.8, 0);
 
 bool PhysicsWorld::WereGameObjectsColliding(GameObject* obj1, GameObject* obj2)
 {
@@ -300,7 +301,10 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 	{
 		//Pre-calc collision objects
 		glm::vec3 pos = CollisionChecks::getCollisionPoint(it, it2);
-		glm::vec3 normal = CollisionChecks::getCollisionNormal(pos, it2);
+		glm::vec3 normal = glm::normalize(CollisionChecks::getCollisionNormal(pos, it2));
+
+		DiagRenderer::Instance().RenderSphere(pos, 0.5, glm::vec3(1, 0, 0));
+
 		Collision col2 = Collision(pos, normal);
 		normal = CollisionChecks::getCollisionNormal(pos, it2);
 		Collision col1 = Collision(pos, normal);
@@ -477,6 +481,7 @@ void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, const Co
 	float top = -(1 + epsilon) * (glm::dot(normal, vel1 - vel2)
 		+ glm::dot(angVel1, glm::cross(r1, normal))
 		- glm::dot(angVel2, glm::cross(r2, normal)));
+
 	glm::vec3 bottom = (1 / obj1->GetTotalMass())
 		+ (1 / obj2->GetTotalMass())
 		+ ((glm::cross(r1, normal) * glm::inverse(obj1->GetInertiaTensor()) * glm::cross(r1, normal))
@@ -484,7 +489,7 @@ void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, const Co
 
 	glm::vec3 lambda;
 
-	lambda = top / bottom * normal;
+	lambda = (top / bottom) * normal;
 
 	if (rb1 != nullptr && rb1->GetUseDynamicPhysics())
 	{
@@ -506,10 +511,10 @@ void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, const Co
 
 void PhysicsWorld::MoveTransform(Transform& tf, const glm::vec3& vel, const glm::vec3& angVel)
 {
-	tf.Translate(vel * Timer::GetDeltaS() * 3.0f);
-	tf.RotateBy(angVel.z * Timer::GetDeltaS() * 3.0f, 0, 0, 1);
-	tf.RotateBy(angVel.x * Timer::GetDeltaS() * 3.0f, 1, 0, 0);
-	tf.RotateBy(angVel.y * Timer::GetDeltaS() * 3.0f, 0, 1, 0);
+	tf.Translate(vel * Timer::GetDeltaS() * 2.0f);
+	tf.RotateBy(angVel.z * Timer::GetDeltaS() * 2.0f, 0, 0, 1);
+	tf.RotateBy(angVel.x * Timer::GetDeltaS() * 2.0f , 1, 0, 0);
+	tf.RotateBy(angVel.y * Timer::GetDeltaS() * 2.0f, 0, 1, 0);
 }
 
 void PhysicsWorld::ZeroOutVelocity(Rigidbody * rb)

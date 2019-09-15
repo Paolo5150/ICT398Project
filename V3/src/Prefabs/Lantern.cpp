@@ -37,7 +37,7 @@ void Lantern::Start()
 	LoadCollidersFromFile("Assets\\Colliders\\Lantern.txt");
 
 
-	Rigidbody* rb = new Rigidbody();
+	 rb = new Rigidbody();
 	rb = new Rigidbody();
 	rb->UseGravity(true);
 	rb->SetVelocity(1.0,0, 0);

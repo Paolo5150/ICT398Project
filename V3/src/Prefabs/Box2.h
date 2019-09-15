@@ -15,7 +15,7 @@ public:
 	void OnCollisionEnter(Collider* g, Collision& col) override;
 	void OnCollisionStay(Collider* g, Collision& col) override;
 
-private:
 	Rigidbody* rb;
+private:
 	
 };

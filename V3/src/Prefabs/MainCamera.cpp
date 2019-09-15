@@ -3,7 +3,8 @@
 #include "..\Core\Timer.h"
 #include "..\Components\Rigidbody.h"
 #include "..\Components\BoxCollider.h"
-
+#include "Box2.h"
+#include "..\Scene\SceneManager.h"
 
 MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 100000.0f)
 {
@@ -97,6 +98,17 @@ void MainCamera::Update()
 		rb->AddVelocity(-this->transform.GetLocalRight());
 
 	}
+	}
+
+	if (Input::GetKeyPressed(GLFW_KEY_SPACE))
+	{
+		Box2* l = new Box2();
+
+		l->transform.SetPosition(transform.GetPosition() + transform.GetLocalFront() * 5.0f);
+		l->rb->AddVelocity(transform.GetLocalFront() * 10.0f);
+
+		l->Start();
+		SceneManager::Instance().GetCurrentScene().AddGameObject(l);
 	}
 
 	//Common inputs for all scenes
