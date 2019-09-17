@@ -227,10 +227,14 @@ public:
 	void Update() override;
 	bool GetUseDynamicPhysics();
 	void SetUseDynamicPhysics(bool useDynamicPhysics);
+	bool GetIsAwake() { return awake; }
 
 private:
 	glm::vec3 velocity; //Velocity vector
 	glm::vec3 angVelocity; //Angular velocity vector
+	float damping;
 	bool useGravity; //Whether to be affected by gravity
 	bool useDynamicPhysics = true;
+	float timer;
+	bool awake;
 };

@@ -6,7 +6,7 @@ Box2::Box2() : GameObject("Box")
 	SetIsStatic(false);
 	rb = new Rigidbody();
 	AddComponent(rb);
-	rb->UseGravity(true);
+	rb->UseGravity(0);
 	rb->SetUseDynamicPhysics(1);
 	LoadCollidersFromFile("Assets\\Colliders\\Box2.txt");
 }
@@ -31,10 +31,13 @@ void Box2::Start()
 
 void Box2::OnCollisionEnter(Collider* g, Collision& col)
 {
+	//Logger::LogInfo("Box enter");
+
 }
 
 void Box2::OnCollisionStay(Collider * g, Collision& col)
 {
+	//Logger::LogInfo("Box stay");
 }
 
 

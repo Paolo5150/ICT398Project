@@ -43,6 +43,18 @@ void Lantern::Start()
 	AddComponent(rb);
 }
 
+void Lantern::Update()
+{
+	GameObject::Update();
+	static float min = 5000;
+
+	min = glm::length(rb->GetVelocity()) < min ? glm::length(rb->GetVelocity()) : min;
+
+	//Logger::LogInfo("Min Vel",glm::length(rb->GetVelocity()));
+
+
+}
+
 
 Lantern::~Lantern()
 {
