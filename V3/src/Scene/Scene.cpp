@@ -4,6 +4,7 @@
 #include "..\Core\Logger.h"
 #include "..\Utils\ContentManager.h"
 #include "..\Core\Input.h"
+#include "..\Physics\PathFindingManager.h"
 
 Scene::Scene(std::string n) : name(n)
 {
@@ -107,6 +108,9 @@ void Scene::EngineUpdate()
 	if (skybox != nullptr)
 		skybox->EngineUpdate(); // Call engine update to the skybox so the cube (its renderer component) is sent to the rendering engine for rendering
 
+	//For debug only
+	PathFindingManager::Instance().EngineUpdate();
+
 	auto it = m_allGameObjects.begin();
 
 	for (; it != m_allGameObjects.end(); it++)
@@ -128,7 +132,9 @@ void Scene::LogicUpdate()
 		if((*it)->GetActive() == true && (*it)->GetParent() == nullptr)
 			(*it)->Update();
 	}
-	
+
+	//For debug only
+	PathFindingManager::Instance().Update();
 	PhysicsWorld::Instance().Update();
 
 }
