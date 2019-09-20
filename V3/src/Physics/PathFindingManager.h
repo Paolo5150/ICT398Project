@@ -62,14 +62,10 @@ public:
 	*/
 	void Start();
 
-
-
-
-
 	void DeleteNodes();
 
 	/**
-	* @brief						List of nodes in no particular order
+	* @brief						2D map of nodes
 	*/
 	std::vector<std::unique_ptr<PathNode>> pathNodes;
 

@@ -64,7 +64,15 @@ PathNode* PathFindingManager::ClosestNodeAt(int x, int y, int z)
 	if (closest == nullptr)
 		Logger::LogError("Cannot find closest");
 
+	// Uncomment this to see the returned node
 	closest->bc->enableRender = 1;
+	for (int i = 0; i < closest->neighbors.size(); i++)
+	{
+		closest->neighbors[i]->bc->enableRender = 1;
+		closest->neighbors[i]->bc->meshRenderer->GetMaterial().SetColor(1, 0, 1);
+
+	}
+
 	return closest;
 }
 
