@@ -51,7 +51,7 @@ PathNode* PathFindingManager::ClosestNodeAt(int x, int y, int z)
 	PathNode* closest = nullptr;
 	for (auto it = nodes.begin(); it != nodes.end(); it++)
 	{
-		double length = glm::length((*it)->bc->transform.GetGlobalPosition() - glm::vec3(x, y, z));
+		double length = glm::length2((*it)->bc->transform.GetGlobalPosition() - glm::vec3(x, y, z));
 
 		if (length < dist)
 		{
@@ -64,7 +64,7 @@ PathNode* PathFindingManager::ClosestNodeAt(int x, int y, int z)
 	if (closest == nullptr)
 		Logger::LogError("Cannot find closest");
 
-	///closest->sc->enableRender = 1;
+	closest->bc->enableRender = 1;
 	return closest;
 }
 
@@ -130,7 +130,7 @@ void PathFindingManager::Start()
 	{
 
 		pathNodes[i]->Start();
-		pathNodes[i]->bc->enableRender = 1;
+		pathNodes[i]->bc->enableRender = 0;
 		nodesQT->AddElement(pathNodes[i].get(), pathNodes[i]->bc->transform.GetGlobalPosition().x, pathNodes[i]->bc->transform.GetGlobalPosition().z, pathNodes[i]->bc->transform.GetGlobalScale().x, pathNodes[i]->bc->transform.GetGlobalScale().z);
 	}
 

@@ -154,7 +154,7 @@ void Rigidbody::Update()
 	if (awake)
 	{
 		velocity = glm::lerp(velocity, glm::vec3(), Timer::GetDeltaS() * damping);
-		angVelocity = glm::lerp(angVelocity, glm::vec3(), Timer::GetDeltaS() * damping * 4);
+		angVelocity = glm::lerp(angVelocity, glm::vec3(), Timer::GetDeltaS() * damping * 10);
 
 		//angVelocity += glm::vec3(1, 1, 1) * -damping;
 

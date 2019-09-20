@@ -363,7 +363,6 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 	btQuaternion qaBt(qa.x, qa.y, qa.z, qa.w);
 	A->getWorldTransform().setRotation(qaBt);
 
-
 	B->getWorldTransform().setOrigin(btVector3((btScalar)(it2->transform.GetGlobalPosition().x), (btScalar)(it2->transform.GetGlobalPosition().y), (btScalar)(it2->transform.GetGlobalPosition().z)));
 	qa = glm::quat(it2->transform.GetGlobalRotation());
 	btQuaternion qbBt(qa.x, qa.y, qa.z, qa.w);
@@ -381,71 +380,10 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 	if (callback.collided)
 	{
 
-		///////////////////////////////////
-		//Create two collision objects
-		/*btCollisionObject* A = new btCollisionObject();
-		btCollisionObject* B = new btCollisionObject();
-		//Move each to a specific location
-		A->getWorldTransform().setOrigin(btVector3((btScalar)(it->transform.GetGlobalPosition().x), (btScalar)(it->transform.GetGlobalPosition().y), (btScalar)(it->transform.GetGlobalPosition().z)));
-		glm::quat qa = glm::quat(it->transform.GetGlobalRotation());
-		btQuaternion qaBt(qa.x, qa.y, qa.z, qa.w);
-		A->getWorldTransform().setRotation(qaBt);	
-		
-		
-		B->getWorldTransform().setOrigin(btVector3((btScalar)(it2->transform.GetGlobalPosition().x), (btScalar)(it2->transform.GetGlobalPosition().y), (btScalar)(it2->transform.GetGlobalPosition().z)));
-		qa = glm::quat(it2->transform.GetGlobalRotation());
-		btQuaternion qbBt(qa.x, qa.y, qa.z, qa.w);
-		B->getWorldTransform().setRotation(qbBt);
-
-
-		//Create a sphere with a radius of 1
-		btBoxShape * sphere_shape1 = new btBoxShape(btVector3((btScalar)(it->transform.GetGlobalScale().x), (btScalar)(it->transform.GetGlobalScale().y), (btScalar)(it->transform.GetGlobalScale().z)));
-		btBoxShape * sphere_shape2 = new btBoxShape(btVector3((btScalar)(it2->transform.GetGlobalScale().x), (btScalar)(it2->transform.GetGlobalScale().y), (btScalar)(it2->transform.GetGlobalScale().z)));
-		//Set the shape of each collision object
-		A->setCollisionShape(sphere_shape1);
-		B->setCollisionShape(sphere_shape2);
-		//Add the collision objects to our collision world
-		bt_collision_world->addCollisionObject(A);
-		bt_collision_world->addCollisionObject(B);*/
-
-
-
-		//Perform collision detection
-		//bt_collision_world->performDiscreteCollisionDetection();
-
 		glm::vec3 pos;
 		glm::vec3 normal;
 
-		/*int numManifolds = bt_collision_world->getDispatcher()->getNumManifolds();
-		//For each contact manifold
-		for (int i = 0; i < numManifolds; i++) {
-			btPersistentManifold* contactManifold = bt_collision_world->getDispatcher()->getManifoldByIndexInternal(i);
-			btCollisionObject* obA = (btCollisionObject*)(contactManifold->getBody0());
-			btCollisionObject* obB = (btCollisionObject*)(contactManifold->getBody1());
-			contactManifold->refreshContactPoints(obA->getWorldTransform(), obB->getWorldTransform());
-			int numContacts = contactManifold->getNumContacts();
-			//For each contact point in that manifold
-			for (int j = 0; j < numContacts; j++) {
-				//Get the contact information
-				btManifoldPoint& pt = contactManifold->getContactPoint(j);
-				btVector3 ptA = pt.getPositionWorldOnA();
-				btVector3 ptB = pt.getPositionWorldOnB();
-
-
-				btVector3 norm = contactManifold->getContactPoint(j).m_normalWorldOnB;
-				normal = glm::vec3(norm.x(), norm.y(), norm.z());
-
-				pos = glm::vec3(ptA.x(), ptA.y(), ptA.z());
-				DiagRenderer::Instance().RenderSphere(pos, 0.5, glm::vec3(1,0,0));
-				//DiagRenderer::Instance().RenderSphere(glm::vec3(ptB.x, ptB.y, ptB.z), 0.5, glm::vec3(0, 1, 1));
-				double ptdist = pt.getDistance();
-				break;
-			}
-		}*/
-
-		//bt_collision_world->removeCollisionObject(A);
-	//bt_collision_world->removeCollisionObject(B);
-
+		
 		/////////////////////////////////
 		pos = callback.contactPoint;
 		normal = callback.normal;

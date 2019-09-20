@@ -184,6 +184,9 @@ void MainScene::LogicUpdate()
 	if (Input::GetKeyDown(GLFW_KEY_SPACE))
 		std::cout << "X: " << cam->transform.GetGlobalPosition().x << " Y: " << cam->transform.GetGlobalPosition().y << " Z: " << cam->transform.GetGlobalPosition().z << std::endl;
 
+
+	PathFindingManager::Instance().ClosestNodeAt(cam->transform.GetPosition().x, cam->transform.GetPosition().y, cam->transform.GetPosition().z);
+
 	Scene::LogicUpdate(); //Must be last statement!
 
 
