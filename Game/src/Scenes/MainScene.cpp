@@ -162,7 +162,7 @@ void MainScene::Start()
 	Scene::Start();
 	Input::SetCursorMode("disabled");
 
-	PathFindingManager::Instance().Generate(0, 0, 180, 180, 15);
+	PathFindingManager::Instance().Generate(0, 0, 180, 180, 5);
 	PathFindingManager::Instance().Start();
 
 	PhysicsWorld::Instance().InitializeQuadtree(0, 0,100, 100);

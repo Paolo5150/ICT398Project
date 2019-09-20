@@ -100,12 +100,11 @@ void PathFindingManager::Generate(int centerX, int centerY, int sizeX, int sizeY
 
 	}
 
-
 	if (nodesQT == nullptr)
-		nodesQT = std::unique_ptr<QuadTree<PathNode*>>(new QuadTree<PathNode*>(centerX, centerY, sizeX, sizeY, 1000));
+		nodesQT = std::unique_ptr<QuadTree<PathNode*>>(new QuadTree<PathNode*>(centerX, centerY, sizeX, sizeY, 20));
 
 }
-
+// Comment this out when releasing, not needed (used for rendering the nodes)
 void PathFindingManager::EngineUpdate()
 {
 	for (unsigned i = 0; i < pathNodes.size(); i++)
@@ -113,6 +112,7 @@ void PathFindingManager::EngineUpdate()
 		pathNodes[i]->EngineUpdate();
 	}
 }
+// Comment this out when releasing, not needed (used for rendering the nodes)
 
 void PathFindingManager::Update()
 {
