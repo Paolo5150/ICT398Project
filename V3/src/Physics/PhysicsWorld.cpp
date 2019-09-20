@@ -98,10 +98,10 @@ PhysicsWorld::PhysicsWorld()
 void PhysicsWorld::InitializeQuadtree(int x, int y, int w, int h)
 {
 	if (nonStaticQuadtree == nullptr)
-		nonStaticQuadtree = std::unique_ptr<QuadTree<Collider*>>(new QuadTree<Collider*>(x, y, w, h));
+		nonStaticQuadtree = std::unique_ptr<QuadTree<Collider*>>(new QuadTree<Collider*>(x, y, w, h,150));
 
 	if (staticQuadtree == nullptr)
-		staticQuadtree = std::unique_ptr<QuadTree<Collider*>>(new QuadTree<Collider*>(x, y, w, h));
+		staticQuadtree = std::unique_ptr<QuadTree<Collider*>>(new QuadTree<Collider*>(x, y, w, h,150));
 
 }
 
