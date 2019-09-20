@@ -113,7 +113,6 @@ void PathFindingManager::EngineUpdate()
 	}
 }
 // Comment this out when releasing, not needed (used for rendering the nodes)
-
 void PathFindingManager::Update()
 {
 	for (unsigned i = 0; i < pathNodes.size(); i++)
