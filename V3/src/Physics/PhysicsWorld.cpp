@@ -6,10 +6,54 @@
 #include "..\Events\EventDispatcher.h"
 #include "..\Events\ApplicationEvents.h"
 #include "..\Components\Rigidbody.h"
+#include "..\Diag\DiagRenderer.h"
+#include "Bullet/btBulletCollisionCommon.h"
+#include "Bullet\btBulletDynamicsCommon.h"
+
 #include <algorithm>
 
 
 #define CHANGE_COLOR 0
+
+struct MyContactResultCallback : public btCollisionWorld::ContactResultCallback
+{
+	bool collided;
+	glm::vec3 contactPoint;
+	glm::vec3 normal;
+
+	MyContactResultCallback()
+	{
+		collided = 0;
+	}
+
+	btScalar addSingleResult(btManifoldPoint& cp,
+		const btCollisionObjectWrapper* colObj0Wrap,
+		int partId0,
+		int index0,
+		const btCollisionObjectWrapper* colObj1Wrap,
+		int partId1,
+		int index1)
+	{
+
+		//Logger::LogInfo("Some collision occurred");
+		contactPoint = glm::vec3(cp.getPositionWorldOnA().x(), cp.getPositionWorldOnA().y(), cp.getPositionWorldOnA().z());
+		normal = glm::vec3(cp.m_normalWorldOnB.x(), cp.m_normalWorldOnB.y(), cp.m_normalWorldOnB.z());
+
+		collided = true;
+		return 0;
+	}
+};
+
+
+namespace
+{
+	btCollisionConfiguration* bt_collision_configuration;
+	btCollisionDispatcher* bt_dispatcher;
+	btBroadphaseInterface* bt_broadphase;
+	btCollisionWorld* bt_collision_world;
+	double scene_size = 5000;
+	unsigned int max_objects = 16000;
+}
 
 PhysicsWorld&  PhysicsWorld::Instance()
 {
@@ -23,6 +67,18 @@ PhysicsWorld::PhysicsWorld()
 	
 	nonStaticQuadtree = nullptr;
 	staticQuadtree = nullptr;
+
+	bt_collision_configuration = new btDefaultCollisionConfiguration();
+	bt_dispatcher = new btCollisionDispatcher(bt_collision_configuration);
+
+	btScalar sscene_size = (btScalar)scene_size;
+	btVector3 worldAabbMin(-sscene_size, -sscene_size, -sscene_size);
+	btVector3 worldAabbMax(sscene_size, sscene_size, sscene_size);
+	//This is one type of broadphase, bullet has others that might be faster depending on the application
+	bt_broadphase = new bt32BitAxisSweep3(worldAabbMin, worldAabbMax, max_objects, 0, true);  // true for disabling raycast accelerator
+
+	bt_collision_world = new btCollisionWorld(bt_dispatcher, bt_broadphase, bt_collision_configuration);
+
 
 	EventDispatcher::Instance().SubscribeCallback<SceneChangedEvent>([this](Event* e){
 
@@ -193,7 +249,7 @@ void PhysicsWorld::PerformCollisions(bool staticToo)
 	//Logger::LogWarning("ENDING COLLISION UPDATE");
 }
 
-glm::vec3 PhysicsWorld::gravity = glm::vec3(0.01, -3.8, 0);
+glm::vec3 PhysicsWorld::gravity = glm::vec3(0.0, -3.8, 0);
 
 bool PhysicsWorld::WereGameObjectsColliding(GameObject* obj1, GameObject* obj2)
 {
@@ -296,18 +352,49 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 	collidersCollisionMapPerFrame[it].push_back(it2);
 	collidersCollisionMapPerFrame[it2].push_back(it);
 
-	if (CollisionChecks::Collision((it), (it2)))
+	///////////////////////////////////
+		//Create two collision objects
+	std::unique_ptr<btCollisionObject> A = std::unique_ptr<btCollisionObject>(new btCollisionObject());
+	std::unique_ptr<btCollisionObject> B = std::unique_ptr<btCollisionObject>(new btCollisionObject());
+
+	//Move each to a specific location
+	A->getWorldTransform().setOrigin(btVector3((btScalar)(it->transform.GetGlobalPosition().x), (btScalar)(it->transform.GetGlobalPosition().y), (btScalar)(it->transform.GetGlobalPosition().z)));
+	glm::quat qa = glm::quat(it->transform.GetGlobalRotation());
+	btQuaternion qaBt(qa.x, qa.y, qa.z, qa.w);
+	A->getWorldTransform().setRotation(qaBt);
+
+	B->getWorldTransform().setOrigin(btVector3((btScalar)(it2->transform.GetGlobalPosition().x), (btScalar)(it2->transform.GetGlobalPosition().y), (btScalar)(it2->transform.GetGlobalPosition().z)));
+	qa = glm::quat(it2->transform.GetGlobalRotation());
+	btQuaternion qbBt(qa.x, qa.y, qa.z, qa.w);
+	B->getWorldTransform().setRotation(qbBt);
+	   
+	std::unique_ptr<btBoxShape> sphere_shape1 = std::unique_ptr<btBoxShape>(new btBoxShape(btVector3((btScalar)(it->transform.GetGlobalScale().x), (btScalar)(it->transform.GetGlobalScale().y), (btScalar)(it->transform.GetGlobalScale().z))));
+	std::unique_ptr<btBoxShape> sphere_shape2 = std::unique_ptr<btBoxShape>(new btBoxShape(btVector3((btScalar)(it2->transform.GetGlobalScale().x), (btScalar)(it2->transform.GetGlobalScale().y), (btScalar)(it2->transform.GetGlobalScale().z))));
+
+	A->setCollisionShape(sphere_shape1.get());
+	B->setCollisionShape(sphere_shape2.get());
+
+	MyContactResultCallback callback;
+	bt_collision_world->contactPairTest(A.get(), B.get(), callback);
+
+	if (callback.collided)
 	{
-		//Pre-calc collision objects
-		glm::vec3 pos = CollisionChecks::getCollisionPoint(it, it2);
-		glm::vec3 normal = CollisionChecks::getCollisionNormal(pos, it2);
+
+		glm::vec3 pos;
+		glm::vec3 normal;
+
+		
+		/////////////////////////////////
+		pos = callback.contactPoint;
+		normal = callback.normal;
 		Collision col2 = Collision(pos, normal);
-		normal = CollisionChecks::getCollisionNormal(pos, it2);
+	//	normal = CollisionChecks::getCollisionNormal(pos, it2);
 		Collision col1 = Collision(pos, normal);
 
 		// Check if colliders were colliding
 		if (!WereCollidersColliding((it), (it2)))
 		{
+
 			// Record that colliders are now colliding
 			collidersCollisionMap[(it)].push_back(it2);
 			collidersCollisionMap[(it2)].push_back(it);
@@ -316,6 +403,7 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 			if (!WereGameObjectsColliding((it)->GetParent(), (it2)->GetParent()))
 			{
 				PhysicsCalculation((it), (it2), col1);
+
 				// OnCollisionEnter
 				if((it)->GetCollideAgainstLayer() & (it2)->GetCollisionLayer())
 					(it)->OnCollisionEnterCallback((it2), col1);
@@ -325,14 +413,12 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 
 				gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].push_back((it2));
 				gameObjectCollisionMap[(it2)->GetParent()][(it)->GetParent()].push_back((it));
-
 			}
 			else
 			{
 				// If the colliders were not colliding, but the GameObjects were
 				// it means that we are colliding with a new collider of the same gameobjects
-
-				Rigidbody* rb1 = it->GetParent()->GetComponent<Rigidbody>("Rigidbody");
+				/*Rigidbody* rb1 = it->GetParent()->GetComponent<Rigidbody>("Rigidbody");
 				Rigidbody* rb2 = it2->GetParent()->GetComponent<Rigidbody>("Rigidbody");
 				if (rb1 != nullptr && rb1->GetUseDynamicPhysics())
 				{
@@ -343,7 +429,7 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 				{
 					MoveTransform(it2->GetParent()->transform, -rb2->GetVelocity(), -rb2->GetAngularVelocity());
 					ZeroOutVelocity(rb2);
-				}
+				}	*/		
 
 				// OnCollisionStay
 				if ((it)->GetCollideAgainstLayer() & (it2)->GetCollisionLayer())
@@ -370,7 +456,7 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 		}
 		else
 		{
-			Rigidbody* rb1 = it->GetParent()->GetComponent<Rigidbody>("Rigidbody");
+		/*	Rigidbody* rb1 = it->GetParent()->GetComponent<Rigidbody>("Rigidbody");
 			Rigidbody* rb2 = it2->GetParent()->GetComponent<Rigidbody>("Rigidbody");
 			if (rb1 != nullptr && rb1->GetUseDynamicPhysics())
 			{
@@ -381,7 +467,7 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 			{
 				MoveTransform(it2->GetParent()->transform, -rb2->GetVelocity(), -rb2->GetAngularVelocity());
 				ZeroOutVelocity(rb2);
-			}
+			}*/
 			// OnCollisionStay
 			if ((it)->GetCollideAgainstLayer() & (it2)->GetCollisionLayer())
 				(it)->OnCollisionStayCallback((it2), col1);
@@ -440,6 +526,9 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 			}
 		}
 	}
+
+
+
 }
 
 void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, const Collision& collision)
@@ -477,6 +566,7 @@ void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, const Co
 	float top = -(1 + epsilon) * (glm::dot(normal, vel1 - vel2)
 		+ glm::dot(angVel1, glm::cross(r1, normal))
 		- glm::dot(angVel2, glm::cross(r2, normal)));
+
 	glm::vec3 bottom = (1 / obj1->GetTotalMass())
 		+ (1 / obj2->GetTotalMass())
 		+ ((glm::cross(r1, normal) * glm::inverse(obj1->GetInertiaTensor()) * glm::cross(r1, normal))
@@ -484,7 +574,7 @@ void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, const Co
 
 	glm::vec3 lambda;
 
-	lambda = top / bottom * normal;
+	lambda = (top / bottom) * normal;
 
 	if (rb1 != nullptr && rb1->GetUseDynamicPhysics())
 	{
@@ -506,16 +596,16 @@ void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, const Co
 
 void PhysicsWorld::MoveTransform(Transform& tf, const glm::vec3& vel, const glm::vec3& angVel)
 {
-	tf.Translate(vel * Timer::GetDeltaS() * 3.0f);
-	tf.RotateBy(angVel.z * Timer::GetDeltaS() * 3.0f, 0, 0, 1);
-	tf.RotateBy(angVel.x * Timer::GetDeltaS() * 3.0f, 1, 0, 0);
-	tf.RotateBy(angVel.y * Timer::GetDeltaS() * 3.0f, 0, 1, 0);
+	tf.Translate(vel * Timer::GetDeltaS() );
+	tf.RotateBy(angVel.z * Timer::GetDeltaS() , 0, 0, 1);
+	tf.RotateBy(angVel.x * Timer::GetDeltaS()  , 1, 0, 0);
+	tf.RotateBy(angVel.y * Timer::GetDeltaS() , 0, 1, 0);
 }
 
 void PhysicsWorld::ZeroOutVelocity(Rigidbody * rb)
 {
-	rb->SetVelocity(glm::vec3());
-	rb->SetAngularVelocity(glm::vec3());
+	//rb->SetVelocity(glm::vec3());
+	//rb->SetAngularVelocity(glm::vec3());
 }
 
 

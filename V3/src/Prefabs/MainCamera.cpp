@@ -3,7 +3,8 @@
 #include "..\Core\Timer.h"
 #include "..\Components\Rigidbody.h"
 #include "..\Components\BoxCollider.h"
-
+#include "Box2.h"
+#include "..\Scene\SceneManager.h"
 
 MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 100000.0f)
 {
@@ -23,7 +24,7 @@ BoxCollider* bc = new BoxCollider();
 	//bc->RemoveCollideAgainstLayer(CollisionLayers::DEFAULT);
 	bc->enableRender = 1;
 
-	AddComponent(bc);
+	//AddComponent(bc);
 
 	rb = new Rigidbody();
 	rb->UseGravity(false);
@@ -99,6 +100,17 @@ void MainCamera::Update()
 	}
 	}
 
+	if (Input::GetKeyPressed(GLFW_KEY_SPACE))
+	{
+		Box2* l = new Box2();
+
+		l->transform.SetPosition(transform.GetPosition() + transform.GetLocalFront() * 5.0f);
+		l->rb->AddVelocity(transform.GetLocalFront() * 10.0f);
+
+		l->Start();
+		SceneManager::Instance().GetCurrentScene().AddGameObject(l);
+	}
+
 	//Common inputs for all scenes
 	if (Input::GetKeyDown(GLFW_KEY_T))
 	{
@@ -117,5 +129,5 @@ void MainCamera::Update()
 
 	Camera::Update(); //Update last as this will update the view matrix with the new position values
 
-	transform.SetPosition(transform.GetPosition().x,4,transform.GetPosition().z);
+	//transform.SetPosition(transform.GetPosition().x,4,transform.GetPosition().z);
 }

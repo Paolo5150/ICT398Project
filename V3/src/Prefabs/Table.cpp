@@ -43,9 +43,7 @@ void Table::Start()
 
 	LoadCollidersFromFile("Assets\\Colliders\\Table.txt");
 
-	rb = new Rigidbody();
-	AddComponent(rb);
-	rb->UseGravity(false);
+
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider
 						 // has been added.
 }

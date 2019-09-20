@@ -37,11 +37,22 @@ void Lantern::Start()
 	LoadCollidersFromFile("Assets\\Colliders\\Lantern.txt");
 
 
-	Rigidbody* rb = new Rigidbody();
+	 rb = new Rigidbody();
 	rb = new Rigidbody();
 	rb->UseGravity(true);
-	rb->SetVelocity(1.0,0, 0);
 	AddComponent(rb);
+}
+
+void Lantern::Update()
+{
+	GameObject::Update();
+	static float min = 5000;
+
+	min = glm::length(rb->GetVelocity()) < min ? glm::length(rb->GetVelocity()) : min;
+
+	//Logger::LogInfo("Min Vel",glm::length(rb->GetVelocity()));
+
+
 }
 
 

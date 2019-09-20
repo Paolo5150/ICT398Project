@@ -12,7 +12,7 @@
 #include "Prefabs/Water.h"
 #include "Prefabs/BushCourt.h"
 #include "Prefabs/Lantern.h"
-
+#include "Physics/PathFindingManager.h"
 
 #include "Diag/DiagRenderer.h"
 #include "GUI/GUIManager.h"
@@ -126,7 +126,7 @@ void MainScene::Initialize() {
 
 
 	cam = new MainCamera();
-	cam->transform.SetPosition(0, 10, 50);
+	cam->transform.SetPosition(0, 10, 0);
 	cam->transform.SetRotation(0, 180, 0);
 	
 	DirectionalLight* dirLight = new DirectionalLight(false);
@@ -161,8 +161,13 @@ void MainScene::Start()
 {
 	Scene::Start();
 	Input::SetCursorMode("disabled");
+
+	PathFindingManager::Instance().Generate(0, 0, 180, 180, 5);
+	PathFindingManager::Instance().Start();
+
 	PhysicsWorld::Instance().InitializeQuadtree(0, 0,100, 100);
 	PhysicsWorld::Instance().FillQuadtree(1); // Fill static quadtree
+	PhysicsWorld::Instance().PerformCollisions(1);
 
 }
 
@@ -178,6 +183,9 @@ void MainScene::LogicUpdate()
 
 	if (Input::GetKeyDown(GLFW_KEY_SPACE))
 		std::cout << "X: " << cam->transform.GetGlobalPosition().x << " Y: " << cam->transform.GetGlobalPosition().y << " Z: " << cam->transform.GetGlobalPosition().z << std::endl;
+
+
+	PathFindingManager::Instance().ClosestNodeAt(cam->transform.GetPosition().x, cam->transform.GetPosition().y, cam->transform.GetPosition().z);
 
 	Scene::LogicUpdate(); //Must be last statement!
 

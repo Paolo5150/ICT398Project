@@ -50,7 +50,7 @@ void Core::Initialize()
 	m_runningApplication = CreateApplication();
 	//WINDOW
 	// Set up windows after flew initialization (and after the context has been set).
-	Window::Instance().SetWindowSize(1600,1000);
+	Window::Instance().SetWindowSize(1200,800);
 	
 	LoadBasicAssets();
 
