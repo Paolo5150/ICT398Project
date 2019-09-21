@@ -153,6 +153,7 @@ void MainScene::Initialize() {
 	BushCourt* bushCourt = new BushCourt();
 	Fred* fred = new Fred();
 
+
 	AddGameObject(cam);
 
 	AddGameObject(dirLight);
@@ -160,6 +161,8 @@ void MainScene::Initialize() {
 	AddGameObject(dirLight3);
 	AddGameObject(bushCourt);
 	AddGameObject(fred);
+
+
 
 	
 	LoadGameObjectsFromFile("Assets\\SceneFiles\\MainScene.txt");
@@ -177,8 +180,8 @@ void MainScene::Start()
 	PhysicsWorld::Instance().FillQuadtree(1); // Fill static quadtree
 	PhysicsWorld::Instance().PerformCollisions(1);
 
-	//Test
-	Logger::LogInfo("Rest affordances ",AffordanceManager::Instance().GetAffordancesByType(Affordance::REST).size());
+
+
 }
 
 void MainScene::LogicUpdate()
@@ -198,11 +201,11 @@ void MainScene::LogicUpdate()
 	PathFindingManager::Instance().ClosestNodeAt(cam->transform.GetPosition().x, cam->transform.GetPosition().y, cam->transform.GetPosition().z);
 
 
-	std::set<AffordanceObject*> inRange = AffordanceManager::Instance().GetClosestAffordancesByTypeWithinRange(Affordance::REST, cam->transform.GetPosition(), 50);
+	/*std::set<AffordanceObject*> inRange = AffordanceManager::Instance().GetClosestAffordancesByTypeWithinRange(Affordance::REST, cam->transform.GetPosition(), 50);
 	for (auto it = inRange.begin(); it != inRange.end(); it++)
 	{
 		(*it)->gameObject->transform.RotateBy(1, 0, 1, 0);
-	}
+	}*/
 
 	Scene::LogicUpdate(); //Must be last statement!
 

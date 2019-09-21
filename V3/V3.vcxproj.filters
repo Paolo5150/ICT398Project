@@ -267,6 +267,9 @@
     <ClCompile Include="src\Affordances\AffordanceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Components\AffordanceAgent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h">
@@ -618,6 +621,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Affordances\AffordanceManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\AffordanceAgent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

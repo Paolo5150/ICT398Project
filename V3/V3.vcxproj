@@ -130,7 +130,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;WIN32;NDEBUG;_CONSOLE;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Bullet\include;$(SolutionDir)Dependencies\ImGui;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\Luabind\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)\Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -171,6 +171,7 @@
     <ClInclude Include="src\Affordances\AffordanceManager.h" />
     <ClInclude Include="src\Affordances\AffordanceObject.h" />
     <ClInclude Include="src\Affordances\RestAffordance.h" />
+    <ClInclude Include="src\Components\AffordanceAgent.h" />
     <ClInclude Include="src\Components\BoxCollider.h" />
     <ClInclude Include="src\Components\Collider.h" />
     <ClInclude Include="src\Components\MeshRenderer.h" />
@@ -288,6 +289,7 @@
     <ClCompile Include="src\Affordances\Affordance.cpp" />
     <ClCompile Include="src\Affordances\AffordanceManager.cpp" />
     <ClCompile Include="src\Affordances\AffordanceObject.cpp" />
+    <ClCompile Include="src\Components\AffordanceAgent.cpp" />
     <ClCompile Include="src\Components\BoxCollider.cpp" />
     <ClCompile Include="src\Components\Collider.cpp" />
     <ClCompile Include="src\Components\MeshRenderer.cpp" />

@@ -3,6 +3,19 @@
 #include "..\Utils\ContentManager.h"
 #include "..\Components\BoxCollider.h"
 #include "..\Components\Rigidbody.h"
+#include "..\Components\AffordanceAgent.h"
+#include "..\Affordances\RestAffordance.h"
+
+namespace
+{
+	AffordanceAgent* aa;
+}
+
+void Fred::Test(AffordanceObject* obj)
+{
+	Logger::LogInfo("I'm sitting on", obj->gameObject->GetName());
+
+}
 
 Fred::Fred() : GameObject("Fred")
 {
@@ -22,6 +35,19 @@ Fred::Fred() : GameObject("Fred")
 
 	ApplyMaterial(m2NoLight, NOLIGHT);
 
+	aa = new AffordanceAgent();
+	aa->AddAffordanceEngageCallback<SitAffordance>([&](AffordanceObject*obj) {
+	
+		transform.SetPosition(obj->gameObject->transform.GetPosition() + glm::vec3(0, 1, 0));
+	});
+
+	aa->AddAffordanceDisengageCallback<SitAffordance>([&]() {
+
+		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition() - glm::vec3(0, 1, 0));
+	});
+
+	AddComponent(aa);
+
 }
 
 Fred::~Fred()
@@ -32,6 +58,43 @@ Fred::~Fred()
 void Fred::Update()
 {
 	GameObject::Update();
+
+	static float timer = 0;
+	static bool done = 0;
+	timer += Timer::GetDeltaS();
+
+	if (timer > 7 && !done)
+	{
+	
+		if (aa->selectedObj == nullptr)
+		{
+		std::vector<AffordanceObject*> objs = AffordanceManager::Instance().GetObjectsOfTypeWithinRange<SitAffordance>(transform.GetGlobalPosition(),30);
+		aa->selectedObj = objs[0];
+		}
+		else
+		{
+			glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - transform.GetGlobalPosition();
+
+			if (glm::length2(toObj) < 1.0)
+			{
+				transform.Translate(glm::normalize(toObj) * Timer::GetDeltaS() * 2.0f);
+			}
+			else
+			{
+				aa->ExecuteAffordanceEngageCallback<SitAffordance>(aa->selectedObj);
+				done = 1;
+			}
+		}
+	}
+	else if (timer > 20)
+	{
+		aa->ExecuteAffordanceDisengageCallback<SitAffordance>();
+		Logger::LogInfo("Should disengage");
+	}
+
+
+
+
 }
 
 void Fred::Start()

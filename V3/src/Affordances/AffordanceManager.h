@@ -15,19 +15,43 @@ public:
 
 	static AffordanceManager& Instance();
 	~AffordanceManager() ;
+	void RegisterAffordanceObject(std::string, AffordanceObject* obj);	
 
-	void RegisterAffordanceObject(AffordanceObject* obj);
-	std::set<AffordanceObject*> GetAffordancesByType(int type);
-	AffordanceObject* GetClosestAffordancesByType(int type, glm::vec3 position, float maxRange);
-	std::set<AffordanceObject*> GetClosestAffordancesByTypeWithinRange(int type, glm::vec3 position, float maxRange);
-
+	template <class T>
+	std::vector<AffordanceObject*> GetObjectsOfTypeWithinRange(glm::vec3 pos, float range);
 
 
 private:
 	AffordanceManager();
-	std::map<int, std::set<AffordanceObject*>> affordanceMap;
+	std::map<std::string, std::set<AffordanceObject*>> affordanceMap;
 
 
 };
+
+
+template <class T>
+std::vector<AffordanceObject*> AffordanceManager::GetObjectsOfTypeWithinRange(glm::vec3 pos, float range)
+{
+	std::vector<AffordanceObject*> r;
+	std::string name = FileUtils::GetClassNameW<T>();
+
+	auto it = affordanceMap.find(name);
+	if (it != affordanceMap.end())
+	{
+		auto objIt = it->second.begin();
+		
+		for (; objIt != it->second.end(); objIt++)
+		{
+			if ((*objIt)->IsAvailableForAffordance(name))
+			{
+				float length = glm::length((*objIt)->gameObject->transform.GetGlobalPosition() - pos);
+				if (length < range)
+					r.push_back(*objIt);
+			}
+		}
+	}
+
+	return r;
+}
 
 

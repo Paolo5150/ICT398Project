@@ -5,25 +5,16 @@ class Affordance
 {
 public:
 
-	enum AffordanceTypes
-	{
-		REST = 1 << 0
-	};
 
-	Affordance(std::string name) : name(name) { affordanceType = 0; };
+	Affordance(){ maxUsers = 1; currentUsers = 0; };
 	virtual ~Affordance() {};
 
 	std::function<void()> Callback;
-
-	int GetScore() { return score; }
-	void SetScore(int s) { score = s; }
-	std::string GetName() { return name; }
-	int GetType() { return affordanceType; }
-	void AddAffordanceType(int type) { affordanceType |= type; };
+	int maxUsers;
+	int currentUsers;
 
 protected:
-	std::string name;
+
 	int score;
-	int affordanceType;
 
 };

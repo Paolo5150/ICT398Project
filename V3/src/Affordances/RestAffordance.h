@@ -5,12 +5,10 @@
 class SitAffordance : public Affordance
 {
 public:
-	SitAffordance() : Affordance("SitAffordance")
+	SitAffordance() 
 	{
-		
-		Callback = []() {Logger::LogInfo("Someone sit on me!"); };
 		score = 50;
-		AddAffordanceType(REST);
+		Callback = []() { Logger::LogInfo("Someone sit on me"); };
 	}
 	virtual ~SitAffordance() {};
 
@@ -20,12 +18,8 @@ public:
 class LaydownAffordance : public Affordance
 {
 public:
-	LaydownAffordance() : Affordance("LaydownAffordance")
+	LaydownAffordance() 
 	{
-
-		Callback = []() {Logger::LogInfo("Someone laid down on me!"); };
-		score = 80;
-		AddAffordanceType(REST);
 
 	}
 	virtual ~LaydownAffordance() {};

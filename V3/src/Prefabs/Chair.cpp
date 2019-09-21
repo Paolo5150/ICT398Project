@@ -26,6 +26,7 @@ Chair::Chair() : GameObject("Chair"), AffordanceObject(this)
 	ApplyMaterial(m2NoLight, NOLIGHT);
 	
 	SitAffordance* ra = new SitAffordance();
+
 	AddPerceviedAffordance(ra);
 
 }

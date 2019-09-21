@@ -1,6 +1,8 @@
 #pragma once
 #include "..\Core\GameObject.h"
 
+class AffordanceObject;
+
 class Fred : public GameObject
 {
 
@@ -13,7 +15,7 @@ public:
 	void OnCollisionEnter(Collider* g, Collision& collision) override;
 	void OnCollisionStay(Collider* g, Collision& collision) override;
 	void OnCollisionExit(Collider* g) override;
-
+	void Test(AffordanceObject*);
 private:
 
 };
