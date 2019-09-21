@@ -3,8 +3,9 @@
 #include "..\Utils\ContentManager.h"
 #include "..\Components\BoxCollider.h"
 #include "..\Diag\DiagRenderer.h"
+#include "..\Affordances\RestAffordance.h"
 
-Table::Table() : GameObject("Table")
+Table::Table() : GameObject("Table"), AffordanceObject(this)
 {
 	SetIsStatic(1);
 	ContentManager::Instance().GetAsset<Model>("Table")->PopulateGameObject(this);
@@ -26,6 +27,11 @@ Table::Table() : GameObject("Table")
 	m2NoLight.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("bamboo_albedo"), "diffuse0");
 	ApplyMaterial(m2NoLight, NOLIGHT);
 
+
+	LaydownAffordance* ra = new LaydownAffordance();
+	SitAffordance* sa = new SitAffordance();
+	AddPerceviedAffordance(ra);
+	AddPerceviedAffordance(sa);
 }
 
 Table::~Table()

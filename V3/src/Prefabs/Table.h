@@ -1,8 +1,9 @@
 #pragma once
 #include "..\Core\GameObject.h"
 #include "..\Components\Rigidbody.h"
+#include "..\Affordances\AffordanceObject.h"
 
-class Table : public GameObject
+class Table : public GameObject, public AffordanceObject
 {
 
 public:

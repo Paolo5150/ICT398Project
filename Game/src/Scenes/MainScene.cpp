@@ -18,7 +18,7 @@
 #include "GUI/GUIManager.h"
 #include "GUI/Elements/GUIImage.h"
 #include "GUI/Elements/GUIText.h"
-
+#include "Affordances/AffordanceManager.h"
 
 
 MainScene::MainScene() : Scene("MainScene")
@@ -177,6 +177,8 @@ void MainScene::Start()
 	PhysicsWorld::Instance().FillQuadtree(1); // Fill static quadtree
 	PhysicsWorld::Instance().PerformCollisions(1);
 
+	//Test
+	Logger::LogInfo("Rest affordances ",AffordanceManager::Instance().GetAffordancesByType(Affordance::REST).size());
 }
 
 void MainScene::LogicUpdate()
@@ -194,6 +196,13 @@ void MainScene::LogicUpdate()
 
 
 	PathFindingManager::Instance().ClosestNodeAt(cam->transform.GetPosition().x, cam->transform.GetPosition().y, cam->transform.GetPosition().z);
+
+
+	std::set<AffordanceObject*> inRange = AffordanceManager::Instance().GetClosestAffordancesByTypeWithinRange(Affordance::REST, cam->transform.GetPosition(), 50);
+	for (auto it = inRange.begin(); it != inRange.end(); it++)
+	{
+		(*it)->gameObject->transform.RotateBy(1, 0, 1, 0);
+	}
 
 	Scene::LogicUpdate(); //Must be last statement!
 

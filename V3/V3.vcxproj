@@ -167,6 +167,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Dependencies\qu3e\src\q3.h" />
+    <ClInclude Include="src\Affordances\Affordance.h" />
+    <ClInclude Include="src\Affordances\AffordanceManager.h" />
+    <ClInclude Include="src\Affordances\AffordanceObject.h" />
+    <ClInclude Include="src\Affordances\RestAffordance.h" />
     <ClInclude Include="src\Components\BoxCollider.h" />
     <ClInclude Include="src\Components\Collider.h" />
     <ClInclude Include="src\Components\MeshRenderer.h" />
@@ -281,6 +285,9 @@
     <ClInclude Include="src\Utils\UBOLibrary.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Affordances\Affordance.cpp" />
+    <ClCompile Include="src\Affordances\AffordanceManager.cpp" />
+    <ClCompile Include="src\Affordances\AffordanceObject.cpp" />
     <ClCompile Include="src\Components\BoxCollider.cpp" />
     <ClCompile Include="src\Components\Collider.cpp" />
     <ClCompile Include="src\Components\MeshRenderer.cpp" />

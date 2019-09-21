@@ -4,7 +4,8 @@
 #include "..\Components\BoxCollider.h"
 #include "..\Components\Rigidbody.h"
 
-Chair::Chair() : GameObject("Chair")
+
+Chair::Chair() : GameObject("Chair"), AffordanceObject(this)
 {
 	SetIsStatic(1);
 	ContentManager::Instance().GetAsset<Model>("Chair")->PopulateGameObject(this);
@@ -23,6 +24,9 @@ Chair::Chair() : GameObject("Chair")
 	m2NoLight.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStaticNoLight"));
 	m2NoLight.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("wood_albedo"), "diffuse0");
 	ApplyMaterial(m2NoLight, NOLIGHT);
+	
+	SitAffordance* ra = new SitAffordance();
+	AddPerceviedAffordance(ra);
 
 }
 
