@@ -65,13 +65,13 @@ PathNode* PathFindingManager::ClosestNodeAt(int x, int y, int z)
 		Logger::LogError("Cannot find closest");
 
 	// Uncomment this to see the returned node
-	closest->bc->enableRender = 1;
+	/*closest->bc->enableRender = 1;
 	for (int i = 0; i < closest->neighbors.size(); i++)
 	{
 		closest->neighbors[i]->bc->enableRender = 1;
 		closest->neighbors[i]->bc->meshRenderer->GetMaterial().SetColor(1, 0, 1);
 
-	}
+	}*/
 
 	return closest;
 }
@@ -115,18 +115,18 @@ void PathFindingManager::Generate(int centerX, int centerY, int sizeX, int sizeY
 // Comment this out when releasing, not needed (used for rendering the nodes)
 void PathFindingManager::EngineUpdate()
 {
-	for (unsigned i = 0; i < pathNodes.size(); i++)
+	/*for (unsigned i = 0; i < pathNodes.size(); i++)
 	{
 		pathNodes[i]->EngineUpdate();
-	}
+	}*/
 }
 // Comment this out when releasing, not needed (used for rendering the nodes)
 void PathFindingManager::Update()
 {
-	for (unsigned i = 0; i < pathNodes.size(); i++)
+	/*for (unsigned i = 0; i < pathNodes.size(); i++)
 	{
 		pathNodes[i]->Update();
-	}
+	}*/
 }
 
 

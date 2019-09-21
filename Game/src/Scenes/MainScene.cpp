@@ -9,7 +9,7 @@
 #include "Prefabs/Terrain.h"
 #include "Prefabs/LandfillBin.h"
 #include "Prefabs/RecycleBin.h"
-#include "Prefabs/Water.h"
+#include "Prefabs/Fred.h"
 #include "Prefabs/BushCourt.h"
 #include "Prefabs/Lantern.h"
 #include "Physics/PathFindingManager.h"
@@ -48,6 +48,10 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadModel("Assets\\Models\\RecycleBin\\recyclebin.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\BushCourt\\bushcourt.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Lantern\\lantern.obj", false, false);
+
+	ContentManager::Instance().LoadModel("Assets\\Models\\Fred\\Fred.fbx", false, false);
+
+
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Lantern\\textures\\Lantern.png", 0);
 
 
@@ -145,7 +149,7 @@ void MainScene::Initialize() {
 	dirLight3->SetIntensity(0.4);
 
 	BushCourt* bushCourt = new BushCourt();
-
+	Fred* fred = new Fred();
 
 	AddGameObject(cam);
 
@@ -153,6 +157,8 @@ void MainScene::Initialize() {
 	AddGameObject(dirLight2);
 	AddGameObject(dirLight3);
 	AddGameObject(bushCourt);
+	AddGameObject(fred);
+
 	
 	LoadGameObjectsFromFile("Assets\\SceneFiles\\MainScene.txt");
 }
