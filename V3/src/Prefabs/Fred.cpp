@@ -8,16 +8,17 @@ Fred::Fred() : GameObject("Fred")
 {
 	SetIsStatic(1);
 	ContentManager::Instance().GetAsset<Model>("Fred")->PopulateGameObject(this);
-	transform.SetScale(1.5);
+	transform.SetScale(0.03);
 	Material m;
 	m.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStatic"));
-	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("Fred_base_color"), "diffuse0");
-
+	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("Fred_Base_Color"), "diffuse0");
+	m.SetColor(0.5, 0.5, 0.5);
 	ApplyMaterial(m);
 
 	Material m2NoLight;
 	m2NoLight.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStaticNoLight"));
-	m2NoLight.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("Fred_base_color"), "diffuse0");
+	m2NoLight.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("Fred_Base_Color"), "diffuse0");
+	m2NoLight.SetColor(0.5, 0.5, 0.5);
 
 	ApplyMaterial(m2NoLight, NOLIGHT);
 
