@@ -4,6 +4,7 @@
 #include <map>
 #include <functional>
 #include "AffordanceManager.h"
+#include "..\Utils\FileUtils.h"
 
 class Affordance;
 class GameObject;
@@ -20,6 +21,10 @@ public:
 	void ExecuteAffordanceCallback(std::string afName);
 	bool IsAvailableForAffordance(std::string);
 	Affordance* GetInUseAffordance() { return inUse; };
+	std::string GetInUseAffordanceName();
+
+	bool IsGameObjectAUser(GameObject* user);
+	void AddUser(GameObject* o);
 
 	template <class T>
 	int GetAffordanceScore();
@@ -27,11 +32,13 @@ public:
 	int GetAffordanceScore(std::string name);
 
 
-	void ReleaseUse();
+	void ReleaseUse(GameObject* o);
 
 private:
+	void RemoveUser(GameObject* o);
 	Affordance* inUse;
 	std::map<std::string,std::unique_ptr<Affordance>> perceivedAffordances;  	 
+	std::list<GameObject*> users;
 
 };
 

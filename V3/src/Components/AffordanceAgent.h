@@ -17,6 +17,9 @@ public:
 	void AddAffordanceEngageCallback(std::function<void(AffordanceObject*)>);
 
 	template<class T>
+	bool IsAffordanceSupported();
+
+	template<class T>
 	void AddAffordanceDisengageCallback(std::function<void()>);
 
 	template<class T>
@@ -25,7 +28,12 @@ public:
 	template<class T>
 	void ExecuteAffordanceDisengageCallback();
 
+	template<class T>
+	bool LookForBestScoreAffordanceObjectInRange(float range);
+
 	AffordanceObject* selectedObj;
+
+	void Update() override;
 
 
 protected:
@@ -33,10 +41,38 @@ protected:
 	std::map<std::string, std::function<void(AffordanceObject*)>> affordanceEngageCallbackMap;
 	std::map<std::string, std::function<void()>> affordanceDisengageCallbackMap;
 
-	std::map<std::string,  AffordanceObject*> affordanceObjectUsedmap;
+	AffordanceObject* inUseObj;
+
 
 
 };
+
+template<class T>
+bool AffordanceAgent::LookForBestScoreAffordanceObjectInRange(float range)
+{
+	if (IsAffordanceSupported<T>())
+	{
+		if (selectedObj == nullptr)
+		{
+			selectedObj = AffordanceManager::Instance().GetBestScoreObjectOfTypeWithinRange<SitAffordance>(_parent->transform.GetGlobalPosition(), 30);
+			return selectedObj != nullptr;
+		}
+		else
+			return true;
+	}
+	else
+		return false;
+
+}
+
+template<class T>
+bool AffordanceAgent::IsAffordanceSupported()
+{
+	std::string affName = FileUtils::GetClassNameW<T>();
+	auto objIt = affordanceEngageCallbackMap.find(affName);
+	return objIt != affordanceEngageCallbackMap.end();
+
+}
 
 template<class T>
 void AffordanceAgent::AddAffordanceDisengageCallback(std::function<void()> callback)
@@ -56,9 +92,10 @@ void AffordanceAgent::AddAffordanceEngageCallback(std::function<void(AffordanceO
 template<class T>
 void AffordanceAgent::ExecuteAffordanceEngageCallback(AffordanceObject* obj)
 {
+
 	std::string affName = FileUtils::GetClassNameW<T>();
-	auto objIt = affordanceObjectUsedmap.find(affName);
-	if (objIt == affordanceObjectUsedmap.end())
+
+	if (inUseObj == nullptr)
 	{
 		auto it = affordanceEngageCallbackMap.find(affName);
 
@@ -66,7 +103,8 @@ void AffordanceAgent::ExecuteAffordanceEngageCallback(AffordanceObject* obj)
 		{
 			it->second(obj);
 			obj->ExecuteAffordanceCallback(affName);
-			affordanceObjectUsedmap[affName] = obj;
+			inUseObj = obj;
+			obj->AddUser(_parent);			
 		}
 	}
 }
@@ -76,17 +114,20 @@ template<class T>
 void AffordanceAgent::ExecuteAffordanceDisengageCallback()
 {
 	if (selectedObj == nullptr) return;
+
 	std::string affName = FileUtils::GetClassNameW<T>();
-	auto objIt = affordanceObjectUsedmap.find(affName);
-	if (objIt != affordanceObjectUsedmap.end())
+
+	if (inUseObj != nullptr)
 	{
 		auto it = affordanceDisengageCallbackMap.find(affName);
 
 		if (it != affordanceDisengageCallbackMap.end())
 		{
 			it->second();
-			affordanceObjectUsedmap[affName] = nullptr;
+			inUseObj->ReleaseUse(_parent);
+			inUseObj = nullptr;
 			selectedObj = nullptr;
+
 		}
 	}
 }

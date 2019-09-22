@@ -18,6 +18,39 @@ void AffordanceObject::AddPerceviedAffordance(Affordance* a)
 }
 
 
+std::string AffordanceObject::GetInUseAffordanceName()
+{ 
+	if(inUse != nullptr)
+	return FileUtils::GetClassNameW(inUse); 
+	else return "";
+};
+
+bool AffordanceObject::IsGameObjectAUser(GameObject* user)
+{
+	auto it = users.begin();
+	for (; it != users.end(); it++)
+	{
+		if ((*it) == user)
+			return 1;
+	}
+	return 0;
+}
+
+void AffordanceObject::AddUser(GameObject* o)
+{
+	users.push_back(o);		
+}
+void AffordanceObject::RemoveUser(GameObject* o)
+{
+	auto it = users.begin();
+	for (; it != users.end(); )
+	{
+		if ((*it) == o)
+			it = users.erase(it);
+		else
+			it++;
+	}
+}
 
 
 bool AffordanceObject::IsAvailableForAffordance(std::string affName)
@@ -50,8 +83,9 @@ void AffordanceObject::ExecuteAffordanceCallback(std::string afName)
 	//Logger::LogInfo("Object", gameObject->GetName(), "Users:", inUse->currentUsers, "Affordance:", afName);
 }
 
-void AffordanceObject::ReleaseUse()
+void AffordanceObject::ReleaseUse(GameObject* o)
 {
+	RemoveUser(o);
 	inUse->currentUsers--;
 	if (inUse->currentUsers <= 0)
 	{

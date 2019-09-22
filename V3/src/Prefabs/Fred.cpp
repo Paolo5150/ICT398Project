@@ -64,16 +64,9 @@ void Fred::Update()
 	timer += Timer::GetDeltaS();
 
 	if (timer > 7 && !done)
-	{
-	
-		if (aa->selectedObj == nullptr)
-		{
-		//std::vector<AffordanceObject*> objs = AffordanceManager::Instance().GetObjectsOfTypeWithinRange<SitAffordance>(transform.GetGlobalPosition(),30);
-		//aa->selectedObj = objs[0];
-		aa->selectedObj = AffordanceManager::Instance().GetBestScoreObjectOfTypeWithinRange<SitAffordance>(transform.GetGlobalPosition(), 30);
-		}
-		else
-		{
+	{	
+		if (aa->LookForBestScoreAffordanceObjectInRange<SitAffordance>(30))
+		{		
 			glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - transform.GetGlobalPosition();
 
 			if (glm::length2(toObj) > 0.1)
