@@ -50,11 +50,11 @@ protected:
 template<class T>
 bool AffordanceAgent::LookForBestScoreAffordanceObjectInRange(float range)
 {
-	if (IsAffordanceSupported<T>())
+	if (IsAffordanceSupported<T>() && inUseObj == nullptr)
 	{
 		if (selectedObj == nullptr)
 		{
-			selectedObj = AffordanceManager::Instance().GetBestScoreObjectOfTypeWithinRange<SitAffordance>(_parent->transform.GetGlobalPosition(), 30);
+			selectedObj = AffordanceManager::Instance().GetBestScoreObjectOfTypeWithinRange<SitAffordance>(_parent->transform.GetGlobalPosition(), range);
 			return selectedObj != nullptr;
 		}
 		else
@@ -113,7 +113,7 @@ void AffordanceAgent::ExecuteAffordanceEngageCallback(AffordanceObject* obj)
 template<class T>
 void AffordanceAgent::ExecuteAffordanceDisengageCallback()
 {
-	if (selectedObj == nullptr) return;
+	if (selectedObj == nullptr || inUseObj == nullptr) return;
 
 	std::string affName = FileUtils::GetClassNameW<T>();
 

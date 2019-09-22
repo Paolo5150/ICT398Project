@@ -169,7 +169,7 @@ void MainScene::Initialize() {
 	AddGameObject(dirLight3);
 	AddGameObject(bushCourt);
 	AddGameObject(fred);
-	//AddGameObject(riley);
+	AddGameObject(riley);
 
 
 

@@ -98,7 +98,7 @@ AffordanceObject* AffordanceManager::GetBestScoreObjectOfTypeWithinRange(glm::ve
 			}
 		}
 	}
-	else
+	else if(bestScore.size() == 1)
 		ret = bestScore[0];
 
 	return ret;

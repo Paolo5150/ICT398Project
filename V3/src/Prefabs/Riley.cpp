@@ -60,49 +60,31 @@ void Riley::Update()
 	GameObject::Update();
 
 	static float timer = 0;
-	static bool done = 0;
+	static bool needToSit = 1;
 	timer += Timer::GetDeltaS();
 
-	if (timer > 9 && !done)
+	if (timer > 7 && needToSit)
 	{
+		if (aa->LookForBestScoreAffordanceObjectInRange<SitAffordance>(130))
+		{
+			glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - transform.GetGlobalPosition();
 
-		if (aa->selectedObj == nullptr)
-		{
-			//std::vector<AffordanceObject*> objs = AffordanceManager::Instance().GetObjectsOfTypeWithinRange<SitAffordance>(transform.GetGlobalPosition(),30);
-			//aa->selectedObj = objs[0];
-			aa->selectedObj = AffordanceManager::Instance().GetBestScoreObjectOfTypeWithinRange<SitAffordance>(transform.GetGlobalPosition(), 30);
-		}
-		else
-		{
-			if (!aa->selectedObj->IsAvailableForAffordance("SitAffordance"))
-				aa->selectedObj = nullptr;
+			if (glm::length2(toObj) > 0.1)
+			{
+				transform.Translate(glm::normalize(toObj) * Timer::GetDeltaS() * 4.0f);
+				transform.RotateYTowards(aa->selectedObj->gameObject->transform.GetGlobalPosition());
+			}
 			else
 			{
-				glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - transform.GetGlobalPosition();
-
-				if (glm::length2(toObj) > 0.1)
-				{
-					transform.Translate(glm::normalize(toObj) * Timer::GetDeltaS() * 4.0f);
-					transform.RotateYTowards(aa->selectedObj->gameObject->transform.GetGlobalPosition());
-				}
-				else
-				{
-					aa->ExecuteAffordanceEngageCallback<SitAffordance>(aa->selectedObj);
-					done = 1;
-				}
+				aa->ExecuteAffordanceEngageCallback<SitAffordance>(aa->selectedObj);
 			}
-
 		}
 	}
-	else if (timer > 20 && done)
+	if (timer > 50)
 	{
 		aa->ExecuteAffordanceDisengageCallback<SitAffordance>();
-		//Logger::LogInfo("Should disengage");
+		needToSit = 0;
 	}
-
-
-
-
 }
 
 void Riley::Start()

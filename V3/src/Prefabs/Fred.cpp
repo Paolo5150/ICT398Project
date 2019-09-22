@@ -37,11 +37,12 @@ Fred::Fred() : GameObject("Fred")
 
 	aa = new AffordanceAgent();
 	aa->AddAffordanceEngageCallback<SitAffordance>([&](AffordanceObject*obj) {
-	
+		Logger::LogInfo("SitAffordance engaged");
 		transform.SetPosition(obj->gameObject->transform.GetPosition() + glm::vec3(0, 1, 0));
 	});
 
 	aa->AddAffordanceDisengageCallback<SitAffordance>([&]() {
+		Logger::LogInfo("SitAffordance disengaged");
 
 		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition() - glm::vec3(0, 1, 0));
 	});
@@ -60,10 +61,10 @@ void Fred::Update()
 	GameObject::Update();
 
 	static float timer = 0;
-	static bool done = 0;
+	static bool needToSit = 1;
 	timer += Timer::GetDeltaS();
 
-	if (timer > 7 && !done)
+	if (timer > 7 && needToSit)
 	{	
 		if (aa->LookForBestScoreAffordanceObjectInRange<SitAffordance>(30))
 		{		
@@ -76,14 +77,14 @@ void Fred::Update()
 			}
 			else
 			{
-				aa->ExecuteAffordanceEngageCallback<SitAffordance>(aa->selectedObj);
-				done = 1;
-			}
+				aa->ExecuteAffordanceEngageCallback<SitAffordance>(aa->selectedObj);			}
 		}
 	}
-	else if (timer > 20 && done)
+	if (timer > 20)
 	{
 		aa->ExecuteAffordanceDisengageCallback<SitAffordance>();
+		needToSit = 0;
+
 		//Logger::LogInfo("Should disengage");
 	}
 
