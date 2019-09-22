@@ -10,6 +10,8 @@ public:
 	virtual ~Affordance() {};
 
 	std::function<void()> Callback;
+	int GetScore() { return score; }
+	void SetScore(int s) { score = s; }
 	int maxUsers;
 	int currentUsers;
 

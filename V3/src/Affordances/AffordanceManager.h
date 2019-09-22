@@ -20,6 +20,9 @@ public:
 	template <class T>
 	std::vector<AffordanceObject*> GetObjectsOfTypeWithinRange(glm::vec3 pos, float range);
 
+	template <class T>
+	AffordanceObject* GetBestScoreObjectOfTypeWithinRange(glm::vec3 pos, float range);
+
 
 private:
 	AffordanceManager();
@@ -52,6 +55,48 @@ std::vector<AffordanceObject*> AffordanceManager::GetObjectsOfTypeWithinRange(gl
 	}
 
 	return r;
+}
+
+template <class T>
+AffordanceObject* AffordanceManager::GetBestScoreObjectOfTypeWithinRange(glm::vec3 pos, float range)
+{
+	std::string name = FileUtils::GetClassNameW<T>();
+
+	std::vector<AffordanceObject*> r = GetObjectsOfTypeWithinRange<T>(pos, range);
+	std::vector<AffordanceObject*> bestScore;
+
+	int max = -HUGE;
+
+	for (int i = 0; i < r.size(); i++)
+	{
+		int score = r[i]->GetAffordanceScore(name);
+		if (score >= max)
+		{
+			max = score;
+			bestScore.push_back(r[i]);
+		}
+	}
+
+	AffordanceObject* ret = nullptr;
+	// If there's more than one affordance obj with high same score, get closest one
+	if (bestScore.size() > 1)
+	{
+		float length2 = HUGE;
+		for (int i = 0; i < bestScore.size(); i++)
+		{
+			float lenngth = glm::length2(bestScore[i]->gameObject->transform.GetGlobalPosition() - pos);
+			if (lenngth < length2)
+			{
+				length2 = lenngth;
+				ret = bestScore[i];
+			}
+		}
+	}
+	else
+		ret = bestScore[0];
+
+	return ret;
+
 }
 
 

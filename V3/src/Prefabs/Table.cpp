@@ -30,6 +30,7 @@ Table::Table() : GameObject("Table"), AffordanceObject(this)
 
 	LaydownAffordance* ra = new LaydownAffordance();
 	SitAffordance* sa = new SitAffordance();
+	sa->SetScore(100);
 	AddPerceviedAffordance(ra);
 	AddPerceviedAffordance(sa);
 }

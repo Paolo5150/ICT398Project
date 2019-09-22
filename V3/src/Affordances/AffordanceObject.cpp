@@ -57,7 +57,16 @@ void AffordanceObject::ReleaseUse()
 		inUse->currentUsers = 0;
 		inUse = nullptr;
 	}
+}
 
+int AffordanceObject::GetAffordanceScore(std::string name)
+{
+	auto it = perceivedAffordances.find(name);
+	if (it != perceivedAffordances.end())
+	{
+		return it->second->GetScore();
+	}
+	return -1;
 }
 
 

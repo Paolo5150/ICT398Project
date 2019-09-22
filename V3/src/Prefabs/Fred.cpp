@@ -68,8 +68,9 @@ void Fred::Update()
 	
 		if (aa->selectedObj == nullptr)
 		{
-		std::vector<AffordanceObject*> objs = AffordanceManager::Instance().GetObjectsOfTypeWithinRange<SitAffordance>(transform.GetGlobalPosition(),30);
-		aa->selectedObj = objs[0];
+		//std::vector<AffordanceObject*> objs = AffordanceManager::Instance().GetObjectsOfTypeWithinRange<SitAffordance>(transform.GetGlobalPosition(),30);
+		//aa->selectedObj = objs[0];
+		aa->selectedObj = AffordanceManager::Instance().GetBestScoreObjectOfTypeWithinRange<SitAffordance>(transform.GetGlobalPosition(), 30);
 		}
 		else
 		{
