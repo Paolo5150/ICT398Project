@@ -24,7 +24,6 @@ bool AffordanceObject::IsAvailableForAffordance(std::string affName)
 {
 	if (inUse == nullptr)
 	{
-
 		auto it = perceivedAffordances.find(affName);
 		if (it != perceivedAffordances.end())
 		{
@@ -47,6 +46,8 @@ void AffordanceObject::ExecuteAffordanceCallback(std::string afName)
 		inUse = it->second.get();
 		inUse->currentUsers++;
 	}
+
+	//Logger::LogInfo("Object", gameObject->GetName(), "Users:", inUse->currentUsers, "Affordance:", afName);
 }
 
 void AffordanceObject::ReleaseUse()

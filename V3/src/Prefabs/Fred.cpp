@@ -19,7 +19,7 @@ void Fred::Test(AffordanceObject* obj)
 
 Fred::Fred() : GameObject("Fred")
 {
-	SetIsStatic(1);
+	SetIsStatic(0);
 	ContentManager::Instance().GetAsset<Model>("Fred")->PopulateGameObject(this);
 	transform.SetScale(0.03);
 	Material m;

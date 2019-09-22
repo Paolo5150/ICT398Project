@@ -66,15 +66,21 @@ AffordanceObject* AffordanceManager::GetBestScoreObjectOfTypeWithinRange(glm::ve
 	std::vector<AffordanceObject*> bestScore;
 
 	int max = -HUGE;
-
+	// Find max
 	for (int i = 0; i < r.size(); i++)
 	{
 		int score = r[i]->GetAffordanceScore(name);
 		if (score >= max)
 		{
 			max = score;
-			bestScore.push_back(r[i]);
 		}
+	}
+
+	for (int i = 0; i < r.size(); i++)
+	{
+		int score = r[i]->GetAffordanceScore(name);
+		if (score == max)
+			bestScore.push_back(r[i]);
 	}
 
 	AffordanceObject* ret = nullptr;

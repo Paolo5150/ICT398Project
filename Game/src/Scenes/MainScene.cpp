@@ -10,6 +10,8 @@
 #include "Prefabs/LandfillBin.h"
 #include "Prefabs/RecycleBin.h"
 #include "Prefabs/Fred.h"
+#include "Prefabs/Riley.h"
+
 #include "Prefabs/BushCourt.h"
 #include "Prefabs/Lantern.h"
 #include "Physics/PathFindingManager.h"
@@ -51,6 +53,10 @@ void MainScene::LoadAssets() {
 
 	ContentManager::Instance().LoadModel("Assets\\Models\\Fred\\Fred.fbx", false, false);
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Fred\\textures\\Fred_Base_Color.png", false);
+
+
+	ContentManager::Instance().LoadModel("Assets\\Models\\Riley\\Riley.fbx", false, false);
+	ContentManager::Instance().LoadTexture("Assets\\Models\\Riley\\textures\\Riley_Base_Color.png", false);
 
 
 
@@ -152,6 +158,8 @@ void MainScene::Initialize() {
 
 	BushCourt* bushCourt = new BushCourt();
 	Fred* fred = new Fred();
+	Riley* riley = new Riley();
+	riley->transform.SetPosition(0, 0, -10);
 
 
 	AddGameObject(cam);
@@ -161,6 +169,8 @@ void MainScene::Initialize() {
 	AddGameObject(dirLight3);
 	AddGameObject(bushCourt);
 	AddGameObject(fred);
+	AddGameObject(riley);
+
 
 
 
