@@ -75,9 +75,10 @@ void Fred::Update()
 		{
 			glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - transform.GetGlobalPosition();
 
-			if (glm::length2(toObj) < 1.0)
+			if (glm::length2(toObj) > 0.1)
 			{
-				transform.Translate(glm::normalize(toObj) * Timer::GetDeltaS() * 2.0f);
+				transform.Translate(glm::normalize(toObj) * Timer::GetDeltaS() * 4.0f );
+				transform.RotateYTowards(aa->selectedObj->gameObject->transform.GetGlobalPosition());
 			}
 			else
 			{
@@ -86,10 +87,10 @@ void Fred::Update()
 			}
 		}
 	}
-	else if (timer > 20)
+	else if (timer > 20 && done)
 	{
 		aa->ExecuteAffordanceDisengageCallback<SitAffordance>();
-		Logger::LogInfo("Should disengage");
+		//Logger::LogInfo("Should disengage");
 	}
 
 

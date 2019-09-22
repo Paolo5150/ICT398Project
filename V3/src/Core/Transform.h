@@ -304,6 +304,8 @@ public:
 
 	void UpdateVectors();
 
+	void RotateYTowards(glm::vec3 target);
+
 	
 	void SetIgnoreParentRotation(bool i) { ignoreParentRotation = i; }
 

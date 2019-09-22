@@ -312,6 +312,15 @@ void  Transform::LookAt(glm::vec3 target)
 }
 
 
+void Transform::RotateYTowards(glm::vec3 target)
+{
+	glm::vec3 toTarget = target - GetGlobalPosition();
+	float angle = glm::degrees(glm::angle(GetLocalFront(), toTarget));
+	if (angle < 1.0) return; //Tolerance
+	int cross =glm::sign( glm::cross(GetLocalFront(), toTarget)).y;
+	RotateBy(angle * cross, 0, 1, 0);
+
+}
 
 
 
