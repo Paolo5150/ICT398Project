@@ -12,34 +12,55 @@ PathFinder::~PathFinder()
 
 void PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
 {
+	PathNode* nextNode = nullptr;
 	PathNode* startNode = PathFindingManager::Instance().ClosestNodeAt(start.x, start.y, start.z);
 	PathNode* endNode = PathFindingManager::Instance().ClosestNodeAt(end.x, end.y, end.z);
 
 	PathNode* currentNode = startNode;
 
-	std::vector<std::unique_ptr<PathNode>> closed;
-	std::vector<std::unique_ptr<PathNode>> open = PathFindingManager::Instance().pathNodes;
+	std::vector<std::vector<PathNode*>> closed;
+	std::vector<std::vector<PathNode*>> open = PathFindingManager::Instance().nodeMap;
 
 	open.erase(std::find(open.begin(), open.end(), startNode));
 
-	while (open.size() != 0)
+	while (open.size() != 0 && nextNode != endNode)
 	{
-		for (auto it = open.begin(); it != open.end(); it++)
+		for (auto itx = open.begin(); itx != open.end(); itx++)
 		{
-			//find least f, assign to q
-			//pop q from open
-			for (unsigned int i = 0; (*it)->neighbors.size(); i++)
+			for (auto ity = (*itx).begin(); ity != (*itx).end(); ity++)
 			{
-				if ((*it)->neighbors.at(i) == endNode)
+				//find least f, assign to q
+				//pop q from open
+				for (unsigned int i = 0; (*ity)->neighbors.size(); i++)
 				{
-					return;
-				}
-				else
-				{
-					currentNode->neighbors[i]->distanceFromPrevious = glm::length(currentNode->transform.GetPosition() - currentNode->neighbors[i]->transform.GetPosition());
-					currentNode->neighbors[i]->distanceFromTarget = glm::length(endNode->transform.GetPosition() - currentNode->neighbors[i]->transform.GetPosition());
+					if ((*ity)->neighbors[i] == endNode)
+					{
+						return;
+					}
+					else
+					{
+						(*ity)->neighbors[i]->distanceFromPrevious = glm::length((*ity)->transform.GetPosition() - (*ity)->neighbors[i]->transform.GetPosition());
+						(*ity)->neighbors[i]->distanceFromTarget = glm::length(endNode->transform.GetPosition() - (*ity)->neighbors[i]->transform.GetPosition());
+						double total = (*ity)->neighbors[i]->distanceFromPrevious + (*ity)->neighbors[i]->distanceFromTarget + (*ity)->neighbors[i]->cost;
+						(*ity)->neighbors[i]->cost = total;
+						(*ity)->neighbors[i]->checked = true;
+						if (total < nextNode->cost)
+						{
+							nextNode = (*ity)->neighbors[i];
+						}
+
+					}
 				}
 			}
+		}
+
+		if (nextNode != nullptr)
+		{
+			path.push_back(nextNode->transform.GetPosition());
+		}
+		else
+		{
+			Logger::LogError("No path found");
 		}
 	}
 }
