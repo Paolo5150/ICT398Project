@@ -35,7 +35,7 @@ void Collider::Start()
 	if(_parent->GetIsStatic())
 		PhysicsWorld::Instance().AddCollider(this);
 
-	CalculateMomentOfIntertia();
+	//CalculateMomentOfIntertia();
 	CalculateCubicDimensions();
 }
 
@@ -69,7 +69,7 @@ void Collider::OnAttach(GameObject* go)
 	Initialize();
 	
 	// Disable render
-	enableRender = 0;
+	enableRender = 1;
 }
 
 

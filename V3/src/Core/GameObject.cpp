@@ -193,8 +193,8 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 			bc->transform.SetRotation(t[i].r);
 			bc->SetMass(t[i].mass);
 			bc->SetActive(t[i].isActive);
-			bc->CalculateMomentOfIntertia();
 			colliders.push_back(dynamic_cast<Collider*>(AddComponent(bc)));
+			bc->CalculateMomentOfIntertia();
 		}
 		else if (t[i].type == "SC")
 		{
@@ -204,8 +204,8 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 			sc->transform.SetScale(t[i].s.x, t[i].s.x, t[i].s.x);
 			sc->SetActive(t[i].isActive);
 			sc->SetMass(t[i].mass);
-			sc->CalculateMomentOfIntertia();
 			colliders.push_back(dynamic_cast<Collider*>(AddComponent(sc)));
+			sc->CalculateMomentOfIntertia();
 		}
 		else
 			continue;
@@ -228,7 +228,7 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 	for (int i = 0; i < colliders.size(); i++)
 	{
 		overrallMass += colliders[i]->GetMass();
-		weightedPos += colliders[i]->transform.GetPosition() * colliders[i]->GetMass();
+		weightedPos += colliders[i]->transform.GetGlobalPosition() * colliders[i]->GetMass();
 	}
 
 	centreOfMass = weightedPos / overrallMass;
@@ -242,7 +242,7 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 	for (int i = 0; i < colliders.size(); i++)
 	{
 		glm::vec3 inertia = colliders[i]->GetMomentOfIntertia();
-		glm::vec3 correctedPos = colliders[i]->transform.GetPosition() - centreOfMass;
+		glm::vec3 correctedPos = colliders[i]->transform.GetGlobalPosition() - centreOfMass;
 
 		float mass = colliders[i]->GetMass();
 		inertiaTensor[0][0] += inertia.x + mass * (correctedPos.y * correctedPos.y + correctedPos.z * correctedPos.z);

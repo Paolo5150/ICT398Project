@@ -50,6 +50,8 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadModel("Assets\\Models\\RecycleBin\\recyclebin.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\BushCourt\\bushcourt.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Lantern\\lantern.obj", false, false);
+	ContentManager::Instance().LoadModel("Assets\\Models\\Crate\\crate.obj",false, false);
+
 
 	ContentManager::Instance().LoadModel("Assets\\Models\\Fred\\Fred.fbx", false, false);
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Fred\\textures\\Fred_Base_Color.png", false);
