@@ -113,6 +113,7 @@ void AffordanceAgent::ExecuteAffordanceEngageCallback(AffordanceObject* obj)
 template<class T>
 void AffordanceAgent::ExecuteAffordanceDisengageCallback()
 {
+	// If there's no affordance object in use, no need to disengage it
 	if (selectedObj == nullptr || inUseObj == nullptr) return;
 
 	std::string affName = FileUtils::GetClassNameW<T>();

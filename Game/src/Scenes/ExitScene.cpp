@@ -53,8 +53,6 @@ void ExitScene::Initialize() {
 	text->isActive = 0;
 	GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(text);
 
-
-
 	LightManager::Instance().SetAmbientLight(0.00, 0.00, 0.00);
 
 	skybox = std::unique_ptr<Skybox>(new Skybox(ContentManager::Instance().GetAsset<CubeMap>("SunSet")));

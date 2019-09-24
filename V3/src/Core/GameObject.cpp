@@ -295,7 +295,7 @@ void GameObject::AddChild(GameObject* child)
 			child->transform.parent = &transform;
 			_children.push_back(child);
 			transform.transformChildren.push_back(&child->transform);
-
+			transform.UpdateHierarchy();
 		}
 	}
 

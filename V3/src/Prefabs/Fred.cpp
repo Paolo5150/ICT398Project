@@ -5,6 +5,7 @@
 #include "..\Components\Rigidbody.h"
 #include "..\Components\AffordanceAgent.h"
 #include "..\Affordances\RestAffordance.h"
+#include "Dylan.h"
 
 namespace
 {
@@ -20,6 +21,7 @@ void Fred::Test(AffordanceObject* obj)
 Fred::Fred() : GameObject("Fred")
 {
 	SetIsStatic(0);
+
 	ContentManager::Instance().GetAsset<Model>("Fred")->PopulateGameObject(this);
 	transform.SetScale(0.03);
 	Material m;
@@ -34,6 +36,12 @@ Fred::Fred() : GameObject("Fred")
 	m2NoLight.SetColor(0.5, 0.5, 0.5);
 
 	ApplyMaterial(m2NoLight, NOLIGHT);
+
+	Dylan* d = new Dylan();
+	AddChild(d);
+	d->transform.SetScale(2.8);
+	d->transform.SetRotation(-90, 0, 0);
+	d->transform.SetPosition(0, 160, 20);
 
 	aa = new AffordanceAgent();
 	aa->AddAffordanceEngageCallback<SitAffordance>([&](AffordanceObject*obj) {

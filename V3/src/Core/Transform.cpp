@@ -282,6 +282,7 @@ void Transform::LookAt(float x, float y, float z)
 {
 	glm::vec3 target(x, y, z);
 	LookAt(target);
+	LookAt(target);
 }
 
 void  Transform::LookAt(glm::vec3 target)

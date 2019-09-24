@@ -4,8 +4,6 @@
 class Affordance
 {
 public:
-
-
 	Affordance(){ maxUsers = 1; currentUsers = 0; };
 	virtual ~Affordance() {};
 
@@ -16,7 +14,6 @@ public:
 	int currentUsers;
 
 protected:
-
 	int score;
 
 };
