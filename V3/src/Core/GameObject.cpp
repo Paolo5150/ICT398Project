@@ -93,14 +93,11 @@ glm::vec3 GameObject::GetCentreOfMass()
 {
 	glm::mat4 rot = transform.GetGlobalRotation();
 
-	glm::vec3 rotVec = rot * glm::vec4(centreOfMass, 1.0);
+	glm::vec3 rotVec = transform.GetMatrix() * glm::vec4(centreOfMass, 1.0);
 	return rotVec;
 }
 
-glm::mat3 GameObject::GetInertiaTensor()
-{
-	return inertiaTensor;
-}
+
 
 void GameObject::SetActive(bool active, bool includeChildren)
 {
@@ -251,7 +248,11 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 	}
 }
 
-
+glm::mat3& GameObject::GetInertiaTensor()
+{
+	//return glm::mat3(transform.GetRotationMatrixLocal()) * inertiaTensor * glm::mat3(glm::inverse(transform.GetRotationMatrixLocal()));
+	return inertiaTensor;
+}
 
 std::string GameObject::GetName() const
 {

@@ -447,7 +447,7 @@ public:
 	*
 	* @return intertia tensor for object
 	*/
-	glm::mat3 GetInertiaTensor();
+	glm::mat3& GetInertiaTensor();
 
 	virtual void OnCollisionEnter(Collider* go, Collision& collision){};
 	virtual void OnCollisionStay(Collider* go, Collision& collision) {};

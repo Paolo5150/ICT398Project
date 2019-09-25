@@ -1,12 +1,13 @@
 #include "pch.h"
 #include "Box2.h"
 #include "..\Utils\ContentManager.h"
+#include "..\Diag\DiagRenderer.h"
 
 Box2::Box2() : GameObject("Box")
 {
 	SetIsStatic(false);
-	ContentManager::Instance().GetAsset<Model>("Crate")->PopulateGameObject(this);
-	transform.SetScale(0.1);
+	ContentManager::Instance().GetAsset<Model>("Cube")->PopulateGameObject(this);
+
 	Material m;
 	m.SetShader(ContentManager::Instance().GetAsset<Shader>("PBR"));
 	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("wood_normal"), "normalMap");
@@ -37,6 +38,8 @@ Box2::~Box2()
 void Box2::Update()
 {
 	GameObject::Update();
+	DiagRenderer::Instance().RenderSphere(GetCentreOfMass(), 0.5);
+
 }
 
 void Box2::Start()

@@ -135,6 +135,8 @@ public:
 	*/
 	glm::mat4& GetMatrix();
 
+	glm::mat4& GetRotationMatrixLocal() { return rotationMatrix; }
+
 	/**
 	* @brief		Rotate object by certain angle in deg on a single axis
 	* @pre			The game object owning the transform exists
