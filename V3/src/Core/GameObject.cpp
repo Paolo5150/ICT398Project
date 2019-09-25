@@ -188,7 +188,10 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 			bc->transform.SetPosition(t[i].p);
 			bc->transform.SetScale(t[i].s);
 			bc->transform.SetRotation(t[i].r);
-			bc->SetMass(t[i].mass);
+			if (!GetIsStatic())
+				bc->SetMass(t[i].mass);
+			else
+				bc->SetMass(10000);
 			bc->SetActive(t[i].isActive);
 			colliders.push_back(dynamic_cast<Collider*>(AddComponent(bc)));
 			bc->CalculateMomentOfIntertia();
@@ -200,7 +203,10 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 			sc->transform.SetPosition(t[i].p);
 			sc->transform.SetScale(t[i].s.x, t[i].s.x, t[i].s.x);
 			sc->SetActive(t[i].isActive);
-			sc->SetMass(t[i].mass);
+			if (!GetIsStatic())
+				sc->SetMass(t[i].mass);
+			else
+				sc->SetMass(10000);
 			colliders.push_back(dynamic_cast<Collider*>(AddComponent(sc)));
 			sc->CalculateMomentOfIntertia();
 		}
