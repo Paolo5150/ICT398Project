@@ -38,8 +38,7 @@ Box2::~Box2()
 void Box2::Update()
 {
 	GameObject::Update();
-	DiagRenderer::Instance().RenderSphere(GetCentreOfMass(), 0.5);
-
+	
 }
 
 void Box2::Start()
