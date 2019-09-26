@@ -97,6 +97,18 @@ glm::vec3 GameObject::GetCentreOfMass()
 	return rotVec;
 }
 
+void GameObject::SetCullable(bool cullable)
+{
+	Renderer* rend = GetComponentByType<Renderer>("Renderer");
+	if (rend != nullptr)
+		rend->SetIsCullable(cullable);
+
+	for (auto it = std::begin(_children); it != std::end(_children); it++)
+	{
+		(*it)->SetCullable(cullable);
+	}
+
+}
 
 
 void GameObject::SetActive(bool active, bool includeChildren)
