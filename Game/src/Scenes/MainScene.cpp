@@ -21,6 +21,10 @@
 
 
 
+#include "Components/PathFinder.h"
+
+
+
 MainScene::MainScene() : Scene("MainScene")
 {
 }
@@ -169,6 +173,16 @@ void MainScene::Start()
 	PhysicsWorld::Instance().FillQuadtree(1); // Fill static quadtree
 	PhysicsWorld::Instance().PerformCollisions(1);
 
+	/*GameObject* lantern = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Lantern").at(0);
+	PathFinder* lpath = lantern->GetComponentByType<PathFinder>("PathFinder");
+	lpath->GeneratePath(lantern->transform.GetGlobalPosition(), glm::vec3(100, 0, 100));
+	std::vector<glm::vec3> path = lpath->GetPath();
+	std::vector<Lantern> items;
+	std::fill(items.begin(), items.end(), new Lantern());
+	for (unsigned i = 0; i < path.size(); i++)
+	{
+		items.at(i).transform.SetPosition(path.at(0));
+	}*/
 }
 
 void MainScene::LogicUpdate()

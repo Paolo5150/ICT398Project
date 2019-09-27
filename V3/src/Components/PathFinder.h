@@ -10,9 +10,11 @@ public:
 	PathFinder();
 	~PathFinder();
 	void GeneratePath(glm::vec3 start, glm::vec3 end);
-	glm::vec3 GetNextNode();
+	std::vector<glm::vec3> GetPath() const;
+	glm::vec3 GetNextNode() const;
+
 
 private:
-	std::vector<glm::vec3> path;
+	std::vector<glm::vec3> path_;
 };
 
