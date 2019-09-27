@@ -22,6 +22,7 @@
 
 
 #include "Components/PathFinder.h"
+#include "Prefabs/Box.h"
 
 
 
@@ -173,16 +174,27 @@ void MainScene::Start()
 	PhysicsWorld::Instance().FillQuadtree(1); // Fill static quadtree
 	PhysicsWorld::Instance().PerformCollisions(1);
 
-	/*GameObject* lantern = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Lantern").at(0);
-	PathFinder* lpath = lantern->GetComponentByType<PathFinder>("PathFinder");
-	lpath->GeneratePath(lantern->transform.GetGlobalPosition(), glm::vec3(100, 0, 100));
-	std::vector<glm::vec3> path = lpath->GetPath();
-	std::vector<Lantern> items;
-	std::fill(items.begin(), items.end(), new Lantern());
+	GameObject* lantern = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Lantern").at(0);
+	PathFinder* lpath = lantern->GetComponent<PathFinder>("PathFinder");
+	
+	std::vector<glm::vec3> path;
+	//path = lpath->GeneratePath(lantern->transform.GetGlobalPosition(), glm::vec3(100, 0, 100));
+	std::vector<Box*> items;
+	for (unsigned i = 0; i < 11; i++)
+	{
+		Box* box = new Box();
+		box->GetComponent<BoxCollider>("BoxCollider")->enableRender = true;
+		box->transform.SetPosition(-250, 0, -250);
+		items.push_back(box);
+	}
+
+	//std::fill(items.begin(), items.end(), new Lantern());
 	for (unsigned i = 0; i < path.size(); i++)
 	{
-		items.at(i).transform.SetPosition(path.at(0));
-	}*/
+		//items.at(i)->transform.SetPosition(path.at(0));
+		Logger::LogInfo("Path - X: ", path.at(i).x, " Y: ", path.at(i).y, " Z: ", path.at(i).z);
+
+	}
 }
 
 void MainScene::LogicUpdate()

@@ -68,6 +68,11 @@ public:
 	std::vector<PathNode*> neighbors;
 
 	/**
+	* @brief		Parent node used for pathfinding
+	*/
+	PathNode* parentNode;
+
+	/**
 	* @brief		The distance from the previous closest node
 	*/
 	double distanceFromPrevious;
@@ -76,6 +81,10 @@ public:
 	* @brief		The distance from the destination
 	*/
 	double distanceFromTarget;
+
+	double fvalue;
+
+	bool lock; //Stops others using this node
 
 	/**
 	* @brief		The traversal cost of the noden
