@@ -96,6 +96,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Bullet\include;$(SolutionDir)Dependencies\ImGui;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\Luabind\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)\Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

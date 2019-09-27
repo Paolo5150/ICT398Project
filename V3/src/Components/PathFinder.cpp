@@ -12,7 +12,7 @@ PathFinder::~PathFinder()
 {
 }
 
-std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
+/*std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
 {
 	//double fromStartCost = 0;
 	double bestCost = 999999999;
@@ -52,7 +52,6 @@ std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
 		Logger::LogInfo("Loop ", loopCounter);
 		loopCounter++;
 		bestCost = 999999999;
-		Logger::LogInfo("Found end node!");
 		for (unsigned i = 0; i < open.size(); i++)
 		{
 			if (open.at(i)->fvalue < bestCost)
@@ -137,6 +136,81 @@ std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
 			Logger::LogError("No further path found");
 		}
 	}*/
+}*/
+
+std::vector<glm::vec3> PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
+{
+	PathNode* startNode = PathFindingManager::Instance().ClosestNodeAt(start.x, start.y, start.z);
+	PathNode* endNode = PathFindingManager::Instance().ClosestNodeAt(end.x, end.y, end.z);
+	startNode->distanceFromPrevious = startNode->distanceFromTarget = startNode->fvalue = 0;
+	endNode->distanceFromPrevious = endNode->distanceFromTarget = endNode->fvalue = 0;
+
+	// Initialize both open and closed list
+	std::vector<PathNode*> open;
+	std::vector<PathNode*> closed;
+
+	// Add the start node
+	open.push_back(startNode);
+
+	// Loop until you find the end
+	while (open.size() > 0)
+	{
+		// Get the current node
+		PathNode* currentNode = open.at(0);
+		unsigned currentIndex = 0;
+
+		for (unsigned i = 0; i < open.size(); i++)
+		{
+			if (open.at(i)->fvalue < currentNode->fvalue)
+			{
+				currentNode = open.at(i);
+				currentIndex = i;
+			}
+		}
+		// Pop current off open list, add to closed list
+		open.erase(std::begin(open) + currentIndex);
+		closed.push_back(currentNode);
+
+		// Found the goal
+		if (currentNode == endNode)
+		{
+			std::vector<glm::vec3> path;
+			PathNode* current = currentNode;
+			while (current != nullptr)
+			{
+				path.push_back(current->transform.GetPosition());
+				current = current->parentNode;
+				return path;
+			}
+		}
+
+		// Loop through children
+		for (unsigned i = 0; i < currentNode->neighbors.size(); i++)
+		{
+
+			// Child is on the closed list
+			for (unsigned j = 0; j < closed.size(); j++)
+			{
+				if (currentNode->neighbors[i] == closed.at(j))
+					continue;
+			}
+
+			// Create the f, g, and h values
+			currentNode->neighbors[i]->distanceFromPrevious = currentNode->distanceFromPrevious + glm::length(currentNode->transform.GetPosition() - currentNode->neighbors[i]->transform.GetPosition());
+			currentNode->neighbors[i]->distanceFromTarget = glm::length(endNode->transform.GetPosition() - currentNode->neighbors[i]->transform.GetPosition());
+			currentNode->neighbors[i]->fvalue = currentNode->neighbors[i]->distanceFromPrevious + currentNode->neighbors[i]->distanceFromTarget + currentNode->neighbors[i]->cost;
+
+			// Child is already in the open list
+			for (unsigned j = 0; j < open.size(); j++)
+			{
+				if (currentNode->neighbors[i] == open.at(j) && currentNode->neighbors[i]->distanceFromPrevious > open.at(j)->distanceFromPrevious)
+					continue;
+			}
+
+			// Add the child to the open list
+			open.push_back(currentNode->neighbors[i]);
+		}
+	}
 }
 
 std::vector<glm::vec3> PathFinder::GetPath()

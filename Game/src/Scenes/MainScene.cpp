@@ -178,7 +178,7 @@ void MainScene::Start()
 	PathFinder* lpath = lantern->GetComponent<PathFinder>("PathFinder");
 	
 	std::vector<glm::vec3> path;
-	//path = lpath->GeneratePath(lantern->transform.GetGlobalPosition(), glm::vec3(100, 0, 100));
+	path = lpath->GeneratePath(lantern->transform.GetGlobalPosition(), glm::vec3(100, 0, 100));
 	std::vector<Box*> items;
 	for (unsigned i = 0; i < 11; i++)
 	{
