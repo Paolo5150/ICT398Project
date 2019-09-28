@@ -89,14 +89,14 @@ void Fred::Update()
 			else
 			{
 				// When close enough enage it
-				aa->ExecuteAffordanceEngageCallback<SitAffordance>(aa->selectedObj);
+				aa->ExecuteAffordanceEngageCallback("SitAffordance");
 			}
 		}
 	}
 	if (timer > 20)
 	{
 		// After a while, just disengage the affordance object (this would trigger when the need to sit is no longer active)
-		aa->ExecuteAffordanceDisengageCallback<SitAffordance>();
+		aa->ExecuteAffordanceDisengageCallback("SitAffordance");
 		needToSit = 0;
 
 		//Logger::LogInfo("Should disengage");

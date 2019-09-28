@@ -23,10 +23,14 @@ public:
 	void AddAffordanceDisengageCallback(std::function<void()>);
 
 	template<class T>
-	void ExecuteAffordanceEngageCallback(AffordanceObject* obj);
+	void ExecuteAffordanceEngageCallback();
 
 	template<class T>
 	void ExecuteAffordanceDisengageCallback();
+
+	void ExecuteAffordanceDisengageCallback(std::string name);
+	void ExecuteAffordanceEngageCallback(std::string name);
+
 
 	template<class T>
 	bool LookForBestScoreAffordanceObjectInRange(float range);
@@ -42,9 +46,6 @@ protected:
 	std::map<std::string, std::function<void()>> affordanceDisengageCallbackMap;
 
 	AffordanceObject* inUseObj;
-
-
-
 };
 
 template<class T>
@@ -90,7 +91,7 @@ void AffordanceAgent::AddAffordanceEngageCallback(std::function<void(AffordanceO
 }
 
 template<class T>
-void AffordanceAgent::ExecuteAffordanceEngageCallback(AffordanceObject* obj)
+void AffordanceAgent::ExecuteAffordanceEngageCallback()
 {
 
 	std::string affName = FileUtils::GetClassNameW<T>();
@@ -101,10 +102,10 @@ void AffordanceAgent::ExecuteAffordanceEngageCallback(AffordanceObject* obj)
 
 		if (it != affordanceEngageCallbackMap.end())
 		{
-			it->second(obj);
-			obj->ExecuteAffordanceCallback(affName);
-			inUseObj = obj;
-			obj->AddUser(_parent);			
+			it->second(selectedObj);
+			selectedObj->ExecuteAffordanceCallback(affName);
+			inUseObj = selectedObj;
+			selectedObj->AddUser(_parent);
 		}
 	}
 }

@@ -76,7 +76,7 @@ void Riley::Update()
 			}
 			else
 			{
-				aa->ExecuteAffordanceEngageCallback<SitAffordance>(aa->selectedObj);
+				aa->ExecuteAffordanceEngageCallback<SitAffordance>();
 			}
 		}
 	}

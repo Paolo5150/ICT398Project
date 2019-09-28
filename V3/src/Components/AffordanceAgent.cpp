@@ -13,6 +13,41 @@ AffordanceAgent::~AffordanceAgent()
 	affordanceEngageCallbackMap.clear();
 }
 
+void AffordanceAgent::ExecuteAffordanceDisengageCallback(std::string affName)
+{
+	// If there's no affordance object in use, no need to disengage it
+	if (selectedObj == nullptr || inUseObj == nullptr) return;
+
+	if (inUseObj != nullptr)
+	{
+		auto it = affordanceDisengageCallbackMap.find(affName);
+
+		if (it != affordanceDisengageCallbackMap.end())
+		{
+			it->second();
+			inUseObj->ReleaseUse(_parent);
+			inUseObj = nullptr;
+			selectedObj = nullptr;
+
+		}
+	}
+}
+void AffordanceAgent::ExecuteAffordanceEngageCallback(std::string affName)
+{
+
+	if (inUseObj == nullptr)
+	{
+		auto it = affordanceEngageCallbackMap.find(affName);
+
+		if (it != affordanceEngageCallbackMap.end())
+		{
+			it->second(selectedObj);
+			selectedObj->ExecuteAffordanceCallback(affName);
+			inUseObj = selectedObj;
+			selectedObj->AddUser(_parent);
+		}
+	}
+}
 
 void AffordanceAgent::Update()
 {
