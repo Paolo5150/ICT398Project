@@ -177,8 +177,6 @@ void MainScene::Start()
 	cam->AddComponent(new PathFinder());
 }
 
-std::vector<PathNode*> path;
-
 void MainScene::LogicUpdate()
 {
 	if (Input::GetKeyDown(GLFW_KEY_ESCAPE))
@@ -194,18 +192,18 @@ void MainScene::LogicUpdate()
 
 	if (Input::GetKeyDown(GLFW_KEY_K))
 	{
-		if (path.size() > 0)
+		for (unsigned i = 0; i < PathFindingManager::Instance().nodeMap.size(); i++) //Temporary for debugging pathfinding
 		{
-			for (unsigned i = 0; i < path.size(); i++)
+			for (unsigned j = 0; j < PathFindingManager::Instance().nodeMap.at(i).size(); j++)
 			{
-				path.at(i)->bc->enableRender = 0;
+				PathFindingManager::Instance().nodeMap.at(i).at(j)->bc->enableRender = 0;
 			}
 		}
 
 		PathFinder* lpath = cam->GetComponent<PathFinder>("PathFinder");
 		lpath->UnlockEndNode();
 		lpath->GeneratePath(cam->transform.GetGlobalPosition(), glm::vec3(pathGoal));
-		path = lpath->GetNodes();
+		std::vector<PathNode*> path = lpath->GetNodes();
 
 		for (unsigned i = 0; i < path.size(); i++)
 		{
@@ -217,7 +215,7 @@ void MainScene::LogicUpdate()
 		pathGoal = cam->transform.GetGlobalPosition();
 	}
 
-	PathFindingManager::Instance().ClosestNodeAt(cam->transform.GetPosition().x, cam->transform.GetPosition().y, cam->transform.GetPosition().z);
+	//PathFindingManager::Instance().ClosestNodeAt(cam->transform.GetPosition().x, cam->transform.GetPosition().y, cam->transform.GetPosition().z);
 
 	Scene::LogicUpdate(); //Must be last statement!
 

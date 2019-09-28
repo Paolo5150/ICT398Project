@@ -59,6 +59,6 @@ public:
 
 	MainCamera* cam;
 
-	glm::vec3 pathGoal = glm::vec3(0, 0, 0);
+	glm::vec3 pathGoal = glm::vec3(0, 0, 0); //Temporary for debugging pathfinding
 
 };

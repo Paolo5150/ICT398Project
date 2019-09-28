@@ -82,9 +82,15 @@ public:
 	*/
 	double distanceFromTarget;
 
+	/**
+	* @brief		The sum of distanceFromPrevious, distanceFromTarget, and cost
+	*/
 	double totalCost;
 
-	bool lock; //Stops others using this node
+	/**
+	* @brief		Represents whether this node is currently the goal of a pathfinding component
+	*/
+	bool lock;
 
 	/**
 	* @brief		The traversal cost of the noden
