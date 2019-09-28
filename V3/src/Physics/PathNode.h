@@ -82,7 +82,7 @@ public:
 	*/
 	double distanceFromTarget;
 
-	double fvalue;
+	double totalCost;
 
 	bool lock; //Stops others using this node
 

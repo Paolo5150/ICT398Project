@@ -59,4 +59,6 @@ public:
 
 	MainCamera* cam;
 
+	glm::vec3 pathGoal = glm::vec3(0, 0, 0);
+
 };

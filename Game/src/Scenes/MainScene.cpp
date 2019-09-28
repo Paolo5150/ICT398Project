@@ -177,6 +177,8 @@ void MainScene::Start()
 	cam->AddComponent(new PathFinder());
 }
 
+std::vector<PathNode*> path;
+
 void MainScene::LogicUpdate()
 {
 	if (Input::GetKeyDown(GLFW_KEY_ESCAPE))
@@ -192,31 +194,27 @@ void MainScene::LogicUpdate()
 
 	if (Input::GetKeyDown(GLFW_KEY_K))
 	{
-		std::vector<GameObject*> items = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("LandfillBin");
-		PathFinder* lpath = cam->GetComponent<PathFinder>("PathFinder");
-		std::vector<glm::vec3> path;
-		path = lpath->GeneratePathV1(cam->transform.GetGlobalPosition(), glm::vec3(73, 0, -6));
-		for (unsigned i = 0; i < items.size(); i++)
+		if (path.size() > 0)
 		{
-			items.at(i)->GetComponent<BoxCollider>("BoxCollider")->enableRender = true;
-			items.at(i)->transform.SetPosition(-250, 0, -250);
+			for (unsigned i = 0; i < path.size(); i++)
+			{
+				path.at(i)->bc->enableRender = 0;
+			}
 		}
 
-		//std::fill(items.begin(), items.end(), new Lantern());
+		PathFinder* lpath = cam->GetComponent<PathFinder>("PathFinder");
+		lpath->UnlockEndNode();
+		lpath->GeneratePath(cam->transform.GetGlobalPosition(), glm::vec3(pathGoal));
+		path = lpath->GetNodes();
+
 		for (unsigned i = 0; i < path.size(); i++)
 		{
-			items.at(i)->transform.SetPosition(path.at(i));
-			Logger::LogInfo("Path - X: ", path.at(i).x, " Y: ", path.at(i).y, " Z: ", path.at(i).z);
-
+			path.at(i)->bc->enableRender = 1;
 		}
 	}
-	else if (Input::GetKeyDown(GLFW_KEY_J))
+	else if (Input::GetKeyDown(GLFW_KEY_I))
 	{
-		std::vector<GameObject*> items = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("LandfillBin");
-		for (unsigned i = 0; i < items.size(); i++)
-		{
-			items.at(i)->transform.SetPosition(-250, 0, -250);
-		}
+		pathGoal = cam->transform.GetGlobalPosition();
 	}
 
 	PathFindingManager::Instance().ClosestNodeAt(cam->transform.GetPosition().x, cam->transform.GetPosition().y, cam->transform.GetPosition().z);

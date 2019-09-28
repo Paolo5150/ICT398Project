@@ -24,6 +24,8 @@ void PathNode::Start()
 	bc->AddCollisionLayer(CollisionLayers::PATHNODE);
 	bc->transform.SetScale(2.5,2.5,2.5);
 	cost = 0;
+	totalCost = 0;
+	lock = false;
 	AddComponent(bc);
 
 	GameObject::Start();
