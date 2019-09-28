@@ -167,6 +167,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Dependencies\qu3e\src\q3.h" />
+    <ClInclude Include="src\Components\AIEmotion.h" />
     <ClInclude Include="src\Components\BoxCollider.h" />
     <ClInclude Include="src\Components\Collider.h" />
     <ClInclude Include="src\Components\MeshRenderer.h" />
@@ -190,6 +191,16 @@
     <ClInclude Include="src\Diag\DiagPrefab.h" />
     <ClInclude Include="src\Diag\DiagRenderer.h" />
     <ClInclude Include="src\Diag\DiagSphere.h" />
+    <ClInclude Include="src\Emotion\AIEmotionManager.h" />
+    <ClInclude Include="src\Emotion\Need.h" />
+    <ClInclude Include="src\Emotion\NeedFactory.h" />
+    <ClInclude Include="src\Emotion\Needs\Rage.h" />
+    <ClInclude Include="src\Emotion\Needs\Rest.h" />
+    <ClInclude Include="src\Emotion\Needs\Thirst.h" />
+    <ClInclude Include="src\Emotion\Stimuli.h" />
+    <ClInclude Include="src\Emotion\Trait.h" />
+    <ClInclude Include="src\Emotion\TraitFactory.h" />
+    <ClInclude Include="src\Emotion\Traits\Aggressive.h" />
     <ClInclude Include="src\Events\ApplicationEvents.h" />
     <ClInclude Include="src\Events\Event.h" />
     <ClInclude Include="src\Events\EventDispatcher.h" />
@@ -281,6 +292,7 @@
     <ClInclude Include="src\Utils\UBOLibrary.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Components\AIEmotion.cpp" />
     <ClCompile Include="src\Components\BoxCollider.cpp" />
     <ClCompile Include="src\Components\Collider.cpp" />
     <ClCompile Include="src\Components\MeshRenderer.cpp" />
@@ -301,6 +313,16 @@
     <ClCompile Include="src\Core\Window.cpp" />
     <ClCompile Include="src\Diag\DiagPrefab.cpp" />
     <ClCompile Include="src\Diag\DiagRenderer.cpp" />
+    <ClCompile Include="src\Emotion\AIEmotionManager.cpp" />
+    <ClCompile Include="src\Emotion\Need.cpp" />
+    <ClCompile Include="src\Emotion\NeedFactory.cpp" />
+    <ClCompile Include="src\Emotion\Needs\Rage.cpp" />
+    <ClCompile Include="src\Emotion\Needs\Rest.cpp" />
+    <ClCompile Include="src\Emotion\Needs\Thirst.cpp" />
+    <ClCompile Include="src\Emotion\Stimuli.cpp" />
+    <ClCompile Include="src\Emotion\Trait.cpp" />
+    <ClCompile Include="src\Emotion\TraitFactory.cpp" />
+    <ClCompile Include="src\Emotion\Traits\Aggressive.cpp" />
     <ClCompile Include="src\Events\EventDispatcher.cpp" />
     <ClCompile Include="src\GUI\Elements\GUICanvas.cpp" />
     <ClCompile Include="src\GUI\GUIManager.cpp" />

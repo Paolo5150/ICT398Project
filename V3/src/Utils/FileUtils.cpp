@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include  <string.h>
 #include "PrefabFactory.h"
+#include "../Emotion/NeedFactory.h"
+#include "../Emotion/TraitFactory.h"
 
 
 bool FileUtils::IsFileThere(std::string filePath)
@@ -282,5 +284,72 @@ std::vector<GameObject*> FileUtils::ReadSceneFile(std::string absolutePathToFile
 
 	return objs;
 
+}
+
+bool FileUtils::ReadPersonalityFile(std::string absolutePathToFile, std::map<Need::NeedType, std::unique_ptr<Need>>& needs, std::list<std::unique_ptr<Trait>>& traits)
+{
+	if (!IsFileThere(absolutePathToFile))
+	{
+		Logger::LogError("File", absolutePathToFile, "not found!!");
+		return false;
+	}
+
+	char buf[512];
+	FILE* f;
+	f = fopen(absolutePathToFile.c_str(), "r");
+
+	char c;
+	if (f != NULL)
+	{
+		while (!feof(f))
+		{
+			c = fgetc(f);
+
+			if (c == '#')
+			{
+				fgets(buf, 512, f);
+				continue;
+			}
+
+			std::string name;
+
+			// If need
+			if (c == 'N')
+			{
+				float startValue;
+				int priority;
+				float positiveGainMultiplier, negativeGainMultiplier;
+
+				fscanf(f, "%s %f %d %f %f", &name, &startValue, &priority, &positiveGainMultiplier, &negativeGainMultiplier);
+
+				//fgets(buf, 512, f);
+
+				int needType = NeedFactory::GetNeedType(name);
+
+				if (needType >= 0)
+				{
+					needs[(Need::NeedType)needType] = (std::move(NeedFactory::GetNeed((Need::NeedType) needType, startValue, priority, positiveGainMultiplier, negativeGainMultiplier)));
+				}
+			}
+			// If trait
+			else if (c == 'T')
+			{
+				fscanf(f, "%s", &name);
+
+				//fgets(buf, 512, f);
+
+				int traitType = TraitFactory::GetTraitType(name);
+
+				if (traitType >= 0)
+				{
+					traits.push_back(std::move(TraitFactory::GetTrait((Trait::TraitType)traitType)));
+				}
+			}
+			//fgets(buf, 512, f);
+		}
+		return true;
+	}
+	else
+		return false;
 }
 

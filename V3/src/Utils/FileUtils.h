@@ -8,6 +8,7 @@
 #include "Maths.h"
 #include "..\Core\ColliderInfo.h"
 #include "..\Core\GameObject.h"
+#include "..\Components\AIEmotion.h"
 
 /**
 * @class FileUtils
@@ -76,6 +77,8 @@ class FileUtils
 		static std::vector<ColliderInfo> ReadColliderFile(std::string absolutePathToFile);
 
 		static std::vector<GameObject*> ReadSceneFile(std::string absolutePathToFile);
+
+		static bool ReadPersonalityFile(std::string absolutePathToFile, std::map<Need::NeedType, std::unique_ptr<Need>>& needs, std::list<std::unique_ptr<Trait>>& traits);
 
 
 		/**

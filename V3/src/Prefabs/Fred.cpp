@@ -3,6 +3,7 @@
 #include "..\Utils\ContentManager.h"
 #include "..\Components\BoxCollider.h"
 #include "..\Components\Rigidbody.h"
+#include "..\Components\AIEmotion.h"
 
 Fred::Fred() : GameObject("Fred")
 {
@@ -43,6 +44,10 @@ void Fred::Start()
 	rb->UseGravity(true);
 
 	AddComponent(rb);*/
+
+	AIEmotion* aiE = new AIEmotion();
+	AddComponent(aiE);
+
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider
 						 // has been added.
 }
