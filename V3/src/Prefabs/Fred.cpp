@@ -76,8 +76,11 @@ void Fred::Update()
 	{	
 		if (aa->LookForBestScoreAffordanceObjectInRange<SitAffordance>(30))
 		{		
+			// If the method is true, we have found an affordance object in the specified range
+			// That would be pointed by "selectedObj" in the Affordance Agent
 			glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - transform.GetGlobalPosition();
 
+			// Walk towards the affordance object
 			if (glm::length2(toObj) > 0.1)
 			{
 				transform.Translate(glm::normalize(toObj) * Timer::GetDeltaS() * 4.0f );
@@ -85,11 +88,14 @@ void Fred::Update()
 			}
 			else
 			{
-				aa->ExecuteAffordanceEngageCallback<SitAffordance>(aa->selectedObj);			}
+				// When close enough enage it
+				aa->ExecuteAffordanceEngageCallback<SitAffordance>(aa->selectedObj);
+			}
 		}
 	}
 	if (timer > 20)
 	{
+		// After a while, just disengage the affordance object (this would trigger when the need to sit is no longer active)
 		aa->ExecuteAffordanceDisengageCallback<SitAffordance>();
 		needToSit = 0;
 
