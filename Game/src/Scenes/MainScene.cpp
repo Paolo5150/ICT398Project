@@ -174,27 +174,7 @@ void MainScene::Start()
 	PhysicsWorld::Instance().FillQuadtree(1); // Fill static quadtree
 	PhysicsWorld::Instance().PerformCollisions(1);
 
-	GameObject* lantern = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Lantern").at(0);
-	PathFinder* lpath = lantern->GetComponent<PathFinder>("PathFinder");
-	
-	std::vector<glm::vec3> path;
-	path = lpath->GeneratePath(lantern->transform.GetGlobalPosition(), glm::vec3(100, 0, 100));
-	std::vector<Box*> items;
-	for (unsigned i = 0; i < 11; i++)
-	{
-		Box* box = new Box();
-		box->GetComponent<BoxCollider>("BoxCollider")->enableRender = true;
-		box->transform.SetPosition(-250, 0, -250);
-		items.push_back(box);
-	}
-
-	//std::fill(items.begin(), items.end(), new Lantern());
-	for (unsigned i = 0; i < path.size(); i++)
-	{
-		//items.at(i)->transform.SetPosition(path.at(0));
-		Logger::LogInfo("Path - X: ", path.at(i).x, " Y: ", path.at(i).y, " Z: ", path.at(i).z);
-
-	}
+	cam->AddComponent(new PathFinder());
 }
 
 void MainScene::LogicUpdate()
@@ -210,6 +190,34 @@ void MainScene::LogicUpdate()
 	if (Input::GetKeyDown(GLFW_KEY_SPACE))
 		std::cout << "X: " << cam->transform.GetGlobalPosition().x << " Y: " << cam->transform.GetGlobalPosition().y << " Z: " << cam->transform.GetGlobalPosition().z << std::endl;
 
+	if (Input::GetKeyDown(GLFW_KEY_K))
+	{
+		std::vector<GameObject*> items = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("LandfillBin");
+		PathFinder* lpath = cam->GetComponent<PathFinder>("PathFinder");
+		std::vector<glm::vec3> path;
+		path = lpath->GeneratePathV1(cam->transform.GetGlobalPosition(), glm::vec3(73, 0, -6));
+		for (unsigned i = 0; i < items.size(); i++)
+		{
+			items.at(i)->GetComponent<BoxCollider>("BoxCollider")->enableRender = true;
+			items.at(i)->transform.SetPosition(-250, 0, -250);
+		}
+
+		//std::fill(items.begin(), items.end(), new Lantern());
+		for (unsigned i = 0; i < path.size(); i++)
+		{
+			items.at(i)->transform.SetPosition(path.at(i));
+			Logger::LogInfo("Path - X: ", path.at(i).x, " Y: ", path.at(i).y, " Z: ", path.at(i).z);
+
+		}
+	}
+	else if (Input::GetKeyDown(GLFW_KEY_J))
+	{
+		std::vector<GameObject*> items = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("LandfillBin");
+		for (unsigned i = 0; i < items.size(); i++)
+		{
+			items.at(i)->transform.SetPosition(-250, 0, -250);
+		}
+	}
 
 	PathFindingManager::Instance().ClosestNodeAt(cam->transform.GetPosition().x, cam->transform.GetPosition().y, cam->transform.GetPosition().z);
 
