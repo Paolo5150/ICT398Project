@@ -12,7 +12,7 @@ PathFinder::~PathFinder()
 {
 }
 
-void PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
+bool PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
 {
 	PathNode* startNode = PathFindingManager::Instance().ClosestNodeAt(start.x, start.y, start.z);
 	PathNode* currentNode = startNode;
@@ -91,11 +91,16 @@ void PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
 			}
 
 			nodePath = nodes; //Save parent-based path
+			return true;
 		}
-		else
+		else //No path found
 		{
-			//No path found
+			return false;
 		}
+	}
+	else //End node is locked
+	{
+		return false;
 	}
 }
 
@@ -107,17 +112,22 @@ std::vector<PathNode*> PathFinder::GetNodes() const
 std::vector<glm::vec3> PathFinder::GetPath() const
 {
 	std::vector<glm::vec3> path;
-	for (unsigned i = 0; i < nodePath.size(); i++)
+	for (unsigned i = 0; i < nodePath.size(); i++) //Convert nodes into positions in the world
 	{
 		path.push_back(nodePath.at(i)->transform.GetGlobalPosition());
 	}
 	return path;
 }
 
-glm::vec3 PathFinder::GetNextNode() const
+//--------------------
+//To be finished, erase not working for some reason
+//--------------------
+/*glm::vec3 PathFinder::GetNextNodePos() const
 {
-	return nodePath.at(1)->transform.GetGlobalPosition();
-}
+	glm::vec3 pos = nodePath.at(0)->transform.GetGlobalPosition();
+	nodePath.erase(nodePath.begin(), nodePath.end());
+	return pos;
+}*/
 
 void PathFinder::UnlockEndNode()
 {
