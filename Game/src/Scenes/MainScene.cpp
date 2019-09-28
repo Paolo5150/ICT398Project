@@ -112,7 +112,7 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadModel("Assets\\Models\\Dylan\\dylan.fbx", false, true);
 
 
-	ContentManager::Instance().LoadTexture("Assets\\Models\\Paolo\\textures\\paolo.png",true);
+	ContentManager::Instance().LoadTexture("Assets\\Models\\Paolo\\textures\\paolo.jpg",true);
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Drew\\textures\\drew.jpg", true);
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Dylan\\textures\\Dylan.png", true);
 
