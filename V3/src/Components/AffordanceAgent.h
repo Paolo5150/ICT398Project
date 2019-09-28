@@ -54,7 +54,7 @@ bool AffordanceAgent::LookForBestScoreAffordanceObjectInRange(float range)
 	{
 		if (selectedObj == nullptr)
 		{
-			selectedObj = AffordanceManager::Instance().GetBestScoreObjectOfTypeWithinRange<SitAffordance>(_parent->transform.GetGlobalPosition(), range);
+			selectedObj = AffordanceManager::Instance().GetBestScoreObjectOfTypeWithinRange<T>(_parent->transform.GetGlobalPosition(), range);
 			return selectedObj != nullptr;
 		}
 		else

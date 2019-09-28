@@ -36,10 +36,6 @@ void ExitScene::LoadAssets() {
 
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\water_normal.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\dudv.png", 0);
-
-
-
-
 }
 
 void ExitScene::QuitScene() {

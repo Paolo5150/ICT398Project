@@ -83,7 +83,7 @@ void MainScene::LoadAssets() {
 	text->message = "Instantiating sense of despair...";
 	GUIManager::Instance().Render(true, true);
 
-	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_albedo.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_albedo.jpg",0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_roughness.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_metallic.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_normal.jpg", 0);
@@ -113,7 +113,7 @@ void MainScene::LoadAssets() {
 
 
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Paolo\\textures\\paolo.png",true);
-	ContentManager::Instance().LoadTexture("Assets\\Models\\Drew\\textures\\drew.png", true);
+	ContentManager::Instance().LoadTexture("Assets\\Models\\Drew\\textures\\drew.jpg", true);
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Dylan\\textures\\Dylan.png", true);
 
 
