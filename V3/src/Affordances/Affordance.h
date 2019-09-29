@@ -4,7 +4,12 @@
 class Affordance
 {
 public:
-	Affordance(){ maxUsers = 1; currentUsers = 0; };
+	enum class AffordanceTypes
+	{
+		NONE,
+		REST
+	};
+	Affordance() { maxUsers = 1; currentUsers = 0; affordanceType = AffordanceTypes::NONE; };
 	virtual ~Affordance() {};
 
 	std::function<void()> Callback;
@@ -12,7 +17,7 @@ public:
 	void SetScore(int s) { score = s; }
 	int maxUsers;
 	int currentUsers;
-
+	AffordanceTypes affordanceType;
 protected:
 	int score;
 

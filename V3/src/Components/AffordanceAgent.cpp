@@ -28,7 +28,7 @@ void AffordanceAgent::ExecuteAffordanceDisengageCallback(std::string affName)
 			inUseObj->ReleaseUse(_parent);
 			inUseObj = nullptr;
 			selectedObj = nullptr;
-
+			selectedAffordanceName = "";
 		}
 	}
 }
@@ -48,6 +48,23 @@ void AffordanceAgent::ExecuteAffordanceEngageCallback(std::string affName)
 		}
 	}
 }
+
+bool AffordanceAgent::LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Affordance::AffordanceTypes type, float range)
+{
+	if (inUseObj == nullptr)
+	{
+		if (selectedObj == nullptr)
+		{
+			selectedObj = AffordanceManager::Instance().GetBestScoreObjectByAffordanceTypeWithinRange(type,_parent->transform.GetGlobalPosition(), range,selectedAffordanceName);
+			return selectedObj != nullptr;
+		}
+		else
+			return true;
+	}
+	else
+		return false;
+}
+
 
 void AffordanceAgent::Update()
 {

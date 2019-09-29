@@ -163,6 +163,8 @@ void MainScene::Initialize() {
 	Riley* riley = new Riley();
 	riley->transform.SetPosition(0, 0, -10);
 
+	
+//	cam->AddChild(fred);
 
 	AddGameObject(cam);
 
@@ -171,7 +173,7 @@ void MainScene::Initialize() {
 	AddGameObject(dirLight3);
 	AddGameObject(bushCourt);
 	AddGameObject(fred);
-	//AddGameObject(riley);
+	AddGameObject(riley);
 
 
 

@@ -12,13 +12,68 @@ AffordanceObject::AffordanceObject(GameObject* go) {
 void AffordanceObject::AddPerceviedAffordance(Affordance* a)
 {
 	std::string name = FileUtils::GetClassNameW(a);
-	perceivedAffordances[name] = std::unique_ptr<Affordance>(a);
-	perceivedAffordances[name]->currentUsers = 0;
+	perceivedAffordancesByName[name] = std::unique_ptr<Affordance>(a);
+	perceivedAffordancesByName[name]->currentUsers = 0;
+	perceivedAffordancesByType[a->affordanceType].insert(a);
+
 	AffordanceManager::Instance().RegisterAffordanceObject(name, this);
 }
 
+std::set<Affordance*> AffordanceObject::GetAffordancesOfType(Affordance::AffordanceTypes type)
+{
+	std::set<Affordance*> a;
 
-std::string AffordanceObject::GetInUseAffordanceName()
+	auto it = perceivedAffordancesByType.find(type);
+
+	if (it != perceivedAffordancesByType.end())
+		return it->second;
+
+	return a;
+
+}
+
+Affordance* AffordanceObject::GetBestAffordanceOfType(Affordance::AffordanceTypes type)
+
+{
+	Affordance* af = nullptr;
+
+	int maxScore = -HUGE;
+	auto it = perceivedAffordancesByType.find(type);
+	if (it != perceivedAffordancesByType.end())
+	{
+		auto affIt = it->second.begin();
+
+		for (; affIt != it->second.end(); affIt++)
+		{
+			if ((*affIt)->GetScore() > maxScore)
+			{
+				maxScore = (*affIt)->GetScore();
+				af = (*affIt);
+			}
+		}
+	}
+
+	return af;
+}
+
+
+std::vector<Affordance*> AffordanceObject::GetPerceivedAffordances()
+{
+	std::vector<Affordance*> r;
+
+	auto it = perceivedAffordancesByName.begin();
+	
+	for (; it != perceivedAffordancesByName.end(); it++)
+	{
+		r.push_back(it->second.get());
+	}
+
+	return r;
+}
+
+
+
+std::string AffordanceObject::AffordanceObject::GetInUseAffordanceName()
 { 
 	if(inUse != nullptr)
 	return FileUtils::GetClassNameW(inUse); 
@@ -57,8 +112,8 @@ bool AffordanceObject::IsAvailableForAffordance(std::string affName)
 {
 	if (inUse == nullptr)
 	{
-		auto it = perceivedAffordances.find(affName);
-		if (it != perceivedAffordances.end())
+		auto it = perceivedAffordancesByName.find(affName);
+		if (it != perceivedAffordancesByName.end())
 		{
 			return it->second->currentUsers < it->second->maxUsers;
 		}
@@ -72,8 +127,8 @@ bool AffordanceObject::IsAvailableForAffordance(std::string affName)
 
 void AffordanceObject::ExecuteAffordanceCallback(std::string afName)
 {
-	auto it = perceivedAffordances.find(afName);
-	if (it != perceivedAffordances.end())
+	auto it = perceivedAffordancesByName.find(afName);
+	if (it != perceivedAffordancesByName.end())
 	{
 		it->second->Callback();
 		inUse = it->second.get();
@@ -96,8 +151,8 @@ void AffordanceObject::ReleaseUse(GameObject* o)
 
 int AffordanceObject::GetAffordanceScore(std::string name)
 {
-	auto it = perceivedAffordances.find(name);
-	if (it != perceivedAffordances.end())
+	auto it = perceivedAffordancesByName.find(name);
+	if (it != perceivedAffordancesByName.end())
 	{
 		return it->second->GetScore();
 	}

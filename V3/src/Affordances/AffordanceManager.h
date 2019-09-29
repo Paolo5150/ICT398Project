@@ -5,6 +5,7 @@
 
 #include "..\Core\Logger.h"
 #include "..\Core\GameObject.h"
+#include "Affordance.h"
 
 class AffordanceObject;
 
@@ -21,13 +22,16 @@ public:
 	std::vector<AffordanceObject*> GetObjectsOfTypeWithinRange(glm::vec3 pos, float range);
 
 	template <class T>
-	AffordanceObject* GetBestScoreObjectOfTypeWithinRange(glm::vec3 pos, float range);
+	AffordanceObject* GetBestScoreObjectWithinRange(glm::vec3 pos, float range);
+
+	AffordanceObject* GetBestScoreObjectByAffordanceTypeWithinRange(Affordance::AffordanceTypes type, glm::vec3 pos, float range, std::string& outAffordanceName);
+
 
 
 private:
 	AffordanceManager();
-	std::map<std::string, std::set<AffordanceObject*>> affordanceMap;
-
+	std::map<std::string, std::set<AffordanceObject*>> affordanceMapByAffordanceName;
+	std::map<Affordance::AffordanceTypes, std::set<AffordanceObject*>> affordanceMapByAffordanceType;
 
 };
 
@@ -38,8 +42,8 @@ std::vector<AffordanceObject*> AffordanceManager::GetObjectsOfTypeWithinRange(gl
 	std::vector<AffordanceObject*> r;
 	std::string name = FileUtils::GetClassNameW<T>();
 
-	auto it = affordanceMap.find(name);
-	if (it != affordanceMap.end())
+	auto it = affordanceMapByAffordanceName.find(name);
+	if (it != affordanceMapByAffordanceName.end())
 	{
 		auto objIt = it->second.begin();
 		
@@ -58,7 +62,7 @@ std::vector<AffordanceObject*> AffordanceManager::GetObjectsOfTypeWithinRange(gl
 }
 
 template <class T>
-AffordanceObject* AffordanceManager::GetBestScoreObjectOfTypeWithinRange(glm::vec3 pos, float range)
+AffordanceObject* AffordanceManager::GetBestScoreObjectWithinRange(glm::vec3 pos, float range)
 {
 	std::string name = FileUtils::GetClassNameW<T>();
 

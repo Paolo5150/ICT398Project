@@ -31,6 +31,8 @@ public:
 	void ExecuteAffordanceDisengageCallback(std::string name);
 	void ExecuteAffordanceEngageCallback(std::string name);
 
+	bool LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Affordance::AffordanceTypes type, float range);
+
 
 	template<class T>
 	bool LookForBestScoreAffordanceObjectInRange(float range);
@@ -39,6 +41,7 @@ public:
 
 	void Update() override;
 
+	std::string& GetSelectedAffordanceName() { return selectedAffordanceName; }
 
 protected:
 
@@ -46,6 +49,7 @@ protected:
 	std::map<std::string, std::function<void()>> affordanceDisengageCallbackMap;
 
 	AffordanceObject* inUseObj;
+	std::string selectedAffordanceName; //Used when looking for affordance objs by type
 };
 
 template<class T>
@@ -55,7 +59,7 @@ bool AffordanceAgent::LookForBestScoreAffordanceObjectInRange(float range)
 	{
 		if (selectedObj == nullptr)
 		{
-			selectedObj = AffordanceManager::Instance().GetBestScoreObjectOfTypeWithinRange<T>(_parent->transform.GetGlobalPosition(), range);
+			selectedObj = AffordanceManager::Instance().GetBestScoreObjectWithinRange<T>(_parent->transform.GetGlobalPosition(), range);
 			return selectedObj != nullptr;
 		}
 		else
@@ -129,6 +133,7 @@ void AffordanceAgent::ExecuteAffordanceDisengageCallback()
 			inUseObj->ReleaseUse(_parent);
 			inUseObj = nullptr;
 			selectedObj = nullptr;
+			selectedAffordanceName = "";
 
 		}
 	}

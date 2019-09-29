@@ -44,6 +44,7 @@ Fred::Fred() : GameObject("Fred")
 	d->transform.SetPosition(0, 160, 20);
 
 	aa = new AffordanceAgent();
+
 	aa->AddAffordanceEngageCallback<SitAffordance>([&](AffordanceObject*obj) {
 		Logger::LogInfo("SitAffordance engaged");
 		transform.SetPosition(obj->gameObject->transform.GetPosition() + glm::vec3(0, 1, 0));
@@ -53,6 +54,18 @@ Fred::Fred() : GameObject("Fred")
 		Logger::LogInfo("SitAffordance disengaged");
 
 		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition() - glm::vec3(0, 1, 0));
+	});
+
+	aa->AddAffordanceEngageCallback<LaydownAffordance>([&](AffordanceObject*obj) {
+		Logger::LogInfo("LaydownAffordance engaged");
+		transform.RotateBy(90, transform.GetLocalRight());
+	});
+
+	aa->AddAffordanceDisengageCallback<LaydownAffordance>([&]() {
+		Logger::LogInfo("LaydownAffordance disengaged");
+
+		transform.RotateBy(-90, transform.GetLocalRight());
+
 	});
 
 	AddComponent(aa);
@@ -68,13 +81,14 @@ void Fred::Update()
 {
 	GameObject::Update();
 
+	
 	static float timer = 0;
 	static bool needToSit = 1;
 	timer += Timer::GetDeltaS();
 
 	if (timer > 7 && needToSit)
 	{	
-		if (aa->LookForBestScoreAffordanceObjectInRange<SitAffordance>(30))
+		if (aa->LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Affordance::AffordanceTypes::REST,30))
 		{		
 			// If the method is true, we have found an affordance object in the specified range
 			// That would be pointed by "selectedObj" in the Affordance Agent
@@ -89,14 +103,14 @@ void Fred::Update()
 			else
 			{
 				// When close enough enage it
-				aa->ExecuteAffordanceEngageCallback("SitAffordance");
+				aa->ExecuteAffordanceEngageCallback(aa->GetSelectedAffordanceName());
 			}
 		}
 	}
 	if (timer > 20)
 	{
 		// After a while, just disengage the affordance object (this would trigger when the need to sit is no longer active)
-		aa->ExecuteAffordanceDisengageCallback("SitAffordance");
+		aa->ExecuteAffordanceDisengageCallback(aa->GetSelectedAffordanceName());
 		needToSit = 0;
 
 		//Logger::LogInfo("Should disengage");

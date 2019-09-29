@@ -8,6 +8,7 @@ public:
 	SitAffordance() 
 	{
 		score = 50;
+		affordanceType = AffordanceTypes::REST;
 		Callback = []() { Logger::LogInfo("Someone sit on me"); };
 	}
 	virtual ~SitAffordance() {};
@@ -20,7 +21,9 @@ class LaydownAffordance : public Affordance
 public:
 	LaydownAffordance() 
 	{
-
+		score = 50;
+		affordanceType = AffordanceTypes::REST;
+		Callback = []() { Logger::LogInfo("Someone laid down on me"); };
 	}
 	virtual ~LaydownAffordance() {};
 

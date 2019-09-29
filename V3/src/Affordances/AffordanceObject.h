@@ -30,14 +30,20 @@ public:
 	int GetAffordanceScore();
 
 	int GetAffordanceScore(std::string name);
+	std::set<Affordance*> GetAffordancesOfType(Affordance::AffordanceTypes type);
 
+	std::vector<Affordance*> GetPerceivedAffordances();
+
+	Affordance* GetBestAffordanceOfType(Affordance::AffordanceTypes type);
 
 	void ReleaseUse(GameObject* o);
 
 private:
 	void RemoveUser(GameObject* o);
 	Affordance* inUse;
-	std::map<std::string,std::unique_ptr<Affordance>> perceivedAffordances;  	 
+	std::map<std::string,std::unique_ptr<Affordance>> perceivedAffordancesByName;  	
+	std::map<Affordance::AffordanceTypes, std::set<Affordance*>> perceivedAffordancesByType;
+
 	std::list<GameObject*> users;
 
 };
@@ -47,8 +53,8 @@ int AffordanceObject::GetAffordanceScore()
 {
 	std::string name = FileUtils::GetClassNameW<T>();
 
-	auto it = perceivedAffordances.find(name);
-	if (it != perceivedAffordances.end())
+	auto it = perceivedAffordancesByName.find(name);
+	if (it != perceivedAffordancesByName.end())
 	{
 		return it->second->GetScore();
 	}
