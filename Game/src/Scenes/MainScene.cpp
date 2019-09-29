@@ -226,7 +226,7 @@ void MainScene::LogicUpdate()
 
 		for (unsigned i = 0; i < path.size(); i++)
 		{
-			//Logger::LogInfo("Path at(", i, "): x: ", path.at(i)->transform.GetGlobalPosition().x, " y: ", path.at(i)->transform.GetGlobalPosition().y, " z: ", path.at(i)->transform.GetGlobalPosition().z);
+			Logger::LogInfo("Path at(", i, "): x: ", path.at(i)->transform.GetGlobalPosition().x, " y: ", path.at(i)->transform.GetGlobalPosition().y, " z: ", path.at(i)->transform.GetGlobalPosition().z);
 			path.at(i)->bc->enableRender = 1;
 		}
 	}
@@ -249,7 +249,7 @@ void MainScene::LogicUpdate()
 
 			for (unsigned i = 0; i < path.size(); i++)
 			{
-				//Logger::LogInfo("Path at(", i, "): x: ", path.at(i)->transform.GetGlobalPosition().x, " y: ", path.at(i)->transform.GetGlobalPosition().x, path.at(i)->transform.GetGlobalPosition().y, " z: ", path.at(i)->transform.GetGlobalPosition().z);
+				Logger::LogInfo("Path at(", i, "): x: ", path.at(i)->transform.GetGlobalPosition().x, " y: ", path.at(i)->transform.GetGlobalPosition().x, path.at(i)->transform.GetGlobalPosition().y, " z: ", path.at(i)->transform.GetGlobalPosition().z);
 				path.at(i)->bc->enableRender = 1;
 			}
 		}

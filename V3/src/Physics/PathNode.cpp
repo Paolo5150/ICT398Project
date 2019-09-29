@@ -29,6 +29,7 @@ void PathNode::Start()
 	cost = 0;
 	totalCost = 0;
 	lock = false;
+	parentNode = nullptr;
 	AddComponent(bc);
 
 	GameObject::Start();
