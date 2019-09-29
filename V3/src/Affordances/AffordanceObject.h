@@ -124,6 +124,8 @@ public:
 	*/
 	void ReleaseUse(GameObject* o);
 
+	void LoadAffordancesFromFile(std::string filePath);
+
 private:
 	/**
 	* @brief		Unregister specified gameobject as user
@@ -149,6 +151,7 @@ private:
 	* @brief		Users of this object
 	*/
 	std::list<GameObject*> users;
+
 
 };
 

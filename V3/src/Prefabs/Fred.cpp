@@ -10,6 +10,8 @@
 namespace
 {
 	AffordanceAgent* aa;
+	float timer = 0;
+	bool needToSit = 1;
 }
 
 void Fred::Test(AffordanceObject* obj)
@@ -69,7 +71,8 @@ Fred::Fred() : GameObject("Fred")
 	});
 
 	AddComponent(aa);
-
+	timer = 0;
+	needToSit = 1;
 }
 
 Fred::~Fred()
@@ -82,8 +85,6 @@ void Fred::Update()
 	GameObject::Update();
 
 	
-	static float timer = 0;
-	static bool needToSit = 1;
 	timer += Timer::GetDeltaS();
 
 	if (timer > 7 && needToSit)

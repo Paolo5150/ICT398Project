@@ -9,6 +9,8 @@
 namespace
 {
 	AffordanceAgent* aa;
+	float timer = 0;
+	bool needToSit = 1;
 }
 
 void Riley::Test(AffordanceObject* obj)
@@ -47,6 +49,8 @@ Riley::Riley() : GameObject("Riley")
 	});
 
 	AddComponent(aa);
+	timer = 0;
+	needToSit = 1;
 
 }
 
@@ -59,13 +63,11 @@ void Riley::Update()
 {
 	GameObject::Update();
 
-	static float timer = 0;
-	static bool needToSit = 1;
 	timer += Timer::GetDeltaS();
 
 	if (timer > 7 && needToSit)
 	{
-		if (aa->LookForBestScoreAffordanceObjectInRange<SitAffordance>(130))
+		if (aa->LookForBestScoreAffordanceObjectInRange<SitAffordance>(40))
 		{
 			glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - transform.GetGlobalPosition();
 

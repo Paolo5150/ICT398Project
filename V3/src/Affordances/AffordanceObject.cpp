@@ -3,6 +3,7 @@
 #include "Affordance.h"
 #include "AffordanceManager.h"
 #include "..\Utils\FileUtils.h"
+#include "AffordanceFactory.h"
 
 AffordanceObject::AffordanceObject(GameObject* go) {
 	gameObject = go;
@@ -106,6 +107,58 @@ void AffordanceObject::RemoveUser(GameObject* o)
 			it++;
 	}
 }
+
+void AffordanceObject::LoadAffordancesFromFile(std::string filePath)
+{
+	if (FileUtils::IsFileThere(filePath))
+	{
+		FILE* file = NULL;
+		file = fopen(filePath.c_str(), "r");
+
+
+		while (!feof(file))
+		{
+			char line[200];
+			std::string name;
+			int score;
+
+			char c	= fgetc(file);
+		//	Logger::LogInfo("Char", c);
+
+			if (c == ' ' || c == '\0' || c == '#')
+			{
+				fgets(line, 200, file);
+				continue;
+			}
+			if (c == '\n') continue;
+
+
+			// Get prefab name
+			for (int j = 0; j < 100; j++)
+			{
+				if (c != ' ')
+					line[j] = c;
+				else
+				{
+					line[j] = '\0';
+					break;
+				}
+				c = fgetc(file);
+			}
+
+
+			name = std::string(line);
+			fscanf(file,"%d", &score);
+
+			Affordance* af = AffordanceFactory::GetAffordanceByName(name);
+			af->SetScore(score);
+			AddPerceviedAffordance(af);
+		}
+	}
+	else
+		Logger::LogError("Failed to locate AFFORDANCE FILE", filePath);
+}
+
 
 
 bool AffordanceObject::IsAvailableForAffordance(std::string affName)

@@ -25,9 +25,10 @@ Chair::Chair() : GameObject("Chair"), AffordanceObject(this)
 	m2NoLight.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("wood_albedo"), "diffuse0");
 	ApplyMaterial(m2NoLight, NOLIGHT);
 	
-	SitAffordance* ra = new SitAffordance();
-	ra->SetScore(50);
-	AddPerceviedAffordance(ra);
+	LoadAffordancesFromFile("Assets\\Affordances\\chair_affordances.txt");
+	//SitAffordance* ra = new SitAffordance();
+	//ra->SetScore(50);
+	//AddPerceviedAffordance(ra);
 
 }
 

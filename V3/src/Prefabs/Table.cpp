@@ -27,17 +27,7 @@ Table::Table() : GameObject("Table"), AffordanceObject(this)
 	m2NoLight.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("bamboo_albedo"), "diffuse0");
 	ApplyMaterial(m2NoLight, NOLIGHT);
 
-
-	LaydownAffordance* ra = new LaydownAffordance();
-	ra->SetScore(100);
-
-	SitAffordance* sa = new SitAffordance();
-	sa->SetScore(80);
-
-	AddPerceviedAffordance(ra);
-	AddPerceviedAffordance(sa);
-
-
+	LoadAffordancesFromFile("Assets\\Affordances\\table_affordances.txt");
 }
 
 Table::~Table()
