@@ -174,7 +174,17 @@ void MainScene::Start()
 	PhysicsWorld::Instance().FillQuadtree(1); // Fill static quadtree
 	PhysicsWorld::Instance().PerformCollisions(1);
 
-	cam->AddComponent(new PathFinder());
+	cam->AddComponent(new PathFinder()); //Temporary for debugging pathfinding
+	for (unsigned i = 0; i < 5; i++)
+	{
+		pathfinders.push_back(new PathFinder());
+	}
+
+	locs.push_back(glm::vec3(-44, 2, -18));
+	locs.push_back(glm::vec3(-45, 2, 32));
+	locs.push_back(glm::vec3(-2, 2, 71));
+	locs.push_back(glm::vec3(71, 2, -2));
+	locs.push_back(glm::vec3(45, 2, -45));
 }
 
 void MainScene::LogicUpdate()
@@ -190,7 +200,16 @@ void MainScene::LogicUpdate()
 	if (Input::GetKeyDown(GLFW_KEY_SPACE))
 		std::cout << "X: " << cam->transform.GetGlobalPosition().x << " Y: " << cam->transform.GetGlobalPosition().y << " Z: " << cam->transform.GetGlobalPosition().z << std::endl;
 
-	if (Input::GetKeyDown(GLFW_KEY_K))
+	if (Input::GetKeyPressed(GLFW_KEY_E))
+	{
+		std::cout << "X: " << cam->transform.GetGlobalPosition().x << " Y: " << cam->transform.GetGlobalPosition().y << " Z: " << cam->transform.GetGlobalPosition().z << std::endl;
+	}
+
+	if (Input::GetKeyPressed(GLFW_KEY_I)) //Temo: Sets end node for camera pathfinding
+	{
+		pathGoal = cam->transform.GetGlobalPosition();
+	}
+	else if (Input::GetKeyPressed(GLFW_KEY_K)) //Temp: Generates a path from the camera to the location set
 	{
 		for (unsigned i = 0; i < PathFindingManager::Instance().nodeMap.size(); i++) //Temporary for debugging pathfinding
 		{
@@ -207,12 +226,44 @@ void MainScene::LogicUpdate()
 
 		for (unsigned i = 0; i < path.size(); i++)
 		{
+			Logger::LogInfo("Path at(", i, "): x: ", path.at(i)->transform.GetGlobalPosition().x, " y: ", path.at(i)->transform.GetGlobalPosition().y, " z: ", path.at(i)->transform.GetGlobalPosition().z);
 			path.at(i)->bc->enableRender = 1;
 		}
 	}
-	else if (Input::GetKeyDown(GLFW_KEY_I))
+	else if (Input::GetKeyPressed(GLFW_KEY_J)) //Temp: Generates a path from all the non-cam pathfinders to the location camera + or - some amount
 	{
-		pathGoal = cam->transform.GetGlobalPosition();
+		for (unsigned i = 0; i < PathFindingManager::Instance().nodeMap.size(); i++) //Temporary for debugging pathfinding
+		{
+			for (unsigned j = 0; j < PathFindingManager::Instance().nodeMap.at(i).size(); j++)
+			{
+				PathFindingManager::Instance().nodeMap.at(i).at(j)->bc->enableRender = 0;
+			}
+		}
+
+		for (unsigned i = 0; i < pathfinders.size(); i++)
+		{
+			PathFinder* lpath = pathfinders.at(i);
+			lpath->UnlockEndNode();
+			lpath->GeneratePath(locs.at(i), glm::vec3(cam->transform.GetGlobalPosition().x + i * 5, cam->transform.GetGlobalPosition().y, cam->transform.GetGlobalPosition().z + i * 5));
+			std::vector<PathNode*> path = lpath->GetNodes();
+
+			for (unsigned i = 0; i < path.size(); i++)
+			{
+				Logger::LogInfo("Path at(", i, "): x: ", path.at(i)->transform.GetGlobalPosition().x, " y: ", path.at(i)->transform.GetGlobalPosition().x, path.at(i)->transform.GetGlobalPosition().y, " z: ", path.at(i)->transform.GetGlobalPosition().z);
+				path.at(i)->bc->enableRender = 1;
+			}
+		}
+	}
+	else if (Input::GetKeyPressed(GLFW_KEY_U))
+	{
+		for (unsigned i = 0; i < PathFindingManager::Instance().nodeMap.size(); i++) //Temporary for debugging pathfinding
+		{
+			for (unsigned j = 0; j < PathFindingManager::Instance().nodeMap.at(i).size(); j++)
+			{
+				PathFindingManager::Instance().nodeMap.at(i).at(j)->bc->enableRender = 0;
+			}
+		}
+
 	}
 
 	//PathFindingManager::Instance().ClosestNodeAt(cam->transform.GetPosition().x, cam->transform.GetPosition().y, cam->transform.GetPosition().z);

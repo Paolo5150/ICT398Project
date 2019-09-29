@@ -51,20 +51,26 @@ bool PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
 
 			for (unsigned i = 0; i < currentNode->neighbors.size(); i++) //For the nodes around the current node
 			{
+				PathNode* neighbor = currentNode->neighbors[i];
 				if (std::find(closed.begin(), closed.end(), currentNode->neighbors[i]) == closed.end()) //Check that the neighbor is not in the closed list
 				{
-					currentNode->neighbors[i]->parentNode = currentNode; //Set this neighbor's parent to this node
-					currentNode->neighbors[i]->distanceFromPrevious = currentNode->distanceFromPrevious + glm::length(currentNode->transform.GetPosition() - currentNode->neighbors[i]->transform.GetPosition()); //Calculate the distance from this node to the start node
-					currentNode->neighbors[i]->distanceFromTarget = glm::length(endNode->transform.GetPosition() - currentNode->neighbors[i]->transform.GetPosition()); //Calculate the distance from this node to the end node
-					currentNode->neighbors[i]->totalCost = currentNode->neighbors[i]->distanceFromPrevious + currentNode->neighbors[i]->distanceFromTarget + currentNode->neighbors[i]->cost; //Calculate the total cost of this node
-
-					if (std::find(open.begin(), open.end(), currentNode->neighbors[i]) == open.end()) //Check that the neighbor is not in the open list
+					if (std::find(open.begin(), open.end(), neighbor) == open.end()) //Check that the neighbor is not in the open list
 					{
-						open.push_back(currentNode->neighbors[i]); //Add to open list
+						neighbor->parentNode = currentNode; //Set this neighbor's parent to this node
+						neighbor->distanceFromPrevious = currentNode->distanceFromPrevious + 1; //Calculate the distance from this node to the start node
+						neighbor->distanceFromTarget = glm::length(endNode->transform.GetPosition() - neighbor->transform.GetPosition()); //Calculate the distance from this node to the end node
+						neighbor->totalCost = neighbor->distanceFromPrevious + neighbor->distanceFromTarget + neighbor->cost; //Calculate the total cost of this node
+						open.push_back(neighbor); //Add to open list
 					}
 					else
 					{
-						//Could check distanceFromPrevious here and re-evaluate path
+						if (currentNode->distanceFromPrevious < neighbor->parentNode->distanceFromPrevious) //If this node path is shorter, update the node
+						{
+							//neighbor->parentNode = currentNode;
+							//neighbor->distanceFromPrevious = currentNode->distanceFromPrevious + 1; //Calculate the distance from this node to the start node
+							//neighbor->totalCost = neighbor->distanceFromPrevious + neighbor->distanceFromTarget + neighbor->cost; //Calculate the total cost of this node
+
+						}
 					}
 				}
 			}
@@ -75,22 +81,35 @@ bool PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
 			endNode->lock = true; //Lock the end node so no one else will use it while we are
 			lockedNode = endNode; //Assign the locked node so we can unlock it later when we're done with it
 
-			std::vector<PathNode*> nodes;
 			PathNode* currentNode = closed.back(); //The end node
-			nodes.push_back(currentNode); //Push the end node to the start of the vector
+			nodePath.clear(); //Empty old path if there is one
+			nodePath.push_back(currentNode); //Push the end node to the start of the vector
 
-			std::reverse(closed.begin(), closed.end()); //Reverse the order of the closed list so it starts at the end node
-
-			for (unsigned i = 0; i < closed.size(); i++)
+			Logger::LogInfo("StartNode: ", startNode, ", Parent: ", startNode->parentNode);
+			unsigned i = 0;
+			while (currentNode->parentNode != nullptr) //While we haven't reached the start node
 			{
-				if (currentNode->parentNode != nullptr)
-				{
-					nodes.push_back(currentNode->parentNode); //Push the parent of this node to the vector
-					currentNode = currentNode->parentNode; //Move to the parent
-				}
+				Logger::LogInfo("----------------------------------------");
+				Logger::LogInfo("(", i, "), Node: ", currentNode, ", Parent: ", currentNode->parentNode);
+				Logger::LogInfo("X: ", currentNode->transform.GetGlobalPosition().x, ", Y: ", currentNode->transform.GetGlobalPosition().y, ", Z: ", currentNode->transform.GetGlobalPosition().z);
+				Logger::LogInfo("----------------------------------------");
+				nodePath.push_back(currentNode->parentNode); //Push the parent of this node to the vector
+				currentNode = currentNode->parentNode; //Move to the parent
+				i++;
+				if (i > 25)
+					break;
 			}
 
-			nodePath = nodes; //Save parent-based path
+			nodePath.push_back(currentNode); //Add the start node to the path
+
+			std::reverse(nodePath.begin(), nodePath.end()); //Save parent-based path in the correct order (start node first)
+
+			path.clear(); //Empty old path if there is one
+			for (unsigned i = 0; i < nodePath.size(); i++) //Convert nodes into positions in the world
+			{
+				path.push_back(nodePath.at(i)->transform.GetGlobalPosition());
+			}
+
 			return true;
 		}
 		else //No path found
@@ -111,11 +130,6 @@ std::vector<PathNode*> PathFinder::GetNodes() const
 
 std::vector<glm::vec3> PathFinder::GetPath() const
 {
-	std::vector<glm::vec3> path;
-	for (unsigned i = 0; i < nodePath.size(); i++) //Convert nodes into positions in the world
-	{
-		path.push_back(nodePath.at(i)->transform.GetGlobalPosition());
-	}
 	return path;
 }
 

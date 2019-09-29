@@ -105,6 +105,11 @@ private:
 	std::vector<PathNode*> nodePath;
 
 	/**
+	* @brief						Stores the path as a vector of 3d vectors
+	*/
+	std::vector<glm::vec3> path;
+
+	/**
 	* @brief						A locked end node, used to avoid multiple components pathfinding to the same place
 	*/
 	PathNode* lockedNode;

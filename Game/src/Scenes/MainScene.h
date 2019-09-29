@@ -1,6 +1,9 @@
 #pragma once
 #include "Scene/Scene.h"
 
+#include "Components/PathFinder.h"
+
+
 class GUIImage;
 class Player;
 class GUIProgressBar;
@@ -60,5 +63,7 @@ public:
 	MainCamera* cam;
 
 	glm::vec3 pathGoal = glm::vec3(0, 0, 0); //Temporary for debugging pathfinding
+	std::vector<PathFinder*> pathfinders;
+	std::vector<glm::vec3> locs;
 
 };
