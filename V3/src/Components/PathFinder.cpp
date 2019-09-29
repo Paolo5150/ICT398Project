@@ -103,6 +103,7 @@ bool PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
 			path.clear(); //Empty old path if there is one
 			PathNode* currentNode = closed.back(); //The end node
 
+			nodePath.push_back(currentNode); //Add the end node (first node) to the path
 			while (currentNode->parentNode != nullptr) //While we haven't reached the start node
 			{
 				nodePath.push_back(currentNode->parentNode); //Push the parent of this node to the vector
