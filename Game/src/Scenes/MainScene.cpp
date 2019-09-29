@@ -33,14 +33,14 @@ MainScene::MainScene() : Scene("MainScene")
 void MainScene::LoadAssets() {
 
 	// Load splash screen
-	GUIImage* image = new GUIImage("SplashImage", ContentManager::Instance().GetAsset<Texture2D>("logo"), 100, 100, 0, 0, 1, 1, 1,1);
-	GUIText* text = new GUIText("LoadingText", "Loading", 1, 95, glm::vec3(1), 2.5,1);
+	GUIImage* image = new GUIImage("SplashImage", ContentManager::Instance().GetAsset<Texture2D>("logo"), 100, 100, 0, 0, 1, 1, 1, 1);
+	GUIText* text = new GUIText("LoadingText", "Loading", 1, 95, glm::vec3(1), 2.5, 1);
 
 	GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(image);
 	GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(text);
 
 	GUIManager::Instance().SetColorBuffer(0.8, 0.8, 0.8);
-	GUIManager::Instance().Render(true,true);
+	GUIManager::Instance().Render(true, true);
 
 
 	text->message = "Loading uncomfortable feelings...";
@@ -60,16 +60,16 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\Models\\LandfillBin\\textures\\LB_Sides.png", 0);
 
 	ContentManager::Instance().LoadTexture("Assets\\Models\\RecycleBin\\textures\\RB_Frame.png", 0);
-	ContentManager::Instance().LoadTexture("Assets\\Models\\RecycleBin\\textures\\RB_Sides.png", 0);	
+	ContentManager::Instance().LoadTexture("Assets\\Models\\RecycleBin\\textures\\RB_Sides.png", 0);
 
-	ContentManager::Instance().LoadTexture("Assets\\Textures\\BushCourt\\BushCourt.png", 0);	
+	ContentManager::Instance().LoadTexture("Assets\\Textures\\BushCourt\\BushCourt.png", 0);
 	ContentManager::Instance().LoadCubeMap("Assets\\SkyBoxes\\SunSet");
 
 	// Preserve these as they are used in the exit scene
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_albedo.jpg", 1);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_roughness.jpg", 1);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_metallic.jpg", 1);
-	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_normal.jpg", 1);	
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_normal.jpg", 1);
 
 	text->message = "Instantiating sense of despair...";
 	GUIManager::Instance().Render(true, true);
@@ -84,7 +84,7 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\dudv.png", 0);
 
 	text->message = "Finalizing feeling of hopelessness...";
-	GUIManager::Instance().Render(true,true);
+	GUIManager::Instance().Render(true, true);
 
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_albedo.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_roughness.jpg", 0);
@@ -98,12 +98,12 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Metal\\metal_ao.jpg", 0);
 
 	// Load this stuff as preserved so they can be used in the exit scene (so there's not much loading when transitioning)
-	ContentManager::Instance().LoadModel("Assets\\Models\\Paolo\\paolo.fbx", false,true);
+	ContentManager::Instance().LoadModel("Assets\\Models\\Paolo\\paolo.fbx", false, true);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Drew\\drew.fbx", false, true);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Dylan\\dylan.fbx", false, true);
 
 
-	ContentManager::Instance().LoadTexture("Assets\\Models\\Paolo\\textures\\paolo.png",true);
+	ContentManager::Instance().LoadTexture("Assets\\Models\\Paolo\\textures\\paolo.png", true);
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Drew\\textures\\drew.png", true);
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Dylan\\textures\\Dylan.png", true);
 
@@ -133,16 +133,16 @@ void MainScene::Initialize() {
 	cam = new MainCamera();
 	cam->transform.SetPosition(0, 10, 0);
 	cam->transform.SetRotation(0, 180, 0);
-	
+
 	DirectionalLight* dirLight = new DirectionalLight(false);
-	dirLight->transform.SetRotation(20,114,-4);
+	dirLight->transform.SetRotation(20, 114, -4);
 	dirLight->SetDiffuseColor(1.0, 0.9, 0.9);
 	dirLight->SetSpecularColor(1.0, 0.8, 0.4);
 	dirLight->SetIntensity(1.5);
 
 	DirectionalLight* dirLight2 = new DirectionalLight(false);
-	dirLight2->transform.SetRotation(0, -60,0);
-	dirLight2->SetSpecularColor(0,0,0);
+	dirLight2->transform.SetRotation(0, -60, 0);
+	dirLight2->SetSpecularColor(0, 0, 0);
 	dirLight2->SetIntensity(1.5);
 
 	DirectionalLight* dirLight3 = new DirectionalLight(false);
@@ -158,7 +158,7 @@ void MainScene::Initialize() {
 	AddGameObject(dirLight2);
 	AddGameObject(dirLight3);
 	AddGameObject(bushCourt);
-	
+
 	LoadGameObjectsFromFile("Assets\\SceneFiles\\MainScene.txt");
 }
 
@@ -170,21 +170,21 @@ void MainScene::Start()
 	PathFindingManager::Instance().Generate(0, 0, 180, 180, 5);
 	PathFindingManager::Instance().Start();
 
-	PhysicsWorld::Instance().InitializeQuadtree(0, 0,100, 100);
+	PhysicsWorld::Instance().InitializeQuadtree(0, 0, 100, 100);
 	PhysicsWorld::Instance().FillQuadtree(1); // Fill static quadtree
 	PhysicsWorld::Instance().PerformCollisions(1);
 
 	cam->AddComponent(new PathFinder()); //Temporary for debugging pathfinding
-	for (unsigned i = 0; i < 5; i++)
+	for (unsigned i = 0; i < 5; i++) //Temporary for debugging pathfinding
 	{
 		pathfinders.push_back(new PathFinder());
 	}
 
-	locs.push_back(glm::vec3(-44, 2, -18));
-	locs.push_back(glm::vec3(-45, 2, 32));
-	locs.push_back(glm::vec3(-2, 2, 71));
-	locs.push_back(glm::vec3(71, 2, -2));
-	locs.push_back(glm::vec3(45, 2, -45));
+	locs.push_back(glm::vec3(-44, 2, -18)); //Temporary for debugging pathfinding
+	locs.push_back(glm::vec3(-45, 2, 32)); //Temporary for debugging pathfinding
+	locs.push_back(glm::vec3(-2, 2, 71)); //Temporary for debugging pathfinding
+	locs.push_back(glm::vec3(71, 2, -2)); //Temporary for debugging pathfinding
+	locs.push_back(glm::vec3(45, 2, -45)); //Temporary for debugging pathfinding
 }
 
 void MainScene::LogicUpdate()
@@ -209,7 +209,7 @@ void MainScene::LogicUpdate()
 	{
 		pathGoal = cam->transform.GetGlobalPosition();
 	}
-	else if (Input::GetKeyPressed(GLFW_KEY_K)) //Temp: Generates a path from the camera to the location set
+	else if (Input::GetKeyDown(GLFW_KEY_K)) //Temp: Generates a path from the camera to the location set
 	{
 		for (unsigned i = 0; i < PathFindingManager::Instance().nodeMap.size(); i++) //Temporary for debugging pathfinding
 		{
@@ -226,11 +226,47 @@ void MainScene::LogicUpdate()
 
 		for (unsigned i = 0; i < path.size(); i++)
 		{
-			Logger::LogInfo("Path at(", i, "): x: ", path.at(i)->transform.GetGlobalPosition().x, " y: ", path.at(i)->transform.GetGlobalPosition().y, " z: ", path.at(i)->transform.GetGlobalPosition().z);
 			path.at(i)->bc->enableRender = 1;
 		}
 	}
-	else if (Input::GetKeyPressed(GLFW_KEY_J)) //Temp: Generates a path from all the non-cam pathfinders to the location camera + or - some amount
+	else if (Input::GetKeyDown(GLFW_KEY_1) || Input::GetKeyDown(GLFW_KEY_2) || Input::GetKeyDown(GLFW_KEY_3) || Input::GetKeyDown(GLFW_KEY_4) || Input::GetKeyDown(GLFW_KEY_5)) //Temp: Generates a path from location 1, 2, 3, 4, or 5
+	{
+		for (unsigned i = 0; i < PathFindingManager::Instance().nodeMap.size(); i++) //Temporary for debugging pathfinding
+		{
+			for (unsigned j = 0; j < PathFindingManager::Instance().nodeMap.at(i).size(); j++)
+			{
+				PathFindingManager::Instance().nodeMap.at(i).at(j)->bc->enableRender = 0; //Turn off all renderers
+			}
+		}
+
+		for (unsigned i = 0; i < pathfinders.size(); i++)
+		{
+			pathfinders.at(i)->UnlockEndNode(); //Unlock end nodes so we can use them for other pathfinders
+		}
+
+		unsigned option; //Which pathfinder/location to use
+
+		if (Input::GetKeyDown(GLFW_KEY_1))
+			option = 0;
+		else if (Input::GetKeyDown(GLFW_KEY_2))
+			option = 1;
+		else if (Input::GetKeyDown(GLFW_KEY_3))
+			option = 2;
+		else if (Input::GetKeyDown(GLFW_KEY_4))
+			option = 3;
+		else if (Input::GetKeyDown(GLFW_KEY_5))
+			option = 4;
+
+		PathFinder* lpath = pathfinders.at(option);
+		lpath->GeneratePath(locs.at(option), glm::vec3(cam->transform.GetGlobalPosition().x, cam->transform.GetGlobalPosition().y, cam->transform.GetGlobalPosition().z));
+		std::vector<PathNode*> path = lpath->GetNodes();
+
+		for (unsigned i = 0; i < path.size(); i++)
+		{
+			path.at(i)->bc->enableRender = 1; //Render path nodes
+		}
+	}
+	else if (Input::GetKeyPressed(GLFW_KEY_U)) //Temp: Resets rendering of all nodes and unlocks all pathfinders' nodes
 	{
 		for (unsigned i = 0; i < PathFindingManager::Instance().nodeMap.size(); i++) //Temporary for debugging pathfinding
 		{
@@ -242,28 +278,8 @@ void MainScene::LogicUpdate()
 
 		for (unsigned i = 0; i < pathfinders.size(); i++)
 		{
-			PathFinder* lpath = pathfinders.at(i);
-			lpath->UnlockEndNode();
-			lpath->GeneratePath(locs.at(i), glm::vec3(cam->transform.GetGlobalPosition().x + i * 5, cam->transform.GetGlobalPosition().y, cam->transform.GetGlobalPosition().z + i * 5));
-			std::vector<PathNode*> path = lpath->GetNodes();
-
-			for (unsigned i = 0; i < path.size(); i++)
-			{
-				Logger::LogInfo("Path at(", i, "): x: ", path.at(i)->transform.GetGlobalPosition().x, " y: ", path.at(i)->transform.GetGlobalPosition().x, path.at(i)->transform.GetGlobalPosition().y, " z: ", path.at(i)->transform.GetGlobalPosition().z);
-				path.at(i)->bc->enableRender = 1;
-			}
+			pathfinders.at(i)->UnlockEndNode();
 		}
-	}
-	else if (Input::GetKeyPressed(GLFW_KEY_U))
-	{
-		for (unsigned i = 0; i < PathFindingManager::Instance().nodeMap.size(); i++) //Temporary for debugging pathfinding
-		{
-			for (unsigned j = 0; j < PathFindingManager::Instance().nodeMap.at(i).size(); j++)
-			{
-				PathFindingManager::Instance().nodeMap.at(i).at(j)->bc->enableRender = 0;
-			}
-		}
-
 	}
 
 	//PathFindingManager::Instance().ClosestNodeAt(cam->transform.GetPosition().x, cam->transform.GetPosition().y, cam->transform.GetPosition().z);

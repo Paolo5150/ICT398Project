@@ -55,6 +55,7 @@ public:
 	void Initialize() override;
 
 	void Start() override;
+
 	/**
 	* @brief		Update objects in the scene.
 	*/
@@ -63,7 +64,7 @@ public:
 	MainCamera* cam;
 
 	glm::vec3 pathGoal = glm::vec3(0, 0, 0); //Temporary for debugging pathfinding
-	std::vector<PathFinder*> pathfinders;
-	std::vector<glm::vec3> locs;
+	std::vector<PathFinder*> pathfinders; //Temporary for debugging pathfinding
+	std::vector<glm::vec3> locs; //Temporary for debugging pathfinding
 
 };

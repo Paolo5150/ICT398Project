@@ -81,6 +81,7 @@ private:
 	* @brief						Create PathFinder object
 	*/
 	PathFindingManager();
+
 	/**
 	* @brief						Quadtree of nodes
 	*/

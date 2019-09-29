@@ -19,7 +19,7 @@
 * @date 23/09/2019
 *
 *
-* @bug No known bugs.
+* @bug minor bug involving startnode parent, workaround implemented for now.
 */
 class PathFinder : public Component
 {
@@ -33,6 +33,7 @@ public:
 	* @post			The PathFinder object is created.
 	*/
 	PathFinder();
+
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	//-- Deconstructors --//
 	/**
@@ -42,6 +43,7 @@ public:
 	* @post			The PathFinder object will no longer exist.
 	*/
 	~PathFinder();
+
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	//-- Pathfinding --//
 	/**
@@ -100,17 +102,17 @@ public:
 
 private:
 	/**
-	* @brief						Stores the path as a vector of nodes
+	* @brief		Stores the path as a vector of nodes
 	*/
 	std::vector<PathNode*> nodePath;
 
 	/**
-	* @brief						Stores the path as a vector of 3d vectors
+	* @brief		Stores the path as a vector of 3d vectors
 	*/
 	std::vector<glm::vec3> path;
 
 	/**
-	* @brief						A locked end node, used to avoid multiple components pathfinding to the same place
+	* @brief		A locked end node, used to avoid multiple components pathfinding to the same place
 	*/
 	PathNode* lockedNode;
 };
