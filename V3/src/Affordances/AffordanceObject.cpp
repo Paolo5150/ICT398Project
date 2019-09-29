@@ -13,7 +13,7 @@ void AffordanceObject::AddPerceviedAffordance(Affordance* a)
 {
 	std::string name = FileUtils::GetClassNameW(a);
 	perceivedAffordancesByName[name] = std::unique_ptr<Affordance>(a);
-	perceivedAffordancesByName[name]->currentUsers = 0;
+	perceivedAffordancesByName[name]->SetCurrentUsers(0);
 	perceivedAffordancesByType[a->affordanceType].insert(a);
 
 	AffordanceManager::Instance().RegisterAffordanceObject(name, this);
@@ -115,12 +115,12 @@ bool AffordanceObject::IsAvailableForAffordance(std::string affName)
 		auto it = perceivedAffordancesByName.find(affName);
 		if (it != perceivedAffordancesByName.end())
 		{
-			return it->second->currentUsers < it->second->maxUsers;
+			return it->second->GetCurrentUsers() < it->second->GetMaxUsers();
 		}
 	}
 	else
 	{
-		return inUse->currentUsers < inUse->maxUsers;
+		return inUse->GetCurrentUsers() < inUse->GetMaxUsers();
 	}
 	return false;
 }

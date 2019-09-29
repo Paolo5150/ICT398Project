@@ -13,17 +13,49 @@ class AffordanceObject;
 class AffordanceManager
 {
 public:
-
+	/**
+	* @brief		Get instance
+	*/
 	static AffordanceManager& Instance();
-	~AffordanceManager() ;
-	void RegisterAffordanceObject(std::string, AffordanceObject* obj);	
 
+	/**
+	* @brief		Destroy object
+	*/
+	~AffordanceManager() ;
+
+	/**
+	* @brief					Register an affordance object
+	* @param affordanceName		The name of the affordance to register the object against
+	* @param obj				The object to be registered
+	*/
+	void RegisterAffordanceObject(std::string affordanceName, AffordanceObject* obj);	
+
+
+	/**
+	* @brief					Get list of AffordanceObject in specified range
+	* @param pos				The position of the check point
+	* @param range				The range
+	* @return					The affordance objects in range
+	*/
 	template <class T>
 	std::vector<AffordanceObject*> GetObjectsOfTypeWithinRange(glm::vec3 pos, float range);
 
+	/**
+	* @brief					Get best affordance object with specific affordance within range
+	* @param pos				The position of the check point
+	* @param range				The range
+	* @return					The best affordance object in range
+	*/
 	template <class T>
 	AffordanceObject* GetBestScoreObjectWithinRange(glm::vec3 pos, float range);
 
+	/**
+	* @brief					Get best affordance object by typewithin range
+	* @param type				The type of the affordance object
+	* @param pos				The position of the check point
+	* @param range				The range
+	* @return					The best affordance object in range
+	*/
 	AffordanceObject* GetBestScoreObjectByAffordanceTypeWithinRange(Affordance::AffordanceTypes type, glm::vec3 pos, float range, std::string& outAffordanceName);
 
 
