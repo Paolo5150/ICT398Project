@@ -322,8 +322,6 @@ bool FileUtils::ReadPersonalityFile(std::string absolutePathToFile, std::map<Nee
 
 				fscanf(f, "%s %f %d %f %f", &name, &startValue, &priority, &positiveGainMultiplier, &negativeGainMultiplier);
 
-				//fgets(buf, 512, f);
-
 				int needType = NeedFactory::GetNeedType(name);
 
 				if (needType >= 0)
@@ -336,8 +334,6 @@ bool FileUtils::ReadPersonalityFile(std::string absolutePathToFile, std::map<Nee
 			{
 				fscanf(f, "%s", &name);
 
-				//fgets(buf, 512, f);
-
 				int traitType = TraitFactory::GetTraitType(name);
 
 				if (traitType >= 0)
@@ -345,7 +341,6 @@ bool FileUtils::ReadPersonalityFile(std::string absolutePathToFile, std::map<Nee
 					traits.push_back(std::move(TraitFactory::GetTrait((Trait::TraitType)traitType)));
 				}
 			}
-			//fgets(buf, 512, f);
 		}
 		return true;
 	}

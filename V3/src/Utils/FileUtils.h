@@ -78,6 +78,15 @@ class FileUtils
 
 		static std::vector<GameObject*> ReadSceneFile(std::string absolutePathToFile);
 
+		/**
+		* @brief						Loads the data in the given file and converts it into a format accepted by the passed in reference variables
+		* @pre							The file is available
+		* @post							Loads the given data structures if possible
+		* @param absolutePathToFile		The absolute path to the file
+		* @param needs					Map that the read needs will be loaded into
+		* @param trait					List that the read Traits will be loaded into
+		* @return						Whether the file was read and data structures loaded
+		*/
 		static bool ReadPersonalityFile(std::string absolutePathToFile, std::map<Need::NeedType, std::unique_ptr<Need>>& needs, std::list<std::unique_ptr<Trait>>& traits);
 
 

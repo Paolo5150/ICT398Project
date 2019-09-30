@@ -3,7 +3,7 @@
 #include "..\..\Core\Logger.h"
 
 
-Rest::Rest(float startValue, int priority, float positiveGainMultiplier, float negativeGainMultiplier) : Need(NeedType::Rest, "Rest", startValue, 20, positiveGainMultiplier, negativeGainMultiplier, priority)
+Rest::Rest(float startValue, int priority, float positiveGainMultiplier, float negativeGainMultiplier) : Need(NeedType::Rest, "Rest", startValue, 20, 100, positiveGainMultiplier, negativeGainMultiplier, priority)
 {
 }
 

@@ -5,14 +5,14 @@
 
 AIEmotion::AIEmotion() : Component("Emotion")
 {
-	this->personalityName = "default";
-	timer = 0;
+	name = "Chadd";
+	personalityName = "default";
 }
 
-AIEmotion::AIEmotion(std::string personalityName) : Component("Emotion")
+AIEmotion::AIEmotion(std::string name, std::string personalityName) : Component("Emotion")
 {
+	this->name = name;
 	this->personalityName = personalityName;
-	timer = 0;
 }
 
 
@@ -54,6 +54,11 @@ bool AIEmotion::HasNeedType(Need::NeedType needType)
 		return false;
 }
 
+std::string AIEmotion::GetName()
+{
+	return name;
+}
+
 float AIEmotion::GetNeedValue(Need::NeedType needType)
 {
 	return needs[needType]->GetValue();
@@ -67,20 +72,29 @@ void AIEmotion::OnAttach(GameObject * go)
 
 void AIEmotion::EngineUpdate()
 {
-	timer += Timer::GetDeltaS();
-	if (timer < 2.5)
-	{
-		AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Rest, Stimuli::StimuliType::Default, -30 * Timer::GetDeltaS(), true, 0, this);
-		AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Thirst, Stimuli::StimuliType::Default, -20 * Timer::GetDeltaS(), true, 0, this);
-	}
-	if (timer > 2.5 && timer < 3.0f)
-	{
-		AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Thirst, Stimuli::StimuliType::Default, 30, true, 0, this);
-	}
+	AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Thirst, Stimuli::StimuliType::Default, -0.2f * Timer::GetDeltaS(), true, 0, this);
+	AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Rest, Stimuli::StimuliType::Default, -0.2f * Timer::GetDeltaS(), true, 0, this);
 
 	UpdateStimuli();
 
-	UpdateNeeds();
+	if (seeking)
+	{
+		SeekNeeds();
+	}
+	else
+	{
+		currentlySeekedNeed = nullptr;
+	}
+}
+
+bool AIEmotion::GetSeeking()
+{
+	return seeking;
+}
+
+void AIEmotion::SetSeeking(float newSeeking)
+{
+	seeking = newSeeking;
 }
 
 void AIEmotion::UpdateStimuli()
@@ -111,16 +125,24 @@ void AIEmotion::UpdateStimuli()
 				duration -= Timer::GetDeltaS();
 				if (numTicks != (int)(duration / tickDuration))
 				{
+					float magnitude = stimuli->GetMagnitude() / numTicks;
 					numTicks = duration / tickDuration;
-					if (numTicks > 0)
+					if (numTicks >= 0)
 					{
 						float multiplier;
-						if (stimuli->GetMagnitude() > 0)
+						if (magnitude > 0)
 							multiplier = need->GetPositiveGainMultiplier();
 						else
 							multiplier = need->GetNegativeGainMultiplier();
-						need->SetValue(need->GetValue() + stimuli->GetMagnitude() * multiplier);
-						it++;
+						need->SetValue(need->GetValue() + magnitude * multiplier);
+						if (numTicks == 0)
+							it = effectedStimuli.erase(it);
+						else
+						{
+							stimuli->SetMagnitude(stimuli->GetMagnitude() - magnitude);
+							stimuli->SetDuration(duration);
+							it++;
+						}
 					}
 					else
 					{
@@ -129,6 +151,7 @@ void AIEmotion::UpdateStimuli()
 				}
 				else
 				{
+					stimuli->SetDuration(duration);
 					it++;
 				}
 			}
@@ -138,7 +161,7 @@ void AIEmotion::UpdateStimuli()
 	}
 }
 
-void AIEmotion::UpdateNeeds()
+void AIEmotion::SeekNeeds()
 {
 	std::map<Need::NeedType, std::unique_ptr<Need>>::iterator it = needs.begin();
 
@@ -148,7 +171,7 @@ void AIEmotion::UpdateNeeds()
 	while (it != needs.end())
 	{
 		Need* need = it->second.get();
-		if (need->GetValue() < need->GetMinSeekThreshold())
+		if (need->GetValue() < need->GetLowSeekThreshold() || need->GetValue() > need->GetHighSeekThreshold())
 		{
 			if (priorityOrderedNeeds.empty())
 			{

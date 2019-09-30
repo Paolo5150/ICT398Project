@@ -1,13 +1,12 @@
 #include "pch.h"
 #include "Need.h"
 
-
-Need::Need(NeedType type, std::string name, float value, float minSeekThreshold, float positiveGainMultiplier, float negativeGainMultiplier, int priority) : type(type),
-			name(name),	value(value), minSeekThreshold(minSeekThreshold), positiveGainMultiplier(positiveGainMultiplier), negativeGainMultiplier(negativeGainMultiplier), priority(priority)
+Need::Need(NeedType type, std::string name, float value, float lowSeekThreshold, float highSeekThreshold, float positiveGainMultiplier, float negativeGainMultiplier, int priority) : type(type),
+			name(name),	value(value), lowSeekThreshold(lowSeekThreshold), highSeekThreshold(highSeekThreshold), positiveGainMultiplier(positiveGainMultiplier), negativeGainMultiplier(negativeGainMultiplier), priority(priority)
 {
 }
 
-Need::Need(NeedType type, std::string name, float minSeekThreshold) : type(type), name(name), minSeekThreshold(minSeekThreshold)
+Need::Need(NeedType type, std::string name, float lowSeekThreshold, float highSeekThreshold) : type(type), name(name), lowSeekThreshold(lowSeekThreshold), highSeekThreshold(highSeekThreshold)
 {
 }
 
@@ -41,9 +40,14 @@ void Need::SetValue(float newValue)
 		value = newValue;
 }
 
-float Need::GetMinSeekThreshold()
+float Need::GetLowSeekThreshold()
 {
-	return minSeekThreshold;
+	return lowSeekThreshold;
+}
+
+float Need::GetHighSeekThreshold()
+{
+	return highSeekThreshold;
 }
 
 float Need::GetPositiveGainMultiplier()

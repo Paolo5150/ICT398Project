@@ -1,8 +1,11 @@
 #include "pch.h"
 #include "NeedFactory.h"
-#include "Needs/Rage.h"
+#include "Needs/Anger.h"
+#include "Needs/Anticipation.h"
 #include "Needs/Thirst.h"
 #include "Needs/Rest.h"
+#include "Needs/Joy.h"
+#include "Needs/Trust.h"
 #include "..\Core\Logger.h"
 #include <boost/algorithm/string.hpp>
 
@@ -18,9 +21,21 @@ NeedFactory::~NeedFactory()
 
 int NeedFactory::GetNeedType(std::string needName)
 {
-	if (strcmp("rage", needName.c_str()) == 0)
+	if (strcmp("anger", needName.c_str()) == 0)
 	{
-		return Need::NeedType::Rage;
+		return Need::NeedType::Anger;
+	}
+	else if (strcmp("anticipation", needName.c_str()) == 0)
+	{
+		return Need::NeedType::Anticipation;
+	}
+	else if (strcmp("joy", needName.c_str()) == 0)
+	{
+		return Need::NeedType::Joy;
+	}
+	else if (strcmp("trust", needName.c_str()) == 0)
+	{
+		return Need::NeedType::Trust;
 	}
 	else if (strcmp("thirst", needName.c_str()) == 0)
 	{
@@ -42,8 +57,17 @@ std::unique_ptr<Need> NeedFactory::GetNeed(Need::NeedType type, float startValue
 	std::unique_ptr<Need> need(nullptr);
 	switch (type)
 	{
-	case Need::NeedType::Rage:
-		need = std::unique_ptr<Rage>(new Rage(startValue, priority, positiveGainMultiplier, negativeGainMultiplier));
+	case Need::NeedType::Anger:
+		need = std::unique_ptr<Anger>(new Anger(startValue, priority, positiveGainMultiplier, negativeGainMultiplier));
+		break;
+	case Need::NeedType::Anticipation:
+		need = std::unique_ptr<Anticipation>(new Anticipation(startValue, priority, positiveGainMultiplier, negativeGainMultiplier));
+		break;
+	case Need::NeedType::Joy:
+		need = std::unique_ptr<Joy>(new Joy(startValue, priority, positiveGainMultiplier, negativeGainMultiplier));
+		break;
+	case Need::NeedType::Trust:
+		need = std::unique_ptr<Trust>(new Trust(startValue, priority, positiveGainMultiplier, negativeGainMultiplier));
 		break;
 	case Need::NeedType::Thirst:
 		need = std::unique_ptr<Thirst>(new Thirst(startValue, priority, positiveGainMultiplier, negativeGainMultiplier));

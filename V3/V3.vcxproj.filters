@@ -288,7 +288,16 @@
     <ClCompile Include="src\Emotion\TraitFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Emotion\Needs\Rage.cpp">
+    <ClCompile Include="src\Emotion\Needs\Anger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Emotion\Needs\Anticipation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Emotion\Needs\Joy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Emotion\Needs\Trust.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -662,7 +671,16 @@
     <ClInclude Include="src\Emotion\TraitFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Emotion\Needs\Rage.h">
+    <ClInclude Include="src\Emotion\Needs\Anger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Emotion\Needs\Anticipation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Emotion\Needs\Joy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Emotion\Needs\Trust.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -28,7 +28,7 @@ bool AIEmotionManager::RegisterEmotion(AIEmotion * aiEmotion)
 		it++;
 	}
 	agents.push_back(aiEmotion);
-	Logger::LogInfo("AI Emotion Registered on", aiEmotion->GetParent()->GetName());
+	Logger::LogInfo("AI Emotion Registered on", aiEmotion->GetName());
 	return true;
 }
 

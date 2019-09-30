@@ -194,9 +194,12 @@
     <ClInclude Include="src\Emotion\AIEmotionManager.h" />
     <ClInclude Include="src\Emotion\Need.h" />
     <ClInclude Include="src\Emotion\NeedFactory.h" />
-    <ClInclude Include="src\Emotion\Needs\Rage.h" />
+    <ClInclude Include="src\Emotion\Needs\Anger.h" />
+    <ClInclude Include="src\Emotion\Needs\Anticipation.h" />
+    <ClInclude Include="src\Emotion\Needs\Joy.h" />
     <ClInclude Include="src\Emotion\Needs\Rest.h" />
     <ClInclude Include="src\Emotion\Needs\Thirst.h" />
+    <ClInclude Include="src\Emotion\Needs\Trust.h" />
     <ClInclude Include="src\Emotion\Stimuli.h" />
     <ClInclude Include="src\Emotion\Trait.h" />
     <ClInclude Include="src\Emotion\TraitFactory.h" />
@@ -316,9 +319,12 @@
     <ClCompile Include="src\Emotion\AIEmotionManager.cpp" />
     <ClCompile Include="src\Emotion\Need.cpp" />
     <ClCompile Include="src\Emotion\NeedFactory.cpp" />
-    <ClCompile Include="src\Emotion\Needs\Rage.cpp" />
+    <ClCompile Include="src\Emotion\Needs\Anger.cpp" />
+    <ClCompile Include="src\Emotion\Needs\Anticipation.cpp" />
+    <ClCompile Include="src\Emotion\Needs\Joy.cpp" />
     <ClCompile Include="src\Emotion\Needs\Rest.cpp" />
     <ClCompile Include="src\Emotion\Needs\Thirst.cpp" />
+    <ClCompile Include="src\Emotion\Needs\Trust.cpp" />
     <ClCompile Include="src\Emotion\Stimuli.cpp" />
     <ClCompile Include="src\Emotion\Trait.cpp" />
     <ClCompile Include="src\Emotion\TraitFactory.cpp" />
