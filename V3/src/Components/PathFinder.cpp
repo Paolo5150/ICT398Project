@@ -25,7 +25,7 @@ bool PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
 
 		open.push_back(startNode);
 		startNode->totalCost = 0.0;
-		startNode->parentNode = nullptr; //(BUG) This is required, otherwise the parent node is set somewhere else for some reason
+		startNode->parentNode = nullptr; //Make sure that the start node parent is empty, in case it has been previously set
 
 		for (unsigned i = 0; i < startNode->neighbors.size(); i++) //Set up the nodes around the start node
 		{

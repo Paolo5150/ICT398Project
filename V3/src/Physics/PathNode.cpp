@@ -10,8 +10,6 @@ PathNode::PathNode() : GameObject("PathNode")
 	distanceFromTarget = 0;
 	cost = 0;
 	totalCost = 0;
-	lock = false;
-	parentNode = nullptr;
 }
 PathNode::~PathNode()
 {

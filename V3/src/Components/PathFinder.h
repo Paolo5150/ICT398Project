@@ -19,7 +19,7 @@
 * @date 23/09/2019
 *
 *
-* @bug minor bug involving startnode parent, workaround implemented for now.
+* @bug No known bugs.
 */
 class PathFinder : public Component
 {
