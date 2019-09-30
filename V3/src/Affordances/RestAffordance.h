@@ -9,6 +9,7 @@ public:
 	{
 		score = 50;
 		affordanceType = AffordanceTypes::REST;
+		affordanceName = "SitAffordance";
 		Callback = []() { Logger::LogInfo("Someone sit on me"); };
 	}
 	virtual ~SitAffordance() {};
@@ -23,6 +24,7 @@ public:
 	{
 		score = 50;
 		affordanceType = AffordanceTypes::REST;
+		affordanceName = "LaydownAffordance";
 		Callback = []() { Logger::LogInfo("Someone laid down on me"); };
 	}
 	virtual ~LaydownAffordance() {};

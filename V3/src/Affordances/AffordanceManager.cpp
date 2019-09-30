@@ -118,3 +118,72 @@ void AffordanceManager::RegisterAffordanceObject(std::string affName,AffordanceO
 }
 
 
+std::vector<AffordanceObject*> AffordanceManager::GetObjectsOfTypeWithinRange(std::string name, glm::vec3 pos, float range)
+{
+	std::vector<AffordanceObject*> r;
+
+	auto it = affordanceMapByAffordanceName.find(name);
+	if (it != affordanceMapByAffordanceName.end())
+	{
+		auto objIt = it->second.begin();
+
+		for (; objIt != it->second.end(); objIt++)
+		{
+			if ((*objIt)->IsAvailableForAffordance(name))
+			{
+				float length = glm::length((*objIt)->gameObject->transform.GetGlobalPosition() - pos);
+				if (length < range)
+					r.push_back(*objIt);
+			}
+		}
+	}
+
+	return r;
+}
+
+AffordanceObject* AffordanceManager::GetBestScoreObjectWithinRange(std::string name, glm::vec3 pos, float range)
+{
+	std::vector<AffordanceObject*> r = GetObjectsOfTypeWithinRange(name,pos, range);
+	std::vector<AffordanceObject*> bestScore;
+
+	int max = -HUGE;
+	// Find max
+	for (int i = 0; i < r.size(); i++)
+	{
+		int score = r[i]->GetAffordanceScore(name);
+		if (score >= max)
+		{
+			max = score;
+		}
+	}
+
+	for (int i = 0; i < r.size(); i++)
+	{
+		int score = r[i]->GetAffordanceScore(name);
+		if (score == max)
+			bestScore.push_back(r[i]);
+	}
+
+	AffordanceObject* ret = nullptr;
+	// If there's more than one affordance obj with high same score, get closest one
+	if (bestScore.size() > 1)
+	{
+		float length2 = HUGE;
+		for (int i = 0; i < bestScore.size(); i++)
+		{
+			float lenngth = glm::length2(bestScore[i]->gameObject->transform.GetGlobalPosition() - pos);
+			if (lenngth < length2)
+			{
+				length2 = lenngth;
+				ret = bestScore[i];
+			}
+		}
+	}
+	else if (bestScore.size() == 1)
+		ret = bestScore[0];
+
+	return ret;
+
+}
+
+

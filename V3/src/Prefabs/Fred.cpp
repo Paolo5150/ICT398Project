@@ -47,23 +47,23 @@ Fred::Fred() : GameObject("Fred")
 
 	aa = new AffordanceAgent();
 
-	aa->AddAffordanceEngageCallback<SitAffordance>([&](AffordanceObject*obj) {
+	aa->AddAffordanceEngageCallback("SitAffordance",[&](AffordanceObject*obj) {
 		Logger::LogInfo("SitAffordance engaged");
 		transform.SetPosition(obj->gameObject->transform.GetPosition() + glm::vec3(0, 1, 0));
 	});
 
-	aa->AddAffordanceDisengageCallback<SitAffordance>([&]() {
+	aa->AddAffordanceDisengageCallback("SitAffordance",[&]() {
 		Logger::LogInfo("SitAffordance disengaged");
 
 		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition() - glm::vec3(0, 1, 0));
 	});
 
-	aa->AddAffordanceEngageCallback<LaydownAffordance>([&](AffordanceObject*obj) {
+	aa->AddAffordanceEngageCallback("LaydownAffordance",[&](AffordanceObject*obj) {
 		Logger::LogInfo("LaydownAffordance engaged");
 		transform.RotateBy(90, transform.GetLocalRight());
 	});
 
-	aa->AddAffordanceDisengageCallback<LaydownAffordance>([&]() {
+	aa->AddAffordanceDisengageCallback("LaydownAffordance", [&]() {
 		Logger::LogInfo("LaydownAffordance disengaged");
 
 		transform.RotateBy(-90, transform.GetLocalRight());

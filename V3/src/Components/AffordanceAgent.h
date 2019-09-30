@@ -13,29 +13,18 @@ public:
 	AffordanceAgent();
 	virtual ~AffordanceAgent();
 
-	template<class T>
-	void AddAffordanceEngageCallback(std::function<void(AffordanceObject*)>);
+	void AddAffordanceEngageCallback(std::string affordanceName, std::function<void(AffordanceObject*)>);
 
-	template<class T>
-	bool IsAffordanceSupported();
+	bool IsAffordanceSupported(std::string affordanceName);
 
-	template<class T>
-	void AddAffordanceDisengageCallback(std::function<void()>);
-
-	template<class T>
-	void ExecuteAffordanceEngageCallback();
-
-	template<class T>
-	void ExecuteAffordanceDisengageCallback();
+	void AddAffordanceDisengageCallback(std::string affordanceName, std::function<void()>);
 
 	void ExecuteAffordanceDisengageCallback(std::string name);
 	void ExecuteAffordanceEngageCallback(std::string name);
 
 	bool LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Affordance::AffordanceTypes type, float range);
 
-
-	template<class T>
-	bool LookForBestScoreAffordanceObjectInRange(float range);
+	bool LookForBestScoreAffordanceObjectInRange(std::string affordanceName, float range);
 
 	AffordanceObject* selectedObj;
 
@@ -52,89 +41,5 @@ protected:
 	std::string selectedAffordanceName; //Used when looking for affordance objs by type
 };
 
-template<class T>
-bool AffordanceAgent::LookForBestScoreAffordanceObjectInRange(float range)
-{
-	if (IsAffordanceSupported<T>() && inUseObj == nullptr)
-	{
-		if (selectedObj == nullptr)
-		{
-			selectedObj = AffordanceManager::Instance().GetBestScoreObjectWithinRange<T>(_parent->transform.GetGlobalPosition(), range);
-			return selectedObj != nullptr;
-		}
-		else
-			return true;
-	}
-	else
-		return false;
-
-}
-
-template<class T>
-bool AffordanceAgent::IsAffordanceSupported()
-{
-	std::string affName = FileUtils::GetClassNameW<T>();
-	auto objIt = affordanceEngageCallbackMap.find(affName);
-	return objIt != affordanceEngageCallbackMap.end();
-
-}
-
-template<class T>
-void AffordanceAgent::AddAffordanceDisengageCallback(std::function<void()> callback)
-{
-	std::string affName = FileUtils::GetClassNameW<T>();
-	affordanceDisengageCallbackMap[affName] = callback;
-}
-
-template<class T>
-void AffordanceAgent::AddAffordanceEngageCallback(std::function<void(AffordanceObject*)> callback)
-{
-	std::string affName = FileUtils::GetClassNameW<T>();
-	affordanceEngageCallbackMap[affName] = callback;
-
-}
-
-template<class T>
-void AffordanceAgent::ExecuteAffordanceEngageCallback()
-{
-
-	std::string affName = FileUtils::GetClassNameW<T>();
-
-	if (inUseObj == nullptr)
-	{
-		auto it = affordanceEngageCallbackMap.find(affName);
-
-		if (it != affordanceEngageCallbackMap.end())
-		{
-			it->second(selectedObj);
-			selectedObj->ExecuteAffordanceCallback(affName);
-			inUseObj = selectedObj;
-			selectedObj->AddUser(_parent);
-		}
-	}
-}
 
 
-template<class T>
-void AffordanceAgent::ExecuteAffordanceDisengageCallback()
-{
-	// If there's no affordance object in use, no need to disengage it
-	if (selectedObj == nullptr || inUseObj == nullptr) return;
-
-	std::string affName = FileUtils::GetClassNameW<T>();
-
-	if (inUseObj != nullptr)
-	{
-		auto it = affordanceDisengageCallbackMap.find(affName);
-
-		if (it != affordanceDisengageCallbackMap.end())
-		{
-			it->second();
-			inUseObj->ReleaseUse(_parent);
-			inUseObj = nullptr;
-			selectedObj = nullptr;
-			selectedAffordanceName = "";
-
-		}
-	}
-}

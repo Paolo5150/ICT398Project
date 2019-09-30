@@ -70,6 +70,9 @@ public:
 	* @brief The type the affordance belongs to
 	*/
 	AffordanceTypes affordanceType;
+
+
+	std::string& GetName() { return affordanceName; }
 protected:
 	int score;
 	/**
@@ -81,5 +84,7 @@ protected:
 	* @brief The current number of users for the affordance
 	*/
 	int currentUsers;
+
+	std::string affordanceName;
 
 };

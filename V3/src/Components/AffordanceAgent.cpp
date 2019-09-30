@@ -83,4 +83,46 @@ void AffordanceAgent::Update()
 	}
 }
 
+bool AffordanceAgent::LookForBestScoreAffordanceObjectInRange(std::string name, float range)
+{
+	if (IsAffordanceSupported(name) && inUseObj == nullptr)
+	{
+		if (selectedObj == nullptr)
+		{
+			selectedObj = AffordanceManager::Instance().GetBestScoreObjectWithinRange(name, _parent->transform.GetGlobalPosition(), range);
+			return selectedObj != nullptr;
+		}
+		else
+			return true;
+	}
+	else
+		return false;
+
+}
+
+
+
+bool AffordanceAgent::IsAffordanceSupported(std::string affName)
+{
+
+	auto objIt = affordanceEngageCallbackMap.find(affName);
+	return objIt != affordanceEngageCallbackMap.end();
+
+}
+
+
+void AffordanceAgent::AddAffordanceDisengageCallback(std::string affName,std::function<void()> callback)
+{
+	affordanceDisengageCallbackMap[affName] = callback;
+}
+
+
+void AffordanceAgent::AddAffordanceEngageCallback(std::string affName,std::function<void(AffordanceObject*)> callback)
+{
+	affordanceEngageCallbackMap[affName] = callback;
+}
+
+
+
+
 

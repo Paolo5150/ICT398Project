@@ -38,12 +38,12 @@ Riley::Riley() : GameObject("Riley")
 	ApplyMaterial(m2NoLight, NOLIGHT);
 
 	aa = new AffordanceAgent();
-	aa->AddAffordanceEngageCallback<SitAffordance>([&](AffordanceObject*obj) {
+	aa->AddAffordanceEngageCallback("SitAffordance",[&](AffordanceObject*obj) {
 
 		transform.SetPosition(obj->gameObject->transform.GetPosition() + glm::vec3(0, 1, 0));
 	});
 
-	aa->AddAffordanceDisengageCallback<SitAffordance>([&]() {
+	aa->AddAffordanceDisengageCallback("SitAffordance",[&]() {
 
 		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition() - glm::vec3(0, 1, 0));
 	});
@@ -67,7 +67,7 @@ void Riley::Update()
 
 	if (timer > 7 && needToSit)
 	{
-		if (aa->LookForBestScoreAffordanceObjectInRange<SitAffordance>(40))
+		if (aa->LookForBestScoreAffordanceObjectInRange("SitAffordance",40))
 		{
 			glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - transform.GetGlobalPosition();
 
@@ -78,13 +78,13 @@ void Riley::Update()
 			}
 			else
 			{
-				aa->ExecuteAffordanceEngageCallback<SitAffordance>();
+				aa->ExecuteAffordanceEngageCallback("SitAffordance");
 			}
 		}
 	}
 	if (timer > 50)
 	{
-		aa->ExecuteAffordanceDisengageCallback<SitAffordance>();
+		aa->ExecuteAffordanceDisengageCallback("SitAffordance");
 		needToSit = 0;
 	}
 }
