@@ -201,6 +201,7 @@
     <ClInclude Include="src\Events\EventDispatcher.h" />
     <ClInclude Include="src\Events\TimerEvents.h" />
     <ClInclude Include="src\Events\WindowEvents.h" />
+    <ClInclude Include="src\GUI\Elements\GUIBar.h" />
     <ClInclude Include="src\GUI\Elements\GUIButton.h" />
     <ClInclude Include="src\GUI\Elements\GUICanvas.h" />
     <ClInclude Include="src\GUI\Elements\GUIImage.h" />
@@ -313,6 +314,7 @@
     <ClCompile Include="src\Diag\DiagPrefab.cpp" />
     <ClCompile Include="src\Diag\DiagRenderer.cpp" />
     <ClCompile Include="src\Events\EventDispatcher.cpp" />
+    <ClCompile Include="src\GUI\Elements\GUIBar.cpp" />
     <ClCompile Include="src\GUI\Elements\GUICanvas.cpp" />
     <ClCompile Include="src\GUI\GUIManager.cpp" />
     <ClCompile Include="src\GUI\imgui.cpp">

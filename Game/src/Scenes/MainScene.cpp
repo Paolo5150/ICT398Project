@@ -20,8 +20,14 @@
 #include "GUI/GUIManager.h"
 #include "GUI/Elements/GUIImage.h"
 #include "GUI/Elements/GUIText.h"
+#include "GUI/Elements/GUIBar.h"
+
 #include "Affordances/AffordanceManager.h"
 
+namespace
+{
+	GUIBar* testBar;
+}
 
 MainScene::MainScene() : Scene("MainScene")
 {
@@ -32,9 +38,12 @@ void MainScene::LoadAssets() {
 	// Load splash screen
 	GUIImage* image = new GUIImage("SplashImage", ContentManager::Instance().GetAsset<Texture2D>("logo"), 100, 100, 0, 0, 1, 1, 1,1);
 	GUIText* text = new GUIText("LoadingText", "Loading", 1, 95, glm::vec3(1), 2.5,1);
+	testBar = new GUIBar("Bar", 25, 5, 20, 20, 1);
 
 	GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(image);
 	GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(text);
+	GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(testBar);
+
 
 	GUIManager::Instance().SetColorBuffer(0.8, 0.8, 0.8);
 	GUIManager::Instance().Render(true,true);
@@ -213,7 +222,6 @@ void MainScene::LogicUpdate()
 
 
 	PathFindingManager::Instance().ClosestNodeAt(cam->transform.GetPosition().x, cam->transform.GetPosition().y, cam->transform.GetPosition().z);
-
 
 	/*std::set<AffordanceObject*> inRange = AffordanceManager::Instance().GetClosestAffordancesByTypeWithinRange(Affordance::REST, cam->transform.GetPosition(), 50);
 	for (auto it = inRange.begin(); it != inRange.end(); it++)
