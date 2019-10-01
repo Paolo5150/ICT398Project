@@ -9,7 +9,7 @@ Rigidbody::Rigidbody() : Component("Rigidbody")
 	useGravity = true;
 	awake = 1;
 	timer = 0;
-	damping = 0.1;
+	damping = 0.5;
 
 }
 
@@ -154,7 +154,7 @@ void Rigidbody::Update()
 	if (awake)
 	{
 		velocity = glm::lerp(velocity, glm::vec3(), Timer::GetDeltaS() * damping);
-		angVelocity = glm::lerp(angVelocity, glm::vec3(), Timer::GetDeltaS() * damping * 10);
+		angVelocity = glm::lerp(angVelocity, glm::vec3(), Timer::GetDeltaS() * damping * 2);
 
 		//angVelocity += glm::vec3(1, 1, 1) * -damping;
 

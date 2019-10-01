@@ -82,6 +82,17 @@ public:
 	void SetActive(bool active, bool includeChildren = true);
 
 	/**
+* @brief		Sets the IsActive state of the GameObject to the specified parameter.
+*
+* @pre			The GameObject must exist
+* @post			The GameObject object's IsActive state is set to the parameter value, if it is valid
+*
+* @param		active				State of the GameObject
+* @param		includeChildren		Whether to set all children to the same state
+*/
+	void SetCullable(bool cullable);
+
+	/**
 	* @brief		Signal that the objet will be destroyed in the next late update
 	*
 	* @pre			The GameObject must exist
@@ -447,7 +458,7 @@ public:
 	*
 	* @return intertia tensor for object
 	*/
-	glm::mat3 GetInertiaTensor();
+	glm::mat3& GetInertiaTensor();
 
 	virtual void OnCollisionEnter(Collider* go, Collision& collision){};
 	virtual void OnCollisionStay(Collider* go, Collision& collision) {};

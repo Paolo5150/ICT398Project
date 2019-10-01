@@ -12,7 +12,14 @@ Drew::Drew() : GameObject("Drew")
 
 	Material m;
 	m.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStatic"));
-	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("drew"));
+
+	Texture2D* t = ContentManager::Instance().GetAsset<Texture2D>("drew");
+
+	if(t)
+		m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("drew"));
+	else
+		m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("Dylan"));
+
 	m.LoadFloat("shininess", 400.0f);
 
 	Material m1NoLight;

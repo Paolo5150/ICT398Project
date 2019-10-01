@@ -3,12 +3,12 @@
 
 class AffordanceObject;
 
-class Fred : public GameObject
+class Riley : public GameObject
 {
 
 public:
-	Fred();
-	~Fred();
+	Riley();
+	~Riley();
 
 	void Update() override;
 	void Start() override;

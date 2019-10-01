@@ -9,7 +9,9 @@
 #include "Prefabs/Terrain.h"
 #include "Prefabs/LandfillBin.h"
 #include "Prefabs/RecycleBin.h"
-#include "Prefabs/Water.h"
+#include "Prefabs/Fred.h"
+#include "Prefabs/Riley.h"
+
 #include "Prefabs/BushCourt.h"
 #include "Prefabs/Lantern.h"
 #include "Physics/PathFindingManager.h"
@@ -18,7 +20,7 @@
 #include "GUI/GUIManager.h"
 #include "GUI/Elements/GUIImage.h"
 #include "GUI/Elements/GUIText.h"
-
+#include "Affordances/AffordanceManager.h"
 
 MainScene::MainScene() : Scene("MainScene")
 {
@@ -47,6 +49,18 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadModel("Assets\\Models\\RecycleBin\\recyclebin.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\BushCourt\\bushcourt.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Lantern\\lantern.obj", false, false);
+	ContentManager::Instance().LoadModel("Assets\\Models\\Crate\\crate.obj",false, false);
+
+
+	ContentManager::Instance().LoadModel("Assets\\Models\\Fred\\Fred.fbx", false, false);
+	ContentManager::Instance().LoadTexture("Assets\\Models\\Fred\\textures\\Fred_Base_Color.png", false);
+
+
+	ContentManager::Instance().LoadModel("Assets\\Models\\Riley\\Riley.fbx", false, false);
+	ContentManager::Instance().LoadTexture("Assets\\Models\\Riley\\textures\\Riley_Base_Color.png", false);
+
+
+
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Lantern\\textures\\Lantern.png", 0);
 
 
@@ -68,7 +82,7 @@ void MainScene::LoadAssets() {
 	text->message = "Instantiating sense of despair...";
 	GUIManager::Instance().Render(true, true);
 
-	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_albedo.jpg", 0);
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_albedo.jpg",0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_roughness.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_metallic.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_normal.jpg", 0);
@@ -97,8 +111,8 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadModel("Assets\\Models\\Dylan\\dylan.fbx", false, true);
 
 
-	ContentManager::Instance().LoadTexture("Assets\\Models\\Paolo\\textures\\paolo.png", true);
-	ContentManager::Instance().LoadTexture("Assets\\Models\\Drew\\textures\\drew.png", true);
+	ContentManager::Instance().LoadTexture("Assets\\Models\\Paolo\\textures\\paolo.jpg",true);
+	ContentManager::Instance().LoadTexture("Assets\\Models\\Drew\\textures\\drew.jpg", true);
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Dylan\\textures\\Dylan.png", true);
 
 
@@ -144,7 +158,12 @@ void MainScene::Initialize() {
 	dirLight3->SetIntensity(0.4);
 
 	BushCourt* bushCourt = new BushCourt();
+	Fred* fred = new Fred();
+	Riley* riley = new Riley();
+	riley->transform.SetPosition(0, 0, -10);
 
+	
+//	cam->AddChild(fred);
 
 	AddGameObject(cam);
 
@@ -152,7 +171,13 @@ void MainScene::Initialize() {
 	AddGameObject(dirLight2);
 	AddGameObject(dirLight3);
 	AddGameObject(bushCourt);
+	AddGameObject(fred);
+	AddGameObject(riley);
 
+
+
+
+	
 	LoadGameObjectsFromFile("Assets\\SceneFiles\\MainScene.txt");
 }
 
@@ -167,6 +192,9 @@ void MainScene::Start()
 	PhysicsWorld::Instance().InitializeQuadtree(0, 0, 100, 100);
 	PhysicsWorld::Instance().FillQuadtree(1); // Fill static quadtree
 	PhysicsWorld::Instance().PerformCollisions(1);
+
+
+
 }
 
 void MainScene::LogicUpdate()
@@ -184,6 +212,13 @@ void MainScene::LogicUpdate()
 
 
 	//PathFindingManager::Instance().ClosestNodeAt(cam->transform.GetPosition().x, cam->transform.GetPosition().y, cam->transform.GetPosition().z);
+
+
+	/*std::set<AffordanceObject*> inRange = AffordanceManager::Instance().GetClosestAffordancesByTypeWithinRange(Affordance::REST, cam->transform.GetPosition(), 50);
+	for (auto it = inRange.begin(); it != inRange.end(); it++)
+	{
+		(*it)->gameObject->transform.RotateBy(1, 0, 1, 0);
+	}*/
 
 	Scene::LogicUpdate(); //Must be last statement!
 

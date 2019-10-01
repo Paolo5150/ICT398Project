@@ -558,8 +558,8 @@ void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, const Co
 		angVel2 = glm::radians(rb2->GetAngularVelocity());
 	}
 
-	glm::vec3 r1 = collision.Point() - (obj1->transform.GetGlobalPosition() + obj1->GetCentreOfMass());
-	glm::vec3 r2 = collision.Point() - (obj2->transform.GetGlobalPosition() + obj2->GetCentreOfMass());
+	glm::vec3 r1 = collision.Point() - (obj1->GetCentreOfMass());
+	glm::vec3 r2 = collision.Point() - (obj2->GetCentreOfMass());
 	glm::vec3 normal = collision.Normal();
 	glm::vec3 angularVel;
 
@@ -581,6 +581,8 @@ void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, const Co
 		MoveTransform(obj1->transform, -vel1, -angVel1);
 
 		rb1->SetVelocity(vel1 + (lambda / obj1->GetTotalMass()));
+
+
 		rb1->SetAngularVelocity(glm::degrees(angVel1 + glm::cross(lambda, r1) * glm::inverse(obj1->GetInertiaTensor()) * glm::cross(r1, normal)));
 	}
 
@@ -589,6 +591,8 @@ void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, const Co
 		MoveTransform(obj2->transform, -vel2, -angVel2);
 
 		rb2->SetVelocity(vel2 - (lambda / obj2->GetTotalMass()));
+
+
 		rb2->SetAngularVelocity(glm::degrees(angVel2 - glm::cross(lambda, r2) * glm::inverse(obj2->GetInertiaTensor()) * glm::cross(r2, normal)));
 	}
 	

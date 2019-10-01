@@ -131,7 +131,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;WIN32;NDEBUG;_CONSOLE;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Bullet\include;$(SolutionDir)Dependencies\ImGui;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\Luabind\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)\Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -169,6 +169,12 @@
   <ItemGroup>
     <ClInclude Include="..\Dependencies\qu3e\src\q3.h" />
     <ClInclude Include="src\Components\PathFinder.h" />
+    <ClInclude Include="src\Affordances\Affordance.h" />
+    <ClInclude Include="src\Affordances\AffordanceFactory.h" />
+    <ClInclude Include="src\Affordances\AffordanceManager.h" />
+    <ClInclude Include="src\Affordances\AffordanceObject.h" />
+    <ClInclude Include="src\Affordances\RestAffordance.h" />
+    <ClInclude Include="src\Components\AffordanceAgent.h" />
     <ClInclude Include="src\Components\BoxCollider.h" />
     <ClInclude Include="src\Components\Collider.h" />
     <ClInclude Include="src\Components\MeshRenderer.h" />
@@ -230,12 +236,14 @@
     <ClInclude Include="src\Prefabs\DrewText.h" />
     <ClInclude Include="src\Prefabs\Dylan.h" />
     <ClInclude Include="src\Prefabs\DylanText.h" />
+    <ClInclude Include="src\Prefabs\Fred.h" />
     <ClInclude Include="src\Prefabs\LandfillBin.h" />
     <ClInclude Include="src\Prefabs\Lantern.h" />
     <ClInclude Include="src\Prefabs\MainCamera.h" />
     <ClInclude Include="src\Prefabs\Paolo.h" />
     <ClInclude Include="src\Prefabs\PaoloText.h" />
     <ClInclude Include="src\Prefabs\RecycleBin.h" />
+    <ClInclude Include="src\Prefabs\Riley.h" />
     <ClInclude Include="src\Prefabs\Table.h" />
     <ClInclude Include="src\Prefabs\Terrain.h" />
     <ClInclude Include="src\Prefabs\Water.h" />
@@ -283,6 +291,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Components\PathFinder.cpp" />
+    <ClCompile Include="src\Affordances\Affordance.cpp" />
+    <ClCompile Include="src\Affordances\AffordanceManager.cpp" />
+    <ClCompile Include="src\Affordances\AffordanceObject.cpp" />
+    <ClCompile Include="src\Components\AffordanceAgent.cpp" />
     <ClCompile Include="src\Components\BoxCollider.cpp" />
     <ClCompile Include="src\Components\Collider.cpp" />
     <ClCompile Include="src\Components\MeshRenderer.cpp" />
@@ -356,12 +368,14 @@
     <ClCompile Include="src\Prefabs\DrewText.cpp" />
     <ClCompile Include="src\Prefabs\Dylan.cpp" />
     <ClCompile Include="src\Prefabs\DylanText.cpp" />
+    <ClCompile Include="src\Prefabs\Fred.cpp" />
     <ClCompile Include="src\Prefabs\LandfillBin.cpp" />
     <ClCompile Include="src\Prefabs\Lantern.cpp" />
     <ClCompile Include="src\Prefabs\MainCamera.cpp" />
     <ClCompile Include="src\Prefabs\Paolo.cpp" />
     <ClCompile Include="src\Prefabs\PaoloText.cpp" />
     <ClCompile Include="src\Prefabs\RecycleBin.cpp" />
+    <ClCompile Include="src\Prefabs\Riley.cpp" />
     <ClCompile Include="src\Prefabs\Table.cpp" />
     <ClCompile Include="src\Prefabs\Terrain.cpp" />
     <ClCompile Include="src\Prefabs\Water.cpp" />

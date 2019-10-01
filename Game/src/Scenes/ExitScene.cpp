@@ -36,10 +36,6 @@ void ExitScene::LoadAssets() {
 
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\water_normal.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\dudv.png", 0);
-
-
-
-
 }
 
 void ExitScene::QuitScene() {
@@ -52,8 +48,6 @@ void ExitScene::Initialize() {
 	 text = new GUIText("Quit", "Left click to quit", 80, 1, glm::vec3(1), 2.5, 1);
 	text->isActive = 0;
 	GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(text);
-
-
 
 	LightManager::Instance().SetAmbientLight(0.00, 0.00, 0.00);
 

@@ -93,14 +93,23 @@ glm::vec3 GameObject::GetCentreOfMass()
 {
 	glm::mat4 rot = transform.GetGlobalRotation();
 
-	glm::vec3 rotVec = rot * glm::vec4(centreOfMass, 1.0);
+	glm::vec3 rotVec = transform.GetMatrix() * glm::vec4(centreOfMass, 1.0);
 	return rotVec;
 }
 
-glm::mat3 GameObject::GetInertiaTensor()
+void GameObject::SetCullable(bool cullable)
 {
-	return inertiaTensor;
+	Renderer* rend = GetComponentByType<Renderer>("Renderer");
+	if (rend != nullptr)
+		rend->SetIsCullable(cullable);
+
+	for (auto it = std::begin(_children); it != std::end(_children); it++)
+	{
+		(*it)->SetCullable(cullable);
+	}
+
 }
+
 
 void GameObject::SetActive(bool active, bool includeChildren)
 {
@@ -191,10 +200,13 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 			bc->transform.SetPosition(t[i].p);
 			bc->transform.SetScale(t[i].s);
 			bc->transform.SetRotation(t[i].r);
-			bc->SetMass(t[i].mass);
+			if (!GetIsStatic())
+				bc->SetMass(t[i].mass);
+			else
+				bc->SetMass(10000);
 			bc->SetActive(t[i].isActive);
-			bc->CalculateMomentOfIntertia();
 			colliders.push_back(dynamic_cast<Collider*>(AddComponent(bc)));
+			bc->CalculateMomentOfIntertia();
 		}
 		else if (t[i].type == "SC")
 		{
@@ -203,9 +215,12 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 			sc->transform.SetPosition(t[i].p);
 			sc->transform.SetScale(t[i].s.x, t[i].s.x, t[i].s.x);
 			sc->SetActive(t[i].isActive);
-			sc->SetMass(t[i].mass);
-			sc->CalculateMomentOfIntertia();
+			if (!GetIsStatic())
+				sc->SetMass(t[i].mass);
+			else
+				sc->SetMass(10000);
 			colliders.push_back(dynamic_cast<Collider*>(AddComponent(sc)));
+			sc->CalculateMomentOfIntertia();
 		}
 		else
 			continue;
@@ -251,7 +266,11 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 	}
 }
 
-
+glm::mat3& GameObject::GetInertiaTensor()
+{
+	//return glm::mat3(transform.GetRotationMatrixLocal()) * inertiaTensor * glm::mat3(glm::inverse(transform.GetRotationMatrixLocal()));
+	return inertiaTensor;
+}
 
 std::string GameObject::GetName() const
 {
@@ -295,7 +314,7 @@ void GameObject::AddChild(GameObject* child)
 			child->transform.parent = &transform;
 			_children.push_back(child);
 			transform.transformChildren.push_back(&child->transform);
-
+			transform.UpdateHierarchy();
 		}
 	}
 

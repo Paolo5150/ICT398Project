@@ -1,7 +1,10 @@
 #pragma once
 #include "..\Core\GameObject.h"
+#include "..\Affordances\AffordanceObject.h"
+#include "..\Affordances\RestAffordance.h"
 
-class Chair : public GameObject
+
+class Chair : public GameObject, public AffordanceObject
 {
 
 public:
