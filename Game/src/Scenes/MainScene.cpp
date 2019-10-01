@@ -20,12 +20,6 @@
 #include "GUI/Elements/GUIText.h"
 
 
-
-#include "Components/PathFinder.h"
-#include "Prefabs/Box.h"
-
-
-
 MainScene::MainScene() : Scene("MainScene")
 {
 }
@@ -173,18 +167,6 @@ void MainScene::Start()
 	PhysicsWorld::Instance().InitializeQuadtree(0, 0, 100, 100);
 	PhysicsWorld::Instance().FillQuadtree(1); // Fill static quadtree
 	PhysicsWorld::Instance().PerformCollisions(1);
-
-	cam->AddComponent(new PathFinder()); //Temporary for debugging pathfinding
-	for (unsigned i = 0; i < 5; i++) //Temporary for debugging pathfinding
-	{
-		pathfinders.push_back(new PathFinder());
-	}
-
-	locs.push_back(glm::vec3(-44, 2, -18)); //Temporary for debugging pathfinding
-	locs.push_back(glm::vec3(-45, 2, 32)); //Temporary for debugging pathfinding
-	locs.push_back(glm::vec3(-2, 2, 71)); //Temporary for debugging pathfinding
-	locs.push_back(glm::vec3(71, 2, -2)); //Temporary for debugging pathfinding
-	locs.push_back(glm::vec3(45, 2, -45)); //Temporary for debugging pathfinding
 }
 
 void MainScene::LogicUpdate()
@@ -200,105 +182,6 @@ void MainScene::LogicUpdate()
 	if (Input::GetKeyDown(GLFW_KEY_SPACE))
 		std::cout << "X: " << cam->transform.GetGlobalPosition().x << " Y: " << cam->transform.GetGlobalPosition().y << " Z: " << cam->transform.GetGlobalPosition().z << std::endl;
 
-	if (Input::GetKeyPressed(GLFW_KEY_E))
-	{
-		std::cout << "X: " << cam->transform.GetGlobalPosition().x << " Y: " << cam->transform.GetGlobalPosition().y << " Z: " << cam->transform.GetGlobalPosition().z << std::endl;
-	}
-
-	if (Input::GetKeyPressed(GLFW_KEY_I)) //Temo: Sets end node for camera pathfinding
-	{
-		pathGoal = cam->transform.GetGlobalPosition();
-	}
-	else if (Input::GetKeyDown(GLFW_KEY_K)) //Temp: Generates a path from the camera to the location set
-	{
-		for (unsigned i = 0; i < PathFindingManager::Instance().nodeMap.size(); i++) //Temporary for debugging pathfinding
-		{
-			for (unsigned j = 0; j < PathFindingManager::Instance().nodeMap.at(i).size(); j++)
-			{
-				PathFindingManager::Instance().nodeMap.at(i).at(j)->bc->enableRender = 0;
-			}
-		}
-
-		PathFinder* lpath = cam->GetComponent<PathFinder>("PathFinder");
-		lpath->UnlockEndNode();
-		lpath->GeneratePath(cam->transform.GetGlobalPosition(), glm::vec3(pathGoal));
-		std::vector<PathNode*> path = lpath->GetNodes();
-		nextNode = lpath->GetNextNodePos();
-
-		for (unsigned i = 0; i < path.size(); i++)
-		{
-			path.at(i)->bc->enableRender = 1;
-		}
-	}
-	else if (Input::GetKeyDown(GLFW_KEY_1) || Input::GetKeyDown(GLFW_KEY_2) || Input::GetKeyDown(GLFW_KEY_3) || Input::GetKeyDown(GLFW_KEY_4) || Input::GetKeyDown(GLFW_KEY_5)) //Temp: Generates a path from location 1, 2, 3, 4, or 5
-	{
-		for (unsigned i = 0; i < PathFindingManager::Instance().nodeMap.size(); i++) //Temporary for debugging pathfinding
-		{
-			for (unsigned j = 0; j < PathFindingManager::Instance().nodeMap.at(i).size(); j++)
-			{
-				PathFindingManager::Instance().nodeMap.at(i).at(j)->bc->enableRender = 0; //Turn off all renderers
-			}
-		}
-
-		for (unsigned i = 0; i < pathfinders.size(); i++)
-		{
-			pathfinders.at(i)->UnlockEndNode(); //Unlock end nodes so we can use them for other pathfinders
-		}
-
-		unsigned option; //Which pathfinder/location to use
-
-		if (Input::GetKeyDown(GLFW_KEY_1))
-			option = 0;
-		else if (Input::GetKeyDown(GLFW_KEY_2))
-			option = 1;
-		else if (Input::GetKeyDown(GLFW_KEY_3))
-			option = 2;
-		else if (Input::GetKeyDown(GLFW_KEY_4))
-			option = 3;
-		else if (Input::GetKeyDown(GLFW_KEY_5))
-			option = 4;
-
-		PathFinder* lpath = pathfinders.at(option);
-		lpath->GeneratePath(locs.at(option), glm::vec3(cam->transform.GetGlobalPosition().x, cam->transform.GetGlobalPosition().y, cam->transform.GetGlobalPosition().z));
-		std::vector<PathNode*> path = lpath->GetNodes();
-
-		for (unsigned i = 0; i < path.size(); i++)
-		{
-			path.at(i)->bc->enableRender = 1; //Render path nodes
-		}
-	}
-	else if (Input::GetKeyPressed(GLFW_KEY_U)) //Temp: Resets rendering of all nodes and unlocks all pathfinders' nodes
-	{
-		for (unsigned i = 0; i < PathFindingManager::Instance().nodeMap.size(); i++) //Temporary for debugging pathfinding
-		{
-			for (unsigned j = 0; j < PathFindingManager::Instance().nodeMap.at(i).size(); j++)
-			{
-				PathFindingManager::Instance().nodeMap.at(i).at(j)->bc->enableRender = 0;
-			}
-		}
-
-		for (unsigned i = 0; i < pathfinders.size(); i++)
-		{
-			pathfinders.at(i)->UnlockEndNode();
-		}
-	}
-	else if (Input::GetKeyDown(GLFW_KEY_Y)) //Temp: Faces and moves camera to next node
-	{
-		if (sqrt(pow(nextNode.x - cam->transform.GetPosition().x, 2) + pow(nextNode.y - cam->transform.GetPosition().y, 2) + pow(nextNode.z - cam->transform.GetPosition().z, 2)) > 7.5)
-		{
-			glm::vec3 toTarget = glm::vec3(nextNode.x, cam->transform.GetPosition().y, nextNode.z) - cam->transform.GetPosition();
-			float yAngle = glm::degrees(glm::angle(cam->transform.GetLocalFront(), glm::normalize(toTarget)));
-			glm::vec3 cross = glm::normalize(glm::cross(cam->transform.GetLocalFront(), glm::normalize(toTarget)));
-			int s = glm::sign(cross.y);
-			cam->transform.RotateBy((yAngle * s) * Timer::GetDeltaS(), 0, 1, 0);
-			cam->transform.SetPosition(cam->transform.GetPosition() + (7.5f * Timer::GetDeltaS() * cam->transform.GetLocalFront()));
-		}
-		else
-		{
-			PathFinder* lpath = cam->GetComponent<PathFinder>("PathFinder");
-			nextNode = lpath->GetNextNodePos();
-		}
-	}
 
 	//PathFindingManager::Instance().ClosestNodeAt(cam->transform.GetPosition().x, cam->transform.GetPosition().y, cam->transform.GetPosition().z);
 

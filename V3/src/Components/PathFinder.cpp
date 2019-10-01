@@ -24,23 +24,23 @@ bool PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
 	{
 		std::vector<PathNode*> open; //List of possible nodes for pathfinding
 		std::vector<PathNode*> closed; //List of selected nodes
-
 		open.push_back(startNode);
-		startNode->totalCost = 0.0;
+
+		startNode->totalCost = 0.0; //Don't need to worry about cost for the start node, it will be moved to the closed list immediately
 		startNode->parentNode = nullptr; //Make sure that the start node parent is empty, in case it has been previously set
 
 		for (unsigned i = 0; i < startNode->neighbors.size(); i++) //Set up the nodes around the start node
 		{
 			PathNode* neighbor = startNode->neighbors[i];
-			neighbor->parentNode = startNode; //Set this neighbor's parent to the start node
+			neighbor->parentNode = startNode;
 			neighbor->distanceFromPrevious = 1; //The distance from this node to the start node
 			neighbor->distanceFromTarget = glm::length(endNode->transform.GetPosition() - neighbor->transform.GetPosition()); //Calculate the distance from this node to the end node
-			neighbor->totalCost = neighbor->distanceFromPrevious + neighbor->distanceFromTarget + neighbor->cost; //Calculate the total cost of this node
-			open.push_back(neighbor); //Add to open list
+			neighbor->totalCost = neighbor->distanceFromPrevious + neighbor->distanceFromTarget + neighbor->cost;
+			open.push_back(neighbor);
 		}
 
-		closed.push_back(startNode); //Move start node into the closed list
-		open.erase(open.begin()); //Remove start node from the open list
+		closed.push_back(startNode);
+		open.erase(open.begin());
 
 		while (open.size() > 0)
 		{
@@ -57,10 +57,10 @@ bool PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
 				}
 			}
 
-			closed.push_back(currentNode); //Move this node into the closed list
-			open.erase(open.begin() + currentIndex); //Remove this node from the open list
+			closed.push_back(currentNode);
+			open.erase(open.begin() + currentIndex);
 
-			if (currentNode == endNode) //If this node is the end node, stop looking for more nodes
+			if (currentNode == endNode) //Found end node, stop looking
 			{
 				break;
 			}
@@ -73,11 +73,11 @@ bool PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
 				{
 					if (std::find(open.begin(), open.end(), neighbor) == open.end()) //Check that the neighbor is not in the open list
 					{
-						neighbor->parentNode = currentNode; //Set this neighbor's parent to this node
+						neighbor->parentNode = currentNode;
 						neighbor->distanceFromPrevious = currentNode->distanceFromPrevious + 1; //Calculate the distance from this node to the start node
 						neighbor->distanceFromTarget = glm::length(endNode->transform.GetPosition() - neighbor->transform.GetPosition()); //Calculate the distance from this node to the end node
-						neighbor->totalCost = neighbor->distanceFromPrevious + neighbor->distanceFromTarget + neighbor->cost; //Calculate the total cost of this node
-						open.push_back(neighbor); //Add to open list
+						neighbor->totalCost = neighbor->distanceFromPrevious + neighbor->distanceFromTarget + neighbor->cost;
+						open.push_back(neighbor);
 					}
 					else
 					{
@@ -88,8 +88,8 @@ bool PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
 								neighbor->parentNode = currentNode;
 							}
 
-							neighbor->distanceFromPrevious = currentNode->distanceFromPrevious + 1; //calculate the distance from this node to the start node
-							neighbor->totalCost = neighbor->distanceFromPrevious + neighbor->distanceFromTarget + neighbor->cost; //Calculate the total cost of this node
+							neighbor->distanceFromPrevious = currentNode->distanceFromPrevious + 1; //Recalculate the distance from this node to the start node
+							neighbor->totalCost = neighbor->distanceFromPrevious + neighbor->distanceFromTarget + neighbor->cost; //Recalculate total cost
 						}
 					}
 				}
@@ -101,26 +101,29 @@ bool PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
 			endNode->lock = true; //Lock the end node so no one else will use it while we are
 			lockedNode = endNode; //Assign the locked node so we can unlock it later when we're done with it
 
-			nodePath.clear(); //Empty old path if there is one
-			path.clear(); //Empty old path if there is one
+			nodePath.clear(); //Empty old node path if there is one
 			PathNode* currentNode = closed.back(); //The end node
 
 			nodePath.push_back(currentNode); //Add the end node (first node) to the path
+
 			while (currentNode->parentNode != nullptr) //While we haven't reached the start node
 			{
 				nodePath.push_back(currentNode->parentNode); //Push the parent of this node to the vector
 				currentNode = currentNode->parentNode; //Move to the parent
 			}
+
 			nodePath.push_back(currentNode); //Add the start node (last node) to the path
 
 			std::reverse(nodePath.begin(), nodePath.end()); //Save parent-based path in the correct order (start node first)
+
+			path.clear(); //Empty old path if there is one
 
 			for (unsigned i = 0; i < nodePath.size(); i++) //Convert nodes into positions in the world
 			{
 				path.push_back(nodePath.at(i)->transform.GetGlobalPosition());
 			}
 
-			return true;
+			return true; //Success!
 
 		}
 		else //No path found
@@ -151,7 +154,6 @@ glm::vec3 PathFinder::GetNextNodePos()
 	if (nodePath.size() > 1) //Full path available
 	{
 		pos = (*nodePath.begin())->transform.GetGlobalPosition();
-		(*nodePath.begin())->bc->enableRender = 0; //Temporary
 		nodePath.erase(nodePath.begin());
 	}
 	else if (nodePath.size() == 1) //Last/only node in path available

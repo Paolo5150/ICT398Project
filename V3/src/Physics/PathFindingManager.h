@@ -71,11 +71,7 @@ public:
 
 	void EngineUpdate();
 	void Update();
-	/**
-	* @brief						The 2D map of nodes
-	*/
-	std::vector<std::vector<PathNode*>> nodeMap;
-
+	
 private:
 	/**
 	* @brief						Create PathFinder object
@@ -86,6 +82,11 @@ private:
 	* @brief						Quadtree of nodes
 	*/
 	std::unique_ptr<QuadTree<PathNode*>> nodesQT;
+
+	/**
+	* @brief						The 2D map of nodes
+	*/
+	std::vector<std::vector<PathNode*>> nodeMap;
 
 
 	int sizeX;

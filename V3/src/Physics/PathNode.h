@@ -88,12 +88,12 @@ public:
 	double totalCost;
 
 	/**
-	* @brief		Represents whether this node is currently the goal of a pathfinding component
+	* @brief		Represents whether this node is currently used as the goal of a pathfinding component
 	*/
 	bool lock;
 
 	/**
-	* @brief		The traversal cost of the noden
+	* @brief		The traversal cost of the node
 	*/
 	double cost;
 

@@ -1,8 +1,6 @@
 #pragma once
 #include "Scene/Scene.h"
 
-#include "Components/PathFinder.h"
-
 
 class GUIImage;
 class Player;
@@ -62,10 +60,5 @@ public:
 	virtual void LogicUpdate() override;
 
 	MainCamera* cam;
-
-	glm::vec3 pathGoal = glm::vec3(0, 0, 0); //Temporary for debugging pathfinding
-	std::vector<PathFinder*> pathfinders; //Temporary for debugging pathfinding
-	std::vector<glm::vec3> locs; //Temporary for debugging pathfinding
-	glm::vec3 nextNode = glm::vec3(0, 0, 0);
 
 };
