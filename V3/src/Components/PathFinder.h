@@ -80,17 +80,14 @@ public:
 	std::vector<glm::vec3> GetPath() const;
 
 	/**
-	* @brief		Returns the next node position in the path.
+	* @brief		Returns the next node position in the path and erases it from the nodePath, unless it is the last node left.
 	*
 	* @pre			The PathFinder must exist.
 	* @post			A 3d vector will be returned with the next node's position.
 	*
 	* @return		A 3d vector representing the next node postion.
 	*/
-	//--------------------
-	//To be finished
-	//--------------------
-	//glm::vec3 GetNextNodePos() const;
+	glm::vec3 GetNextNodePos();
 
 	/**
 	* @brief		Unlocks and unassigns the currently locked node

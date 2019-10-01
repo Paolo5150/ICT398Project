@@ -18,6 +18,8 @@ bool PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
 	PathNode* currentNode = startNode;
 	PathNode* endNode = PathFindingManager::Instance().ClosestNodeAt(end.x, end.y, end.z);
 
+	UnlockEndNode(); //If there was a previous locked node, unlock it
+
 	if (endNode->lock == false)
 	{
 		std::vector<PathNode*> open; //List of possible nodes for pathfinding
@@ -142,15 +144,28 @@ std::vector<glm::vec3> PathFinder::GetPath() const
 	return path;
 }
 
-//--------------------
-//To be finished, erase not working for some reason
-//--------------------
-/*glm::vec3 PathFinder::GetNextNodePos() const
+glm::vec3 PathFinder::GetNextNodePos()
 {
-	glm::vec3 pos = nodePath.at(0)->transform.GetGlobalPosition();
-	nodePath.erase(nodePath.begin(), nodePath.end());
+	glm::vec3 pos;
+
+	if (nodePath.size() > 1) //Full path available
+	{
+		pos = (*nodePath.begin())->transform.GetGlobalPosition();
+		(*nodePath.begin())->bc->enableRender = 0; //Temporary
+		nodePath.erase(nodePath.begin());
+	}
+	else if (nodePath.size() == 1) //Last/only node in path available
+	{
+		pos = (*nodePath.begin())->transform.GetGlobalPosition(); //Return the last node in the nodepath if we run out of nodes
+	}
+	else
+	{
+		Logger::LogWarning("No generated nodes available!");
+		pos = glm::vec3(0, 0, 0); //No node available
+	}
+
 	return pos;
-}*/
+}
 
 void PathFinder::UnlockEndNode()
 {

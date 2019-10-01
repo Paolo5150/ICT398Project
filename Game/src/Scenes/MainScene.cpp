@@ -223,6 +223,7 @@ void MainScene::LogicUpdate()
 		lpath->UnlockEndNode();
 		lpath->GeneratePath(cam->transform.GetGlobalPosition(), glm::vec3(pathGoal));
 		std::vector<PathNode*> path = lpath->GetNodes();
+		nextNode = lpath->GetNextNodePos();
 
 		for (unsigned i = 0; i < path.size(); i++)
 		{
@@ -279,6 +280,23 @@ void MainScene::LogicUpdate()
 		for (unsigned i = 0; i < pathfinders.size(); i++)
 		{
 			pathfinders.at(i)->UnlockEndNode();
+		}
+	}
+	else if (Input::GetKeyDown(GLFW_KEY_Y)) //Temp: Faces and moves camera to next node
+	{
+		if (sqrt(pow(nextNode.x - cam->transform.GetPosition().x, 2) + pow(nextNode.y - cam->transform.GetPosition().y, 2) + pow(nextNode.z - cam->transform.GetPosition().z, 2)) > 7.5)
+		{
+			glm::vec3 toTarget = glm::vec3(nextNode.x, cam->transform.GetPosition().y, nextNode.z) - cam->transform.GetPosition();
+			float yAngle = glm::degrees(glm::angle(cam->transform.GetLocalFront(), glm::normalize(toTarget)));
+			glm::vec3 cross = glm::normalize(glm::cross(cam->transform.GetLocalFront(), glm::normalize(toTarget)));
+			int s = glm::sign(cross.y);
+			cam->transform.RotateBy((yAngle * s) * Timer::GetDeltaS(), 0, 1, 0);
+			cam->transform.SetPosition(cam->transform.GetPosition() + (7.5f * Timer::GetDeltaS() * cam->transform.GetLocalFront()));
+		}
+		else
+		{
+			PathFinder* lpath = cam->GetComponent<PathFinder>("PathFinder");
+			nextNode = lpath->GetNextNodePos();
 		}
 	}
 
