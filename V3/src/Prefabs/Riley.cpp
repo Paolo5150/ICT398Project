@@ -4,6 +4,7 @@
 #include "..\Components\BoxCollider.h"
 #include "..\Components\Rigidbody.h"
 #include "..\Components\AffordanceAgent.h"
+#include "..\Components\PathFinder.h"
 #include "..\Affordances\RestAffordance.h"
 
 namespace

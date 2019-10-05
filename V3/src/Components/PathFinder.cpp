@@ -14,11 +14,11 @@ PathFinder::~PathFinder()
 
 bool PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
 {
+	UnlockEndNode(); //If there was a previous locked node, unlock it
+
 	PathNode* startNode = PathFindingManager::Instance().ClosestNodeAt(start.x, start.y, start.z);
 	PathNode* currentNode = startNode;
 	PathNode* endNode = PathFindingManager::Instance().ClosestNodeAt(end.x, end.y, end.z);
-
-	UnlockEndNode(); //If there was a previous locked node, unlock it
 
 	if (endNode->lock == false)
 	{
@@ -118,7 +118,7 @@ bool PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
 
 			path.clear(); //Empty old path if there is one
 
-			for (unsigned i = 0; i < nodePath.size(); i++) //Convert nodes into positions in the world
+			for (unsigned i = 1; i < nodePath.size(); i++) //Convert nodes into positions in the world, skip start node
 			{
 				path.push_back(nodePath.at(i)->transform.GetGlobalPosition());
 			}
@@ -128,11 +128,13 @@ bool PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
 		}
 		else //No path found
 		{
+			Logger::LogWarning("PathFinder: No path could be found!");
 			return false;
 		}
 	}
 	else //End node is locked
 	{
+		Logger::LogWarning("PathFinder: End node locked");
 		return false;
 	}
 }
@@ -147,18 +149,57 @@ std::vector<glm::vec3> PathFinder::GetPath() const
 	return path;
 }
 
-glm::vec3 PathFinder::GetNextNodePos()
+void PathFinder::ClearPath()
+{
+	UnlockEndNode();
+	nodePath.clear();
+	path.clear();
+}
+
+bool PathFinder::HasPath()
+{
+	if (path.size() > 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool PathFinder::IsLastNode(PathNode* node)
+{
+	if (node == nodePath.back())
+		return true;
+	else
+		return false;
+}
+
+bool PathFinder::IsLastPos(glm::vec3 pos)
+{
+	if (pos == path.back())
+		return true;
+	else
+		return false;
+}
+
+glm::vec3 PathFinder::GetNextNodePos(bool erase)
 {
 	glm::vec3 pos;
 
-	if (nodePath.size() > 1) //Full path available
+	if (path.size() > 1) //Full path available
 	{
-		pos = (*nodePath.begin())->transform.GetGlobalPosition();
-		nodePath.erase(nodePath.begin());
+		pos = (*path.begin());
+
+		if (erase)
+		{
+			path.erase(path.begin());
+		}
 	}
-	else if (nodePath.size() == 1) //Last/only node in path available
+	else if (path.size() == 1) //Last/only node in path available
 	{
-		pos = (*nodePath.begin())->transform.GetGlobalPosition(); //Return the last node in the nodepath if we run out of nodes
+		pos = (*path.begin()); //Return the last node in the nodepath if we run out of nodes
 	}
 	else
 	{

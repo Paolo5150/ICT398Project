@@ -159,8 +159,9 @@ void MainScene::Initialize() {
 
 	BushCourt* bushCourt = new BushCourt();
 	Fred* fred = new Fred();
-	Riley* riley = new Riley();
-	riley->transform.SetPosition(0, 0, -10);
+	fred->transform.SetPosition(26, 0, 7);
+	//Riley* riley = new Riley();
+	//riley->transform.SetPosition(0, 0, -10);
 
 	
 //	cam->AddChild(fred);
@@ -172,7 +173,7 @@ void MainScene::Initialize() {
 	AddGameObject(dirLight3);
 	AddGameObject(bushCourt);
 	AddGameObject(fred);
-	AddGameObject(riley);
+	//AddGameObject(riley);
 
 
 
@@ -186,7 +187,7 @@ void MainScene::Start()
 	Scene::Start();
 	Input::SetCursorMode("disabled");
 
-	PathFindingManager::Instance().Generate(0, 0, 180, 180, 5);
+	PathFindingManager::Instance().Generate(0, 0, 180, 180, 0);
 	PathFindingManager::Instance().Start();
 
 	PhysicsWorld::Instance().InitializeQuadtree(0, 0, 100, 100);

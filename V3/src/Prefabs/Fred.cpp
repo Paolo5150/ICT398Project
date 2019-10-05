@@ -4,6 +4,7 @@
 #include "..\Components\BoxCollider.h"
 #include "..\Components\Rigidbody.h"
 #include "..\Components\AffordanceAgent.h"
+#include "..\Components\PathFinder.h"
 #include "..\Affordances\RestAffordance.h"
 #include "Dylan.h"
 
@@ -12,6 +13,8 @@ namespace
 	AffordanceAgent* aa;
 	float timer = 0;
 	bool needToSit = 1;
+	PathFinder* pf;
+	glm::vec3 nextPos;
 }
 
 void Fred::Test(AffordanceObject* obj)
@@ -47,18 +50,18 @@ Fred::Fred() : GameObject("Fred")
 
 	aa = new AffordanceAgent();
 
-	aa->AddAffordanceEngageCallback("SitAffordance",[&](AffordanceObject*obj) {
+	aa->AddAffordanceEngageCallback("SitAffordance", [&](AffordanceObject*obj) {
 		Logger::LogInfo("SitAffordance engaged");
 		transform.SetPosition(obj->gameObject->transform.GetPosition() + glm::vec3(0, 1, 0));
 	});
 
-	aa->AddAffordanceDisengageCallback("SitAffordance",[&]() {
+	aa->AddAffordanceDisengageCallback("SitAffordance", [&]() {
 		Logger::LogInfo("SitAffordance disengaged");
 
 		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition() - glm::vec3(0, 1, 0));
 	});
 
-	aa->AddAffordanceEngageCallback("LaydownAffordance",[&](AffordanceObject*obj) {
+	aa->AddAffordanceEngageCallback("LaydownAffordance", [&](AffordanceObject*obj) {
 		Logger::LogInfo("LaydownAffordance engaged");
 		transform.RotateBy(90, transform.GetLocalRight());
 	});
@@ -84,22 +87,42 @@ void Fred::Update()
 {
 	GameObject::Update();
 
-	
+
 	timer += Timer::GetDeltaS();
 
 	if (timer > 7 && needToSit)
-	{	
-		if (aa->LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Affordance::AffordanceTypes::REST,30))
-		{		
+	{
+		if (aa->LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Affordance::AffordanceTypes::REST, 100))
+		{
 			// If the method is true, we have found an affordance object in the specified range
 			// That would be pointed by "selectedObj" in the Affordance Agent
+
+			if (!pf->HasPath())
+			{
+				pf->GeneratePath(transform.GetGlobalPosition(), aa->selectedObj->gameObject->transform.GetGlobalPosition());
+				nextPos = pf->GetNextNodePos();
+			}
+
 			glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - transform.GetGlobalPosition();
 
+			double dist = sqrt(pow(nextPos.x - transform.GetPosition().x, 2) + pow(nextPos.y - transform.GetPosition().y, 2) + pow(nextPos.z - transform.GetPosition().z, 2));
+
 			// Walk towards the affordance object
-			if (glm::length2(toObj) > 0.1)
+			if (dist > 2.5)
 			{
-				transform.Translate(glm::normalize(toObj) * Timer::GetDeltaS() * 4.0f );
-				transform.RotateYTowards(aa->selectedObj->gameObject->transform.GetGlobalPosition());
+
+				glm::vec3 toTarget = nextPos - transform.GetGlobalPosition();
+				float angle = glm::degrees(glm::angle(transform.GetLocalFront(), toTarget));
+				int cross = glm::sign(glm::cross(transform.GetLocalFront(), toTarget)).y;
+				transform.RotateBy(angle * cross, 0, 1, 0);
+
+				glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * Timer::GetDeltaS() * 4.0f;
+				transform.Translate(move);
+
+			}
+			else if (!pf->IsLastPos(nextPos))
+			{
+				nextPos = pf->GetNextNodePos();
 			}
 			else
 			{
@@ -108,17 +131,14 @@ void Fred::Update()
 			}
 		}
 	}
-	if (timer > 20)
+	if (timer > 40)
 	{
 		// After a while, just disengage the affordance object (this would trigger when the need to sit is no longer active)
 		aa->ExecuteAffordanceDisengageCallback(aa->GetSelectedAffordanceName());
 		needToSit = 0;
 
-		//Logger::LogInfo("Should disengage");
+		Logger::LogInfo("Should disengage");
 	}
-
-
-
 
 }
 
@@ -131,6 +151,10 @@ void Fred::Start()
 	rb->UseGravity(true);
 
 	AddComponent(rb);*/
+
+	pf = new PathFinder();
+	AddComponent(pf);
+
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider
 						 // has been added.
 }

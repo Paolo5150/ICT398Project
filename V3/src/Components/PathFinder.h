@@ -80,14 +80,58 @@ public:
 	std::vector<glm::vec3> GetPath() const;
 
 	/**
-	* @brief		Returns the next node position in the path and erases it from the nodePath, unless it is the last node left.
+	* @brief		Clears both the nodepath and the path
+	*
+	* @pre			The PathFinder must exist.
+	* @post			The Path and NodePath will be empty.
+	*/
+	void ClearPath();
+
+	/**
+	* @brief		Returns true if nodePath.size() is greater than 0
+	*
+	* @pre			The PathFinder must exist.
+	* @post			Whether the size of the nodePath is greater than 0.
+	*
+	* @return		True if nodePath.size() is greater than 0, false otherwise.
+	*/
+	bool HasPath();
+
+	/**
+	* @brief		Returns true if the parameter node is equal to the one at the end of the nodePath
+	*
+	* @pre			The PathFinder must exist.
+	* @post			Whether the parameter node is the last node.
+	*
+	* @param		node		the node to check
+	*
+	* @return		True if the parameter node is the last node in the nodePath, false otherwise.
+	*/
+	bool IsLastNode(PathNode* node);
+
+	/**
+	* @brief		Returns true if the parameter position is equal to the one at the end of the path
+	*
+	* @pre			The PathFinder must exist.
+	* @post			Whether the parameter node is the last node.
+	*
+	* @param		pos			the pos to check
+	*
+	* @return		True if the parameter node is the last node in the path, false otherwise.
+	*/
+	bool IsLastPos(glm::vec3 pos);
+
+	/**
+	* @brief		Returns the node position at index 0 in the path and optionally erases it from the nodePath, unless it is the last node left.
 	*
 	* @pre			The PathFinder must exist.
 	* @post			A 3d vector will be returned with the next node's position.
 	*
+	* @param		erase		whether to erase the returned node from the nodePath and path, will not erase the final node
+	*
 	* @return		A 3d vector representing the next node postion.
 	*/
-	glm::vec3 GetNextNodePos();
+	glm::vec3 GetNextNodePos(bool erase = true);
 
 	/**
 	* @brief		Unlocks and unassigns the currently locked node
