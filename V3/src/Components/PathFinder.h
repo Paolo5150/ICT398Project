@@ -133,14 +133,6 @@ public:
 	*/
 	glm::vec3 GetNextNodePos(bool erase = true);
 
-	/**
-	* @brief		Unlocks and unassigns the currently locked node
-	*
-	* @pre			The PathFinder must exist.
-	* @post			The Locked node will be unlocked if it is locked
-	*/
-	void UnlockEndNode();
-
 private:
 	/**
 	* @brief		Stores the path as a vector of nodes
@@ -156,5 +148,13 @@ private:
 	* @brief		A locked end node, used to avoid multiple components pathfinding to the same place
 	*/
 	PathNode* lockedNode;
+
+	/**
+	* @brief		Unlocks and unassigns the currently locked node
+	*
+	* @pre			The PathFinder must exist.
+	* @post			The Locked node will be unlocked if it is locked
+	*/
+	void UnlockEndNode();
 };
 

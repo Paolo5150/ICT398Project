@@ -12,6 +12,8 @@ namespace
 	AffordanceAgent* aa;
 	float timer = 0;
 	bool needToSit = 1;
+	PathFinder* pf;
+	glm::vec3 nextPos;
 }
 
 void Riley::Test(AffordanceObject* obj)
@@ -70,12 +72,23 @@ void Riley::Update()
 	{
 		if (aa->LookForBestScoreAffordanceObjectInRange("SitAffordance",40))
 		{
-			glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - transform.GetGlobalPosition();
+			//glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - transform.GetGlobalPosition();
 
-			if (glm::length2(toObj) > 0.1)
+			if (!pf->HasPath()) //If a path hasn't been generated yet
 			{
-				transform.Translate(glm::normalize(toObj) * Timer::GetDeltaS() * 4.0f);
-				transform.RotateYTowards(aa->selectedObj->gameObject->transform.GetGlobalPosition());
+				pf->GeneratePath(transform.GetGlobalPosition(), aa->selectedObj->gameObject->transform.GetGlobalPosition());
+				nextPos = pf->GetNextNodePos();
+			}
+
+			if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5)
+			{
+				transform.RotateYTowards(nextPos);
+				glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * Timer::GetDeltaS() * 4.0f;
+				transform.Translate(move);
+			}
+			else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
+			{
+				nextPos = pf->GetNextNodePos();
 			}
 			else
 			{
@@ -99,6 +112,10 @@ void Riley::Start()
 	rb->UseGravity(true);
 
 	AddComponent(rb);*/
+
+	pf = new PathFinder();
+	AddComponent(pf);
+
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider
 						 // has been added.
 }

@@ -194,6 +194,7 @@ glm::vec3 PathFinder::GetNextNodePos(bool erase)
 
 		if (erase)
 		{
+			nodePath.erase(nodePath.begin());
 			path.erase(path.begin());
 		}
 	}
@@ -203,7 +204,7 @@ glm::vec3 PathFinder::GetNextNodePos(bool erase)
 	}
 	else
 	{
-		Logger::LogWarning("No generated nodes available!");
+		Logger::LogWarning("PathFinder: No generated nodes available");
 		pos = glm::vec3(0, 0, 0); //No node available
 	}
 

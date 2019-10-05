@@ -92,35 +92,28 @@ void Fred::Update()
 
 	if (timer > 7 && needToSit)
 	{
-		if (aa->LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Affordance::AffordanceTypes::REST, 100))
+		if (aa->LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Affordance::AffordanceTypes::REST, 30))
 		{
 			// If the method is true, we have found an affordance object in the specified range
 			// That would be pointed by "selectedObj" in the Affordance Agent
 
-			if (!pf->HasPath())
+			if (!pf->HasPath()) //If a path hasn't been generated yet
 			{
 				pf->GeneratePath(transform.GetGlobalPosition(), aa->selectedObj->gameObject->transform.GetGlobalPosition());
 				nextPos = pf->GetNextNodePos();
 			}
 
-			glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - transform.GetGlobalPosition();
-
-			double dist = sqrt(pow(nextPos.x - transform.GetPosition().x, 2) + pow(nextPos.y - transform.GetPosition().y, 2) + pow(nextPos.z - transform.GetPosition().z, 2));
+			//glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - transform.GetGlobalPosition();
 
 			// Walk towards the affordance object
-			if (dist > 2.5)
+			if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node
 			{
-
-				glm::vec3 toTarget = nextPos - transform.GetGlobalPosition();
-				float angle = glm::degrees(glm::angle(transform.GetLocalFront(), toTarget));
-				int cross = glm::sign(glm::cross(transform.GetLocalFront(), toTarget)).y;
-				transform.RotateBy(angle * cross, 0, 1, 0);
-
+				transform.RotateYTowards(nextPos);
 				glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * Timer::GetDeltaS() * 4.0f;
 				transform.Translate(move);
 
 			}
-			else if (!pf->IsLastPos(nextPos))
+			else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
 			{
 				nextPos = pf->GetNextNodePos();
 			}
@@ -131,13 +124,13 @@ void Fred::Update()
 			}
 		}
 	}
-	if (timer > 40)
+	if (timer > 20)
 	{
 		// After a while, just disengage the affordance object (this would trigger when the need to sit is no longer active)
 		aa->ExecuteAffordanceDisengageCallback(aa->GetSelectedAffordanceName());
 		needToSit = 0;
 
-		Logger::LogInfo("Should disengage");
+		//Logger::LogInfo("Should disengage");
 	}
 
 }

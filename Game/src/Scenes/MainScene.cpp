@@ -160,8 +160,8 @@ void MainScene::Initialize() {
 	BushCourt* bushCourt = new BushCourt();
 	Fred* fred = new Fred();
 	fred->transform.SetPosition(26, 0, 7);
-	//Riley* riley = new Riley();
-	//riley->transform.SetPosition(0, 0, -10);
+	Riley* riley = new Riley();
+	riley->transform.SetPosition(0, 0, -10);
 
 	
 //	cam->AddChild(fred);
@@ -173,7 +173,7 @@ void MainScene::Initialize() {
 	AddGameObject(dirLight3);
 	AddGameObject(bushCourt);
 	AddGameObject(fred);
-	//AddGameObject(riley);
+	AddGameObject(riley);
 
 
 
