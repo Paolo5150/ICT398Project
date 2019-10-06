@@ -105,7 +105,7 @@ void MainCamera::Update()
 		Box2* l = new Box2();
 
 		l->transform.SetPosition(transform.GetPosition() + transform.GetLocalFront() * 5.0f);
-		l->rb->AddVelocity(transform.GetLocalFront() * 20.0f);
+		l->rb->AddVelocity(transform.GetLocalFront() * 35.0f);
 
 		l->Start();
 		SceneManager::Instance().GetCurrentScene().AddGameObject(l);

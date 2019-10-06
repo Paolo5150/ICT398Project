@@ -530,7 +530,7 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 
 void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, const Collision& collision)
 {
-	float epsilon = 0.5f;
+	float epsilon = 0.4f;
 
 	GameObject* obj1 = col1->GetParent();
 	GameObject* obj2 = col2->GetParent();
