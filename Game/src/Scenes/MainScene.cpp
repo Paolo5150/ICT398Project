@@ -175,14 +175,7 @@ void MainScene::Initialize() {
 	dirLight3->transform.SetRotation(70, 0, 0);
 	dirLight3->SetIntensity(0.4);
 
-	BushCourt* bushCourt = new BushCourt();
-	Fred* fred = new Fred();
-	Riley* riley = new Riley();
-	riley->transform.SetPosition(0, 0, -10);
-
-	Joey* joey = new Joey();
-	joey->transform.SetPosition(-20, 0, -10);
-	
+	BushCourt* bushCourt = new BushCourt();	
 //	cam->AddChild(fred);
 
 	AddGameObject(cam);
@@ -191,10 +184,6 @@ void MainScene::Initialize() {
 	AddGameObject(dirLight2);
 	AddGameObject(dirLight3);
 	AddGameObject(bushCourt);
-	AddGameObject(fred);
-	AddGameObject(riley);
-	AddGameObject(joey);
-
 	
 	LoadGameObjectsFromFile("Assets\\SceneFiles\\MainScene.txt");
 }
