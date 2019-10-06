@@ -452,10 +452,7 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2, Rigidbody* rb1, R
 			}*/
 		}
 		else
-		{
-
-
-			
+		{			
 			// OnCollisionStay
 			if ((it)->GetCollideAgainstLayer() & (it2)->GetCollisionLayer())
 			{
@@ -473,10 +470,13 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2, Rigidbody* rb1, R
 			if ((it2)->GetCollideAgainstLayer() & (it)->GetCollisionLayer())
 			{
 				(it2)->OnCollisionStayCallback((it), col2);
+				
+
 				if (rb2 != nullptr && !rb2->GetParent()->GetIsStatic() && rb2->GetUseDynamicPhysics())
 				{
 					if (rb2->GetVelocity().y < 0 && col2.Point().y < rb2->GetParent()->GetCentreOfMass().y)
 					{
+						//PhysicsCalculation((it), (it2), col1, 1);
 						rb2->SetVelocity(rb2->GetVelocity().x, 0.0f, rb2->GetVelocity().z);
 						rb2->awake = 0;
 					}
@@ -519,10 +519,30 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2, Rigidbody* rb1, R
 			{
 				// OnCollisionExit
 				if ((it)->GetCollideAgainstLayer() & (it2)->GetCollisionLayer())
+				{
 					(it)->OnCollisionExitCallback(it2);
+					if (rb1 != nullptr)
+					{
+						if (!rb1->awake)
+						{
+							rb1->awake = 1;
+						}
+					}
+
+				}
 
 				if ((it2)->GetCollideAgainstLayer() & (it)->GetCollisionLayer())
+				{
 					(it2)->OnCollisionExitCallback(it);
+					if (rb2 != nullptr)
+					{
+						if (!rb2->awake)
+						{
+							rb2->awake = 1;
+						}
+					}
+
+				}
 
 #ifdef CHANGE_COLOR
 				(it2)->meshRenderer->GetMaterial().SetColor(0, 1, 0);
@@ -539,7 +559,7 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2, Rigidbody* rb1, R
 
 }
 
-void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, const Collision& collision)
+void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, const Collision& collision, bool onlyRotation)
 {
 	float epsilon = 0.4f;
 
@@ -588,6 +608,7 @@ void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, const Co
 	{
 		MoveTransform(obj1->transform, -vel1, -angVel1);
 
+		if(!onlyRotation)
 		rb1->SetVelocity(vel1 + (lambda / obj1->GetTotalMass()));
 
 		rb1->SetAngularVelocity(glm::degrees(angVel1 + glm::cross(lambda, r1) * glm::inverse(obj1->GetInertiaTensor()) * glm::cross(r1, normal)));
@@ -596,7 +617,7 @@ void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, const Co
 	if (rb2 != nullptr && rb2->GetUseDynamicPhysics())
 	{
 		MoveTransform(obj2->transform, -vel2, -angVel2);
-
+		if (!onlyRotation)
 		rb2->SetVelocity(vel2 - (lambda / obj2->GetTotalMass()));
 
 		rb2->SetAngularVelocity(glm::degrees(angVel2 - glm::cross(lambda, r2) * glm::inverse(obj2->GetInertiaTensor()) * glm::cross(r2, normal)));

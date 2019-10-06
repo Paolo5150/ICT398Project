@@ -64,10 +64,7 @@ void Box2::OnCollisionEnter(Collider* g, Collision& col)
 
 void Box2::OnCollisionExit(Collider* g)
 {
-	if (!rb->awake)
-	{		
-		rb->awake = 1;
-	}
+
 }
 
 
