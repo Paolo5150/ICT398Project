@@ -114,7 +114,7 @@ private:
 	*/
 	void PerformCollisions(QuadNode<Collider*>* node);
 
-	void CheckCollision(Collider* it, Collider* it2);
+	void CheckCollision(Collider* it, Collider* it2, Rigidbody* rb1, Rigidbody* rb2);
 
 	/**
 	* @brief						Applies dynamic physics formula to participating objects

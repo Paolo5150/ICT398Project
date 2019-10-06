@@ -74,11 +74,11 @@ void Box2::OnCollisionExit(Collider* g)
 void Box2::OnCollisionStay(Collider * g, Collision& col)
 {
 	//Logger::LogInfo("Stay:", rb->GetVelocity().y);
-	if (rb->GetVelocity().y < 0)
+	/*if (rb->GetVelocity().y < 0 && col.Point().y <  GetCentreOfMass().y)
 	{
 		rb->SetVelocity(rb->GetVelocity().x, 0.0f, rb->GetVelocity().z);
 		rb->awake = 0;
-	}
+	}*/
 
 }
 
