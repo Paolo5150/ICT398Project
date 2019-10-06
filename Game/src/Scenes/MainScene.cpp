@@ -38,16 +38,14 @@ void MainScene::LoadAssets() {
 	// Load splash screen
 	GUIImage* image = new GUIImage("SplashImage", ContentManager::Instance().GetAsset<Texture2D>("logo"), 100, 100, 0, 0, 1, 1, 1,1);
 	GUIText* text = new GUIText("LoadingText", "Loading", 1, 95, glm::vec3(1), 2.5,1);
-	testBar = new GUIBar("Bar", 25, 5, 20, 20, 1);
+	//testBar = new GUIBar("Bar", 25, 5, 20, 20, 1);
 
 	GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(image);
 	GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(text);
-	GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(testBar);
-
+	//GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(testBar);
 
 	GUIManager::Instance().SetColorBuffer(0.8, 0.8, 0.8);
 	GUIManager::Instance().Render(true,true);
-
 
 	text->message = "Loading uncomfortable feelings...";
 	GUIManager::Instance().Render(true);
@@ -183,10 +181,6 @@ void MainScene::Initialize() {
 	AddGameObject(bushCourt);
 	AddGameObject(fred);
 	AddGameObject(riley);
-
-
-
-
 	
 	LoadGameObjectsFromFile("Assets\\SceneFiles\\MainScene.txt");
 }
