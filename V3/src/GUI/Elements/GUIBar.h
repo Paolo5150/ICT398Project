@@ -41,8 +41,7 @@ public:
 		foregroundColor = glm::vec4(1, 0, 0, 0.5);
 		backgorundColor = glm::vec4(1, 1, 1, 0.5);
 		textColor = glm::vec4(1,1,0, 1.0);
-
-		
+		text = "";		
 	}
 
 	/**
@@ -64,7 +63,6 @@ public:
 
 	std::string text;
 
-
 	float percentage;
 
 	ImGuiCol col;
@@ -75,18 +73,15 @@ public:
 	*/
 	void Render() override
 	{
-		// ImGuiCol_PlotHistogram / Foreground color
-		// ImGuiCol_FrameBg / Background color
-		// ImGuiCol_Text / Text color
+
 		ImGui::SetCursorPosX(pixelPosition.x);
 		ImGui::SetCursorPosY(pixelPosition.y);
 		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, Maths::vec4ToImVec4(foregroundColor));
 		ImGui::PushStyleColor(ImGuiCol_FrameBg, Maths::vec4ToImVec4(backgorundColor));
 		ImGui::PushStyleColor(ImGuiCol_Text, Maths::vec4ToImVec4(textColor));
 
-		ImGui::ProgressBar(percentage, ImVec2(pixelSize.x, pixelSize.y));
+		ImGui::ProgressBar(percentage, ImVec2(pixelSize.x, pixelSize.y),text.c_str());
 		ImGui::PopStyleColor(3);
-
 
 	}
 

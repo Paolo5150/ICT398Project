@@ -236,6 +236,7 @@
     <ClInclude Include="src\Prefabs\Dylan.h" />
     <ClInclude Include="src\Prefabs\DylanText.h" />
     <ClInclude Include="src\Prefabs\Fred.h" />
+    <ClInclude Include="src\Prefabs\Joey.h" />
     <ClInclude Include="src\Prefabs\LandfillBin.h" />
     <ClInclude Include="src\Prefabs\Lantern.h" />
     <ClInclude Include="src\Prefabs\MainCamera.h" />
@@ -367,6 +368,7 @@
     <ClCompile Include="src\Prefabs\Dylan.cpp" />
     <ClCompile Include="src\Prefabs\DylanText.cpp" />
     <ClCompile Include="src\Prefabs\Fred.cpp" />
+    <ClCompile Include="src\Prefabs\Joey.cpp" />
     <ClCompile Include="src\Prefabs\LandfillBin.cpp" />
     <ClCompile Include="src\Prefabs\Lantern.cpp" />
     <ClCompile Include="src\Prefabs\MainCamera.cpp" />

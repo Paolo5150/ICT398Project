@@ -273,6 +273,9 @@
     <ClCompile Include="src\Prefabs\Riley.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Prefabs\Joey.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h">
@@ -636,6 +639,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\GUI\Elements\GUIBar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Prefabs\Joey.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
