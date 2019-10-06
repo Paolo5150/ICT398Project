@@ -399,8 +399,20 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 			collidersCollisionMap[(it)].push_back(it2);
 			collidersCollisionMap[(it2)].push_back(it);
 
+			PhysicsCalculation((it), (it2), col1);
+
+			// OnCollisionEnter
+			if ((it)->GetCollideAgainstLayer() & (it2)->GetCollisionLayer())
+				(it)->OnCollisionEnterCallback((it2), col1);
+
+			if ((it2)->GetCollideAgainstLayer() & (it)->GetCollisionLayer())
+				(it2)->OnCollisionEnterCallback((it), col2);
+
+			gameObjectCollisionMap[(it)->GetParent()][(it2)->GetParent()].push_back((it2));
+			gameObjectCollisionMap[(it2)->GetParent()][(it)->GetParent()].push_back((it));
+
 			// If the gameobjects were not colliding, call OnCollision enter (this is the first collision)
-			if (!WereGameObjectsColliding((it)->GetParent(), (it2)->GetParent()))
+			/*if (!WereGameObjectsColliding((it)->GetParent(), (it2)->GetParent()))
 			{
 				PhysicsCalculation((it), (it2), col1);
 
@@ -416,21 +428,6 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 			}
 			else
 			{
-				// If the colliders were not colliding, but the GameObjects were
-				// it means that we are colliding with a new collider of the same gameobjects
-				/*Rigidbody* rb1 = it->GetParent()->GetComponent<Rigidbody>("Rigidbody");
-				Rigidbody* rb2 = it2->GetParent()->GetComponent<Rigidbody>("Rigidbody");
-				if (rb1 != nullptr && rb1->GetUseDynamicPhysics())
-				{
-					MoveTransform(it->GetParent()->transform, -rb1->GetVelocity(), -rb1->GetAngularVelocity());
-					ZeroOutVelocity(rb1);
-				}
-				if (rb2 != nullptr && rb2->GetUseDynamicPhysics())
-				{
-					MoveTransform(it2->GetParent()->transform, -rb2->GetVelocity(), -rb2->GetAngularVelocity());
-					ZeroOutVelocity(rb2);
-				}	*/		
-
 				// OnCollisionStay
 				if ((it)->GetCollideAgainstLayer() & (it2)->GetCollisionLayer())
 					(it)->OnCollisionStayCallback((it2), col1);
@@ -452,7 +449,7 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 					gameObjectCollisionMap[(it2)->GetParent()][(it)->GetParent()].push_back((it));
 				}
 
-			}
+			}*/
 		}
 		else
 		{

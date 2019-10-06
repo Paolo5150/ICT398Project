@@ -10,7 +10,7 @@ Rigidbody::Rigidbody() : Component("Rigidbody")
 	useGravity = true;
 	awake = 1;
 	timer = 0;
-	damping = 0.9;
+	damping = 1.5;
 
 }
 
@@ -145,9 +145,7 @@ void Rigidbody::Update()
 {
 	timer += Timer::GetDeltaS();	
 
-
-
-	angVelocity = glm::lerp(angVelocity, glm::vec3(), Timer::GetDeltaS() * damping * 8);
+	angVelocity = glm::lerp(angVelocity, glm::vec3(), Timer::GetDeltaS() * damping * 10);
 
 	if(useGravity && awake)
 		velocity += PhysicsWorld::Instance().gravity * _parent->GetTotalMass() * Timer::GetDeltaS(); //If enabled, add gravity to the velocity vector
