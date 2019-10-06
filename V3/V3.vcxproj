@@ -201,6 +201,7 @@
     <ClInclude Include="src\Events\EventDispatcher.h" />
     <ClInclude Include="src\Events\TimerEvents.h" />
     <ClInclude Include="src\Events\WindowEvents.h" />
+    <ClInclude Include="src\GUI\Elements\GUIBar.h" />
     <ClInclude Include="src\GUI\Elements\GUIButton.h" />
     <ClInclude Include="src\GUI\Elements\GUICanvas.h" />
     <ClInclude Include="src\GUI\Elements\GUIImage.h" />

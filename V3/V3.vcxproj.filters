@@ -635,5 +635,8 @@
     <ClInclude Include="src\Affordances\AffordanceFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\GUI\Elements\GUIBar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

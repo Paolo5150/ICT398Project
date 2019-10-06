@@ -119,15 +119,10 @@ glm::vec3 Maths::QuatToEuler(const glm::quat& q)
 
 	return r;
 }*/
-/*
-ImVec2 Maths::vec2ToImVec2(const glm::vec2& v)
-{
-	return ImVec2(v.x, v.y);
-}
 
 ImVec4 Maths::vec4ToImVec4(const glm::vec4& v)
 {
 	return ImVec4(v.x, v.y, v.z, v.w);
-}*/
+}
 
 
