@@ -214,10 +214,7 @@ void MainScene::LogicUpdate()
 		return;
 	}
 
-	if (Input::GetKeyDown(GLFW_KEY_SPACE))
-		std::cout << "X: " << cam->transform.GetGlobalPosition().x << " Y: " << cam->transform.GetGlobalPosition().y << " Z: " << cam->transform.GetGlobalPosition().z << std::endl;
-
-
+	
 	PathFindingManager::Instance().ClosestNodeAt(cam->transform.GetPosition().x, cam->transform.GetPosition().y, cam->transform.GetPosition().z);
 
 	/*std::set<AffordanceObject*> inRange = AffordanceManager::Instance().GetClosestAffordancesByTypeWithinRange(Affordance::REST, cam->transform.GetPosition(), 50);

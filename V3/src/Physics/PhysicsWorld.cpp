@@ -533,7 +533,7 @@ void PhysicsWorld::CheckCollision(Collider* it, Collider* it2)
 
 void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, const Collision& collision)
 {
-	float epsilon = 0.8f;
+	float epsilon = 0.5f;
 
 	GameObject* obj1 = col1->GetParent();
 	GameObject* obj2 = col2->GetParent();
@@ -581,7 +581,6 @@ void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, const Co
 		MoveTransform(obj1->transform, -vel1, -angVel1);
 
 		rb1->SetVelocity(vel1 + (lambda / obj1->GetTotalMass()));
-
 
 		rb1->SetAngularVelocity(glm::degrees(angVel1 + glm::cross(lambda, r1) * glm::inverse(obj1->GetInertiaTensor()) * glm::cross(r1, normal)));
 	}

@@ -25,7 +25,7 @@ Box2::Box2() : GameObject("Box")
 
 	rb = new Rigidbody();
 	AddComponent(rb);
-	rb->UseGravity(0);
+	rb->UseGravity(1);
 	rb->SetUseDynamicPhysics(1);
 	LoadCollidersFromFile("Assets\\Colliders\\Box2.txt");
 }
@@ -38,6 +38,13 @@ Box2::~Box2()
 void Box2::Update()
 {
 	GameObject::Update();
+	static float min = HUGE;
+
+
+
+
+
+	
 	
 }
 
@@ -55,9 +62,24 @@ void Box2::OnCollisionEnter(Collider* g, Collision& col)
 
 }
 
+void Box2::OnCollisionExit(Collider* g)
+{
+	if (!rb->awake)
+	{		
+		rb->awake = 1;
+	}
+}
+
+
 void Box2::OnCollisionStay(Collider * g, Collision& col)
 {
-	//Logger::LogInfo("Box stay");
+	//Logger::LogInfo("Stay:", rb->GetVelocity().y);
+	if (rb->GetVelocity().y < 0)
+	{
+		rb->SetVelocity(rb->GetVelocity().x, 0.0f, rb->GetVelocity().z);
+		rb->awake = 0;
+	}
+
 }
 
 
