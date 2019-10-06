@@ -1,0 +1,15 @@
+# Defines a set of Needs and Traits for the AI personality
+# Need:
+# N nameOfNeed(classname) startValue(float:0.0-100.0) priority(int>=0) positiveGainMultiplier(float) negativeGainMultiplier(float)
+
+N anger 50.0 10 1.0 1.0
+N anticipation 50.0 10 1.0 1.0
+N joy 50.0 10 1.0 1.0
+N trust 50.0 10 1.0 1.0
+N thirst 50.0 1 1.0 1.0
+N rest 22.0 2 1.0 1.0
+
+# Trait:
+# T nameOfTrait(classname)
+
+T aggressive

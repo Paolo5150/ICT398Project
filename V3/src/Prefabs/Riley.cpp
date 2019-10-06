@@ -43,10 +43,27 @@ Riley::Riley() : GameObject("Riley")
 		transform.SetPosition(obj->gameObject->transform.GetPosition() + glm::vec3(0, 1, 0));
 	});
 
+	aa->AddAffordanceUpdateCallback("SitAffordance", [&]() {
+	});
+
 	aa->AddAffordanceDisengageCallback("SitAffordance",[&]() {
 
 		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition() - glm::vec3(0, 1, 0));
 	});
+
+	aa->AddAffordanceEngageCallback("LaydownAffordance", [&](AffordanceObject*obj) {
+		Logger::LogInfo("LaydownAffordance engaged");
+		transform.RotateBy(90, transform.GetLocalRight());
+	});
+
+	aa->AddAffordanceUpdateCallback("LaydownAffordance", [&]() {
+	});
+
+	aa->AddAffordanceDisengageCallback("LaydownAffordance", [&]() {
+		Logger::LogInfo("LaydownAffordance disengaged"); 
+		transform.RotateBy(-90, transform.GetLocalRight());
+	});
+		
 
 	AddComponent(aa);
 	timer = 0;
@@ -63,8 +80,9 @@ void Riley::Update()
 {
 	GameObject::Update();
 
+	/*
 	timer += Timer::GetDeltaS();
-
+	
 	if (timer > 7 && needToSit)
 	{
 		if (aa->LookForBestScoreAffordanceObjectInRange("SitAffordance",40))
@@ -78,7 +96,7 @@ void Riley::Update()
 			}
 			else
 			{
-				aa->ExecuteAffordanceEngageCallback("SitAffordance");
+				aa->ExecuteAffordanceEngageCallback("SitAffordance", ai);
 			}
 		}
 	}
@@ -87,6 +105,7 @@ void Riley::Update()
 		aa->ExecuteAffordanceDisengageCallback("SitAffordance");
 		needToSit = 0;
 	}
+	*/
 }
 
 void Riley::Start()
@@ -98,6 +117,10 @@ void Riley::Start()
 	rb->UseGravity(true);
 
 	AddComponent(rb);*/
+
+	AIEmotion* aiE = new AIEmotion();
+	AddComponent(aiE);
+
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider
 						 // has been added.
 }

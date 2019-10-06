@@ -178,17 +178,28 @@ bool AffordanceObject::IsAvailableForAffordance(std::string affName)
 	return false;
 }
 
-void AffordanceObject::ExecuteAffordanceCallback(std::string afName)
+void AffordanceObject::ExecuteAffordanceCallback(std::string afName, AIEmotion* ai)
 {
 	auto it = perceivedAffordancesByName.find(afName);
 	if (it != perceivedAffordancesByName.end())
 	{
-		it->second->Callback();
+		it->second->Callback(ai);
 		inUse = it->second.get();
 		inUse->currentUsers++;
 	}
 
 	//Logger::LogInfo("Object", gameObject->GetName(), "Users:", inUse->currentUsers, "Affordance:", afName);
+}
+
+void AffordanceObject::ExecuteAffordanceUpdateCallback(std::string afName, AIEmotion * ai)
+{
+	auto it = perceivedAffordancesByName.find(afName);
+	if (it != perceivedAffordancesByName.end())
+	{
+		it->second->UpdateCallback(ai);
+		inUse = it->second.get();
+		inUse->currentUsers++;
+	}
 }
 
 void AffordanceObject::ReleaseUse(GameObject* o)

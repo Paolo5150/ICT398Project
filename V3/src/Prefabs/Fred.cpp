@@ -6,6 +6,7 @@
 #include "..\Components\AffordanceAgent.h"
 #include "..\Affordances\RestAffordance.h"
 #include "Dylan.h"
+#include "..\Components\AIEmotion.h"
 
 namespace
 {
@@ -52,6 +53,9 @@ Fred::Fred() : GameObject("Fred")
 		transform.SetPosition(obj->gameObject->transform.GetPosition() + glm::vec3(0, 1, 0));
 	});
 
+	aa->AddAffordanceUpdateCallback("SitAffordance", [&]() {
+	});
+
 	aa->AddAffordanceDisengageCallback("SitAffordance",[&]() {
 		Logger::LogInfo("SitAffordance disengaged");
 
@@ -63,11 +67,13 @@ Fred::Fred() : GameObject("Fred")
 		transform.RotateBy(90, transform.GetLocalRight());
 	});
 
+	aa->AddAffordanceUpdateCallback("LaydownAffordance", [&]() {
+	});
+
 	aa->AddAffordanceDisengageCallback("LaydownAffordance", [&]() {
 		Logger::LogInfo("LaydownAffordance disengaged");
 
 		transform.RotateBy(-90, transform.GetLocalRight());
-
 	});
 
 	AddComponent(aa);
@@ -83,43 +89,6 @@ Fred::~Fred()
 void Fred::Update()
 {
 	GameObject::Update();
-
-	
-	timer += Timer::GetDeltaS();
-
-	if (timer > 7 && needToSit)
-	{	
-		if (aa->LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Affordance::AffordanceTypes::REST,30))
-		{		
-			// If the method is true, we have found an affordance object in the specified range
-			// That would be pointed by "selectedObj" in the Affordance Agent
-			glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - transform.GetGlobalPosition();
-
-			// Walk towards the affordance object
-			if (glm::length2(toObj) > 0.1)
-			{
-				transform.Translate(glm::normalize(toObj) * Timer::GetDeltaS() * 4.0f );
-				transform.RotateYTowards(aa->selectedObj->gameObject->transform.GetGlobalPosition());
-			}
-			else
-			{
-				// When close enough enage it
-				aa->ExecuteAffordanceEngageCallback(aa->GetSelectedAffordanceName());
-			}
-		}
-	}
-	if (timer > 20)
-	{
-		// After a while, just disengage the affordance object (this would trigger when the need to sit is no longer active)
-		aa->ExecuteAffordanceDisengageCallback(aa->GetSelectedAffordanceName());
-		needToSit = 0;
-
-		//Logger::LogInfo("Should disengage");
-	}
-
-
-
-
 }
 
 void Fred::Start()
@@ -131,6 +100,10 @@ void Fred::Start()
 	rb->UseGravity(true);
 
 	AddComponent(rb);*/
+
+	AIEmotion* aiE = new AIEmotion();
+	AddComponent(aiE);
+
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider
 						 // has been added.
 }
