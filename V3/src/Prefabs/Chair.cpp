@@ -57,13 +57,13 @@ void Chair::Start()
 
 void Chair::OnCollisionEnter(Collider* g, Collision& collision)
 {
-	Logger::LogInfo("CHAIR Collided ENTER against", g->GetName());
+	//Logger::LogInfo("CHAIR Collided ENTER against", g->GetName());
 
 }
 
 void Chair::OnCollisionExit(Collider* g)
 {
-	Logger::LogInfo("CHAIR Collided EXIT against", g->GetName());
+	//Logger::LogInfo("CHAIR Collided EXIT against", g->GetName());
 
 }
 void Chair::OnCollisionStay(Collider* g, Collision& collision)

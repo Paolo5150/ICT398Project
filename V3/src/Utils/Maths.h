@@ -112,7 +112,7 @@ public:
 	* @param v						The glm vector
 	* @return						A ImGui vector type
 	*/
-	//static ImVec4 vec4ToImVec4(const glm::vec4& v);
+	static ImVec4 vec4ToImVec4(const glm::vec4& v);
 
 
 

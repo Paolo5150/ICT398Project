@@ -11,6 +11,8 @@
 #include "Prefabs/RecycleBin.h"
 #include "Prefabs/Fred.h"
 #include "Prefabs/Riley.h"
+#include "Prefabs/Joey.h"
+
 
 #include "Prefabs/BushCourt.h"
 #include "Prefabs/Lantern.h"
@@ -20,8 +22,14 @@
 #include "GUI/GUIManager.h"
 #include "GUI/Elements/GUIImage.h"
 #include "GUI/Elements/GUIText.h"
+#include "GUI/Elements/GUIBar.h"
+
 #include "Affordances/AffordanceManager.h"
 
+namespace
+{
+	GUIBar* loadingBar;
+}
 
 MainScene::MainScene() : Scene("MainScene")
 {
@@ -32,15 +40,20 @@ void MainScene::LoadAssets() {
 	// Load splash screen
 	GUIImage* image = new GUIImage("SplashImage", ContentManager::Instance().GetAsset<Texture2D>("logo"), 100, 100, 0, 0, 1, 1, 1,1);
 	GUIText* text = new GUIText("LoadingText", "Loading", 1, 95, glm::vec3(1), 2.5,1);
+	loadingBar = new GUIBar("Bar", 50,3, 25, 90, 1);
+	loadingBar->backgorundColor = glm::vec4(0, 0, 0, 0.8);
+	loadingBar->foregroundColor = glm::vec4(1, 1, 1, 0.8);
+	loadingBar->textColor = glm::vec4(1, 0, 0, 0.8);
 
 	GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(image);
 	GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(text);
+	GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(loadingBar);
 
 	GUIManager::Instance().SetColorBuffer(0.8, 0.8, 0.8);
 	GUIManager::Instance().Render(true,true);
 
-
 	text->message = "Loading uncomfortable feelings...";
+	loadingBar->percentage = 0.2;
 	GUIManager::Instance().Render(true);
 
 	ContentManager::Instance().LoadModel("Assets\\Models\\Bench\\bench.obj", false, false);
@@ -56,14 +69,13 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadModel("Assets\\Models\\Fred\\Fred.fbx", false, false);
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Fred\\textures\\Fred_Base_Color.png", false);
 
+	ContentManager::Instance().LoadModel("Assets\\Models\\Joey\\Joey.fbx", false, false);
+	ContentManager::Instance().LoadTexture("Assets\\Models\\Joey\\textures\\Joey_Base_Color.png", false);
 
 	ContentManager::Instance().LoadModel("Assets\\Models\\Riley\\Riley.fbx", false, false);
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Riley\\textures\\Riley_Base_Color.png", false);
 
-
-
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Lantern\\textures\\Lantern.png", 0);
-
 
 	ContentManager::Instance().LoadTexture("Assets\\Models\\LandfillBin\\textures\\LB_Frame.png", 0);
 	ContentManager::Instance().LoadTexture("Assets\\Models\\LandfillBin\\textures\\LB_Sides.png", 0);
@@ -81,6 +93,7 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_normal.jpg", 1);	
 
 	text->message = "Instantiating sense of despair...";
+	loadingBar->percentage = 0.5;
 	GUIManager::Instance().Render(true, true);
 
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Bamboo\\bamboo_albedo.jpg",0);
@@ -92,7 +105,8 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\water_normal.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\dudv.png", 0);
 
-	text->message = "Finalizing feeling of hopelessness...";
+	text->message = "Normalizing regret and depression...";
+	loadingBar->percentage = 0.7;
 	GUIManager::Instance().Render(true,true);
 
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Wood\\wood_albedo.jpg", 0);
@@ -106,16 +120,17 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Metal\\metal_height.jpg", 0);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Metal\\metal_ao.jpg", 0);
 
+	text->message = "Interpolating sadness";
+	loadingBar->percentage = 0.9;
+	GUIManager::Instance().Render(true, true);
 	// Load this stuff as preserved so they can be used in the exit scene (so there's not much loading when transitioning)
 	ContentManager::Instance().LoadModel("Assets\\Models\\Paolo\\paolo.fbx", false,true);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Drew\\drew.fbx", false, true);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Dylan\\dylan.fbx", false, true);
 
-
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Paolo\\textures\\paolo.jpg",true);
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Drew\\textures\\drew.jpg", true);
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Dylan\\textures\\Dylan.png", true);
-
 
 	ContentManager::Instance().LoadModel("Assets\\Models\\PaoloText\\PaoloText.obj", false, true);
 	ContentManager::Instance().LoadModel("Assets\\Models\\DrewText\\DrewText.obj", false, true);
@@ -124,6 +139,8 @@ void MainScene::LoadAssets() {
 	image->isActive = 0;
 	text->isActive = 0;
 	text->message = "Loading next scene.."; //Just prepare the message for going to the exit scene
+	//Disable loading bar
+	loadingBar->isActive = 0;
 }
 
 void MainScene::QuitScene() {
@@ -158,12 +175,7 @@ void MainScene::Initialize() {
 	dirLight3->transform.SetRotation(70, 0, 0);
 	dirLight3->SetIntensity(0.4);
 
-	BushCourt* bushCourt = new BushCourt();
-	Fred* fred = new Fred();
-	Riley* riley = new Riley();
-	riley->transform.SetPosition(0, 0, -10);
-
-	
+	BushCourt* bushCourt = new BushCourt();	
 //	cam->AddChild(fred);
 
 	AddGameObject(cam);
@@ -172,12 +184,6 @@ void MainScene::Initialize() {
 	AddGameObject(dirLight2);
 	AddGameObject(dirLight3);
 	AddGameObject(bushCourt);
-	AddGameObject(fred);
-	AddGameObject(riley);
-
-
-
-
 	
 	LoadGameObjectsFromFile("Assets\\SceneFiles\\MainScene.txt");
 }
@@ -208,12 +214,8 @@ void MainScene::LogicUpdate()
 		return;
 	}
 
-	if (Input::GetKeyDown(GLFW_KEY_SPACE))
-		std::cout << "X: " << cam->transform.GetGlobalPosition().x << " Y: " << cam->transform.GetGlobalPosition().y << " Z: " << cam->transform.GetGlobalPosition().z << std::endl;
-
-
+	
 	PathFindingManager::Instance().ClosestNodeAt(cam->transform.GetPosition().x, cam->transform.GetPosition().y, cam->transform.GetPosition().z);
-
 
 	/*std::set<AffordanceObject*> inRange = AffordanceManager::Instance().GetClosestAffordancesByTypeWithinRange(Affordance::REST, cam->transform.GetPosition(), 50);
 	for (auto it = inRange.begin(); it != inRange.end(); it++)
