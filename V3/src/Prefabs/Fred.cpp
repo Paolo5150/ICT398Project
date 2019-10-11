@@ -6,6 +6,7 @@
 #include "..\Components\AffordanceAgent.h"
 #include "..\Affordances\RestAffordance.h"
 #include "Dylan.h"
+#include "..\Scene\SceneManager.h"
 
 namespace
 {
@@ -45,6 +46,12 @@ Fred::Fred() : GameObject("Fred")
 	d->transform.SetRotation(-90, 0, 0);
 	d->transform.SetPosition(0, 160, 20);
 
+	billquad = new Billquad();
+	billquad->SetTexture(ContentManager::Instance().GetAsset<Texture2D>("errorTexture"));
+	billquad->RenderForSeconds(100);
+	//Adding the quad as a child is not a great idea, so I just add it as a separate GameObject and update in manually in the Update
+	SceneManager::Instance().GetCurrentScene().AddGameObject(billquad);
+
 	aa = new AffordanceAgent();
 
 	aa->AddAffordanceEngageCallback("SitAffordance",[&](AffordanceObject*obj) {
@@ -83,7 +90,7 @@ Fred::~Fred()
 void Fred::Update()
 {
 	GameObject::Update();
-
+	billquad->transform.SetPosition(transform.GetPosition() + glm::vec3(0, 12, 0));
 	
 	timer += Timer::GetDeltaS();
 

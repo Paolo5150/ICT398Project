@@ -227,6 +227,7 @@
     <ClInclude Include="src\Physics\PathNode.h" />
     <ClInclude Include="src\Physics\PhysicsWorld.h" />
     <ClInclude Include="src\Prefabs\Bench.h" />
+    <ClInclude Include="src\Prefabs\Billquad.h" />
     <ClInclude Include="src\Prefabs\Box.h" />
     <ClInclude Include="src\Prefabs\Box2.h" />
     <ClInclude Include="src\Prefabs\BushCourt.h" />
@@ -359,6 +360,7 @@
     <ClCompile Include="src\Physics\PathNode.cpp" />
     <ClCompile Include="src\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="src\Prefabs\Bench.cpp" />
+    <ClCompile Include="src\Prefabs\Billquad.cpp" />
     <ClCompile Include="src\Prefabs\Box.cpp" />
     <ClCompile Include="src\Prefabs\Box2.cpp" />
     <ClCompile Include="src\Prefabs\BushCourt.cpp" />

@@ -1,5 +1,6 @@
 #pragma once
 #include "..\Core\GameObject.h"
+#include "Billquad.h"
 
 class AffordanceObject;
 
@@ -16,6 +17,8 @@ public:
 	void OnCollisionStay(Collider* g, Collision& collision) override;
 	void OnCollisionExit(Collider* g) override;
 	void Test(AffordanceObject*);
+	Billquad& GetBillquad() { return *billquad; }
 private:
+	Billquad* billquad;
 
 };

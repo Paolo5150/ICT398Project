@@ -9,10 +9,7 @@
 #include "Prefabs/Terrain.h"
 #include "Prefabs/LandfillBin.h"
 #include "Prefabs/RecycleBin.h"
-#include "Prefabs/Fred.h"
-#include "Prefabs/Riley.h"
-#include "Prefabs/Joey.h"
-
+#include "Prefabs/Billquad.h"
 
 #include "Prefabs/BushCourt.h"
 #include "Prefabs/Lantern.h"
@@ -176,7 +173,7 @@ void MainScene::Initialize() {
 	dirLight3->SetIntensity(0.4);
 
 	BushCourt* bushCourt = new BushCourt();	
-//	cam->AddChild(fred);
+
 
 	AddGameObject(cam);
 
@@ -184,6 +181,8 @@ void MainScene::Initialize() {
 	AddGameObject(dirLight2);
 	AddGameObject(dirLight3);
 	AddGameObject(bushCourt);
+
+
 	
 	LoadGameObjectsFromFile("Assets\\SceneFiles\\MainScene.txt");
 }
