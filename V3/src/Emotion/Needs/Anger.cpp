@@ -3,7 +3,7 @@
 #include "..\..\Core\Logger.h"
 #include "..\..\Components\AIEmotion.h"
 
-Anger::Anger(float startValue, int priority, float positiveGainMultiplier, float negativeGainMultiplier) : Need(NeedType::Anger, "Anger", startValue, 45, 85, positiveGainMultiplier, negativeGainMultiplier, priority)
+Anger::Anger(float startValue, int priority, float positiveGainMultiplier, float negativeGainMultiplier) : Need(NeedType::Anger, "Anger", startValue, 0, 50, positiveGainMultiplier, negativeGainMultiplier, priority)
 {
 }
 
@@ -14,7 +14,7 @@ Anger::~Anger()
 
 bool Anger::Seek(AIEmotion* ai, AffordanceAgent* aa)
 {
-	Logger::LogInfo("Agent Seeking Anger Satiation");
+	//Logger::LogInfo("Agent Seeking Anger Satiation");
 	return true;
 }
 

@@ -13,6 +13,7 @@ namespace
 {
 	AffordanceAgent* aa;
 	AIEmotion* aiE;
+	GameObject* player;
 }
 
 void Fred::Test(AffordanceObject* obj)
@@ -114,11 +115,17 @@ void Fred::Update()
 		}
 	}
 
+	//NPCs GUI
+	if (glm::length2(player->transform.GetPosition() - transform.GetPosition()) < 100)
+		aiE->EnableRenderStats();
+	else
+		aiE->DisableRenderStats();
+
 }
 
 void Fred::Start()
 {
-
+	player = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Main Camera")[0];
 	LoadCollidersFromFile("Assets\\Colliders\\Fred.txt");
 
 	/*Rigidbody* rb = new Rigidbody();

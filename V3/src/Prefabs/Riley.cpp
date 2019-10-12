@@ -10,8 +10,9 @@
 namespace
 {
 	AffordanceAgent* aa;
-	float timer = 0;
-	bool needToSit = 1;
+	GameObject* player;
+	AIEmotion* aiE;
+
 }
 
 void Riley::Test(AffordanceObject* obj)
@@ -58,7 +59,7 @@ Riley::Riley() : GameObject("Riley")
 	});
 
 	aa->AddAffordanceEngageCallback("LaydownAffordance", [&](AffordanceObject*obj) {
-		Logger::LogInfo("LaydownAffordance engaged");
+		//Logger::LogInfo("LaydownAffordance engaged");
 		transform.RotateBy(90, transform.GetLocalRight());
 	});
 
@@ -66,14 +67,13 @@ Riley::Riley() : GameObject("Riley")
 	});
 
 	aa->AddAffordanceDisengageCallback("LaydownAffordance", [&]() {
-		Logger::LogInfo("LaydownAffordance disengaged"); 
+		//Logger::LogInfo("LaydownAffordance disengaged"); 
 		transform.RotateBy(-90, transform.GetLocalRight());
 	});
 		
 
 	AddComponent(aa);
-	timer = 0;
-	needToSit = 1;
+
 
 }
 
@@ -87,10 +87,17 @@ void Riley::Update()
 	GameObject::Update();
 	billquad->transform.SetPosition(transform.GetPosition() + glm::vec3(0, 12, 0));
 
+	//NPCs GUI
+	if (glm::length2(player->transform.GetPosition() - transform.GetPosition()) < 100)
+		aiE->EnableRenderStats();
+	else
+		aiE->DisableRenderStats();
+
 }
 
 void Riley::Start()
 {
+	player = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Main Camera")[0];
 
 	LoadCollidersFromFile("Assets\\Colliders\\Riley.txt");
 
@@ -99,7 +106,7 @@ void Riley::Start()
 
 	AddComponent(rb);*/
 
-	AIEmotion* aiE = new AIEmotion();
+	aiE = new AIEmotion();
 	AddComponent(aiE);
 
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider

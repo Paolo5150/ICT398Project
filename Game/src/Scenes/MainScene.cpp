@@ -27,7 +27,8 @@ namespace
 {
 	GUIBar* loadingBar;
 	GameObject* player;
-	GameObject* fred;
+
+
 }
 
 MainScene::MainScene() : Scene("MainScene")
@@ -206,8 +207,7 @@ void MainScene::Start()
 	PhysicsWorld::Instance().FillQuadtree(1); // Fill static quadtree
 	PhysicsWorld::Instance().PerformCollisions(1);
 
-	player = GetGameobjectsByName("Main Camera")[0];
-	fred = GetGameobjectsByName("Fred")[0];
+
 
 
 }
@@ -226,11 +226,7 @@ void MainScene::LogicUpdate()
 	PathFindingManager::Instance().ClosestNodeAt(cam->transform.GetPosition().x, cam->transform.GetPosition().y, cam->transform.GetPosition().z);
 
 
-	//NPCs GUI
-	if (glm::length2(player->transform.GetPosition() - fred->transform.GetPosition()) < 50)
-		fred->GetComponent<AIEmotion>("Emotion")->EnableRenderStats();
-	else
-		fred->GetComponent<AIEmotion>("Emotion")->DisableRenderStats();
+
 
 
 	Scene::LogicUpdate(); //Must be last statement!
