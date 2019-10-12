@@ -243,7 +243,7 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 	{
 		glm::vec3 inertia = colliders[i]->GetMomentOfIntertia();
 		glm::vec3 correctedPos = colliders[i]->transform.GetPosition() - centreOfMass;
-
+		float d2 = glm::length2(correctedPos);
 		float mass = colliders[i]->GetMass();
 		inertiaTensor[0][0] += inertia.x + mass * (correctedPos.y * correctedPos.y + correctedPos.z * correctedPos.z);
 		inertiaTensor[1][1] += inertia.y + mass * (correctedPos.z * correctedPos.z + correctedPos.x * correctedPos.x);

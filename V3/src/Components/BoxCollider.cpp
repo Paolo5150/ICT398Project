@@ -124,9 +124,13 @@ void BoxCollider::CalculateMomentOfIntertia()
 	momentOfIntertia.z = (1 / 12.0f) * mass * (a * a + b * b);*/
 
 	transform.UpdateHierarchy();
-	float a = glm::length((transform.GetGlobalPosition() + transform.GetLocalUp() * transform.GetGlobalScale().y) - (transform.GetGlobalPosition() - transform.GetLocalUp() * transform.GetGlobalScale().y));
-	float b = glm::length((transform.GetGlobalPosition() + transform.GetLocalRight() * transform.GetGlobalScale().x) - (transform.GetGlobalPosition() - transform.GetLocalRight() * transform.GetGlobalScale().x));
-	float l = glm::length((transform.GetGlobalPosition() + transform.GetLocalFront() * transform.GetGlobalScale().z) - (transform.GetGlobalPosition() - transform.GetLocalFront() * transform.GetGlobalScale().z));
+//	float a = glm::length((transform.GetGlobalPosition() + transform.GetLocalUp() * transform.GetGlobalScale().y) - (transform.GetGlobalPosition() - transform.GetLocalUp() * transform.GetGlobalScale().y));
+//	float b = glm::length((transform.GetGlobalPosition() + transform.GetLocalRight() * transform.GetGlobalScale().x) - (transform.GetGlobalPosition() - transform.GetLocalRight() * transform.GetGlobalScale().x));
+//	float l = glm::length((transform.GetGlobalPosition() + transform.GetLocalFront() * transform.GetGlobalScale().z) - (transform.GetGlobalPosition() - transform.GetLocalFront() * transform.GetGlobalScale().z));
+
+	float a = glm::length((transform.GetPosition() + transform.GetLocalUp() * transform.GetScale().y) - (transform.GetPosition() - transform.GetLocalUp() * transform.GetScale().y));
+	float b = glm::length((transform.GetPosition() + transform.GetLocalRight() * transform.GetScale().x) - (transform.GetPosition() - transform.GetLocalRight() * transform.GetScale().x));
+	float l = glm::length((transform.GetPosition() + transform.GetLocalFront() * transform.GetScale().z) - (transform.GetPosition() - transform.GetLocalFront() * transform.GetScale().z));
 
 	momentOfIntertia.x = (1 / 12.0f) * mass * (a * a + l * l);
 	momentOfIntertia.y = (1 / 12.0f) * mass * (b * b + l * l);
