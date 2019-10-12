@@ -87,7 +87,7 @@ bool AffordanceAgent::LookForBestScoreAffordanceObjectInRange(std::string name, 
 {
 	if (IsAffordanceSupported(name) && inUseObj == nullptr)
 	{
-		if (selectedObj == nullptr)
+		if (1)
 		{
 			selectedObj = AffordanceManager::Instance().GetBestScoreObjectWithinRange(name, _parent->transform.GetGlobalPosition(), range);
 			return selectedObj != nullptr;

@@ -650,5 +650,8 @@
     <ClInclude Include="src\Prefabs\Billquad.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Affordances\CollectableAffordances.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

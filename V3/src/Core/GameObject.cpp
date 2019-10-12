@@ -158,21 +158,6 @@ void GameObject::SetLayer(unsigned int layer, bool includeChildren)
 	}
 }
 
-void GameObject::SetParent(GameObject *parent)
-{
-	if (parent != this)
-	{
-		if(parent !=nullptr)
-		_parent = parent;
-		else
-		{
-			if (_parent != nullptr)
-			{
-				_parent->transform.transformChildren.remove(&transform);
-			}
-		}
-	}
-}
 
 void GameObject::FlashColor(float r, float g, float b)
 {
@@ -296,6 +281,24 @@ unsigned int GameObject::GetLayer() const
 GameObject* GameObject::GetParent() const
 {
 	return _parent;
+}
+
+void GameObject::SetParent(GameObject *parent)
+{
+	if (parent != this)
+	{
+		if (parent != nullptr)
+			_parent = parent;
+		else
+		{
+			if (_parent != nullptr)
+			{
+				_parent->transform.transformChildren.remove(&transform);
+				_parent = nullptr;
+			}
+			transform.parent = nullptr;
+		}
+	}
 }
 
 void GameObject::AddChild(GameObject* child)
