@@ -24,7 +24,8 @@ public:
 		NONE,
 		REST,
 		COLLECTABLE,
-		THIRST
+		THIRST,
+		SOCIAL
 	};
 
 	/**

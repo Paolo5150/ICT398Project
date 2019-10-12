@@ -1,0 +1,4 @@
+# People affordances
+# Use the format "AffordanceName 10"
+
+SocialAffordance 50

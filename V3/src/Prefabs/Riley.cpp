@@ -20,7 +20,7 @@ void Riley::Test(AffordanceObject* obj)
 
 }
 
-Riley::Riley() : GameObject("Riley")
+Riley::Riley() : GameObject("Riley"), AffordanceObject(this)
 {
 	SetIsStatic(0);
 	ContentManager::Instance().GetAsset<Model>("Riley")->PopulateGameObject(this);
@@ -70,11 +70,18 @@ Riley::Riley() : GameObject("Riley")
 		Logger::LogInfo("LaydownAffordance disengaged"); 
 		transform.RotateBy(-90, transform.GetLocalRight());
 	});
+
+
+	aa->AddAffordanceEngageCallback("SocialAffordance", [&](AffordanceObject*obj) {});
+	aa->AddAffordanceUpdateCallback("SocialAffordance", [&]() {});
+	aa->AddAffordanceDisengageCallback("SocialAffordance", [&]() {});
 		
 
 	AddComponent(aa);
 	timer = 0;
 	needToSit = 1;
+
+	LoadAffordancesFromFile("Assets\\Affordances\\people_affordances.txt");
 
 }
 
@@ -126,7 +133,7 @@ void Riley::Start()
 
 	AddComponent(rb);*/
 
-	AIEmotion* aiE = new AIEmotion();
+	AIEmotion* aiE = new AIEmotion("Riley", "depressive");
 	AddComponent(aiE);
 
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider

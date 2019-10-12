@@ -103,6 +103,82 @@ AffordanceObject* AffordanceManager::GetBestScoreObjectByAffordanceTypeWithinRan
 	return r;
 }
 
+AffordanceObject * AffordanceManager::GetBestScoreObjectByAffordanceTypeWithinRangeNotTarget(Affordance::AffordanceTypes type, glm::vec3 pos, float range, std::string & outAffordanceName, AffordanceObject * notTarget)
+{
+	AffordanceObject* r = nullptr;
+	int maxScore = -HUGE;
+	auto it = affordanceMapByAffordanceType.find(type);
+
+	if (it != affordanceMapByAffordanceType.end())
+	{
+		std::set<AffordanceObject*> inRange;
+
+
+		//Get the objects in range first
+		for (auto objIt = it->second.begin(); objIt != it->second.end(); objIt++)
+		{
+			float length2 = glm::length2((*objIt)->gameObject->transform.GetGlobalPosition() - pos);
+			if (length2 < range * range)
+			{
+				if ((*objIt) != notTarget)
+					inRange.insert((*objIt));
+			}
+
+		}
+
+		int maxScore = -HUGE;
+		//Get top score of objects in range
+		for (auto best = inRange.begin(); best != inRange.end(); best++)
+		{
+			Affordance* af = (*best)->GetBestAffordanceOfType(type);
+			if (af)
+			{
+				std::string name = FileUtils::GetClassNameW(af);
+				if (af->GetScore() > maxScore && (*best)->IsAvailableForAffordance(name))
+				{
+					maxScore = af->GetScore();
+				}
+			}
+		}
+
+		//Get all objects with an affordance of that score
+		std::set<AffordanceObject*> bestObjs;
+		for (auto best = inRange.begin(); best != inRange.end(); best++)
+		{
+			Affordance* af = (*best)->GetBestAffordanceOfType(type);
+			if (af)
+			{
+				std::string name = FileUtils::GetClassNameW(af);
+
+				if (af->GetScore() == maxScore && (*best)->IsAvailableForAffordance(name))
+				{
+					bestObjs.insert((*best));
+				}
+			}
+
+		}
+
+		//If there's more than 1 object with that score, get the closet to the position
+		float shortest = HUGE;
+		for (auto best = bestObjs.begin(); best != bestObjs.end(); best++)
+		{
+			float length2 = glm::length2((*best)->gameObject->transform.GetGlobalPosition() - pos);
+			Affordance* af = (*best)->GetBestAffordanceOfType(type);
+			std::string name = FileUtils::GetClassNameW(af);
+			if (length2 < shortest && (*best)->IsAvailableForAffordance(name))
+			{
+				shortest = length2;
+				r = (*best);
+				outAffordanceName = name;
+			}
+		}
+
+
+	}
+
+	return r;
+}
+
 
 void AffordanceManager::RegisterAffordanceObject(std::string affName,AffordanceObject* obj)
 {

@@ -81,6 +81,22 @@ bool AffordanceAgent::LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Af
 		return false;
 }
 
+bool AffordanceAgent::LookForBestScoreAffordanceObjectByAffordanceTypeInRangeNotTarget(Affordance::AffordanceTypes type, AffordanceObject * notTarget, float range)
+{
+	if (inUseObj == nullptr)
+	{
+		if (selectedObj == nullptr)
+		{
+			selectedObj = AffordanceManager::Instance().GetBestScoreObjectByAffordanceTypeWithinRangeNotTarget(type, _parent->transform.GetGlobalPosition(), range, selectedAffordanceName, notTarget);
+			return selectedObj != nullptr;
+		}
+		else
+			return true;
+	}
+	else
+		return false;
+}
+
 
 void AffordanceAgent::Update()
 {
@@ -120,8 +136,6 @@ bool AffordanceAgent::LookForBestScoreAffordanceObjectInRange(std::string name, 
 		return false;
 
 }
-
-
 
 bool AffordanceAgent::IsAffordanceSupported(std::string affName)
 {

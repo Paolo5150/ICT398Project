@@ -6,6 +6,7 @@
 #include "Needs/Rest.h"
 #include "Needs/Joy.h"
 #include "Needs/Trust.h"
+#include "Needs/Social.h"
 #include "..\Core\Logger.h"
 #include <boost/algorithm/string.hpp>
 
@@ -45,6 +46,10 @@ int NeedFactory::GetNeedType(std::string needName)
 	{
 		return Need::NeedType::Rest;
 	}
+	else if (strcmp("social", needName.c_str()) == 0)
+	{
+		return Need::NeedType::Social;
+	}
 	else
 	{
 		Logger::LogError("NEED FACTORY: \"" + needName + "\" NOT VALID NEED NAME");
@@ -74,6 +79,9 @@ std::unique_ptr<Need> NeedFactory::GetNeed(Need::NeedType type, float startValue
 		break;
 	case Need::NeedType::Rest:
 		need = std::unique_ptr<Rest>(new Rest(startValue, priority, positiveGainMultiplier, negativeGainMultiplier));
+		break;
+	case Need::NeedType::Social:
+		need = std::unique_ptr<Social>(new Social(startValue, priority, positiveGainMultiplier, negativeGainMultiplier));
 		break;
 	}
 

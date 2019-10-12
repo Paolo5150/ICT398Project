@@ -22,7 +22,7 @@ void Fred::Test(AffordanceObject* obj)
 
 }
 
-Fred::Fred() : GameObject("Fred")
+Fred::Fred() : GameObject("Fred"), AffordanceObject(this)
 {
 	SetIsStatic(0);
 
@@ -87,9 +87,15 @@ Fred::Fred() : GameObject("Fred")
 	aa->AddAffordanceUpdateCallback("ThirstAffordance", [&]() {});
 	aa->AddAffordanceDisengageCallback("ThirstAffordance", [&]() {});
 
+	aa->AddAffordanceEngageCallback("SocialAffordance", [&](AffordanceObject*obj) {});
+	aa->AddAffordanceUpdateCallback("SocialAffordance", [&]() {});
+	aa->AddAffordanceDisengageCallback("SocialAffordance", [&]() {});
+
 	AddComponent(aa);
 	timer = 0;
 	needToSit = 1;
+
+	LoadAffordancesFromFile("Assets\\Affordances\\people_affordances.txt");
 }
 
 Fred::~Fred()

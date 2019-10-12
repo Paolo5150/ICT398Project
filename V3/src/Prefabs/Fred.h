@@ -1,10 +1,11 @@
 #pragma once
 #include "..\Core\GameObject.h"
+#include "..\Affordances\AffordanceObject.h"
 #include "Billquad.h"
 
 class AffordanceObject;
 
-class Fred : public GameObject
+class Fred : public GameObject, public AffordanceObject
 {
 
 public:

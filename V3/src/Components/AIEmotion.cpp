@@ -81,8 +81,12 @@ void AIEmotion::Start()
 
 void AIEmotion::EngineUpdate()
 {
-	AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Thirst, Stimuli::StimuliType::Default, -0.2f * Timer::GetDeltaS(), true, 0, this);
-	AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Rest, Stimuli::StimuliType::Default, -0.2f * Timer::GetDeltaS(), true, 0, this);
+	if (HasNeedType(Need::NeedType::Thirst))
+		AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Thirst, Stimuli::StimuliType::Default, -0.2f * Timer::GetDeltaS(), true, 0, this);
+	if (HasNeedType(Need::NeedType::Rest))
+		AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Rest, Stimuli::StimuliType::Default, -0.2f * Timer::GetDeltaS(), true, 0, this);
+	if (HasNeedType(Need::NeedType::Social))
+		AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Social, Stimuli::StimuliType::Default, -0.4f * Timer::GetDeltaS(), true, 0, this);
 
 	UpdateStimuli();
 
@@ -239,7 +243,14 @@ void AIEmotion::SeekNeeds()
 				it = priorityOrderedNeeds.end();
 			}
 			else
+			{
+				if (currentlySeekedNeed == (*it))
+				{
+					currentlySeekedNeed->FinishSeek(this, aa);
+					currentlySeekedNeed = nullptr;
+				}
 				it++;
+			}
 		}
 	}
 }

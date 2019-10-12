@@ -26,6 +26,7 @@ public:
 	void ExecuteAffordanceUpdateCallback(std::string name, AIEmotion* ai);
 
 	bool LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Affordance::AffordanceTypes type, float range);
+	bool LookForBestScoreAffordanceObjectByAffordanceTypeInRangeNotTarget(Affordance::AffordanceTypes type, AffordanceObject* notObj, float range);
 
 	bool LookForBestScoreAffordanceObjectInRange(std::string affordanceName, float range);
 

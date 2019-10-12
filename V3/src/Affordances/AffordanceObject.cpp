@@ -202,7 +202,6 @@ void AffordanceObject::ExecuteAffordanceUpdateCallback(std::string afName, AIEmo
 	{
 		it->second->UpdateCallback(ai);
 		inUse = it->second.get();
-		inUse->currentUsers++;
 	}
 }
 
