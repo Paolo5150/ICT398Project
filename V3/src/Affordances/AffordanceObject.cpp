@@ -151,8 +151,12 @@ void AffordanceObject::LoadAffordancesFromFile(std::string filePath)
 			fscanf(file,"%d", &score);
 
 			Affordance* af = AffordanceFactory::GetAffordanceByName(name);
+			if (af)
+			{
 			af->SetScore(score);
 			AddPerceviedAffordance(af);
+
+			}
 		}
 	}
 	else

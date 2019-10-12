@@ -22,7 +22,8 @@ public:
 	enum class AffordanceTypes
 	{
 		NONE,
-		REST
+		REST,
+		COLLECTABLE
 	};
 
 	/**

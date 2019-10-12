@@ -9,10 +9,7 @@
 #include "Prefabs/Terrain.h"
 #include "Prefabs/LandfillBin.h"
 #include "Prefabs/RecycleBin.h"
-#include "Prefabs/Fred.h"
-#include "Prefabs/Riley.h"
-#include "Prefabs/Joey.h"
-
+#include "Prefabs/Billquad.h"
 
 #include "Prefabs/BushCourt.h"
 #include "Prefabs/Lantern.h"
@@ -64,6 +61,11 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadModel("Assets\\Models\\BushCourt\\bushcourt.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Lantern\\lantern.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Crate\\crate.obj",false, false);
+
+	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\tired.png", false);
+	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\happy.png", false);
+	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\angry.png", false);
+
 
 
 	ContentManager::Instance().LoadModel("Assets\\Models\\Fred\\Fred.fbx", false, false);
@@ -176,7 +178,7 @@ void MainScene::Initialize() {
 	dirLight3->SetIntensity(0.4);
 
 	BushCourt* bushCourt = new BushCourt();	
-//	cam->AddChild(fred);
+
 
 	AddGameObject(cam);
 
@@ -184,6 +186,8 @@ void MainScene::Initialize() {
 	AddGameObject(dirLight2);
 	AddGameObject(dirLight3);
 	AddGameObject(bushCourt);
+
+
 	
 	LoadGameObjectsFromFile("Assets\\SceneFiles\\MainScene.txt");
 }

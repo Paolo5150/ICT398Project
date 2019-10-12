@@ -5,6 +5,7 @@
 #include "..\Components\Rigidbody.h"
 #include "..\Components\AffordanceAgent.h"
 #include "..\Affordances\RestAffordance.h"
+#include "..\Scene\SceneManager.h"
 
 namespace
 {
@@ -36,6 +37,12 @@ Riley::Riley() : GameObject("Riley")
 	m2NoLight.SetColor(0.5, 0.5, 0.5);
 
 	ApplyMaterial(m2NoLight, NOLIGHT);
+
+	billquad = new Billquad();
+	billquad->SetTexture(ContentManager::Instance().GetAsset<Texture2D>("tired"));
+	billquad->RenderForSeconds(100);
+	//Adding the quad as a child is not a great idea, so I just add it as a separate GameObject and update in manually in the Update
+	SceneManager::Instance().GetCurrentScene().AddGameObject(billquad);
 
 	aa = new AffordanceAgent();
 	aa->AddAffordanceEngageCallback("SitAffordance",[&](AffordanceObject*obj) {
@@ -79,6 +86,7 @@ Riley::~Riley()
 void Riley::Update()
 {
 	GameObject::Update();
+	billquad->transform.SetPosition(transform.GetPosition() + glm::vec3(0, 12, 0));
 
 	/*
 	timer += Timer::GetDeltaS();
@@ -111,7 +119,7 @@ void Riley::Update()
 void Riley::Start()
 {
 
-	//LoadCollidersFromFile("Assets\\Colliders\\Riley.txt");
+	LoadCollidersFromFile("Assets\\Colliders\\Riley.txt");
 
 	/*Rigidbody* rb = new Rigidbody();
 	rb->UseGravity(true);
