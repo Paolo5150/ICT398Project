@@ -25,9 +25,13 @@ uniform vec3 AmbientLight;
 void main()
 {
    
-    vec3 diffuseColor = texture(diffuse0,Textcoords * material.UVScale).rgb;
+    vec4 diffuseColor = texture(diffuse0,Textcoords * material.UVScale);
+	if(diffuseColor.a < 0.5)
+	{
+		discard;
+	}
    
-    vec3 total =  diffuseColor* material.color;
+    vec3 total =  diffuseColor.rgb* material.color;
 
 	gl_FragColor =  vec4(total,1.0);
 

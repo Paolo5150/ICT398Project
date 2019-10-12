@@ -42,7 +42,7 @@ Joey::Joey() : GameObject("Joey")
 	ApplyMaterial(m2NoLight, NOLIGHT);
 
 	billquad = new Billquad();
-	billquad->SetTexture(ContentManager::Instance().GetAsset<Texture2D>("errorTexture"));
+	billquad->SetTexture(ContentManager::Instance().GetAsset<Texture2D>("angry"));
 	billquad->RenderForSeconds(100);
 	//Adding the quad as a child is not a great idea, so I just add it as a separate GameObject and update in manually in the Update
 	SceneManager::Instance().GetCurrentScene().AddGameObject(billquad);
