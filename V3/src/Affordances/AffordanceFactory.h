@@ -1,6 +1,6 @@
 #pragma once
 #include "RestAffordance.h"
-
+#include "CollectableAffordances.h"
 
 class AffordanceFactory
 {
@@ -14,6 +14,10 @@ public:
 		else if (name == "LaydownAffordance")
 		{
 			return new LaydownAffordance();
+		}
+		else if (name == "CollectableAffordance")
+		{
+			return new CollectableAffordance();
 		}
 
 		return nullptr;

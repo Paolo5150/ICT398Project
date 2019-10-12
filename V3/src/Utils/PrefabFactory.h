@@ -16,6 +16,8 @@
 #include "..\Prefabs\Fred.h"
 #include "..\Prefabs\Riley.h"
 #include "..\Prefabs\Joey.h"
+#include "..\Prefabs\Box2.h"
+
 
 
 class PrefabFactory
@@ -86,6 +88,10 @@ public:
 		else if (name == "Riley")
 		{
 			return new Riley();
+		}
+		else if (name == "Box")
+		{
+			return new Box2();
 		}
 
 		return nullptr;

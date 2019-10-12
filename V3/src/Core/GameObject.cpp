@@ -158,21 +158,6 @@ void GameObject::SetLayer(unsigned int layer, bool includeChildren)
 	}
 }
 
-void GameObject::SetParent(GameObject *parent)
-{
-	if (parent != this)
-	{
-		if(parent !=nullptr)
-		_parent = parent;
-		else
-		{
-			if (_parent != nullptr)
-			{
-				_parent->transform.transformChildren.remove(&transform);
-			}
-		}
-	}
-}
 
 void GameObject::FlashColor(float r, float g, float b)
 {
@@ -258,7 +243,7 @@ void GameObject::LoadCollidersFromFile(std::string absolutePathToFile)
 	{
 		glm::vec3 inertia = colliders[i]->GetMomentOfIntertia();
 		glm::vec3 correctedPos = colliders[i]->transform.GetPosition() - centreOfMass;
-
+		float d2 = glm::length2(correctedPos);
 		float mass = colliders[i]->GetMass();
 		inertiaTensor[0][0] += inertia.x + mass * (correctedPos.y * correctedPos.y + correctedPos.z * correctedPos.z);
 		inertiaTensor[1][1] += inertia.y + mass * (correctedPos.z * correctedPos.z + correctedPos.x * correctedPos.x);
@@ -296,6 +281,24 @@ unsigned int GameObject::GetLayer() const
 GameObject* GameObject::GetParent() const
 {
 	return _parent;
+}
+
+void GameObject::SetParent(GameObject *parent)
+{
+	if (parent != this)
+	{
+		if (parent != nullptr)
+			_parent = parent;
+		else
+		{
+			if (_parent != nullptr)
+			{
+				_parent->transform.transformChildren.remove(&transform);
+				_parent = nullptr;
+			}
+			transform.parent = nullptr;
+		}
+	}
 }
 
 void GameObject::AddChild(GameObject* child)

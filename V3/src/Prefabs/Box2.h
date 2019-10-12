@@ -2,9 +2,11 @@
 
 #include "..\Core\GameObject.h"
 #include "..\Components\Rigidbody.h"
+#include "..\Affordances\AffordanceObject.h"
+
 
 class Box2 :
-	public GameObject
+	public GameObject, public AffordanceObject
 {
 public:
 	Box2();
