@@ -3,7 +3,7 @@
 #include "..\..\Core\Logger.h"
 #include "..\..\Components\AIEmotion.h"
 
-Anger::Anger(float startValue, int priority, float positiveGainMultiplier, float negativeGainMultiplier) : Need(NeedType::Anger, "Anger", startValue, 10, 70, positiveGainMultiplier, negativeGainMultiplier, priority)
+Anger::Anger(float startValue, int priority, float positiveGainMultiplier, float negativeGainMultiplier) : Need(NeedType::Anger, "Anger", startValue, 45, 85, positiveGainMultiplier, negativeGainMultiplier, priority)
 {
 }
 

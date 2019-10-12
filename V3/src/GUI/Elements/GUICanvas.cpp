@@ -42,6 +42,12 @@ void GUICanvas::AddGUIObject(GUIObject* obj)
 	allGUIObjects[obj->name] = std::unique_ptr<GUIObject>(obj);
 }
 
+void GUICanvas::RemoveGUIOBject(std::string name)
+{
+	allGUIObjects.erase(name);
+}
+
+
 GUIObject* GUICanvas::GetGUIObjectByName(std::string name)
 {
 	auto it = allGUIObjects.find(name);

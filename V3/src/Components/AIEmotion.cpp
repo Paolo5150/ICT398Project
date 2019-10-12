@@ -2,6 +2,8 @@
 #include "AIEmotion.h"
 #include "../Emotion/AIEmotionManager.h"
 #include "../Core/Timer.h"
+#include "../GUI/GUIManager.h"
+#include "../GUI/Elements/GUIText.h"
 
 AIEmotion::AIEmotion() : Component("Emotion")
 {
@@ -77,6 +79,7 @@ void AIEmotion::Start()
 	{
 		Logger::LogWarning("NO AFFORDANCE AGENT ATTACHED TO AGENT \"", GetParent()->GetName(), "\"");
 	}
+	isRenderingStats = 0;
 }
 
 void AIEmotion::EngineUpdate()
@@ -242,5 +245,57 @@ void AIEmotion::SeekNeeds()
 			else
 				it++;
 		}
+	}
+}
+
+void AIEmotion::EnableRenderStats()
+{
+
+		auto it = needs.begin();
+	if (!isRenderingStats)
+	{
+		int index = 1;
+
+		for (; it != needs.end(); it++)
+		{
+			std::stringstream ss;
+			ss << it->second->GetName();
+			ss << ": ";
+			ss << GetNeedValue(it->first);
+
+			GUIText* text = new GUIText(it->second->GetName(), ss.str(), 5, 5 * index, glm::vec3(1, 0, 0), 1.5, 1);
+			index++;
+			GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(text);
+		}		
+		isRenderingStats = 1;
+	}
+	else
+	{
+		for (; it != needs.end(); it++)
+		{
+			std::stringstream ss;
+			ss << it->second->GetName();
+			ss << ": ";
+			ss << GetNeedValue(it->first);
+
+			GUIText* text = (GUIText*)GUIManager::Instance().GetCanvasByName("MainCanvas")->GetGUIObjectByName(it->second->GetName());
+			text->message = ss.str();
+		}
+	}
+
+}
+void AIEmotion::DisableRenderStats()
+{
+	if (isRenderingStats)
+	{
+		auto it = needs.begin();
+
+		for (; it != needs.end(); it++)
+		{
+			GUIManager::Instance().GetCanvasByName("MainCanvas")->RemoveGUIOBject(it->second->GetName());
+		}
+
+		isRenderingStats = 0;
+
 	}
 }

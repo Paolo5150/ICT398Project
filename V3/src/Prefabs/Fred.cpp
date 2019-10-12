@@ -108,7 +108,7 @@ void Fred::Update()
 			{
 				//If there is, display the emotion
 				billquad->SetTexture(t);
-				billquad->RenderForSeconds(2,5);
+				billquad->RenderForSeconds(2,2);
 
 			}
 		}
@@ -138,7 +138,6 @@ void Fred::OnCollisionEnter(Collider* g, Collision& collision)
 	//
 	if (g->GetParent()->GetName() == "Box")
 	{
-		Logger::LogInfo("Hit by box");
 		AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Anger, Stimuli::StimuliType::Threat, 5.0, 1, 5.0, aiE);
 
 	}
