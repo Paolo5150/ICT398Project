@@ -100,7 +100,7 @@ void Riley::Update()
 void Riley::Start()
 {
 
-	//LoadCollidersFromFile("Assets\\Colliders\\Riley.txt");
+	LoadCollidersFromFile("Assets\\Colliders\\Riley.txt");
 
 	/*Rigidbody* rb = new Rigidbody();
 	rb->UseGravity(true);
