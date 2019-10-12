@@ -313,7 +313,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Emotion\Needs\Trust.cpp">
-	  <Filter>Source Files</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Prefabs\Joey.cpp">
       <Filter>Source Files</Filter>
@@ -735,6 +735,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Affordances\CollectableAffordances.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Affordances\ThirstAffordance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

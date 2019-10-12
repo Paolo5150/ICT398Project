@@ -83,6 +83,10 @@ Fred::Fred() : GameObject("Fred")
 		transform.RotateBy(-90, transform.GetLocalRight());
 	});
 
+	aa->AddAffordanceEngageCallback("ThirstAffordance", [&](AffordanceObject*obj) {});
+	aa->AddAffordanceUpdateCallback("ThirstAffordance", [&]() {});
+	aa->AddAffordanceDisengageCallback("ThirstAffordance", [&]() {});
+
 	AddComponent(aa);
 	timer = 0;
 	needToSit = 1;

@@ -173,6 +173,7 @@
     <ClInclude Include="src\Affordances\AffordanceObject.h" />
     <ClInclude Include="src\Affordances\CollectableAffordances.h" />
     <ClInclude Include="src\Affordances\RestAffordance.h" />
+    <ClInclude Include="src\Affordances\ThirstAffordance.h" />
     <ClInclude Include="src\Components\AffordanceAgent.h" />
     <ClInclude Include="src\Components\AIEmotion.h" />
     <ClInclude Include="src\Components\BoxCollider.h" />

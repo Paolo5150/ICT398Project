@@ -1,6 +1,7 @@
 #pragma once
 #include "RestAffordance.h"
 #include "CollectableAffordances.h"
+#include "ThirstAffordance.h"
 
 class AffordanceFactory
 {
@@ -18,6 +19,10 @@ public:
 		else if (name == "CollectableAffordance")
 		{
 			return new CollectableAffordance();
+		}
+		else if (name == "ThirstAffordance")
+		{
+			return new ThirstAffordance();
 		}
 
 		return nullptr;
