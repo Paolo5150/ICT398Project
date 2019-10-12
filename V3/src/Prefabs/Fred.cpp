@@ -132,7 +132,7 @@ void Fred::Update()
 void Fred::Start()
 {
 
-	//LoadCollidersFromFile("Assets\\Colliders\\Fred.txt");
+	LoadCollidersFromFile("Assets\\Colliders\\Fred.txt");
 
 	/*Rigidbody* rb = new Rigidbody();
 	rb->UseGravity(true);

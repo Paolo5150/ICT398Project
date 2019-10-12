@@ -64,7 +64,7 @@ void Joey::Update()
 void Joey::Start()
 {
 
-	//LoadCollidersFromFile("Assets\\Colliders\\Joey.txt");
+	LoadCollidersFromFile("Assets\\Colliders\\Joey.txt");
 
 	/*Rigidbody* rb = new Rigidbody();
 	rb->UseGravity(true);
