@@ -16,8 +16,10 @@ Rest::~Rest()
 
 bool Rest::Seek(AIEmotion* ai, AffordanceAgent* aa)
 {
+	
 	if (aa->LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Affordance::AffordanceTypes::REST, 100))
 	{
+		
 		// If the method is true, we have found an affordance object in the specified range
 		// That would be pointed by "selectedObj" in the Affordance Agent
 		glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - aa->GetParent()->transform.GetGlobalPosition();

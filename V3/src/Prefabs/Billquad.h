@@ -18,7 +18,7 @@ public:
 	void Start() override;
 
 	void SetTexture(Texture2D* texture);
-	void RenderForSeconds(float seconds);
+	void RenderForSeconds(float seconds, float coolDown = 0);
 
 
 private:
@@ -27,6 +27,7 @@ private:
 	void Initialize();
 	Texture2D* texture;
 	float timer;
+	float coolDownTimer;
 	bool isRendering;
 
 };

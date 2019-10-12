@@ -41,7 +41,7 @@ public:
 	void EngineUpdate() override;
 	bool GetSeeking();
 	void SetSeeking(float newSeeking);
-
+	std::map<Need::NeedType, std::unique_ptr<Need>>& GetNeeds() { return needs; };
 private:
 	std::string name;
 	bool seeking = true;

@@ -12,8 +12,7 @@
 namespace
 {
 	AffordanceAgent* aa;
-	float timer = 0;
-	bool needToSit = 1;
+	AIEmotion* aiE;
 }
 
 void Fred::Test(AffordanceObject* obj)
@@ -48,8 +47,6 @@ Fred::Fred() : GameObject("Fred")
 	d->transform.SetPosition(0, 160, 20);
 
 	billquad = new Billquad();
-	billquad->SetTexture(ContentManager::Instance().GetAsset<Texture2D>("happy"));
-	billquad->RenderForSeconds(100);
 	//Adding the quad as a child is not a great idea, so I just add it as a separate GameObject and update in manually in the Update
 	SceneManager::Instance().GetCurrentScene().AddGameObject(billquad);
 
@@ -79,13 +76,13 @@ Fred::Fred() : GameObject("Fred")
 
 	aa->AddAffordanceDisengageCallback("LaydownAffordance", [&]() {
 		Logger::LogInfo("LaydownAffordance disengaged");
-
 		transform.RotateBy(-90, transform.GetLocalRight());
+		billquad->SetTexture(ContentManager::Instance().GetAsset<Texture2D>("happy"));
+		billquad->RenderForSeconds(2);
 	});
 
 	AddComponent(aa);
-	timer = 0;
-	needToSit = 1;
+
 }
 
 Fred::~Fred()
@@ -97,6 +94,26 @@ void Fred::Update()
 {
 	GameObject::Update();
 	billquad->transform.SetPosition(transform.GetPosition() + glm::vec3(0, 12, 0));
+
+	auto it = aiE->GetNeeds().begin();
+
+	// Check for needs that are below their threshold
+	for (; it != aiE->GetNeeds().end(); it++)
+	{
+		if (aiE->GetNeedValue(it->first) < it->second->GetLowSeekThreshold())
+		{
+			// If found one, check if there's a texture with the need's name
+			Texture2D* t = ContentManager::Instance().GetAsset<Texture2D>(it->second->GetName());
+			if (t)
+			{
+				//If there is, display the emotion
+				billquad->SetTexture(t);
+				billquad->RenderForSeconds(2,5);
+
+			}
+		}
+	}
+
 }
 
 void Fred::Start()
@@ -109,7 +126,7 @@ void Fred::Start()
 
 	AddComponent(rb);*/
 
-	AIEmotion* aiE = new AIEmotion();
+	aiE = new AIEmotion();
 	AddComponent(aiE);
 
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider

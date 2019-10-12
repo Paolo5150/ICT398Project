@@ -39,8 +39,7 @@ Riley::Riley() : GameObject("Riley")
 	ApplyMaterial(m2NoLight, NOLIGHT);
 
 	billquad = new Billquad();
-	billquad->SetTexture(ContentManager::Instance().GetAsset<Texture2D>("tired"));
-	billquad->RenderForSeconds(100);
+
 	//Adding the quad as a child is not a great idea, so I just add it as a separate GameObject and update in manually in the Update
 	SceneManager::Instance().GetCurrentScene().AddGameObject(billquad);
 
@@ -88,32 +87,6 @@ void Riley::Update()
 	GameObject::Update();
 	billquad->transform.SetPosition(transform.GetPosition() + glm::vec3(0, 12, 0));
 
-	/*
-	timer += Timer::GetDeltaS();
-	
-	if (timer > 7 && needToSit)
-	{
-		if (aa->LookForBestScoreAffordanceObjectInRange("SitAffordance",40))
-		{
-			glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - transform.GetGlobalPosition();
-
-			if (glm::length2(toObj) > 0.1)
-			{
-				transform.Translate(glm::normalize(toObj) * Timer::GetDeltaS() * 4.0f);
-				transform.RotateYTowards(aa->selectedObj->gameObject->transform.GetGlobalPosition());
-			}
-			else
-			{
-				aa->ExecuteAffordanceEngageCallback("SitAffordance", ai);
-			}
-		}
-	}
-	if (timer > 50)
-	{
-		aa->ExecuteAffordanceDisengageCallback("SitAffordance");
-		needToSit = 0;
-	}
-	*/
 }
 
 void Riley::Start()
