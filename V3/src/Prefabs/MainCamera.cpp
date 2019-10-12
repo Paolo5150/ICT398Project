@@ -142,7 +142,7 @@ void MainCamera::Update()
 		{
 			if (Input::GetKeyPressed(GLFW_KEY_SPACE) && collectedObject == nullptr)
 			{
-				//affordanceAgent->ExecuteAffordanceEngageCallback("CollectableAffordance" );
+				affordanceAgent->ExecuteAffordanceEngageCallback("CollectableAffordance",nullptr );
 			}
 		}
 	}

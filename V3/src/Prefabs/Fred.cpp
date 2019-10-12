@@ -40,11 +40,11 @@ Fred::Fred() : GameObject("Fred")
 
 	ApplyMaterial(m2NoLight, NOLIGHT);
 
-	Dylan* d = new Dylan();
+/*	Dylan* d = new Dylan();
 	AddChild(d);
 	d->transform.SetScale(2.8);
 	d->transform.SetRotation(-90, 0, 0);
-	d->transform.SetPosition(0, 160, 20);
+	d->transform.SetPosition(0, 160, 20);*/
 
 	billquad = new Billquad();
 	//Adding the quad as a child is not a great idea, so I just add it as a separate GameObject and update in manually in the Update
@@ -100,7 +100,7 @@ void Fred::Update()
 	// Check for needs that are below their threshold
 	for (; it != aiE->GetNeeds().end(); it++)
 	{
-		if (aiE->GetNeedValue(it->first) < it->second->GetLowSeekThreshold())
+		if (aiE->GetNeedValue(it->first) < it->second->GetLowSeekThreshold() || aiE->GetNeedValue(it->first) > it->second->GetHighSeekThreshold())
 		{
 			// If found one, check if there's a texture with the need's name
 			Texture2D* t = ContentManager::Instance().GetAsset<Texture2D>(it->second->GetName());
@@ -135,13 +135,19 @@ void Fred::Start()
 
 void Fred::OnCollisionEnter(Collider* g, Collision& collision)
 {
-	Logger::LogInfo("Fred Collided ENTER against", g->GetName());
+	//
+	if (g->GetParent()->GetName() == "Box")
+	{
+		Logger::LogInfo("Hit by box");
+		AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Anger, Stimuli::StimuliType::Threat, 5.0, 1, 5.0, aiE);
+
+	}
 
 }
 
 void Fred::OnCollisionExit(Collider* g)
 {
-	Logger::LogInfo("Fred Collided EXIT against", g->GetName());
+	//Logger::LogInfo("Fred Collided EXIT against", g->GetName());
 
 }
 void Fred::OnCollisionStay(Collider* g, Collision& collision)

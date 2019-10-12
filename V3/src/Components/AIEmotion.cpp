@@ -83,6 +83,7 @@ void AIEmotion::EngineUpdate()
 {
 	AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Thirst, Stimuli::StimuliType::Default, -0.2f * Timer::GetDeltaS(), true, 0, this);
 	AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Rest, Stimuli::StimuliType::Default, -0.2f * Timer::GetDeltaS(), true, 0, this);
+	AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Anger, Stimuli::StimuliType::Compliment, -0.2f * Timer::GetDeltaS(), true, 0, this);
 
 	UpdateStimuli();
 

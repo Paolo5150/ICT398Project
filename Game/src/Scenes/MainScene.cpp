@@ -64,7 +64,7 @@ void MainScene::LoadAssets() {
 
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\Rest.png", false);
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\happy.png", false);
-	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\angry.png", false);
+	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\Anger.png", false);
 
 
 
