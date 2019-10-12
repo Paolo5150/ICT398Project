@@ -10,7 +10,8 @@ public:
 		score = 50;
 		affordanceType = AffordanceTypes::COLLECTABLE;
 		affordanceName = "CollectableAffordance";
-		Callback = []() {  };
+		Callback = [](AIEmotion* ai) { };
+		UpdateCallback = [](AIEmotion* ai) { };
 	}
 	virtual ~CollectableAffordance() {};
 
