@@ -32,7 +32,7 @@ void AffordanceAgent::ExecuteAffordanceDisengageCallback(std::string affName)
 		}
 	}
 }
-void AffordanceAgent::ExecuteAffordanceEngageCallback(std::string affName)
+void AffordanceAgent::ExecuteAffordanceEngageCallback(std::string affName, AIEmotion* ai)
 {
 
 	if (inUseObj == nullptr)
@@ -42,7 +42,23 @@ void AffordanceAgent::ExecuteAffordanceEngageCallback(std::string affName)
 		if (it != affordanceEngageCallbackMap.end())
 		{
 			it->second(selectedObj);
-			selectedObj->ExecuteAffordanceCallback(affName);
+			selectedObj->ExecuteAffordanceCallback(affName, ai);
+			inUseObj = selectedObj;
+			selectedObj->AddUser(_parent);
+		}
+	}
+}
+
+void AffordanceAgent::ExecuteAffordanceUpdateCallback(std::string affName, AIEmotion * ai)
+{
+	if (inUseObj != nullptr)
+	{
+		auto it = affordanceUpdateCallbackMap.find(affName);
+
+		if (it != affordanceUpdateCallbackMap.end())
+		{
+			it->second();
+			selectedObj->ExecuteAffordanceUpdateCallback(affName, ai);
 			inUseObj = selectedObj;
 			selectedObj->AddUser(_parent);
 		}
@@ -56,6 +72,22 @@ bool AffordanceAgent::LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Af
 		if (selectedObj == nullptr)
 		{
 			selectedObj = AffordanceManager::Instance().GetBestScoreObjectByAffordanceTypeWithinRange(type,_parent->transform.GetGlobalPosition(), range,selectedAffordanceName);
+			return selectedObj != nullptr;
+		}
+		else
+			return true;
+	}
+	else
+		return false;
+}
+
+bool AffordanceAgent::LookForBestScoreAffordanceObjectByAffordanceTypeInRangeNotTarget(Affordance::AffordanceTypes type, AffordanceObject * notTarget, float range)
+{
+	if (inUseObj == nullptr)
+	{
+		if (selectedObj == nullptr)
+		{
+			selectedObj = AffordanceManager::Instance().GetBestScoreObjectByAffordanceTypeWithinRangeNotTarget(type, _parent->transform.GetGlobalPosition(), range, selectedAffordanceName, notTarget);
 			return selectedObj != nullptr;
 		}
 		else
@@ -83,11 +115,16 @@ void AffordanceAgent::Update()
 	}
 }
 
+bool AffordanceAgent::HasInUseObject()
+{
+	return inUseObj != nullptr;
+}
+
 bool AffordanceAgent::LookForBestScoreAffordanceObjectInRange(std::string name, float range)
 {
 	if (IsAffordanceSupported(name) && inUseObj == nullptr)
 	{
-		if (selectedObj == nullptr)
+		if (1)
 		{
 			selectedObj = AffordanceManager::Instance().GetBestScoreObjectWithinRange(name, _parent->transform.GetGlobalPosition(), range);
 			return selectedObj != nullptr;
@@ -99,8 +136,6 @@ bool AffordanceAgent::LookForBestScoreAffordanceObjectInRange(std::string name, 
 		return false;
 
 }
-
-
 
 bool AffordanceAgent::IsAffordanceSupported(std::string affName)
 {
@@ -114,6 +149,11 @@ bool AffordanceAgent::IsAffordanceSupported(std::string affName)
 void AffordanceAgent::AddAffordanceDisengageCallback(std::string affName,std::function<void()> callback)
 {
 	affordanceDisengageCallbackMap[affName] = callback;
+}
+
+void AffordanceAgent::AddAffordanceUpdateCallback(std::string affName, std::function<void()> callback)
+{
+	affordanceUpdateCallbackMap[affName] = callback;
 }
 
 

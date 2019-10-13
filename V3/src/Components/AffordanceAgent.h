@@ -5,7 +5,7 @@
 #include "..\Core\Component.h"
 #include "..\Utils\FileUtils.h"
 
-
+class AIEmotion;
 
 class AffordanceAgent : public Component
 {
@@ -18,11 +18,15 @@ public:
 	bool IsAffordanceSupported(std::string affordanceName);
 
 	void AddAffordanceDisengageCallback(std::string affordanceName, std::function<void()>);
+	
+	void AddAffordanceUpdateCallback(std::string affordanceName, std::function<void()>);
 
 	void ExecuteAffordanceDisengageCallback(std::string name);
-	void ExecuteAffordanceEngageCallback(std::string name);
+	void ExecuteAffordanceEngageCallback(std::string name, AIEmotion*);
+	void ExecuteAffordanceUpdateCallback(std::string name, AIEmotion* ai);
 
 	bool LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Affordance::AffordanceTypes type, float range);
+	bool LookForBestScoreAffordanceObjectByAffordanceTypeInRangeNotTarget(Affordance::AffordanceTypes type, AffordanceObject* notObj, float range);
 
 	bool LookForBestScoreAffordanceObjectInRange(std::string affordanceName, float range);
 
@@ -32,9 +36,12 @@ public:
 
 	std::string& GetSelectedAffordanceName() { return selectedAffordanceName; }
 
+	bool HasInUseObject();
+
 protected:
 
 	std::map<std::string, std::function<void(AffordanceObject*)>> affordanceEngageCallbackMap;
+	std::map<std::string, std::function<void()>> affordanceUpdateCallbackMap;
 	std::map<std::string, std::function<void()>> affordanceDisengageCallbackMap;
 
 	AffordanceObject* inUseObj;

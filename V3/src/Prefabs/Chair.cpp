@@ -7,7 +7,7 @@
 
 Chair::Chair() : GameObject("Chair"), AffordanceObject(this)
 {
-	SetIsStatic(1);
+	SetIsStatic(0);
 	ContentManager::Instance().GetAsset<Model>("Chair")->PopulateGameObject(this);
 	transform.SetScale(1.5);
 	Material m;
@@ -26,9 +26,7 @@ Chair::Chair() : GameObject("Chair"), AffordanceObject(this)
 	ApplyMaterial(m2NoLight, NOLIGHT);
 	
 	LoadAffordancesFromFile("Assets\\Affordances\\chair_affordances.txt");
-	//SitAffordance* ra = new SitAffordance();
-	//ra->SetScore(50);
-	//AddPerceviedAffordance(ra);
+
 
 }
 
@@ -40,6 +38,9 @@ Chair::~Chair()
 void Chair::Update()
 {
 	GameObject::Update();
+	//Logger::LogInfo("Chair", Maths::Vec3ToString(GetComponent<Rigidbody>("Rigidbody")->GetVelocity()));
+	//Logger::LogInfo("Chair",transform.ToString());
+
 }
 
 void Chair::Start()
@@ -48,8 +49,7 @@ void Chair::Start()
 	LoadCollidersFromFile("Assets\\Colliders\\Chair.txt");
 
 	/*Rigidbody* rb = new Rigidbody();
-	rb->UseGravity(true);
-
+	rb->UseGravity(1);
 	AddComponent(rb);*/
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider
 						 // has been added.
@@ -57,13 +57,13 @@ void Chair::Start()
 
 void Chair::OnCollisionEnter(Collider* g, Collision& collision)
 {
-	Logger::LogInfo("CHAIR Collided ENTER against", g->GetName());
+	//Logger::LogInfo("CHAIR Collided ENTER against", g->GetName());
 
 }
 
 void Chair::OnCollisionExit(Collider* g)
 {
-	Logger::LogInfo("CHAIR Collided EXIT against", g->GetName());
+	//Logger::LogInfo("CHAIR Collided EXIT against", g->GetName());
 
 }
 void Chair::OnCollisionStay(Collider* g, Collision& collision)

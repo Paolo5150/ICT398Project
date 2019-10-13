@@ -2,6 +2,7 @@
 #include "Rigidbody.h"
 
 
+
 Rigidbody::Rigidbody() : Component("Rigidbody")
 {
 	velocity = glm::vec3(0, 0, 0);
@@ -9,7 +10,7 @@ Rigidbody::Rigidbody() : Component("Rigidbody")
 	useGravity = true;
 	awake = 1;
 	timer = 0;
-	damping = 0.5;
+	damping = 1.5;
 
 }
 
@@ -24,6 +25,7 @@ Rigidbody::Rigidbody(float x, float y, float z, bool relative) : Component("Rigi
 	useGravity = true;
 	awake = 1;
 	timer = 0;
+
 
 }
 
@@ -141,31 +143,40 @@ glm::vec3 Rigidbody::GetAngularVelocity() const
 
 void Rigidbody::Update()
 {
-	timer += Timer::GetDeltaS();
+	timer += Timer::GetDeltaS();	
 
-	if (glm::length(velocity) < 0.2  && glm::length(angVelocity) < 0.2 && timer > 0.5)
-	{
-		velocity = glm::vec3(0);
-		angVelocity = glm::vec3();
-		awake = false;
+	angVelocity = glm::lerp(angVelocity, glm::vec3(), Timer::GetDeltaS() * damping * 5);
 
-	}
+	if (fabs(angVelocity.x) < 0.05)
+		angVelocity.x = 0;
 
-	if (awake)
-	{
-		velocity = glm::lerp(velocity, glm::vec3(), Timer::GetDeltaS() * damping);
-		angVelocity = glm::lerp(angVelocity, glm::vec3(), Timer::GetDeltaS() * damping * 2);
+	if (fabs(angVelocity.z) < 0.05)
+		angVelocity.z = 0;
 
-		//angVelocity += glm::vec3(1, 1, 1) * -damping;
+	if (fabs(angVelocity.y) < 0.05)
+		angVelocity.y = 0;
 
-		if(useGravity)
-			velocity += PhysicsWorld::Instance().gravity * _parent->GetTotalMass() * Timer::GetDeltaS(); //If enabled, add gravity to the velocity vector
+	if(useGravity && awake)
+		velocity += PhysicsWorld::Instance().gravity * _parent->GetTotalMass() * Timer::GetDeltaS(); //If enabled, add gravity to the velocity vector
 
-		_parent->transform.Translate(velocity * Timer::GetDeltaS()); //Update the transform's postion in world space
-		_parent->transform.RotateBy(angVelocity.x * Timer::GetDeltaS(), 1, 0, 0); //Update the transform's x rotation
-		_parent->transform.RotateBy(angVelocity.y * Timer::GetDeltaS(), 0, 1, 0); //Update the transform's y rotation
-		_parent->transform.RotateBy(angVelocity.z * Timer::GetDeltaS(), 0, 0, 1); //Update the transform's z rotation
-	}
+	velocity.x = glm::lerp(velocity.x, 0.0f, Timer::GetDeltaS() * damping);
+	velocity.z = glm::lerp(velocity.z, 0.0f, Timer::GetDeltaS() * damping);
+
+	if (fabs(velocity.x) < 0.05)
+		velocity.x = 0;
+
+	if (fabs(velocity.z) < 0.05)
+		velocity.z = 0;
+
+	_parent->transform.Translate(velocity * Timer::GetDeltaS()); //Update the transform's postion in world space
+	_parent->transform.RotateBy(angVelocity.x * Timer::GetDeltaS(), 1, 0, 0); //Update the transform's x rotation
+	_parent->transform.RotateBy(angVelocity.y * Timer::GetDeltaS(), 0, 1, 0); //Update the transform's y rotation
+	_parent->transform.RotateBy(angVelocity.z * Timer::GetDeltaS(), 0, 0, 1); //Update the transform's z rotation		
+
+
+
+
+
 }
 
 bool Rigidbody::GetUseDynamicPhysics()

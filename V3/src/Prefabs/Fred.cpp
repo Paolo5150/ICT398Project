@@ -7,14 +7,14 @@
 #include "..\Components\PathFinder.h"
 #include "..\Affordances\RestAffordance.h"
 #include "Dylan.h"
+#include "..\Components\AIEmotion.h"
+#include "..\Scene\SceneManager.h"
 
 namespace
 {
 	AffordanceAgent* aa;
-	float timer = 0;
-	bool needToSit = 1;
-	PathFinder* pf;
-	glm::vec3 nextPos;
+	AIEmotion* aiE;
+	GameObject* player;
 }
 
 void Fred::Test(AffordanceObject* obj)
@@ -23,12 +23,12 @@ void Fred::Test(AffordanceObject* obj)
 
 }
 
-Fred::Fred() : GameObject("Fred")
+Fred::Fred() : GameObject("Fred"), AffordanceObject(this)
 {
 	SetIsStatic(0);
 
 	ContentManager::Instance().GetAsset<Model>("Fred")->PopulateGameObject(this);
-	transform.SetScale(0.03);
+	transform.SetScale(0.02);
 	Material m;
 	m.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStatic"));
 	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("Fred_Base_Color"), "diffuse0");
@@ -42,11 +42,15 @@ Fred::Fred() : GameObject("Fred")
 
 	ApplyMaterial(m2NoLight, NOLIGHT);
 
-	Dylan* d = new Dylan();
+/*	Dylan* d = new Dylan();
 	AddChild(d);
 	d->transform.SetScale(2.8);
 	d->transform.SetRotation(-90, 0, 0);
-	d->transform.SetPosition(0, 160, 20);
+	d->transform.SetPosition(0, 160, 20);*/
+
+	billquad = new Billquad();
+	//Adding the quad as a child is not a great idea, so I just add it as a separate GameObject and update in manually in the Update
+	SceneManager::Instance().GetCurrentScene().AddGameObject(billquad);
 
 	aa = new AffordanceAgent();
 
@@ -55,7 +59,10 @@ Fred::Fred() : GameObject("Fred")
 		transform.SetPosition(obj->gameObject->transform.GetPosition() + glm::vec3(0, 1, 0));
 	});
 
-	aa->AddAffordanceDisengageCallback("SitAffordance", [&]() {
+	aa->AddAffordanceUpdateCallback("SitAffordance", [&]() {
+	});
+
+	aa->AddAffordanceDisengageCallback("SitAffordance",[&]() {
 		Logger::LogInfo("SitAffordance disengaged");
 
 		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition() - glm::vec3(0, 1, 0));
@@ -66,16 +73,28 @@ Fred::Fred() : GameObject("Fred")
 		transform.RotateBy(90, transform.GetLocalRight());
 	});
 
-	aa->AddAffordanceDisengageCallback("LaydownAffordance", [&]() {
-		Logger::LogInfo("LaydownAffordance disengaged");
-
-		transform.RotateBy(-90, transform.GetLocalRight());
-
+	aa->AddAffordanceUpdateCallback("LaydownAffordance", [&]() {
 	});
 
+	aa->AddAffordanceDisengageCallback("LaydownAffordance", [&]() {
+		Logger::LogInfo("LaydownAffordance disengaged");
+		transform.RotateBy(-90, transform.GetLocalRight());
+		billquad->SetTexture(ContentManager::Instance().GetAsset<Texture2D>("happy"));
+		billquad->RenderForSeconds(2);
+	});
+
+	aa->AddAffordanceEngageCallback("ThirstAffordance", [&](AffordanceObject*obj) {});
+	aa->AddAffordanceUpdateCallback("ThirstAffordance", [&]() {});
+	aa->AddAffordanceDisengageCallback("ThirstAffordance", [&]() {});
+
+	aa->AddAffordanceEngageCallback("SocialAffordance", [&](AffordanceObject*obj) {});
+	aa->AddAffordanceUpdateCallback("SocialAffordance", [&]() {});
+	aa->AddAffordanceDisengageCallback("SocialAffordance", [&]() {});
+
 	AddComponent(aa);
-	timer = 0;
-	needToSit = 1;
+
+
+	LoadAffordancesFromFile("Assets\\Affordances\\people_affordances.txt");
 }
 
 Fred::~Fred()
@@ -86,67 +105,47 @@ Fred::~Fred()
 void Fred::Update()
 {
 	GameObject::Update();
+	billquad->transform.SetPosition(transform.GetPosition() + glm::vec3(0, 12, 0));
 
+	auto it = aiE->GetNeeds().begin();
 
-	timer += Timer::GetDeltaS();
-
-	if (timer > 7 && needToSit)
+	// Check for needs that are below their threshold
+	for (; it != aiE->GetNeeds().end(); it++)
 	{
-		if (aa->LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Affordance::AffordanceTypes::REST, 30))
+		if (aiE->GetNeedValue(it->first) < it->second->GetLowSeekThreshold() || aiE->GetNeedValue(it->first) > it->second->GetHighSeekThreshold())
 		{
-			// If the method is true, we have found an affordance object in the specified range
-			// That would be pointed by "selectedObj" in the Affordance Agent
-
-			if (!pf->HasPath()) //If a path hasn't been generated yet
+			// If found one, check if there's a texture with the need's name
+			Texture2D* t = ContentManager::Instance().GetAsset<Texture2D>(it->second->GetName());
+			if (t)
 			{
-				pf->GeneratePath(transform.GetGlobalPosition(), aa->selectedObj->gameObject->transform.GetGlobalPosition());
-				nextPos = pf->GetNextNodePos();
-			}
+				//If there is, display the emotion
+				billquad->SetTexture(t);
+				billquad->RenderForSeconds(2,2);
 
-			//glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - transform.GetGlobalPosition();
-
-			// Walk towards the affordance object
-			if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node
-			{
-				transform.RotateYTowards(nextPos);
-				glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * Timer::GetDeltaS() * 4.0f;
-				transform.Translate(move);
-
-			}
-			else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
-			{
-				nextPos = pf->GetNextNodePos();
-			}
-			else
-			{
-				// When close enough enage it
-				aa->ExecuteAffordanceEngageCallback(aa->GetSelectedAffordanceName());
 			}
 		}
 	}
-	if (timer > 20)
-	{
-		// After a while, just disengage the affordance object (this would trigger when the need to sit is no longer active)
-		aa->ExecuteAffordanceDisengageCallback(aa->GetSelectedAffordanceName());
-		needToSit = 0;
 
-		//Logger::LogInfo("Should disengage");
-	}
+	//NPCs GUI
+	if (glm::length2(player->transform.GetPosition() - transform.GetPosition()) < 100)
+		aiE->EnableRenderStats();
+	else
+		aiE->DisableRenderStats();
 
 }
 
 void Fred::Start()
 {
-
-	//LoadCollidersFromFile("Assets\\Colliders\\Fred.txt");
+	player = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Main Camera")[0];
+	LoadCollidersFromFile("Assets\\Colliders\\Fred.txt");
 
 	/*Rigidbody* rb = new Rigidbody();
 	rb->UseGravity(true);
 
 	AddComponent(rb);*/
 
-	pf = new PathFinder();
-	AddComponent(pf);
+	aiE = new AIEmotion();
+	AddComponent(aiE);
 
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider
 						 // has been added.
@@ -154,13 +153,18 @@ void Fred::Start()
 
 void Fred::OnCollisionEnter(Collider* g, Collision& collision)
 {
-	Logger::LogInfo("Fred Collided ENTER against", g->GetName());
+	//
+	if (g->GetParent()->GetName() == "Box")
+	{
+		AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Anger, Stimuli::StimuliType::Threat, 5.0, 1, 5.0, aiE);
+
+	}
 
 }
 
 void Fred::OnCollisionExit(Collider* g)
 {
-	Logger::LogInfo("Fred Collided EXIT against", g->GetName());
+	//Logger::LogInfo("Fred Collided EXIT against", g->GetName());
 
 }
 void Fred::OnCollisionStay(Collider* g, Collision& collision)

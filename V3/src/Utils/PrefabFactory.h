@@ -13,6 +13,12 @@
 #include "..\Prefabs\DrewText.h"
 #include "..\Prefabs\PaoloText.h"
 #include "..\Prefabs\Lantern.h"
+#include "..\Prefabs\Fred.h"
+#include "..\Prefabs\Riley.h"
+#include "..\Prefabs\Joey.h"
+#include "..\Prefabs\Box2.h"
+
+
 
 class PrefabFactory
 {
@@ -70,6 +76,22 @@ public:
 		else if (name == "Lantern")
 		{
 			return new Lantern();
+		}
+		else if (name == "Fred")
+		{
+			return new Fred();
+		}
+		else if (name == "Joey")
+		{
+			return new Joey();
+		}
+		else if (name == "Riley")
+		{
+			return new Riley();
+		}
+		else if (name == "Box")
+		{
+			return new Box2();
 		}
 
 		return nullptr;

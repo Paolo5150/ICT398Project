@@ -3,7 +3,7 @@
 #include "..\Utils\ContentManager.h"
 #include "..\Diag\DiagRenderer.h"
 
-Box2::Box2() : GameObject("Box")
+Box2::Box2() : GameObject("Box"), AffordanceObject(this)
 {
 	SetIsStatic(false);
 	ContentManager::Instance().GetAsset<Model>("Cube")->PopulateGameObject(this);
@@ -25,9 +25,10 @@ Box2::Box2() : GameObject("Box")
 
 	rb = new Rigidbody();
 	AddComponent(rb);
-	rb->UseGravity(0);
+	rb->UseGravity(1);
 	rb->SetUseDynamicPhysics(1);
-	LoadCollidersFromFile("Assets\\Colliders\\Box2.txt");
+
+
 }
 
 Box2::~Box2()
@@ -38,13 +39,15 @@ Box2::~Box2()
 void Box2::Update()
 {
 	GameObject::Update();
+
 	
 }
 
 void Box2::Start()
 {
 	//PrintHierarchy();
-
+	LoadCollidersFromFile("Assets\\Colliders\\Box2.txt");
+	LoadAffordancesFromFile("Assets\\Affordances\\box_affordances.txt");
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider
 						 // has been added.
 }
@@ -55,9 +58,21 @@ void Box2::OnCollisionEnter(Collider* g, Collision& col)
 
 }
 
+void Box2::OnCollisionExit(Collider* g)
+{
+
+}
+
+
 void Box2::OnCollisionStay(Collider * g, Collision& col)
 {
-	//Logger::LogInfo("Box stay");
+	//Logger::LogInfo("Stay:", rb->GetVelocity().y);
+	/*if (rb->GetVelocity().y < 0 && col.Point().y <  GetCentreOfMass().y)
+	{
+		rb->SetVelocity(rb->GetVelocity().x, 0.0f, rb->GetVelocity().z);
+		rb->awake = 0;
+	}*/
+
 }
 
 

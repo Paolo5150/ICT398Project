@@ -228,6 +228,7 @@ public:
 	bool GetUseDynamicPhysics();
 	void SetUseDynamicPhysics(bool useDynamicPhysics);
 	bool GetIsAwake() { return awake; }
+	bool awake;
 
 private:
 	glm::vec3 velocity; //Velocity vector
@@ -236,5 +237,5 @@ private:
 	bool useGravity; //Whether to be affected by gravity
 	bool useDynamicPhysics = true;
 	float timer;
-	bool awake;
+	
 };

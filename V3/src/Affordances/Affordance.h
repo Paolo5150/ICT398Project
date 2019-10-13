@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <functional>
+#include "..\Components\AIEmotion.h"
 
 /**
 * @class Affordance
@@ -21,7 +22,10 @@ public:
 	enum class AffordanceTypes
 	{
 		NONE,
-		REST
+		REST,
+		COLLECTABLE,
+		THIRST,
+		SOCIAL
 	};
 
 	/**
@@ -37,7 +41,9 @@ public:
 	/**
 	* @brief		Points to the function which will be called once a GameObject engages the affordance
 	*/
-	std::function<void()> Callback;
+	std::function<void(AIEmotion*)> Callback;
+
+	std::function<void(AIEmotion*)> UpdateCallback;
 
 	/**
 	* @brief		Returns the affordance score

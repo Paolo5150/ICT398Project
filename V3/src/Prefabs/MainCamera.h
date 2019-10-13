@@ -1,6 +1,7 @@
 #pragma once
 #include "..\Core\CameraPerspective.h"
 #include "..\Core\Input.h"
+#include "..\Components\AffordanceAgent.h"
 
 class Rigidbody;
 
@@ -41,5 +42,7 @@ private:
 	float m_movementSpeed;
 	float m_rotationSpeed;
 	Rigidbody* rb;
+	AffordanceAgent* affordanceAgent;
+	GameObject* collectedObject;
 };
 

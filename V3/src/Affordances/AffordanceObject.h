@@ -6,6 +6,7 @@
 #include "AffordanceManager.h"
 #include "..\Utils\FileUtils.h"
 
+class AIEmotion;
 class Affordance;
 class GameObject;
 
@@ -51,7 +52,9 @@ public:
 	/**
 	* @brief		Call to callback method for specified affordance name
 	*/
-	void ExecuteAffordanceCallback(std::string afName);
+	void ExecuteAffordanceCallback(std::string afName, AIEmotion* ai);
+
+	void ExecuteAffordanceUpdateCallback(std::string afName, AIEmotion* ai);
 
 	/**
 	* @brief		Check if object is being used

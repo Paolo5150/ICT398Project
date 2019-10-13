@@ -151,8 +151,12 @@ void AffordanceObject::LoadAffordancesFromFile(std::string filePath)
 			fscanf(file,"%d", &score);
 
 			Affordance* af = AffordanceFactory::GetAffordanceByName(name);
+			if (af)
+			{
 			af->SetScore(score);
 			AddPerceviedAffordance(af);
+
+			}
 		}
 	}
 	else
@@ -163,7 +167,7 @@ void AffordanceObject::LoadAffordancesFromFile(std::string filePath)
 
 bool AffordanceObject::IsAvailableForAffordance(std::string affName)
 {
-	if (inUse == nullptr)
+	/*if (inUse == nullptr)
 	{
 		auto it = perceivedAffordancesByName.find(affName);
 		if (it != perceivedAffordancesByName.end())
@@ -175,20 +179,31 @@ bool AffordanceObject::IsAvailableForAffordance(std::string affName)
 	{
 		return inUse->GetCurrentUsers() < inUse->GetMaxUsers();
 	}
-	return false;
+	return false;*/
+	return inUse == nullptr;
 }
 
-void AffordanceObject::ExecuteAffordanceCallback(std::string afName)
+void AffordanceObject::ExecuteAffordanceCallback(std::string afName, AIEmotion* ai)
 {
 	auto it = perceivedAffordancesByName.find(afName);
 	if (it != perceivedAffordancesByName.end())
 	{
-		it->second->Callback();
+		it->second->Callback(ai);
 		inUse = it->second.get();
 		inUse->currentUsers++;
 	}
 
 	//Logger::LogInfo("Object", gameObject->GetName(), "Users:", inUse->currentUsers, "Affordance:", afName);
+}
+
+void AffordanceObject::ExecuteAffordanceUpdateCallback(std::string afName, AIEmotion * ai)
+{
+	auto it = perceivedAffordancesByName.find(afName);
+	if (it != perceivedAffordancesByName.end())
+	{
+		it->second->UpdateCallback(ai);
+		inUse = it->second.get();
+	}
 }
 
 void AffordanceObject::ReleaseUse(GameObject* o)

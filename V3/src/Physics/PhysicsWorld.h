@@ -114,7 +114,7 @@ private:
 	*/
 	void PerformCollisions(QuadNode<Collider*>* node);
 
-	void CheckCollision(Collider* it, Collider* it2);
+	void CheckCollision(Collider* it, Collider* it2, Rigidbody* rb1, Rigidbody* rb2);
 
 	/**
 	* @brief						Applies dynamic physics formula to participating objects
@@ -122,7 +122,7 @@ private:
 	* @param col2					The second collider involved in the calculation
 	* @param collision				A reference to the collision that occurred
 	*/
-	void PhysicsCalculation(Collider* col1, Collider* col2, const Collision& collision);
+	void PhysicsCalculation(Collider* col1, Collider* col2, const Collision& collision, bool onlyRotation = 0);
 	/**
 	* @brief						Moves the transform by the given vel and angVel across time (for separating collided objects)
 	* @param tf						The transform to move

@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include "Affordance.h"
+#include "..\Emotion\AIEmotionManager.h"
+#include "..\Core\Timer.h"
 
 class SitAffordance : public Affordance
 {
@@ -10,7 +12,8 @@ public:
 		score = 50;
 		affordanceType = AffordanceTypes::REST;
 		affordanceName = "SitAffordance";
-		Callback = []() { Logger::LogInfo("Someone sit on me"); };
+		Callback = [](AIEmotion* ai) { Logger::LogInfo("Someone sit on me"); };
+		UpdateCallback = [](AIEmotion* ai) { AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Rest, Stimuli::StimuliType::Default, 2.0f * Timer::GetDeltaS(), true, 0, ai); };
 	}
 	virtual ~SitAffordance() {};
 
@@ -25,7 +28,8 @@ public:
 		score = 50;
 		affordanceType = AffordanceTypes::REST;
 		affordanceName = "LaydownAffordance";
-		Callback = []() { Logger::LogInfo("Someone laid down on me"); };
+		Callback = [](AIEmotion* ai) { Logger::LogInfo("Someone laid down on me"); };
+		UpdateCallback = [](AIEmotion* ai) { AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Rest, Stimuli::StimuliType::Default, 2.4f * Timer::GetDeltaS(), true, 0, ai); };
 	}
 	virtual ~LaydownAffordance() {};
 

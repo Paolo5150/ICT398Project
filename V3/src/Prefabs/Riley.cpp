@@ -6,14 +6,14 @@
 #include "..\Components\AffordanceAgent.h"
 #include "..\Components\PathFinder.h"
 #include "..\Affordances\RestAffordance.h"
+#include "..\Scene\SceneManager.h"
 
 namespace
 {
 	AffordanceAgent* aa;
-	float timer = 0;
-	bool needToSit = 1;
-	PathFinder* pf;
-	glm::vec3 nextPos;
+	GameObject* player;
+	AIEmotion* aiE;
+
 }
 
 void Riley::Test(AffordanceObject* obj)
@@ -22,11 +22,11 @@ void Riley::Test(AffordanceObject* obj)
 
 }
 
-Riley::Riley() : GameObject("Riley")
+Riley::Riley() : GameObject("Riley"), AffordanceObject(this)
 {
 	SetIsStatic(0);
 	ContentManager::Instance().GetAsset<Model>("Riley")->PopulateGameObject(this);
-	transform.SetScale(0.03);
+	transform.SetScale(0.02);
 	Material m;
 	m.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStatic"));
 	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("Riley_Base_Color"), "diffuse0");
@@ -40,10 +40,18 @@ Riley::Riley() : GameObject("Riley")
 
 	ApplyMaterial(m2NoLight, NOLIGHT);
 
+	billquad = new Billquad();
+
+	//Adding the quad as a child is not a great idea, so I just add it as a separate GameObject and update in manually in the Update
+	SceneManager::Instance().GetCurrentScene().AddGameObject(billquad);
+
 	aa = new AffordanceAgent();
 	aa->AddAffordanceEngageCallback("SitAffordance",[&](AffordanceObject*obj) {
 
 		transform.SetPosition(obj->gameObject->transform.GetPosition() + glm::vec3(0, 1, 0));
+	});
+
+	aa->AddAffordanceUpdateCallback("SitAffordance", [&]() {
 	});
 
 	aa->AddAffordanceDisengageCallback("SitAffordance",[&]() {
@@ -51,9 +59,29 @@ Riley::Riley() : GameObject("Riley")
 		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition() - glm::vec3(0, 1, 0));
 	});
 
+	aa->AddAffordanceEngageCallback("LaydownAffordance", [&](AffordanceObject*obj) {
+		//Logger::LogInfo("LaydownAffordance engaged");
+		transform.RotateBy(90, transform.GetLocalRight());
+	});
+
+	aa->AddAffordanceUpdateCallback("LaydownAffordance", [&]() {
+	});
+
+	aa->AddAffordanceDisengageCallback("LaydownAffordance", [&]() {
+		//Logger::LogInfo("LaydownAffordance disengaged"); 
+		transform.RotateBy(-90, transform.GetLocalRight());
+	});
+
+
+	aa->AddAffordanceEngageCallback("SocialAffordance", [&](AffordanceObject*obj) {});
+	aa->AddAffordanceUpdateCallback("SocialAffordance", [&]() {});
+	aa->AddAffordanceDisengageCallback("SocialAffordance", [&]() {});
+		
+
 	AddComponent(aa);
-	timer = 0;
-	needToSit = 1;
+
+
+	LoadAffordancesFromFile("Assets\\Affordances\\people_affordances.txt");
 
 }
 
@@ -65,56 +93,29 @@ Riley::~Riley()
 void Riley::Update()
 {
 	GameObject::Update();
+	billquad->transform.SetPosition(transform.GetPosition() + glm::vec3(0, 12, 0));
 
-	timer += Timer::GetDeltaS();
+	//NPCs GUI
+	if (glm::length2(player->transform.GetPosition() - transform.GetPosition()) < 100)
+		aiE->EnableRenderStats();
+	else
+		aiE->DisableRenderStats();
 
-	if (timer > 7 && needToSit)
-	{
-		if (aa->LookForBestScoreAffordanceObjectInRange("SitAffordance",40))
-		{
-			//glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - transform.GetGlobalPosition();
-
-			if (!pf->HasPath()) //If a path hasn't been generated yet
-			{
-				pf->GeneratePath(transform.GetGlobalPosition(), aa->selectedObj->gameObject->transform.GetGlobalPosition());
-				nextPos = pf->GetNextNodePos();
-			}
-
-			if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5)
-			{
-				transform.RotateYTowards(nextPos);
-				glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * Timer::GetDeltaS() * 4.0f;
-				transform.Translate(move);
-			}
-			else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
-			{
-				nextPos = pf->GetNextNodePos();
-			}
-			else
-			{
-				aa->ExecuteAffordanceEngageCallback("SitAffordance");
-			}
-		}
-	}
-	if (timer > 50)
-	{
-		aa->ExecuteAffordanceDisengageCallback("SitAffordance");
-		needToSit = 0;
-	}
 }
 
 void Riley::Start()
 {
+	player = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Main Camera")[0];
 
-	//LoadCollidersFromFile("Assets\\Colliders\\Riley.txt");
+	LoadCollidersFromFile("Assets\\Colliders\\Riley.txt");
 
 	/*Rigidbody* rb = new Rigidbody();
 	rb->UseGravity(true);
 
 	AddComponent(rb);*/
 
-	pf = new PathFinder();
-	AddComponent(pf);
+	aiE = new AIEmotion("Riley", "depressive");
+	AddComponent(aiE);
 
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider
 						 // has been added.

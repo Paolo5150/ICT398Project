@@ -176,6 +176,8 @@ void Core::LoadBasicAssets()
 	ContentManager::Instance().LoadShader("Water", "Assets\\Shaders\\Water.v", "Assets\\Shaders\\Water.f", true);
 	ContentManager::Instance().LoadShader("Skybox", "Assets\\Shaders\\Skybox.v", "Assets\\Shaders\\Skybox.f", true);
 	ContentManager::Instance().LoadShader("SkyboxHDR", "Assets\\Shaders\\SkyboxHDR.v", "Assets\\Shaders\\SkyboxHDR.f", true);
+	ContentManager::Instance().LoadShader("TextureBillboarding", "Assets\\Shaders\\TextureBillboarding.v", "Assets\\Shaders\\TextureBillboarding.f", true);
+
 
 	ContentManager::Instance().LoadShader("PBR", "Assets\\Shaders\\PBR.v", "Assets\\Shaders\\PBR.f", true);
 	//ContentManager::Instance().LoadShader("PBRHeight", "Assets\\Shaders\\PBR.v", "Assets\\Shaders\\PBRHeight.f", true);
