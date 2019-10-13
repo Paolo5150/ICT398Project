@@ -29,7 +29,7 @@ Joey::Joey() : GameObject("Joey")
 	SetIsStatic(0);
 
 	ContentManager::Instance().GetAsset<Model>("Joey")->PopulateGameObject(this);
-	transform.SetScale(0.03);
+	transform.SetScale(0.02);
 	Material m;
 	m.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStatic"));
 	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("Joey_Base_Color"), "diffuse0");

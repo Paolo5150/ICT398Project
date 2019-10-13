@@ -27,7 +27,7 @@ Fred::Fred() : GameObject("Fred"), AffordanceObject(this)
 	SetIsStatic(0);
 
 	ContentManager::Instance().GetAsset<Model>("Fred")->PopulateGameObject(this);
-	transform.SetScale(0.03);
+	transform.SetScale(0.02);
 	Material m;
 	m.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStatic"));
 	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("Fred_Base_Color"), "diffuse0");

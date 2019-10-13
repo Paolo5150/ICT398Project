@@ -160,7 +160,6 @@ void MainScene::Initialize() {
 
 	skybox = std::unique_ptr<Skybox>(new Skybox(ContentManager::Instance().GetAsset<CubeMap>("SunSet")));
 
-
 	cam = new MainCamera();
 	cam->transform.SetPosition(0, 10, 40);
 	cam->transform.SetRotation(0, 180, 0);

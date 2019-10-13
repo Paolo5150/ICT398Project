@@ -25,7 +25,7 @@ Riley::Riley() : GameObject("Riley"), AffordanceObject(this)
 {
 	SetIsStatic(0);
 	ContentManager::Instance().GetAsset<Model>("Riley")->PopulateGameObject(this);
-	transform.SetScale(0.03);
+	transform.SetScale(0.02);
 	Material m;
 	m.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStatic"));
 	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("Riley_Base_Color"), "diffuse0");
