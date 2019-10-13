@@ -56,6 +56,8 @@ public:
 	*/
 	AffordanceObject* GetBestScoreObjectByAffordanceTypeWithinRange(Affordance::AffordanceTypes type, glm::vec3 pos, float range, std::string& outAffordanceName);
 
+	AffordanceObject* GetBestScoreObjectByAffordanceTypeWithinRangeNotTarget(Affordance::AffordanceTypes type, glm::vec3 pos, float range, std::string& outAffordanceName, AffordanceObject* notTarget);
+
 
 
 private:

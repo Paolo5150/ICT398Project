@@ -15,7 +15,8 @@ public:
 		Joy,
 		Trust,
 		Thirst,
-		Rest
+		Rest,
+		Social
 	};
 	Need(NeedType type, std::string name, float value, float lowSeekThreshold, float highSeekThreshold, float positiveGainMultiplier, float negativeGainMultiplier, int priority);
 	Need(NeedType type, std::string name, float lowSeekThreshold, float highSeekThreshold);

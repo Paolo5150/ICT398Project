@@ -173,6 +173,8 @@
     <ClInclude Include="src\Affordances\AffordanceObject.h" />
     <ClInclude Include="src\Affordances\CollectableAffordances.h" />
     <ClInclude Include="src\Affordances\RestAffordance.h" />
+    <ClInclude Include="src\Affordances\SocialAffordance.h" />
+    <ClInclude Include="src\Affordances\ThirstAffordance.h" />
     <ClInclude Include="src\Components\AffordanceAgent.h" />
     <ClInclude Include="src\Components\AIEmotion.h" />
     <ClInclude Include="src\Components\BoxCollider.h" />
@@ -205,6 +207,7 @@
     <ClInclude Include="src\Emotion\Needs\Anticipation.h" />
     <ClInclude Include="src\Emotion\Needs\Joy.h" />
     <ClInclude Include="src\Emotion\Needs\Rest.h" />
+    <ClInclude Include="src\Emotion\Needs\Social.h" />
     <ClInclude Include="src\Emotion\Needs\Thirst.h" />
     <ClInclude Include="src\Emotion\Needs\Trust.h" />
     <ClInclude Include="src\Emotion\Stimuli.h" />
@@ -338,6 +341,7 @@
     <ClCompile Include="src\Emotion\Needs\Anticipation.cpp" />
     <ClCompile Include="src\Emotion\Needs\Joy.cpp" />
     <ClCompile Include="src\Emotion\Needs\Rest.cpp" />
+    <ClCompile Include="src\Emotion\Needs\Social.cpp" />
     <ClCompile Include="src\Emotion\Needs\Thirst.cpp" />
     <ClCompile Include="src\Emotion\Needs\Trust.cpp" />
     <ClCompile Include="src\Emotion\Stimuli.cpp" />

@@ -61,10 +61,10 @@ void Joey::Update()
 	billquad->transform.SetPosition(transform.GetPosition() + glm::vec3(0, 12, 0));
 
 	//NPCs GUI
-	/*if(glm::length2(player->transform.GetPosition() - transform.GetPosition()) < 50)
+	if(glm::length2(player->transform.GetPosition() - transform.GetPosition()) < 50)
 		aiE->EnableRenderStats();
 	else
-		aiE->DisableRenderStats();*/
+		aiE->DisableRenderStats();
 
 }
 
@@ -73,9 +73,10 @@ void Joey::Start()
 	player = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Main Camera")[0];
 
 	LoadCollidersFromFile("Assets\\Colliders\\Joey.txt");
-
-/*	aiE = new AIEmotion();
-	AddComponent(aiE);*/
+	aa = new AffordanceAgent();
+	AddComponent(aa);
+	aiE = new AIEmotion();
+	AddComponent(aiE);
 	/*Rigidbody* rb = new Rigidbody();
 	rb->UseGravity(true);
 

@@ -23,7 +23,9 @@ public:
 	{
 		NONE,
 		REST,
-		COLLECTABLE
+		COLLECTABLE,
+		THIRST,
+		SOCIAL
 	};
 
 	/**

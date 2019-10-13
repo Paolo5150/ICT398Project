@@ -167,7 +167,7 @@ void AffordanceObject::LoadAffordancesFromFile(std::string filePath)
 
 bool AffordanceObject::IsAvailableForAffordance(std::string affName)
 {
-	if (inUse == nullptr)
+	/*if (inUse == nullptr)
 	{
 		auto it = perceivedAffordancesByName.find(affName);
 		if (it != perceivedAffordancesByName.end())
@@ -179,7 +179,8 @@ bool AffordanceObject::IsAvailableForAffordance(std::string affName)
 	{
 		return inUse->GetCurrentUsers() < inUse->GetMaxUsers();
 	}
-	return false;
+	return false;*/
+	return inUse == nullptr;
 }
 
 void AffordanceObject::ExecuteAffordanceCallback(std::string afName, AIEmotion* ai)
@@ -202,7 +203,6 @@ void AffordanceObject::ExecuteAffordanceUpdateCallback(std::string afName, AIEmo
 	{
 		it->second->UpdateCallback(ai);
 		inUse = it->second.get();
-		inUse->currentUsers++;
 	}
 }
 

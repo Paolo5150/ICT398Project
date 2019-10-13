@@ -162,7 +162,7 @@ void MainScene::Initialize() {
 
 
 	cam = new MainCamera();
-	cam->transform.SetPosition(0, 10, 0);
+	cam->transform.SetPosition(0, 50, 0);
 	cam->transform.SetRotation(0, 180, 0);
 	
 	DirectionalLight* dirLight = new DirectionalLight(false);

@@ -1,0 +1,4 @@
+# Fountain affordances
+# Use the format "AffordanceName 10"
+
+ThirstAffordance 50

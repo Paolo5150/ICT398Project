@@ -21,16 +21,18 @@ void MainCamera::Start()
 {
 	collectedObject = nullptr;
 
-BoxCollider* bc = new BoxCollider();
+	BoxCollider* bc = new BoxCollider();
 	bc->transform.SetScale(0.5,3.0,1.0);
 	//bc->RemoveCollideAgainstLayer(CollisionLayers::DEFAULT);
 	bc->enableRender = 1;
-
-	//AddComponent(bc);
+	bc->SetMass(20);
+	totalMass = 20;
+	
+	AddComponent(bc);
 
 	rb = new Rigidbody();
 	rb->UseGravity(false);
-	rb->SetUseDynamicPhysics(false);
+	rb->SetUseDynamicPhysics(0);
 	AddComponent(rb);
 	//Logger::LogInfo("Camera trans child", transform.transformChildren.size());
 

@@ -44,6 +44,8 @@ void GUICanvas::AddGUIObject(GUIObject* obj)
 
 void GUICanvas::RemoveGUIOBject(std::string name)
 {
+	auto it = allGUIObjects.find(name);
+	if(it != allGUIObjects.end())
 	allGUIObjects.erase(name);
 }
 

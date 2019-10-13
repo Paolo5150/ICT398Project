@@ -113,7 +113,11 @@ void Riley::Start()
 
 	AddComponent(rb);*/
 
-	aiE = new AIEmotion("Riley", "depressive");
+<<<<<<< HEAD
+	aiE = new AIEmotion();
+=======
+	AIEmotion* aiE = new AIEmotion("Riley", "depressive");
+>>>>>>> origin/master
 	AddComponent(aiE);
 
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider

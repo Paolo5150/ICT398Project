@@ -91,9 +91,14 @@ Fred::Fred() : GameObject("Fred"), AffordanceObject(this)
 	aa->AddAffordanceDisengageCallback("SocialAffordance", [&]() {});
 
 	AddComponent(aa);
+<<<<<<< HEAD
 
+=======
+	timer = 0;
+	needToSit = 1;
 
 	LoadAffordancesFromFile("Assets\\Affordances\\people_affordances.txt");
+>>>>>>> origin/master
 }
 
 Fred::~Fred()
