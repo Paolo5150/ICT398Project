@@ -30,6 +30,7 @@ public:
 	void SetIsActive(bool a) { isActive = a; }
 
 	void ClearAllGUIObjects() { allGUIObjects.clear(); }
+	void RemoveGUIOBject(std::string name);
 
 
 private:

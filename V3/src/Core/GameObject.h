@@ -513,7 +513,7 @@ protected:
 	*/
 	void PrintHierarchy(int indentation, std::string& output);
 
-	private:
+	protected:
 		float totalMass;
 		glm::vec3 centreOfMass;
 		glm::mat3 inertiaTensor;

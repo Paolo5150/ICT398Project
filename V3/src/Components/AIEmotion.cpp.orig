@@ -84,14 +84,18 @@ void AIEmotion::Start()
 
 void AIEmotion::EngineUpdate()
 {
+<<<<<<< HEAD
+	AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Thirst, Stimuli::StimuliType::Default, -0.2f * Timer::GetDeltaS(), true, 0, this);
+	AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Rest, Stimuli::StimuliType::Default, -0.2f * Timer::GetDeltaS(), true, 0, this);
+	AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Anger, Stimuli::StimuliType::Compliment, -0.2f * Timer::GetDeltaS(), true, 0, this);
+=======
 	if (HasNeedType(Need::NeedType::Thirst))
 		AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Thirst, Stimuli::StimuliType::Default, -0.2f * Timer::GetDeltaS(), true, 0, this);
 	if (HasNeedType(Need::NeedType::Rest))
 		AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Rest, Stimuli::StimuliType::Default, -0.2f * Timer::GetDeltaS(), true, 0, this);
 	if (HasNeedType(Need::NeedType::Social))
 		AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Social, Stimuli::StimuliType::Default, -0.4f * Timer::GetDeltaS(), true, 0, this);
-	if (HasNeedType(Need::NeedType::Anger))
-		AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Anger, Stimuli::StimuliType::Default, -0.5f * Timer::GetDeltaS(), true, 0, this);
+>>>>>>> origin/master
 
 	UpdateStimuli();
 
@@ -275,7 +279,7 @@ void AIEmotion::EnableRenderStats()
 			ss << ": ";
 			ss << GetNeedValue(it->first);
 
-			GUIText* text = new GUIText(it->second->GetName() + GetParent()->GetName(), ss.str(), 5, 5 * index, glm::vec3(1, 0, 0), 1.5, 1);
+			GUIText* text = new GUIText(it->second->GetName(), ss.str(), 5, 5 * index, glm::vec3(1, 0, 0), 1.5, 1);
 			index++;
 			GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(text);
 		}		
@@ -290,7 +294,7 @@ void AIEmotion::EnableRenderStats()
 			ss << ": ";
 			ss << GetNeedValue(it->first);
 
-			GUIText* text = (GUIText*)GUIManager::Instance().GetCanvasByName("MainCanvas")->GetGUIObjectByName(it->second->GetName() + GetParent()->GetName());
+			GUIText* text = (GUIText*)GUIManager::Instance().GetCanvasByName("MainCanvas")->GetGUIObjectByName(it->second->GetName());
 			text->message = ss.str();
 		}
 	}
@@ -304,7 +308,7 @@ void AIEmotion::DisableRenderStats()
 
 		for (; it != needs.end(); it++)
 		{
-			GUIManager::Instance().GetCanvasByName("MainCanvas")->RemoveGUIOBject(it->second->GetName() + GetParent()->GetName());
+			GUIManager::Instance().GetCanvasByName("MainCanvas")->RemoveGUIOBject(it->second->GetName());
 		}
 
 		isRenderingStats = 0;

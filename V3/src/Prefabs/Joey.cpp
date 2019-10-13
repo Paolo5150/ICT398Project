@@ -12,8 +12,10 @@
 namespace
 {
 	AffordanceAgent* aa;
-	float timer = 0;
-	bool needToSit = 1;
+	GameObject* player;
+	AIEmotion* aiE;
+
+
 }
 
 void Joey::Test(AffordanceObject* obj)
@@ -42,8 +44,7 @@ Joey::Joey() : GameObject("Joey")
 	ApplyMaterial(m2NoLight, NOLIGHT);
 
 	billquad = new Billquad();
-	billquad->SetTexture(ContentManager::Instance().GetAsset<Texture2D>("angry"));
-	billquad->RenderForSeconds(100);
+
 	//Adding the quad as a child is not a great idea, so I just add it as a separate GameObject and update in manually in the Update
 	SceneManager::Instance().GetCurrentScene().AddGameObject(billquad);
 
@@ -59,13 +60,23 @@ void Joey::Update()
 	GameObject::Update();
 	billquad->transform.SetPosition(transform.GetPosition() + glm::vec3(0, 12, 0));
 
+	//NPCs GUI
+	if(glm::length2(player->transform.GetPosition() - transform.GetPosition()) < 50)
+		aiE->EnableRenderStats();
+	else
+		aiE->DisableRenderStats();
+
 }
 
 void Joey::Start()
 {
+	player = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Main Camera")[0];
 
 	LoadCollidersFromFile("Assets\\Colliders\\Joey.txt");
-
+	aa = new AffordanceAgent();
+	AddComponent(aa);
+	aiE = new AIEmotion();
+	AddComponent(aiE);
 	/*Rigidbody* rb = new Rigidbody();
 	rb->UseGravity(true);
 

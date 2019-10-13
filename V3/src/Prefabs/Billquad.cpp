@@ -1,6 +1,17 @@
 #include "pch.h"
 #include "Billquad.h"
 #include "..\Utils\ContentManager.h"
+#include <future>
+#include <thread>
+#include <chrono>
+
+namespace
+{
+	std::promise<bool> promise;
+	std::future<bool> fut;
+}
+
+
 
 Billquad::Billquad() : GameObject("Billquad")
 {
@@ -22,19 +33,24 @@ void Billquad::Update()
 {
 	GameObject::Update();
 
+
+
 	if (timer > 0)
 	{
 		timer -= Timer::GetDeltaS();
 		isRendering = true;
-
 	}
 	else
 	{
 		timer = 0;
 		isRendering = false;
+
+		if (coolDownTimer > 0)
+			coolDownTimer -= Timer::GetDeltaS();
+
 	}
 
-	meshRenderer->SetActive(1);
+	meshRenderer->SetActive(isRendering);
 }
 void Billquad::Start()
 {
@@ -71,9 +87,18 @@ void Billquad::Initialize()
 	});
 	SetTexture(this->texture);
 	timer = 0;
+	coolDownTimer = 0;
 }
 
-void Billquad::RenderForSeconds(float seconds)
+void Billquad::RenderForSeconds(float seconds, float coolDown)
 {
-	timer = seconds;
+	if (timer <= 0 && coolDownTimer <= 0)
+	{
+		timer = seconds;
+		coolDownTimer = coolDown;
+
+	}
+
+
+
 }

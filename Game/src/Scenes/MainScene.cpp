@@ -26,6 +26,9 @@
 namespace
 {
 	GUIBar* loadingBar;
+	GameObject* player;
+
+
 }
 
 MainScene::MainScene() : Scene("MainScene")
@@ -62,9 +65,9 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadModel("Assets\\Models\\Lantern\\lantern.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Crate\\crate.obj",false, false);
 
-	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\tired.png", false);
+	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\Rest.png", false);
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\happy.png", false);
-	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\angry.png", false);
+	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\Anger.png", false);
 
 
 
@@ -159,7 +162,7 @@ void MainScene::Initialize() {
 
 
 	cam = new MainCamera();
-	cam->transform.SetPosition(0, 10, 0);
+	cam->transform.SetPosition(0, 10, 40);
 	cam->transform.SetRotation(0, 180, 0);
 	
 	DirectionalLight* dirLight = new DirectionalLight(false);
@@ -206,6 +209,7 @@ void MainScene::Start()
 
 
 
+
 }
 
 void MainScene::LogicUpdate()
@@ -221,11 +225,9 @@ void MainScene::LogicUpdate()
 	
 	PathFindingManager::Instance().ClosestNodeAt(cam->transform.GetPosition().x, cam->transform.GetPosition().y, cam->transform.GetPosition().z);
 
-	/*std::set<AffordanceObject*> inRange = AffordanceManager::Instance().GetClosestAffordancesByTypeWithinRange(Affordance::REST, cam->transform.GetPosition(), 50);
-	for (auto it = inRange.begin(); it != inRange.end(); it++)
-	{
-		(*it)->gameObject->transform.RotateBy(1, 0, 1, 0);
-	}*/
+
+
+
 
 	Scene::LogicUpdate(); //Must be last statement!
 

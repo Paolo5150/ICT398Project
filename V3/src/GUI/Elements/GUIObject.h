@@ -36,7 +36,7 @@ public:
 	* @pre			The GUIObject must exist
 	* @post			The GUIObject object is destroyed
 	*/
-	virtual ~GUIObject() { Logger::LogInfo("Deleted GUIobject", name); };
+	virtual ~GUIObject() {/* Logger::LogInfo("Deleted GUIobject", name); */};
 
 	/**
 	* @brief		The position on the screen

@@ -41,6 +41,10 @@ public:
 	void EngineUpdate() override;
 	bool GetSeeking();
 	void SetSeeking(float newSeeking);
+	std::map<Need::NeedType, std::unique_ptr<Need>>& GetNeeds() { return needs; };
+
+	void EnableRenderStats();
+	void DisableRenderStats();
 
 private:
 	std::string name;
@@ -54,6 +58,8 @@ private:
 	std::list<std::unique_ptr<Stimuli>> effectedStimuli = std::list<std::unique_ptr<Stimuli>>();
 	void UpdateStimuli();
 	void SeekNeeds();
+
+	bool isRenderingStats;
 
 };
 
