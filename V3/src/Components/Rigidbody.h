@@ -229,6 +229,8 @@ public:
 	void SetUseDynamicPhysics(bool useDynamicPhysics);
 	bool GetIsAwake() { return awake; }
 	bool awake;
+	void SetIgnoreRotation(bool r) { ignoreRotation = r; }
+	bool GetIgnoreRotation() { return ignoreRotation; }
 
 private:
 	glm::vec3 velocity; //Velocity vector
@@ -237,5 +239,6 @@ private:
 	bool useGravity; //Whether to be affected by gravity
 	bool useDynamicPhysics = true;
 	float timer;
+	bool ignoreRotation;
 	
 };
