@@ -131,6 +131,7 @@ void Fred::Update()
 	else
 		aiE->DisableRenderStats();
 
+
 }
 
 void Fred::Start()
@@ -138,10 +139,12 @@ void Fred::Start()
 	player = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Main Camera")[0];
 	LoadCollidersFromFile("Assets\\Colliders\\Fred.txt");
 
-	/*Rigidbody* rb = new Rigidbody();
-	rb->UseGravity(true);
+	Rigidbody* rb = new Rigidbody();
+	rb->UseGravity(0);
+	rb->SetUseDynamicPhysics(1);
+	rb->SetIgnoreRotation(1);
 
-	AddComponent(rb);*/
+	AddComponent(rb);
 
 	aiE = new AIEmotion();
 	AddComponent(aiE);
@@ -155,7 +158,7 @@ void Fred::OnCollisionEnter(Collider* g, Collision& collision)
 	//
 	if (g->GetParent()->GetName() == "Box")
 	{
-		AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Anger, Stimuli::StimuliType::Threat, 5.0, 1, 5.0, aiE);
+		AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Anger, Stimuli::StimuliType::Threat,1.0, 1, 5.0, aiE);
 
 	}
 

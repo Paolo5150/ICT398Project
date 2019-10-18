@@ -11,6 +11,7 @@ Rigidbody::Rigidbody() : Component("Rigidbody")
 	awake = 1;
 	timer = 0;
 	damping = 1.5;
+	ignoreRotation = 0;
 
 }
 
@@ -25,6 +26,7 @@ Rigidbody::Rigidbody(float x, float y, float z, bool relative) : Component("Rigi
 	useGravity = true;
 	awake = 1;
 	timer = 0;
+	ignoreRotation = 0;
 
 
 }
@@ -145,7 +147,7 @@ void Rigidbody::Update()
 {
 	timer += Timer::GetDeltaS();	
 
-	angVelocity = glm::lerp(angVelocity, glm::vec3(), Timer::GetDeltaS() * damping * 5);
+	angVelocity = glm::lerp(angVelocity, glm::vec3(), Timer::GetDeltaS() * damping * 6 );
 
 	if (fabs(angVelocity.x) < 0.05)
 		angVelocity.x = 0;

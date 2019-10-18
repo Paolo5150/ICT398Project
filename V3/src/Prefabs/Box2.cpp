@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Box2.h"
 #include "..\Utils\ContentManager.h"
+#include "..\Components\Collider.h"
 #include "..\Diag\DiagRenderer.h"
 
 Box2::Box2() : GameObject("Box"), AffordanceObject(this)
@@ -54,7 +55,7 @@ void Box2::Start()
 
 void Box2::OnCollisionEnter(Collider* g, Collision& col)
 {
-	//Logger::LogInfo("Box enter");
+	//Logger::LogInfo("Box enter", g->GetParent()->GetName());
 
 }
 
