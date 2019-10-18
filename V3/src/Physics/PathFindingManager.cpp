@@ -84,14 +84,6 @@ glm::vec3 PathFindingManager::GetRandomFreeNode()
 
 	glm::vec3 vec;
 
-	for (unsigned i = 0; i < nodeMap.size(); i++)
-	{
-		for (unsigned j = 0; j < nodeMap.at(i).size(); j++)
-		{
-			Logger::LogInfo(nodeMap.at(i).at(j)->cost);
-		}
-	}
-
 	while (!valid)
 	{
 		std::random_device rd;

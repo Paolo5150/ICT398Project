@@ -135,15 +135,13 @@ void Fred::Update()
 
 		if (!pf->HasPath() || !pf->IsLastNode(PathFindingManager::Instance().ClosestNodeAt(targetPos.x, targetPos.y, targetPos.z))) //If a path hasn't been generated yet, or the path does not lead to the target
 		{
-			pf->ClearPath();
-			Logger::LogInfo("Generating path");
 			pf->GeneratePath(transform.GetGlobalPosition(), targetPos);
 			nextPos = pf->GetNextNodePos();
 			nextPos.y = 0;
 		}
 
 		// Walk towards the affordance object
-		if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node
+		if (glm::length(nextPos - transform.GetGlobalPosition()) > 3.0) //Travel to node
 		{
 			transform.RotateYTowards(nextPos);
 			glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * 4.0f;
@@ -172,36 +170,33 @@ void Fred::Update()
 		{
 			if (!pf->HasPath())
 			{
-				bool success;
+				bool success; //True when the path is generated successfully
 
-				do
+				do //Get a random free node
 				{
 					glm::vec3 pos = PathFindingManager::Instance().GetRandomFreeNode();
-					Logger::LogInfo("Moving to pos x: ", pos.x, ", y: ", pos.y, ", z: ", pos.z);
 					success = pf->GeneratePath(transform.GetGlobalPosition(), pos);
 				} while (success == false);
+
 				nextPos = pf->GetNextNodePos();
+				nextPos.y = 0;
 			}
 
-			// Walk towards the affordance object
-			if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node
+			//Walk towards the wandering node
+			if (glm::length(nextPos - transform.GetGlobalPosition()) > 3.0) //Travel to node
 			{
-				Logger::LogInfo("Wandering");
-				/*transform.RotateYTowards(nextPos);
-				glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * Timer::GetDeltaS() * 4.0f;
-				transform.Translate(move);*/
 				transform.RotateYTowards(nextPos);
+				glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * 4.0f;
 				rb->SetRelativeVelocity(2.5, 0, 0);
 
 			}
 			else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
 			{
-				Logger::LogInfo("Next node");
 				nextPos = pf->GetNextNodePos();
+				nextPos.y = 0;
 			}
 			else
 			{
-				Logger::LogInfo("Stop");
 				pf->ClearPath();
 				rb->SetVelocity(0, 0, 0);
 			}
@@ -213,8 +208,6 @@ void Fred::Update()
 		aiE->EnableRenderStats();
 	else
 		aiE->DisableRenderStats();
-
-
 }
 
 void Fred::Start()
