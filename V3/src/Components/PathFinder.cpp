@@ -176,12 +176,22 @@ bool PathFinder::IsLastNode(PathNode* node)
 		return false;
 }
 
-bool PathFinder::IsLastPos(glm::vec3 pos)
+bool PathFinder::IsLastPos(glm::vec3 pos, bool includeY)
 {
-	if (pos == path.back())
-		return true;
+	if (includeY)
+	{
+		if (pos == path.back())
+			return true;
+		else
+			return false;
+	}
 	else
-		return false;
+	{
+		if (pos.x == path.back().x && pos.z == path.back().z)
+			return true;
+		else
+			return false;
+	}
 }
 
 glm::vec3 PathFinder::GetNextNodePos(bool erase)

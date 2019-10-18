@@ -88,7 +88,7 @@ glm::vec3 PathFindingManager::GetRandomFreeNode()
 	{
 		for (unsigned j = 0; j < nodeMap.at(i).size(); j++)
 		{
-			//Logger::LogInfo(nodeMap.at(i).at(j)->cost);
+			Logger::LogInfo(nodeMap.at(i).at(j)->cost);
 		}
 	}
 
@@ -105,7 +105,7 @@ glm::vec3 PathFindingManager::GetRandomFreeNode()
 
 		PathNode* pn = nodeMap.at(randomX).at(randomY);
 
-		if (pn->cost <= 1000)
+		if (pn->cost <= 0)
 		{
 			valid = 1;
 			vec = pn->transform.GetPosition();

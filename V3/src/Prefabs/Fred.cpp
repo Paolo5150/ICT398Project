@@ -18,7 +18,6 @@ namespace
 	PathFinder* pf;
 	Rigidbody* rb;
 	glm::vec3 nextPos;
-	int timer = 0;
 }
 
 void Fred::Test(AffordanceObject* obj)
@@ -130,43 +129,36 @@ void Fred::Update()
 		}
 	}
 
-	if (aa->GetSelectedAffordanceName() != "")
+	if (aa->GetSelectedAffordanceName() != "" && aa->selectedObj != nullptr)
 	{
-		if (!pf->HasPath()) //If a path hasn't been generated yet
-		{
-			Logger::LogInfo("Generating path");
-			pf->GeneratePath(transform.GetGlobalPosition(), aa->selectedObj->gameObject->transform.GetGlobalPosition());
-			nextPos = pf->GetNextNodePos();
-		}
+		glm::vec3 targetPos = aa->selectedObj->gameObject->transform.GetGlobalPosition();
 
-		//glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - transform.GetGlobalPosition();
+		if (!pf->HasPath() || !pf->IsLastNode(PathFindingManager::Instance().ClosestNodeAt(targetPos.x, targetPos.y, targetPos.z))) //If a path hasn't been generated yet, or the path does not lead to the target
+		{
+			pf->ClearPath();
+			Logger::LogInfo("Generating path");
+			pf->GeneratePath(transform.GetGlobalPosition(), targetPos);
+			nextPos = pf->GetNextNodePos();
+			nextPos.y = 0;
+		}
 
 		// Walk towards the affordance object
 		if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node
 		{
-			Logger::LogInfo("Moving");
 			transform.RotateYTowards(nextPos);
-			glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * Timer::GetDeltaS() * 4.0f;
-			transform.Translate(move);
-			/*glm::vec3 toTarget = nextPos - transform.GetGlobalPosition();
-			float angle = glm::degrees(glm::angle(transform.GetLocalFront(), toTarget));
-			if (fabs(angle) < 1.0) return; //Tolerance
-			int cross = glm::sign(glm::cross(transform.GetLocalFront(), toTarget)).y;
-			rb->SetAngularVelocity(0, angle * cross, 0);
-			rb->SetVelocity(15, 0, 0);*/
+			glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * 4.0f;
+			rb->SetRelativeVelocity(2.5, 0, 0);
 
 		}
 		else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
 		{
-			Logger::LogInfo("Next node");
 			nextPos = pf->GetNextNodePos();
+			nextPos.y = 0;
 		}
 		else
 		{
-			Logger::LogInfo("Stop");
 			aa->ExecuteAffordanceEngageCallback(aa->GetSelectedAffordanceName(), aiE);
 			rb->SetVelocity(0, 0, 0);
-			rb->SetAngularVelocity(0, 0, 0);
 		}
 	}
 	else
@@ -195,15 +187,11 @@ void Fred::Update()
 			if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node
 			{
 				Logger::LogInfo("Wandering");
-				transform.RotateYTowards(nextPos);
+				/*transform.RotateYTowards(nextPos);
 				glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * Timer::GetDeltaS() * 4.0f;
-				transform.Translate(move);
-				/*glm::vec3 toTarget = nextPos - transform.GetGlobalPosition();
-				float angle = glm::degrees(glm::angle(transform.GetLocalFront(), toTarget));
-				if (fabs(angle) < 1.0) return; //Tolerance
-				int cross = glm::sign(glm::cross(transform.GetLocalFront(), toTarget)).y;
-				rb->SetAngularVelocity(0, angle * cross, 0);
-				rb->SetVelocity(15, 0, 0);*/
+				transform.Translate(move);*/
+				transform.RotateYTowards(nextPos);
+				rb->SetRelativeVelocity(2.5, 0, 0);
 
 			}
 			else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
@@ -215,6 +203,7 @@ void Fred::Update()
 			{
 				Logger::LogInfo("Stop");
 				pf->ClearPath();
+				rb->SetVelocity(0, 0, 0);
 			}
 		}
 	}

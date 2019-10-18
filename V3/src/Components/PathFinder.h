@@ -119,7 +119,7 @@ public:
 	*
 	* @return		True if the parameter node is the last node in the path, false otherwise.
 	*/
-	bool IsLastPos(glm::vec3 pos);
+	bool IsLastPos(glm::vec3 pos, bool includeY = false);
 
 	/**
 	* @brief		Returns the node position at index 0 in the path and optionally erases it from the nodePath, unless it is the last node left.
