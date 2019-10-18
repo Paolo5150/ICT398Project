@@ -15,6 +15,10 @@ namespace
 	AffordanceAgent* aa;
 	AIEmotion* aiE;
 	GameObject* player;
+	PathFinder* pf;
+	Rigidbody* rb;
+	glm::vec3 nextPos;
+	int timer = 0;
 }
 
 void Fred::Test(AffordanceObject* obj)
@@ -42,11 +46,11 @@ Fred::Fred() : GameObject("Fred"), AffordanceObject(this)
 
 	ApplyMaterial(m2NoLight, NOLIGHT);
 
-/*	Dylan* d = new Dylan();
-	AddChild(d);
-	d->transform.SetScale(2.8);
-	d->transform.SetRotation(-90, 0, 0);
-	d->transform.SetPosition(0, 160, 20);*/
+	/*	Dylan* d = new Dylan();
+		AddChild(d);
+		d->transform.SetScale(2.8);
+		d->transform.SetRotation(-90, 0, 0);
+		d->transform.SetPosition(0, 160, 20);*/
 
 	billquad = new Billquad();
 	//Adding the quad as a child is not a great idea, so I just add it as a separate GameObject and update in manually in the Update
@@ -62,7 +66,7 @@ Fred::Fred() : GameObject("Fred"), AffordanceObject(this)
 	aa->AddAffordanceUpdateCallback("SitAffordance", [&]() {
 	});
 
-	aa->AddAffordanceDisengageCallback("SitAffordance",[&]() {
+	aa->AddAffordanceDisengageCallback("SitAffordance", [&]() {
 		Logger::LogInfo("SitAffordance disengaged");
 
 		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition() - glm::vec3(0, 1, 0));
@@ -120,8 +124,97 @@ void Fred::Update()
 			{
 				//If there is, display the emotion
 				billquad->SetTexture(t);
-				billquad->RenderForSeconds(2,2);
+				billquad->RenderForSeconds(2, 2);
 
+			}
+		}
+	}
+
+	if (aa->GetSelectedAffordanceName() != "")
+	{
+		if (!pf->HasPath()) //If a path hasn't been generated yet
+		{
+			Logger::LogInfo("Generating path");
+			pf->GeneratePath(transform.GetGlobalPosition(), aa->selectedObj->gameObject->transform.GetGlobalPosition());
+			nextPos = pf->GetNextNodePos();
+		}
+
+		//glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - transform.GetGlobalPosition();
+
+		// Walk towards the affordance object
+		if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node
+		{
+			Logger::LogInfo("Moving");
+			transform.RotateYTowards(nextPos);
+			glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * Timer::GetDeltaS() * 4.0f;
+			transform.Translate(move);
+			/*glm::vec3 toTarget = nextPos - transform.GetGlobalPosition();
+			float angle = glm::degrees(glm::angle(transform.GetLocalFront(), toTarget));
+			if (fabs(angle) < 1.0) return; //Tolerance
+			int cross = glm::sign(glm::cross(transform.GetLocalFront(), toTarget)).y;
+			rb->SetAngularVelocity(0, angle * cross, 0);
+			rb->SetVelocity(15, 0, 0);*/
+
+		}
+		else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
+		{
+			Logger::LogInfo("Next node");
+			nextPos = pf->GetNextNodePos();
+		}
+		else
+		{
+			Logger::LogInfo("Stop");
+			aa->ExecuteAffordanceEngageCallback(aa->GetSelectedAffordanceName(), aiE);
+			rb->SetVelocity(0, 0, 0);
+			rb->SetAngularVelocity(0, 0, 0);
+		}
+	}
+	else
+	{
+		if (aa->HasInUseObject())
+		{
+			aa->ExecuteAffordanceUpdateCallback(aa->GetSelectedAffordanceName(), aiE);
+			pf->ClearPath();
+		}
+		else
+		{
+			if (!pf->HasPath())
+			{
+				bool success;
+
+				do
+				{
+					glm::vec3 pos = PathFindingManager::Instance().GetRandomFreeNode();
+					Logger::LogInfo("Moving to pos x: ", pos.x, ", y: ", pos.y, ", z: ", pos.z);
+					success = pf->GeneratePath(transform.GetGlobalPosition(), pos);
+				} while (success == false);
+				nextPos = pf->GetNextNodePos();
+			}
+
+			// Walk towards the affordance object
+			if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node
+			{
+				Logger::LogInfo("Wandering");
+				transform.RotateYTowards(nextPos);
+				glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * Timer::GetDeltaS() * 4.0f;
+				transform.Translate(move);
+				/*glm::vec3 toTarget = nextPos - transform.GetGlobalPosition();
+				float angle = glm::degrees(glm::angle(transform.GetLocalFront(), toTarget));
+				if (fabs(angle) < 1.0) return; //Tolerance
+				int cross = glm::sign(glm::cross(transform.GetLocalFront(), toTarget)).y;
+				rb->SetAngularVelocity(0, angle * cross, 0);
+				rb->SetVelocity(15, 0, 0);*/
+
+			}
+			else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
+			{
+				Logger::LogInfo("Next node");
+				nextPos = pf->GetNextNodePos();
+			}
+			else
+			{
+				Logger::LogInfo("Stop");
+				pf->ClearPath();
 			}
 		}
 	}
@@ -140,12 +233,15 @@ void Fred::Start()
 	player = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Main Camera")[0];
 	LoadCollidersFromFile("Assets\\Colliders\\Fred.txt");
 
-	Rigidbody* rb = new Rigidbody();
+	rb = new Rigidbody();
 	rb->UseGravity(0);
 	rb->SetUseDynamicPhysics(1);
 	rb->SetIgnoreRotation(1);
 
 	AddComponent(rb);
+
+	pf = new PathFinder();
+	AddComponent(pf);
 
 	aiE = new AIEmotion();
 	AddComponent(aiE);
@@ -159,7 +255,7 @@ void Fred::OnCollisionEnter(Collider* g, Collision& collision)
 	//
 	if (g->GetParent()->GetName() == "Box")
 	{
-		AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Anger, Stimuli::StimuliType::Threat,1.0, 1, 5.0, aiE);
+		AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Anger, Stimuli::StimuliType::Threat, 1.0, 1, 5.0, aiE);
 
 	}
 

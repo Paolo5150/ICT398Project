@@ -9,6 +9,7 @@
 #include <float.h>
 #include <thread>
 #include <future>
+#include <random>
 
 PathFindingManager& PathFindingManager::Instance()
 {
@@ -76,6 +77,43 @@ PathNode* PathFindingManager::ClosestNodeAt(int x, int y, int z)
 	return closest;
 }
 
+
+glm::vec3 PathFindingManager::GetRandomFreeNode()
+{
+	bool valid = false;
+
+	glm::vec3 vec;
+
+	for (unsigned i = 0; i < nodeMap.size(); i++)
+	{
+		for (unsigned j = 0; j < nodeMap.at(i).size(); j++)
+		{
+			//Logger::LogInfo(nodeMap.at(i).at(j)->cost);
+		}
+	}
+
+	while (!valid)
+	{
+		std::random_device rd;
+		std::mt19937 gen(rd());
+
+		std::uniform_int_distribution<> disX(0, nodeMap.size() - 1);
+		unsigned int randomX = disX(gen);
+
+		std::uniform_int_distribution<> disY(0, nodeMap.at(randomX).size() - 1);
+		unsigned int randomY = disY(gen);
+
+		PathNode* pn = nodeMap.at(randomX).at(randomY);
+
+		if (pn->cost <= 1000)
+		{
+			valid = 1;
+			vec = pn->transform.GetPosition();
+		}
+	}
+
+	return vec;
+}
 
 
 void PathFindingManager::Generate(int centerX, int centerY, int sizeX, int sizeY, int heightt)

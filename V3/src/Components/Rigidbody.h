@@ -69,7 +69,7 @@ public:
 	void SetVelocity(float x, float y, float z);
 
 	/**
-	* @brief		Sets the velocity of the Rigidbody to the specified vector.
+	* @brief		Sets the velocity of the Rigidbody to the specified vector, relative to the direction of the gameobject.
 	*
 	* @pre			The Rigidbody must exist
 	* @post			The Rigidbody object's velocity is set to the parameter value
@@ -77,6 +77,28 @@ public:
 	* @param		velocityVector		velocity to set the rigidbody to
 	*/
 	void SetVelocity(glm::vec3 velocityVector);
+
+	/**
+	* @brief		Sets the velocity of the Rigidbody to the specified values, relative to the direction of the gameobject.
+	*
+	* @pre			The Rigidbody must exist
+	* @post			The Rigidbody object's velocity is set to the parameter values
+	*
+	* @param		x		velocity to set the rigidbody to along the x axis
+	* @param		y		velocity to set the rigidbody to along the y axis
+	* @param		z		velocity to set the rigidbody to along the z axis
+	*/
+	void SetRelativeVelocity(float x, float y, float z);
+
+	/**
+	* @brief		Sets the velocity of the Rigidbody to the specified vector.
+	*
+	* @pre			The Rigidbody must exist
+	* @post			The Rigidbody object's velocity is set to the parameter value
+	*
+	* @param		velocityVector		velocity to set the rigidbody to
+	*/
+	void SetRelativeVelocity(glm::vec3 velocityVector);
 
 	/**
 	* @brief		Adds the specified velocity to the velocity of the Rigidbody.
@@ -166,6 +188,28 @@ public:
 	* @param		angularVelocityVector		angular velocity to set the rigidbody to
 	*/
 	void SetAngularVelocity(glm::vec3 angularVelocityVector);
+
+	/**
+	* @brief		Sets the angular velocity of the Rigidbody to the specified values, relative to the direction of the gameobject.
+	*
+	* @pre			The Rigidbody must exist
+	* @post			The Rigidbody object's angular velocity is set to the parameter values
+	*
+	* @param		x		angular velocity to set the rigidbody to along the x axis
+	* @param		y		angular velocity to set the rigidbody to along the y axis
+	* @param		z		angular velocity to set the rigidbody to along the z axis
+	*/
+	void SetRelativeAngularVelocity(float x, float y, float z);
+
+	/**
+	* @brief		Sets the angular velocity of the Rigidbody to the specified vector, relative to the direction of the gameobject.
+	*
+	* @pre			The Rigidbody must exist
+	* @post			The Rigidbody object's angular velocity is set to the parameter value
+	*
+	* @param		angularVelocityVector		angular velocity to set the rigidbody to
+	*/
+	void SetRelativeAngularVelocity(glm::vec3 angularVelocityVector);
 
 	/**
 	* @brief		Adds the specified angular velocity to the angular velocity of the Rigidbody.

@@ -54,6 +54,8 @@ public:
 	*/
 	PathNode* ClosestNodeAt(int x, int y, int z);
 
+	glm::vec3 GetRandomFreeNode();
+
 	/**
 	* @brief						Initialize the nodes
 	*

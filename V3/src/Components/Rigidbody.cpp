@@ -42,6 +42,22 @@ void Rigidbody::SetVelocity(float x, float y, float z)
 
 }
 
+void Rigidbody::SetRelativeVelocity(float x, float y, float z)
+{
+	velocity = x * _parent->transform.GetLocalFront();
+	velocity = y * _parent->transform.GetLocalUp();
+	velocity = z * _parent->transform.GetLocalRight();
+	awake = 1;
+}
+
+void Rigidbody::SetRelativeVelocity(glm::vec3 velocityVector)
+{
+	velocity = velocityVector.x * _parent->transform.GetLocalFront();
+	velocity = velocityVector.y * _parent->transform.GetLocalUp();
+	velocity = velocityVector.z * _parent->transform.GetLocalRight();
+	awake = 1;
+}
+
 void Rigidbody::AddVelocity(float x, float y, float z)
 {
 	velocity += glm::vec3(x, y, z);
@@ -103,6 +119,24 @@ void Rigidbody::SetAngularVelocity(float x, float y, float z)
 void Rigidbody::SetAngularVelocity(glm::vec3 angularVelocityVector)
 {
 	angVelocity = angularVelocityVector;
+	awake = 1;
+
+}
+
+void Rigidbody::SetRelativeAngularVelocity(float x, float y, float z)
+{
+	angVelocity = x * _parent->transform.GetLocalFront();
+	angVelocity = y * _parent->transform.GetLocalUp();
+	angVelocity = z * _parent->transform.GetLocalRight();
+	awake = 1;
+
+}
+
+void Rigidbody::SetRelativeAngularVelocity(glm::vec3 angularVelocityVector)
+{
+	angVelocity = angularVelocityVector.x * _parent->transform.GetLocalFront();
+	angVelocity = angularVelocityVector.y * _parent->transform.GetLocalUp();
+	angVelocity = angularVelocityVector.z * _parent->transform.GetLocalRight();
 	awake = 1;
 
 }
