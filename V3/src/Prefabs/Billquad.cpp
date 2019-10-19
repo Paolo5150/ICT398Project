@@ -44,10 +44,7 @@ void Billquad::CheckEmotions(AIEmotion* aiE)
 			Texture2D* t = ContentManager::Instance().GetAsset<Texture2D>(it->second->GetName() + "_low");
 			if (t)
 			{
-				//If there is, display the emotion
 				AddToQ(t);
-				//SetTexture(t);
-				//RenderForSeconds(2, 2);
 			}
 		}
 		else if (aiE->GetNeedValue(it->first) > it->second->GetHighSeekThreshold())
@@ -57,22 +54,11 @@ void Billquad::CheckEmotions(AIEmotion* aiE)
 			Texture2D* t = ContentManager::Instance().GetAsset<Texture2D>(it->second->GetName() + "_high");
 			if (t)
 			{
-				//If there is, display the emotion
 				AddToQ(t);
-				//SetTexture(t);
-				//RenderForSeconds(2, 2);
 			}
 		}
 	}
 
-	/*if(!found)
-		AddToQ(ContentManager::Instance().GetAsset<Texture2D>("happy"));
-	else
-	{
-		auto it = texturesQueue.find(ContentManager::Instance().GetAsset<Texture2D>("happy"));
-		if (it != texturesQueue.end())
-			texturesQueue.erase(it);
-	}*/
 }
 
 void Billquad::AddToQ(Texture2D* t)
@@ -132,10 +118,6 @@ void Billquad::Update()
 	
 
 	}
-
-	//Logger::LogInfo("Set size", texturesQueue.size());
-	
-
 
 }
 void Billquad::Start()

@@ -47,6 +47,21 @@ Joey::Joey() : GameObject("Joey")
 
 	//Adding the quad as a child is not a great idea, so I just add it as a separate GameObject and update in manually in the Update
 	SceneManager::Instance().GetCurrentScene().AddGameObject(billquad);
+	aa = new AffordanceAgent();
+	AddComponent(aa);
+	aa->AddAffordanceEngageCallback("LaydownAffordance", [&](AffordanceObject*obj) {
+		//Logger::LogInfo("LaydownAffordance engaged");
+		transform.RotateBy(90, transform.GetLocalRight());
+	});
+
+	aa->AddAffordanceUpdateCallback("LaydownAffordance", [&]() {
+	});
+
+	aa->AddAffordanceDisengageCallback("LaydownAffordance", [&]() {
+		//Logger::LogInfo("LaydownAffordance disengaged"); 
+		transform.RotateBy(-90, transform.GetLocalRight());
+	});
+
 
 }
 
@@ -75,8 +90,7 @@ void Joey::Start()
 	player = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Main Camera")[0];
 
 	LoadCollidersFromFile("Assets\\Colliders\\Joey.txt");
-	aa = new AffordanceAgent();
-	AddComponent(aa);
+
 	aiE = new AIEmotion();
 	AddComponent(aiE);
 	/*Rigidbody* rb = new Rigidbody();
