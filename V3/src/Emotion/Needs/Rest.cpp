@@ -52,6 +52,6 @@ bool Rest::Seek(AIEmotion* ai, AffordanceAgent* aa)
 
 void Rest::FinishSeek(AIEmotion* ai, AffordanceAgent * aa)
 {
-	Logger::LogInfo(ai->GetParent()->GetName() + " disengaged affordance");
+	//Logger::LogInfo(ai->GetParent()->GetName() + " disengaged affordance");
 	aa->ExecuteAffordanceDisengageCallback(aa->GetSelectedAffordanceName());
 }

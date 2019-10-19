@@ -62,15 +62,17 @@ Fred::Fred() : GameObject("Fred"), AffordanceObject(this)
 	});
 
 	aa->AddAffordanceEngageCallback("LaydownAffordance",[&](AffordanceObject*obj) {
-		Logger::LogInfo("LaydownAffordance engaged");
+		Logger::LogInfo("Fred LaydownAffordance engaged");
 		transform.RotateBy(90, transform.GetLocalRight());
 	});
 
 	aa->AddAffordanceUpdateCallback("LaydownAffordance", [&]() {
+		Logger::LogInfo("Fred LaydownAffordance update");
+
 	});
 
 	aa->AddAffordanceDisengageCallback("LaydownAffordance", [&]() {
-		Logger::LogInfo("LaydownAffordance disengaged");
+		Logger::LogInfo("Fred LaydownAffordance disengaged");
 		transform.RotateBy(-90, transform.GetLocalRight());
 
 	});

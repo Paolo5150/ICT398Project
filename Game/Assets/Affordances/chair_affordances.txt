@@ -1,4 +1,4 @@
 # Chair affordances
 # Use the format "AffordanceName 10"
 
-SitAffordance 90
+SitAffordance 50
