@@ -1,6 +1,10 @@
 #include "pch.h"
 #include "AffordanceAgent.h"
-
+#include "AIEmotion.h"
+namespace
+{
+	AIEmotion* ai;
+}
 
 AffordanceAgent::AffordanceAgent() : Component("AffordanceAgent")
 {
@@ -71,11 +75,16 @@ bool AffordanceAgent::LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Af
 	{
 		if (selectedObj == nullptr)
 		{
-			selectedObj = AffordanceManager::Instance().GetBestScoreObjectByAffordanceTypeWithinRange(type,_parent->transform.GetGlobalPosition(), range,selectedAffordanceName);
+			selectedObj = AffordanceManager::Instance().GetBestScoreObjectByAffordanceTypeWithinRange(type, _parent->transform.GetGlobalPosition(), range, selectedAffordanceName);
 			return selectedObj != nullptr;
 		}
-		else
+		else if (selectedObj->GetAffordancesOfType(type).size() > 0)
 			return true;
+		else
+		{
+			selectedObj = nullptr;
+			return false;
+		}
 	}
 	else
 		return false;
@@ -112,6 +121,13 @@ void AffordanceAgent::Update()
 				selectedObj = nullptr;
 			}
 		}
+	}
+
+	if (inUseObj != nullptr)
+	{
+		ai = GetParent()->GetComponent<AIEmotion>("Emotion");
+		ExecuteAffordanceUpdateCallback(GetSelectedAffordanceName(), ai);
+
 	}
 }
 

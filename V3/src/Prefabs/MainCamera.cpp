@@ -56,6 +56,7 @@ void MainCamera::Start()
 
 		AddChild(obj->gameObject);
 		obj->gameObject->transform.SetPosition(0, 0, 5);
+		obj->gameObject->transform.SetRotation(0, 0, 0);
 		collectedObject = obj->gameObject;
 
 		collectedObject->GetComponent<Rigidbody>("Rigidbody")->SetActive(0);

@@ -47,12 +47,6 @@ Fred::Fred() : GameObject("Fred"), AffordanceObject(this)
 
 	ApplyMaterial(m2NoLight, NOLIGHT);
 
-	/*	Dylan* d = new Dylan();
-		AddChild(d);
-		d->transform.SetScale(2.8);
-		d->transform.SetRotation(-90, 0, 0);
-		d->transform.SetPosition(0, 160, 20);*/
-
 	billquad = new Billquad();
 	//Adding the quad as a child is not a great idea, so I just add it as a separate GameObject and update in manually in the Update
 	SceneManager::Instance().GetCurrentScene().AddGameObject(billquad);
@@ -67,14 +61,14 @@ Fred::Fred() : GameObject("Fred"), AffordanceObject(this)
 	aa->AddAffordanceUpdateCallback("SitAffordance", [&]() {
 	});
 
-	aa->AddAffordanceDisengageCallback("SitAffordance", [&]() {
-		Logger::LogInfo("SitAffordance disengaged");
+	aa->AddAffordanceDisengageCallback("SitAffordance",[&]() {
+		//Logger::LogInfo("Fred SitAffordance disengaged");
 
 		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition() - glm::vec3(0, 1, 0));
 	});
 
-	aa->AddAffordanceEngageCallback("LaydownAffordance", [&](AffordanceObject*obj) {
-		Logger::LogInfo("LaydownAffordance engaged");
+	aa->AddAffordanceEngageCallback("LaydownAffordance",[&](AffordanceObject*obj) {
+		//Logger::LogInfo("Fred LaydownAffordance engaged");
 		transform.RotateBy(90, transform.GetLocalRight());
 		glm::vec3 pos = obj->gameObject->transform.GetGlobalPosition();
 		pos.y += 1;
@@ -82,13 +76,14 @@ Fred::Fred() : GameObject("Fred"), AffordanceObject(this)
 	});
 
 	aa->AddAffordanceUpdateCallback("LaydownAffordance", [&]() {
+		//Logger::LogInfo("Fred LaydownAffordance update");
+
 	});
 
 	aa->AddAffordanceDisengageCallback("LaydownAffordance", [&]() {
-		Logger::LogInfo("LaydownAffordance disengaged");
+		//Logger::LogInfo("Fred LaydownAffordance disengaged");
 		transform.RotateBy(-90, transform.GetLocalRight());
-		billquad->SetTexture(ContentManager::Instance().GetAsset<Texture2D>("happy"));
-		billquad->RenderForSeconds(2);
+
 	});
 
 	aa->AddAffordanceEngageCallback("ThirstAffordance", [&](AffordanceObject*obj) {});
@@ -113,26 +108,9 @@ Fred::~Fred()
 void Fred::Update()
 {
 	GameObject::Update();
-	billquad->transform.SetPosition(transform.GetPosition() + glm::vec3(0, 12, 0));
+	billquad->transform.SetPosition(transform.GetPosition() + glm::vec3(0, 8, 0));
 
-	auto it = aiE->GetNeeds().begin();
-
-	// Check for needs that are below their threshold
-	for (; it != aiE->GetNeeds().end(); it++)
-	{
-		if (aiE->GetNeedValue(it->first) < it->second->GetLowSeekThreshold() || aiE->GetNeedValue(it->first) > it->second->GetHighSeekThreshold())
-		{
-			// If found one, check if there's a texture with the need's name
-			Texture2D* t = ContentManager::Instance().GetAsset<Texture2D>(it->second->GetName());
-			if (t)
-			{
-				//If there is, display the emotion
-				billquad->SetTexture(t);
-				billquad->RenderForSeconds(2, 2);
-
-			}
-		}
-	}
+	billquad->CheckEmotions(aiE);
 
 	Move();
 

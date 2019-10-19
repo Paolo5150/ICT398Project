@@ -51,6 +51,21 @@ Joey::Joey() : GameObject("Joey")
 
 	//Adding the quad as a child is not a great idea, so I just add it as a separate GameObject and update in manually in the Update
 	SceneManager::Instance().GetCurrentScene().AddGameObject(billquad);
+	aa = new AffordanceAgent();
+	AddComponent(aa);
+	aa->AddAffordanceEngageCallback("LaydownAffordance", [&](AffordanceObject*obj) {
+		//Logger::LogInfo("LaydownAffordance engaged");
+		transform.RotateBy(90, transform.GetLocalRight());
+	});
+
+	aa->AddAffordanceUpdateCallback("LaydownAffordance", [&]() {
+	});
+
+	aa->AddAffordanceDisengageCallback("LaydownAffordance", [&]() {
+		Logger::LogInfo("LaydownAffordance disengaged"); 
+		transform.RotateBy(-90, transform.GetLocalRight());
+	});
+
 
 }
 
@@ -62,7 +77,9 @@ Joey::~Joey()
 void Joey::Update()
 {
 	GameObject::Update();
-	billquad->transform.SetPosition(transform.GetPosition() + glm::vec3(0, 12, 0));
+	billquad->transform.SetPosition(transform.GetPosition() + glm::vec3(0, 8, 0));
+
+	billquad->CheckEmotions(aiE);
 
 	Move();
 
@@ -79,8 +96,7 @@ void Joey::Start()
 	player = SceneManager::Instance().GetCurrentScene().GetGameobjectsByName("Main Camera")[0];
 
 	LoadCollidersFromFile("Assets\\Colliders\\Joey.txt");
-	aa = new AffordanceAgent();
-	AddComponent(aa);
+
 	aiE = new AIEmotion();
 	AddComponent(aiE);
 
@@ -100,13 +116,13 @@ void Joey::Start()
 
 void Joey::OnCollisionEnter(Collider* g, Collision& collision)
 {
-	Logger::LogInfo("Joey Collided ENTER against", g->GetName());
+	//Logger::LogInfo("Joey Collided ENTER against", g->GetName());
 
 }
 
 void Joey::OnCollisionExit(Collider* g)
 {
-	Logger::LogInfo("Joey Collided EXIT against", g->GetName());
+//	Logger::LogInfo("Joey Collided EXIT against", g->GetName());
 
 }
 void Joey::OnCollisionStay(Collider* g, Collision& collision)

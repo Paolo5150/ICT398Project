@@ -5,7 +5,7 @@
 #include "..\..\Core\Timer.h"
 
 
-Rest::Rest(float startValue, int priority, float positiveGainMultiplier, float negativeGainMultiplier) : Need(NeedType::Rest, "Rest", startValue, 20, 50, positiveGainMultiplier, negativeGainMultiplier, priority)
+Rest::Rest(float startValue, int priority, float positiveGainMultiplier, float negativeGainMultiplier) : Need(NeedType::Rest, "Rest", startValue, 30, 65, positiveGainMultiplier, negativeGainMultiplier, priority)
 {
 }
 
@@ -40,18 +40,12 @@ bool Rest::Seek(AIEmotion* ai, AffordanceAgent* aa)
 	}
 	else
 	{
-		if (aa->HasInUseObject())
-		{
-			aa->ExecuteAffordanceUpdateCallback(aa->GetSelectedAffordanceName(), ai);
-			return true;
-		}
-		else
 			return false;
 	}
 }
 
 void Rest::FinishSeek(AIEmotion* ai, AffordanceAgent * aa)
 {
-	Logger::LogInfo(ai->GetParent()->GetName() + " disengaged affordance");
+	//Logger::LogInfo(ai->GetParent()->GetName() + " disengaged affordance");
 	aa->ExecuteAffordanceDisengageCallback(aa->GetSelectedAffordanceName());
 }

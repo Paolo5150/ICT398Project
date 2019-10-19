@@ -100,7 +100,9 @@ Riley::~Riley()
 void Riley::Update()
 {
 	GameObject::Update();
-	billquad->transform.SetPosition(transform.GetPosition() + glm::vec3(0, 12, 0));
+	billquad->transform.SetPosition(transform.GetPosition() + glm::vec3(0, 8, 0));
+
+	billquad->CheckEmotions(aiE);
 
 	Move();
 
@@ -109,7 +111,6 @@ void Riley::Update()
 		aiE->EnableRenderStats();
 	else
 		aiE->DisableRenderStats();
-
 }
 
 void Riley::Start()
@@ -137,13 +138,13 @@ void Riley::Start()
 
 void Riley::OnCollisionEnter(Collider* g, Collision& collision)
 {
-	Logger::LogInfo("Riley Collided ENTER against", g->GetName());
+//	Logger::LogInfo("Riley Collided ENTER against", g->GetName());
 
 }
 
 void Riley::OnCollisionExit(Collider* g)
 {
-	Logger::LogInfo("Riley Collided EXIT against", g->GetName());
+	//Logger::LogInfo("Riley Collided EXIT against", g->GetName());
 
 }
 void Riley::OnCollisionStay(Collider* g, Collision& collision)

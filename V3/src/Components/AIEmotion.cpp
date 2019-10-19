@@ -4,6 +4,7 @@
 #include "../Core/Timer.h"
 #include "../GUI/GUIManager.h"
 #include "../GUI/Elements/GUIText.h"
+#include "AffordanceAgent.h"
 
 AIEmotion::AIEmotion() : Component("Emotion")
 {
@@ -223,12 +224,15 @@ void AIEmotion::SeekNeeds()
 			//Need has been satisfied, free up pointer to seek other needs
 			if (currentlySeekedNeed != nullptr && currentlySeekedNeed == need)
 			{
+				//Logger::LogInfo("Finish seek FIRST", currentlySeekedNeed->GetName());
+
 				currentlySeekedNeed->FinishSeek(this, aa);
 				currentlySeekedNeed = nullptr;
 			}
 		}
 		it++;
 	}
+	
 
 	//Operate on need satisfaction priority list 
 	if (!priorityOrderedNeeds.empty())
@@ -237,22 +241,32 @@ void AIEmotion::SeekNeeds()
 
 		while (it != priorityOrderedNeeds.end())
 		{
-			if (currentlySeekedNeed != nullptr && currentlySeekedNeed != (*it))
-			{
-				currentlySeekedNeed->FinishSeek(this, aa);
-				currentlySeekedNeed = nullptr;
-			}
 			if ((*it)->Seek(this, aa))
 			{
-				currentlySeekedNeed = (*it);
-				it = priorityOrderedNeeds.end();
-			}
-			else
-			{
-				if (currentlySeekedNeed == (*it))
+				//Logger::LogInfo("Found", (*it)->GetName());
+
+				if (currentlySeekedNeed != nullptr && currentlySeekedNeed != (*it))
 				{
+				//	Logger::LogInfo("Finish seek MIDDLE", currentlySeekedNeed->GetName());
 					currentlySeekedNeed->FinishSeek(this, aa);
 					currentlySeekedNeed = nullptr;
+				}
+
+				currentlySeekedNeed = (*it);
+				it = priorityOrderedNeeds.end();
+			}	
+	
+			else
+			{
+				if (!aa->HasInUseObject())
+				{
+					if (currentlySeekedNeed == (*it))
+					{
+						//Logger::LogInfo("Finish seek OTHER", currentlySeekedNeed->GetName());
+
+						currentlySeekedNeed->FinishSeek(this, aa);
+						currentlySeekedNeed = nullptr;
+					}
 				}
 				it++;
 			}

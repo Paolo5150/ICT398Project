@@ -29,28 +29,115 @@ Billquad::~Billquad()
 
 }
 
+void Billquad::CheckEmotions(AIEmotion* aiE)
+{
+	auto it = aiE->GetNeeds().begin();
+	static bool found = 0;
+	found = 0;
+	// Check for needs that are below their threshold
+	for (; it != aiE->GetNeeds().end(); it++)
+	{
+		if (aiE->GetNeedValue(it->first) < it->second->GetLowSeekThreshold())
+		{
+			found = 1;
+			// If found one, check if there's a texture with the need's name
+			Texture2D* t = ContentManager::Instance().GetAsset<Texture2D>(it->second->GetName() + "_low");
+			if (t)
+			{
+				AddToQ(t);
+			//	Logger::LogInfo("Added texture", it->second->GetName());
+			}
+		}
+		else if (aiE->GetNeedValue(it->first) > it->second->GetHighSeekThreshold())
+		{
+			found = 1;
+			// If found one, check if there's a texture with the need's name
+			Texture2D* t = ContentManager::Instance().GetAsset<Texture2D>(it->second->GetName() + "_high");
+			if (t)
+			{
+				AddToQ(t);
+			//	Logger::LogInfo("Added texture", it->second->GetName());
+
+			}
+		}
+		else
+		{
+			// If found one, check if there's a texture with the need's name
+			Texture2D* t = ContentManager::Instance().GetAsset<Texture2D>(it->second->GetName() + "_high");
+			if (t)
+			{
+				texturesQueue.erase(t);
+
+			}
+			t = ContentManager::Instance().GetAsset<Texture2D>(it->second->GetName() + "_low");
+			if (t)
+			{
+				texturesQueue.erase(t);
+
+			}
+		}
+	}
+
+}
+
+void Billquad::AddToQ(Texture2D* t)
+{
+	texturesQueue.insert(t);
+}
+
 void Billquad::Update()
 {
-	GameObject::Update();
+	GameObject::Update();	
 
-
+	if (texturesQueue.empty())
+	{
+		texture = nullptr;
+		meshRenderer->SetActive(0);
+	}
 
 	if (timer > 0)
 	{
 		timer -= Timer::GetDeltaS();
-		isRendering = true;
+
 	}
 	else
 	{
-		timer = 0;
-		isRendering = false;
+		timer = 1;
 
-		if (coolDownTimer > 0)
-			coolDownTimer -= Timer::GetDeltaS();
+		if (isCoolDown)
+		{
+			isCoolDown = 0;
+			return;
+		}
+		else
+		{
+			isCoolDown = 1;
+			if (texture == nullptr)
+			{
+				if (!texturesQueue.empty())
+				{
+					SetTexture(*texturesQueue.begin());
+					meshRenderer->SetActive(1);
+				}
+
+			}
+			else
+			{
+
+				if (texturesQueue.size() > 1)
+					texturesQueue.erase(texturesQueue.begin());
+
+				if (!texturesQueue.empty())
+				{
+					SetTexture(*texturesQueue.begin());
+					meshRenderer->SetActive(1);
+				}
+			}
+		}
+	
 
 	}
 
-	meshRenderer->SetActive(isRendering);
 }
 void Billquad::Start()
 {
@@ -59,7 +146,6 @@ void Billquad::Start()
 }
 void Billquad::SetTexture(Texture2D* texture)
 {
-
 	Material m;
 	m.SetShader(ContentManager::Instance().GetAsset<Shader>("TextureBillboarding"));
 
@@ -67,6 +153,7 @@ void Billquad::SetTexture(Texture2D* texture)
 	{
 		m.Loadtexture(texture, "diffuse0");
 	}
+	this->texture = texture;
 
 	ApplyMaterial(m,MaterialType::DEFAULT);
 	ApplyMaterial(m, MaterialType::COLORONLY);
@@ -85,7 +172,7 @@ void Billquad::Initialize()
 
 	
 	});
-	SetTexture(this->texture);
+	texture = nullptr;
 	timer = 0;
 	coolDownTimer = 0;
 }
