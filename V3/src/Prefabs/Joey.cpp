@@ -103,13 +103,13 @@ void Joey::Start()
 
 void Joey::OnCollisionEnter(Collider* g, Collision& collision)
 {
-	Logger::LogInfo("Joey Collided ENTER against", g->GetName());
+	//Logger::LogInfo("Joey Collided ENTER against", g->GetName());
 
 }
 
 void Joey::OnCollisionExit(Collider* g)
 {
-	Logger::LogInfo("Joey Collided EXIT against", g->GetName());
+//	Logger::LogInfo("Joey Collided EXIT against", g->GetName());
 
 }
 void Joey::OnCollisionStay(Collider* g, Collision& collision)

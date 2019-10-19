@@ -123,13 +123,13 @@ void Riley::Start()
 
 void Riley::OnCollisionEnter(Collider* g, Collision& collision)
 {
-	Logger::LogInfo("Riley Collided ENTER against", g->GetName());
+//	Logger::LogInfo("Riley Collided ENTER against", g->GetName());
 
 }
 
 void Riley::OnCollisionExit(Collider* g)
 {
-	Logger::LogInfo("Riley Collided EXIT against", g->GetName());
+	//Logger::LogInfo("Riley Collided EXIT against", g->GetName());
 
 }
 void Riley::OnCollisionStay(Collider* g, Collision& collision)

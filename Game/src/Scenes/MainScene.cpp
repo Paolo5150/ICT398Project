@@ -69,6 +69,8 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\happy.png", false);
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\Anger_high.png", false);
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\Social_low.png", false);
+	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\Thirst_low.png", false);
+
 
 	ContentManager::Instance().LoadModel("Assets\\Models\\Fred\\Fred.fbx", false, false);
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Fred\\textures\\Fred_Base_Color.png", false);
