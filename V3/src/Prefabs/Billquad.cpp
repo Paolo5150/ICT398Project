@@ -60,6 +60,22 @@ void Billquad::CheckEmotions(AIEmotion* aiE)
 
 			}
 		}
+		else
+		{
+			// If found one, check if there's a texture with the need's name
+			Texture2D* t = ContentManager::Instance().GetAsset<Texture2D>(it->second->GetName() + "_high");
+			if (t)
+			{
+				texturesQueue.erase(t);
+
+			}
+			t = ContentManager::Instance().GetAsset<Texture2D>(it->second->GetName() + "_low");
+			if (t)
+			{
+				texturesQueue.erase(t);
+
+			}
+		}
 	}
 
 }
@@ -108,7 +124,7 @@ void Billquad::Update()
 			else
 			{
 
-				if (!texturesQueue.empty())
+				if (texturesQueue.size() > 1)
 					texturesQueue.erase(texturesQueue.begin());
 
 				if (!texturesQueue.empty())

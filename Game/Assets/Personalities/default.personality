@@ -6,7 +6,7 @@ N anger 10.0 10 1.0 1.0
 N anticipation 50.0 10 1.0 1.0
 N joy 50.0 10 1.0 1.0
 N trust 50.0 10 1.0 1.0
-N thirst 11.0 1 1.0 1.0
+N thirst 80.0 1 1.0 1.0
 N rest 20.0 2 1.0 1.0
 
 # Trait:

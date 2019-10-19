@@ -224,7 +224,7 @@ void AIEmotion::SeekNeeds()
 			//Need has been satisfied, free up pointer to seek other needs
 			if (currentlySeekedNeed != nullptr && currentlySeekedNeed == need)
 			{
-				Logger::LogInfo("Finish seek FIRST", currentlySeekedNeed->GetName());
+				//Logger::LogInfo("Finish seek FIRST", currentlySeekedNeed->GetName());
 
 				currentlySeekedNeed->FinishSeek(this, aa);
 				currentlySeekedNeed = nullptr;
@@ -243,11 +243,11 @@ void AIEmotion::SeekNeeds()
 		{
 			if ((*it)->Seek(this, aa))
 			{
-				Logger::LogInfo("Found", (*it)->GetName());
+				//Logger::LogInfo("Found", (*it)->GetName());
 
 				if (currentlySeekedNeed != nullptr && currentlySeekedNeed != (*it))
 				{
-					Logger::LogInfo("Finish seek MIDDLE", currentlySeekedNeed->GetName());
+				//	Logger::LogInfo("Finish seek MIDDLE", currentlySeekedNeed->GetName());
 					currentlySeekedNeed->FinishSeek(this, aa);
 					currentlySeekedNeed = nullptr;
 				}
@@ -262,7 +262,7 @@ void AIEmotion::SeekNeeds()
 				{
 					if (currentlySeekedNeed == (*it))
 					{
-						Logger::LogInfo("Finish seek OTHER", currentlySeekedNeed->GetName());
+						//Logger::LogInfo("Finish seek OTHER", currentlySeekedNeed->GetName());
 
 						currentlySeekedNeed->FinishSeek(this, aa);
 						currentlySeekedNeed = nullptr;
