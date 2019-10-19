@@ -252,6 +252,7 @@
     <ClInclude Include="src\Prefabs\Chair.h" />
     <ClInclude Include="src\Prefabs\Drew.h" />
     <ClInclude Include="src\Prefabs\DrewText.h" />
+    <ClInclude Include="src\Prefabs\DrinkingFountain.h" />
     <ClInclude Include="src\Prefabs\Dylan.h" />
     <ClInclude Include="src\Prefabs\DylanText.h" />
     <ClInclude Include="src\Prefabs\Fred.h" />
@@ -400,6 +401,7 @@
     <ClCompile Include="src\Prefabs\Chair.cpp" />
     <ClCompile Include="src\Prefabs\Drew.cpp" />
     <ClCompile Include="src\Prefabs\DrewText.cpp" />
+    <ClCompile Include="src\Prefabs\DrinkingFountain.cpp" />
     <ClCompile Include="src\Prefabs\Dylan.cpp" />
     <ClCompile Include="src\Prefabs\DylanText.cpp" />
     <ClCompile Include="src\Prefabs\Fred.cpp" />

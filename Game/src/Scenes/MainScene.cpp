@@ -64,6 +64,7 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadModel("Assets\\Models\\BushCourt\\bushcourt.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Lantern\\lantern.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Crate\\crate.obj",false, false);
+	ContentManager::Instance().LoadModel("Assets\\Models\\DrinkingFountain\\fountain.obj", false, false);
 
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\Rest_low.png", false);
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\happy.png", false);
@@ -88,6 +89,8 @@ void MainScene::LoadAssets() {
 
 	ContentManager::Instance().LoadTexture("Assets\\Models\\RecycleBin\\textures\\RB_Frame.png", 0);
 	ContentManager::Instance().LoadTexture("Assets\\Models\\RecycleBin\\textures\\RB_Sides.png", 0);	
+
+	ContentManager::Instance().LoadTexture("Assets\\Models\\DrinkingFountain\\textures\\fountain.png", 0);
 
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\BushCourt\\BushCourt.png", 0);	
 	ContentManager::Instance().LoadCubeMap("Assets\\SkyBoxes\\SunSet");
