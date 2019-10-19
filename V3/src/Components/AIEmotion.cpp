@@ -224,6 +224,8 @@ void AIEmotion::SeekNeeds()
 			//Need has been satisfied, free up pointer to seek other needs
 			if (currentlySeekedNeed != nullptr && currentlySeekedNeed == need)
 			{
+				Logger::LogInfo("Finish seek FIRST", currentlySeekedNeed->GetName());
+
 				currentlySeekedNeed->FinishSeek(this, aa);
 				currentlySeekedNeed = nullptr;
 			}
@@ -237,15 +239,15 @@ void AIEmotion::SeekNeeds()
 	{
 		std::list<Need*>::iterator it = priorityOrderedNeeds.begin();
 
-
 		while (it != priorityOrderedNeeds.end())
 		{
 			if ((*it)->Seek(this, aa))
 			{
+				Logger::LogInfo("Found", (*it)->GetName());
 
 				if (currentlySeekedNeed != nullptr && currentlySeekedNeed != (*it))
 				{
-					//Logger::LogInfo("Finish seek", currentlySeekedNeed->GetName());
+					Logger::LogInfo("Finish seek MIDDLE", currentlySeekedNeed->GetName());
 					currentlySeekedNeed->FinishSeek(this, aa);
 					currentlySeekedNeed = nullptr;
 				}
@@ -260,7 +262,7 @@ void AIEmotion::SeekNeeds()
 				{
 					if (currentlySeekedNeed == (*it))
 					{
-					//	Logger::LogInfo("Finish seek OTHER", currentlySeekedNeed->GetName());
+						Logger::LogInfo("Finish seek OTHER", currentlySeekedNeed->GetName());
 
 						currentlySeekedNeed->FinishSeek(this, aa);
 						currentlySeekedNeed = nullptr;

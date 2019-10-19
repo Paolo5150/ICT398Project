@@ -75,11 +75,16 @@ bool AffordanceAgent::LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Af
 	{
 		if (selectedObj == nullptr)
 		{
-			selectedObj = AffordanceManager::Instance().GetBestScoreObjectByAffordanceTypeWithinRange(type,_parent->transform.GetGlobalPosition(), range,selectedAffordanceName);
+			selectedObj = AffordanceManager::Instance().GetBestScoreObjectByAffordanceTypeWithinRange(type, _parent->transform.GetGlobalPosition(), range, selectedAffordanceName);
 			return selectedObj != nullptr;
 		}
-		else
+		else if (selectedObj->GetAffordancesOfType(type).size() > 0)
 			return true;
+		else
+		{
+			selectedObj = nullptr;
+			return false;
+		}
 	}
 	else
 		return false;
