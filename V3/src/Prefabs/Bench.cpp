@@ -47,7 +47,7 @@ void Bench::Start()
 
 void Bench::OnCollisionEnter(Collider* g, Collision& collision)
 {
-	Logger::LogInfo("Collided against", g->GetName());
+	//Logger::LogInfo("Collided against", g->GetName());
 }
 
 void Bench::OnCollisionStay(Collider* g, Collision& collision)

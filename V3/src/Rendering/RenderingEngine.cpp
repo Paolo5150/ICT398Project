@@ -227,7 +227,6 @@ void RenderingEngine::RenderVectorOverrideColor(Camera& cam, std::vector<Rendere
 			r[i]->OnPostRender(cam, &r[i]->GetMaterial(m).GetShader());
 			r[i]->GetMaterial(m).UnbindMaterial();
 			r[i]->submitted = 0;
-
 		}
 	}
 }

@@ -41,12 +41,6 @@ Fred::Fred() : GameObject("Fred"), AffordanceObject(this)
 
 	ApplyMaterial(m2NoLight, NOLIGHT);
 
-/*	Dylan* d = new Dylan();
-	AddChild(d);
-	d->transform.SetScale(2.8);
-	d->transform.SetRotation(-90, 0, 0);
-	d->transform.SetPosition(0, 160, 20);*/
-
 	billquad = new Billquad();
 	//Adding the quad as a child is not a great idea, so I just add it as a separate GameObject and update in manually in the Update
 	SceneManager::Instance().GetCurrentScene().AddGameObject(billquad);

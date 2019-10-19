@@ -60,6 +60,31 @@ void Joey::Update()
 	GameObject::Update();
 	billquad->transform.SetPosition(transform.GetPosition() + glm::vec3(0, 12, 0));
 
+	auto it = aiE->GetNeeds().begin();
+
+	// Check for needs that are below their threshold
+	for (; it != aiE->GetNeeds().end(); it++)
+	{
+		if (aiE->GetNeedValue(it->first) < it->second->GetLowSeekThreshold() || aiE->GetNeedValue(it->first) > it->second->GetHighSeekThreshold())
+		{
+			// If found one, check if there's a texture with the need's name
+			Texture2D* t = ContentManager::Instance().GetAsset<Texture2D>(it->second->GetName());
+			if (t)
+			{
+				//If there is, display the emotion
+				billquad->SetTexture(t);
+				billquad->RenderForSeconds(2, 2);
+
+			}
+		}
+	}
+
+	//NPCs GUI
+	if (glm::length2(player->transform.GetPosition() - transform.GetPosition()) < 100)
+		aiE->EnableRenderStats();
+	else
+		aiE->DisableRenderStats();
+
 	//NPCs GUI
 	if(glm::length2(player->transform.GetPosition() - transform.GetPosition()) < 50)
 		aiE->EnableRenderStats();

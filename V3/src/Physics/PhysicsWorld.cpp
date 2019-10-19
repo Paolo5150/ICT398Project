@@ -608,10 +608,10 @@ void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, const Co
 	{
 		MoveTransform(obj1->transform, -vel1, -angVel1);
 
-
 		rb1->SetVelocity(vel1 + (lambda / obj1->GetTotalMass()));
+
 		if(!rb1->GetIgnoreRotation())
-		rb1->SetAngularVelocity(glm::degrees(angVel1 + glm::cross(lambda, r1) * glm::inverse(obj1->GetInertiaTensor()) * glm::cross(r1, normal)));
+			rb1->SetAngularVelocity(glm::degrees(angVel1 + glm::cross(lambda, r1) * glm::inverse(obj1->GetInertiaTensor()) * glm::cross(r1, normal)));
 	}
 
 	if (rb2 != nullptr && rb2->GetUseDynamicPhysics())
@@ -620,7 +620,7 @@ void PhysicsWorld::PhysicsCalculation(Collider * col1, Collider * col2, const Co
 
 		rb2->SetVelocity(vel2 - (lambda / obj2->GetTotalMass()));
 		if(!rb2->GetIgnoreRotation())
-		rb2->SetAngularVelocity(glm::degrees(angVel2 - glm::cross(lambda, r2) * glm::inverse(obj2->GetInertiaTensor()) * glm::cross(r2, normal)));
+			rb2->SetAngularVelocity(glm::degrees(angVel2 - glm::cross(lambda, r2) * glm::inverse(obj2->GetInertiaTensor()) * glm::cross(r2, normal)));
 	}
 	
 }
