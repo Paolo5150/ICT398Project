@@ -13,8 +13,8 @@
 namespace
 {
 	AffordanceAgent* aa;
-	AIEmotion* aiE;
 	GameObject* player;
+	AIEmotion* aiE;
 	PathFinder* pf;
 	Rigidbody* rb;
 	glm::vec3 nextPos; //Next position to navigate to

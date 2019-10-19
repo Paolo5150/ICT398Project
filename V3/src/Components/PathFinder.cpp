@@ -134,7 +134,7 @@ bool PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
 	}
 	else //End node is locked
 	{
-		Logger::LogWarning("PathFinder: End node locked");
+		//Logger::LogWarning("PathFinder: End node locked");
 		return false;
 	}
 }

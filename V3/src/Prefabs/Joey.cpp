@@ -4,6 +4,7 @@
 #include "..\Components\BoxCollider.h"
 #include "..\Components\Rigidbody.h"
 #include "..\Components\AffordanceAgent.h"
+#include "..\Components\PathFinder.h"
 #include "..\Affordances\RestAffordance.h"
 #include "Dylan.h"
 #include "..\Scene\SceneManager.h"
@@ -14,8 +15,10 @@ namespace
 	AffordanceAgent* aa;
 	GameObject* player;
 	AIEmotion* aiE;
-
-
+	PathFinder* pf;
+	Rigidbody* rb;
+	glm::vec3 nextPos; //Next position to navigate to
+	float timer = 0; //Used to regenerate path every now and then
 }
 
 void Joey::Test(AffordanceObject* obj)
@@ -60,6 +63,8 @@ void Joey::Update()
 	GameObject::Update();
 	billquad->transform.SetPosition(transform.GetPosition() + glm::vec3(0, 12, 0));
 
+	Move();
+
 	//NPCs GUI
 	if(glm::length2(player->transform.GetPosition() - transform.GetPosition()) < 50)
 		aiE->EnableRenderStats();
@@ -77,10 +82,17 @@ void Joey::Start()
 	AddComponent(aa);
 	aiE = new AIEmotion();
 	AddComponent(aiE);
-	/*Rigidbody* rb = new Rigidbody();
-	rb->UseGravity(true);
 
-	AddComponent(rb);*/
+	rb = new Rigidbody();
+	rb->UseGravity(0);
+	rb->SetUseDynamicPhysics(1);
+	rb->SetIgnoreRotation(1);
+
+	AddComponent(rb);
+
+	pf = new PathFinder();
+	AddComponent(pf);
+
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider
 						 // has been added.
 }
@@ -102,3 +114,95 @@ void Joey::OnCollisionStay(Collider* g, Collision& collision)
 
 }
 
+void Joey::Move()
+{
+	if (aa->GetSelectedAffordanceName() != "" && aa->selectedObj != nullptr) //If there is an affordance to move to
+	{
+		glm::vec3 targetPos = aa->selectedObj->gameObject->transform.GetGlobalPosition();
+		glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - aa->GetParent()->transform.GetGlobalPosition();
+
+		if (!pf->HasPath() || !pf->IsLastNode(PathFindingManager::Instance().ClosestNodeAt(targetPos.x, targetPos.y, targetPos.z)) || (Timer::GetTimeS() - timer) > 5) //If a path hasn't been generated yet, or the path does not lead to the target, or the timer has 'elapsed'
+		{
+			pf->GeneratePath(transform.GetGlobalPosition(), targetPos);
+			nextPos = pf->GetNextNodePos();
+			nextPos.y = 1; //Set to 1 to clear any small deviations on the ground
+			timer = Timer::GetTimeS();
+		}
+
+		// Walk towards the affordance object
+		if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node
+		{
+			//Get direction to rotate toward, (similar code as RotateYToward)
+			glm::vec3 toTarget = nextPos - transform.GetGlobalPosition();
+			int cross = 0;
+			float angle = glm::degrees(glm::angle(transform.GetLocalFront(), toTarget));
+			if (!(fabs(angle) < 1.0)) //Tolerance
+				cross = glm::sign(glm::cross(transform.GetLocalFront(), toTarget)).y;
+
+			glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * 4.0f;
+
+			rb->SetVelocity(move);
+			rb->SetAngularVelocity(0, (angle * cross) * 2, 0);
+		}
+		else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
+		{
+			nextPos = pf->GetNextNodePos();
+			nextPos.y = 1; //Set to 1 to clear any small deviations on the ground
+		}
+		else if (glm::length2(toObj) < 20)
+		{
+			aa->ExecuteAffordanceEngageCallback(aa->GetSelectedAffordanceName(), aiE);
+			rb->SetVelocity(0, 0, 0);
+		}
+	}
+	else
+	{
+		if (aa->HasInUseObject())
+		{
+			aa->ExecuteAffordanceUpdateCallback(aa->GetSelectedAffordanceName(), aiE);
+			pf->ClearPath();
+		}
+		else
+		{
+			if (!pf->HasPath())
+			{
+				bool success; //True when the path is generated successfully
+
+				do //Get a random free node
+				{
+					glm::vec3 pos = PathFindingManager::Instance().GetRandomFreeNode();
+					success = pf->GeneratePath(transform.GetGlobalPosition(), pos);
+				} while (success == false);
+
+				nextPos = pf->GetNextNodePos();
+				nextPos.y = 1; //Set to 1 to clear any small deviations on the ground
+			}
+
+			//Walk towards the wandering node
+			if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node
+			{
+				//Get direction to rotate toward, (similar code as RotateYToward)
+				glm::vec3 toTarget = nextPos - transform.GetGlobalPosition();
+				int cross = 0;
+				float angle = glm::degrees(glm::angle(transform.GetLocalFront(), toTarget));
+				if (!(fabs(angle) < 1.0)) //Tolerance
+					cross = glm::sign(glm::cross(transform.GetLocalFront(), toTarget)).y;
+
+				glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * 4.0f;
+
+				rb->SetVelocity(move);
+				rb->SetAngularVelocity(0, (angle * cross) * 2, 0);
+			}
+			else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
+			{
+				nextPos = pf->GetNextNodePos();
+				nextPos.y = 1; //Set to 1 to clear any small deviations on the ground
+			}
+			else
+			{
+				pf->ClearPath();
+				rb->SetVelocity(0, 0, 0);
+			}
+		}
+	}
+}
