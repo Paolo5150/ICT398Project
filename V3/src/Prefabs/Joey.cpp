@@ -56,6 +56,9 @@ Joey::Joey() : GameObject("Joey")
 	aa->AddAffordanceEngageCallback("LaydownAffordance", [&](AffordanceObject*obj) {
 		//Logger::LogInfo("LaydownAffordance engaged");
 		transform.RotateBy(90, transform.GetLocalRight());
+		glm::vec3 pos = obj->gameObject->transform.GetGlobalPosition();
+		pos.y += 1;
+		transform.SetPosition(pos);
 	});
 
 	aa->AddAffordanceUpdateCallback("LaydownAffordance", [&]() {
@@ -141,32 +144,35 @@ void Joey::Move()
 		if (!pf->HasPath() || !pf->IsLastNode(PathFindingManager::Instance().ClosestNodeAt(targetPos.x, targetPos.y, targetPos.z)) || (Timer::GetTimeS() - timer) > 5 || aa->selectedObj != pathAffordanceObject) //If a path hasn't been generated yet, or the path does not lead to the target, or the timer has 'elapsed'
 		{
 			rb->SetActive(true);
-			pf->GeneratePath(transform.GetGlobalPosition(), targetPos);
+			pf->GeneratePath(transform.GetGlobalPosition(), targetPos, true);
 			nextPos = pf->GetNextNodePos();
 			timer = Timer::GetTimeS();
 			pathAffordanceObject = aa->selectedObj;
 		}
 
-		// Walk towards the affordance object
-		if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node
+		if (glm::length2(toObj) > 30)
 		{
-			//Get direction to rotate toward, (similar code as RotateYToward)
-			glm::vec3 toTarget = nextPos - transform.GetGlobalPosition();
-			int cross = 0;
-			float angle = glm::degrees(glm::angle(transform.GetLocalFront(), toTarget));
-			if (!(fabs(angle) < 1.0)) //Tolerance
-				cross = glm::sign(glm::cross(transform.GetLocalFront(), toTarget)).y;
+			// Walk towards the affordance object
+			if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node
+			{
+				//Get direction to rotate toward, (similar code as RotateYToward)
+				glm::vec3 toTarget = nextPos - transform.GetGlobalPosition();
+				int cross = 0;
+				float angle = glm::degrees(glm::angle(transform.GetLocalFront(), toTarget));
+				if (!(fabs(angle) < 1.0)) //Tolerance
+					cross = glm::sign(glm::cross(transform.GetLocalFront(), toTarget)).y;
 
-			glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * 4.0f;
+				glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * 4.0f;
 
-			rb->SetVelocity(move);
-			rb->SetAngularVelocity(0, (angle * cross) * 2, 0);
+				rb->SetVelocity(move);
+				rb->SetAngularVelocity(0, (angle * cross) * 2, 0);
+			}
+			else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
+			{
+				nextPos = pf->GetNextNodePos();
+			}
 		}
-		else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
-		{
-			nextPos = pf->GetNextNodePos();
-		}
-		else if (glm::length2(toObj) < 20)
+		else
 		{
 			aa->ExecuteAffordanceEngageCallback(aa->GetSelectedAffordanceName(), aiE);
 			rb->SetVelocity(0, 0, 0);

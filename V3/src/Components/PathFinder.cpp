@@ -12,13 +12,25 @@ PathFinder::~PathFinder()
 {
 }
 
-bool PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
+bool PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end, bool allowClose)
 {
 	UnlockEndNode(); //If there was a previous locked node, unlock it
 
 	PathNode* startNode = PathFindingManager::Instance().ClosestNodeAt(start.x, start.y, start.z);
 	PathNode* currentNode = startNode;
 	PathNode* endNode = PathFindingManager::Instance().ClosestNodeAt(end.x, end.y, end.z);
+
+	if (endNode->lock == true && allowClose == true) //If the endnode is locked and we are allowed to use neighbours
+	{
+		for (unsigned i = 0; i < endNode->neighbors.size(); i++)
+		{
+			if (endNode->neighbors.at(i)->lock == false)
+			{
+				endNode = endNode->neighbors.at(i);
+				break;
+			}
+		}
+	}
 
 	if (endNode->lock == false)
 	{
@@ -131,13 +143,13 @@ bool PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
 		}
 		else //No path found
 		{
-			Logger::LogWarning("PathFinder: No path could be found!");
+			Logger::LogWarning("PathFinder (", _parent->GetName(), "): No path could be found!");
 			return false;
 		}
 	}
 	else //End node is locked
 	{
-		//Logger::LogWarning("PathFinder: End node locked");
+		//Logger::LogWarning("PathFinder (", _parent->GetName(), "): End node locked");
 		return false;
 	}
 }
@@ -217,7 +229,7 @@ glm::vec3 PathFinder::GetNextNodePos(bool erase)
 	}
 	else
 	{
-		Logger::LogWarning("PathFinder: No generated nodes available");
+		Logger::LogWarning("PathFinder (", _parent->GetName(), "): No generated nodes available");
 		pos = glm::vec3(0, 0, 0); //No node available
 	}
 

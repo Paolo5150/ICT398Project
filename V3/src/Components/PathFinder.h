@@ -54,10 +54,11 @@ public:
 	*
 	* @param		start		location to start the pathfinding from
 	* @param		end			location to end the pathfinding at
+	* @param		allowClose	whether to allow nodes nearby if the selected node is locked
 	*
 	* @return		True if pathfinding was successful, false if no path could be found, or if the end node was locked.
 	*/
-	bool GeneratePath(glm::vec3 start, glm::vec3 end);
+	bool GeneratePath(glm::vec3 start, glm::vec3 end, bool allowClose = false);
 
 	/**
 	* @brief		Returns the path as a vector of PathNodes.

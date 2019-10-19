@@ -48,13 +48,13 @@ bool Social::Seek(AIEmotion* ai, AffordanceAgent* aa)
 			// Check if affordance is now out of range
 			/*if (glm::length2(toObj) < 30)
 			{*/
-			aa->ExecuteAffordanceUpdateCallback(aa->GetSelectedAffordanceName(), ai);
-			return true;
+			//aa->ExecuteAffordanceUpdateCallback(aa->GetSelectedAffordanceName(), ai);
+			//return true;
 			/*}
 			else
 				return false;*/
-		}
-		else*/
+		//}
+		//else
 			return false;
 	}
 }
