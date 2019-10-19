@@ -19,6 +19,7 @@ namespace
 	Rigidbody* rb;
 	glm::vec3 nextPos; //Next position to navigate to
 	float timer = 0; //Used to regenerate path every now and then
+	AffordanceObject* pathAffordanceObject; //Which affordance the current path is made from
 }
 
 void Joey::Test(AffordanceObject* obj)
@@ -66,7 +67,7 @@ void Joey::Update()
 	Move();
 
 	//NPCs GUI
-	if(glm::length2(player->transform.GetPosition() - transform.GetPosition()) < 50)
+	if (glm::length2(player->transform.GetPosition() - transform.GetPosition()) < 50)
 		aiE->EnableRenderStats();
 	else
 		aiE->DisableRenderStats();
@@ -121,12 +122,13 @@ void Joey::Move()
 		glm::vec3 targetPos = aa->selectedObj->gameObject->transform.GetGlobalPosition();
 		glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - aa->GetParent()->transform.GetGlobalPosition();
 
-		if (!pf->HasPath() || !pf->IsLastNode(PathFindingManager::Instance().ClosestNodeAt(targetPos.x, targetPos.y, targetPos.z)) || (Timer::GetTimeS() - timer) > 5) //If a path hasn't been generated yet, or the path does not lead to the target, or the timer has 'elapsed'
+		if (!pf->HasPath() || !pf->IsLastNode(PathFindingManager::Instance().ClosestNodeAt(targetPos.x, targetPos.y, targetPos.z)) || (Timer::GetTimeS() - timer) > 5 || aa->selectedObj != pathAffordanceObject) //If a path hasn't been generated yet, or the path does not lead to the target, or the timer has 'elapsed'
 		{
+			rb->SetActive(true);
 			pf->GeneratePath(transform.GetGlobalPosition(), targetPos);
 			nextPos = pf->GetNextNodePos();
-			nextPos.y = 1; //Set to 1 to clear any small deviations on the ground
 			timer = Timer::GetTimeS();
+			pathAffordanceObject = aa->selectedObj;
 		}
 
 		// Walk towards the affordance object
@@ -147,12 +149,12 @@ void Joey::Move()
 		else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
 		{
 			nextPos = pf->GetNextNodePos();
-			nextPos.y = 1; //Set to 1 to clear any small deviations on the ground
 		}
 		else if (glm::length2(toObj) < 20)
 		{
 			aa->ExecuteAffordanceEngageCallback(aa->GetSelectedAffordanceName(), aiE);
 			rb->SetVelocity(0, 0, 0);
+			rb->SetActive(false); //Turn off rigidbody so people can't push agent around
 		}
 	}
 	else
@@ -160,22 +162,18 @@ void Joey::Move()
 		if (aa->HasInUseObject())
 		{
 			aa->ExecuteAffordanceUpdateCallback(aa->GetSelectedAffordanceName(), aiE);
-			pf->ClearPath();
 		}
 		else
 		{
-			if (!pf->HasPath())
+			if (!pf->HasPath() || (Timer::GetTimeS() - timer) > 10)
 			{
-				bool success; //True when the path is generated successfully
-
-				do //Get a random free node
-				{
-					glm::vec3 pos = PathFindingManager::Instance().GetRandomFreeNode();
-					success = pf->GeneratePath(transform.GetGlobalPosition(), pos);
-				} while (success == false);
+				rb->SetActive(true);
+				glm::vec3 pos = PathFindingManager::Instance().GetRandomFreeNode();
+				pf->GeneratePath(transform.GetGlobalPosition(), pos);
 
 				nextPos = pf->GetNextNodePos();
-				nextPos.y = 1; //Set to 1 to clear any small deviations on the ground
+
+				timer = Timer::GetTimeS();
 			}
 
 			//Walk towards the wandering node
@@ -196,7 +194,6 @@ void Joey::Move()
 			else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
 			{
 				nextPos = pf->GetNextNodePos();
-				nextPos.y = 1; //Set to 1 to clear any small deviations on the ground
 			}
 			else
 			{
