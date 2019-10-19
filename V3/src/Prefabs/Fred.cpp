@@ -17,7 +17,8 @@ namespace
 	GameObject* player;
 	PathFinder* pf;
 	Rigidbody* rb;
-	glm::vec3 nextPos;
+	glm::vec3 nextPos; //Next position to navigate to
+	float timer = 0; //Used to regenerate path every now and then
 }
 
 void Fred::Test(AffordanceObject* obj)
@@ -129,79 +130,7 @@ void Fred::Update()
 		}
 	}
 
-	if (aa->GetSelectedAffordanceName() != "" && aa->selectedObj != nullptr)
-	{
-		glm::vec3 targetPos = aa->selectedObj->gameObject->transform.GetGlobalPosition();
-
-		if (!pf->HasPath() || !pf->IsLastNode(PathFindingManager::Instance().ClosestNodeAt(targetPos.x, targetPos.y, targetPos.z))) //If a path hasn't been generated yet, or the path does not lead to the target
-		{
-			pf->GeneratePath(transform.GetGlobalPosition(), targetPos);
-			nextPos = pf->GetNextNodePos();
-			nextPos.y = 0;
-		}
-
-		// Walk towards the affordance object
-		if (glm::length(nextPos - transform.GetGlobalPosition()) > 3.0) //Travel to node
-		{
-			transform.RotateYTowards(nextPos);
-			glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * 4.0f;
-			rb->SetRelativeVelocity(2.5, 0, 0);
-
-		}
-		else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
-		{
-			nextPos = pf->GetNextNodePos();
-			nextPos.y = 0;
-		}
-		else
-		{
-			aa->ExecuteAffordanceEngageCallback(aa->GetSelectedAffordanceName(), aiE);
-			rb->SetVelocity(0, 0, 0);
-		}
-	}
-	else
-	{
-		if (aa->HasInUseObject())
-		{
-			aa->ExecuteAffordanceUpdateCallback(aa->GetSelectedAffordanceName(), aiE);
-			pf->ClearPath();
-		}
-		else
-		{
-			if (!pf->HasPath())
-			{
-				bool success; //True when the path is generated successfully
-
-				do //Get a random free node
-				{
-					glm::vec3 pos = PathFindingManager::Instance().GetRandomFreeNode();
-					success = pf->GeneratePath(transform.GetGlobalPosition(), pos);
-				} while (success == false);
-
-				nextPos = pf->GetNextNodePos();
-				nextPos.y = 0;
-			}
-
-			//Walk towards the wandering node
-			if (glm::length(nextPos - transform.GetGlobalPosition()) > 3.0) //Travel to node
-			{
-				transform.RotateYTowards(nextPos);
-				glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * 4.0f;
-				rb->SetRelativeVelocity(2.5, 0, 0);
-
-			}
-			else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
-			{
-				nextPos = pf->GetNextNodePos();
-				nextPos.y = 0;
-			}
-			else
-			{
-				pf->ClearPath();
-				rb->SetVelocity(0, 0, 0);
-			}
-		}
-	}
+	Move();
 
 	//NPCs GUI
 	if (glm::length2(player->transform.GetPosition() - transform.GetPosition()) < 100)
@@ -234,7 +163,6 @@ void Fred::Start()
 
 void Fred::OnCollisionEnter(Collider* g, Collision& collision)
 {
-	//
 	if (g->GetParent()->GetName() == "Box")
 	{
 		AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Anger, Stimuli::StimuliType::Threat, 1.0, 1, 5.0, aiE);
@@ -254,3 +182,95 @@ void Fred::OnCollisionStay(Collider* g, Collision& collision)
 
 }
 
+void Fred::Move()
+{
+	if (aa->GetSelectedAffordanceName() != "" && aa->selectedObj != nullptr) //If there is an affordance to move to
+	{
+		glm::vec3 targetPos = aa->selectedObj->gameObject->transform.GetGlobalPosition();
+		glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - aa->GetParent()->transform.GetGlobalPosition();
+
+		if (!pf->HasPath() || !pf->IsLastNode(PathFindingManager::Instance().ClosestNodeAt(targetPos.x, targetPos.y, targetPos.z)) || (Timer::GetTimeS() - timer) > 5) //If a path hasn't been generated yet, or the path does not lead to the target, or the timer has 'elapsed'
+		{
+			pf->GeneratePath(transform.GetGlobalPosition(), targetPos);
+			nextPos = pf->GetNextNodePos();
+			nextPos.y = 1; //Set to 1 to clear any small deviations on the ground
+			timer = Timer::GetTimeS();
+		}
+
+		// Walk towards the affordance object
+		if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node
+		{
+			//Get direction to rotate toward, (similar code as RotateYToward)
+			glm::vec3 toTarget = nextPos - transform.GetGlobalPosition();
+			int cross = 0;
+			float angle = glm::degrees(glm::angle(transform.GetLocalFront(), toTarget));
+			if (!(fabs(angle) < 1.0)) //Tolerance
+				cross = glm::sign(glm::cross(transform.GetLocalFront(), toTarget)).y;
+
+			glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * 4.0f;
+
+			rb->SetVelocity(move);
+			rb->SetAngularVelocity(0, (angle * cross) * 2, 0);
+		}
+		else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
+		{
+			nextPos = pf->GetNextNodePos();
+			nextPos.y = 1; //Set to 1 to clear any small deviations on the ground
+		}
+		else if (glm::length2(toObj) < 20)
+		{
+			aa->ExecuteAffordanceEngageCallback(aa->GetSelectedAffordanceName(), aiE);
+			rb->SetVelocity(0, 0, 0);
+		}
+	}
+	else
+	{
+		if (aa->HasInUseObject())
+		{
+			aa->ExecuteAffordanceUpdateCallback(aa->GetSelectedAffordanceName(), aiE);
+			pf->ClearPath();
+		}
+		else
+		{
+			if (!pf->HasPath())
+			{
+				bool success; //True when the path is generated successfully
+
+				do //Get a random free node
+				{
+					glm::vec3 pos = PathFindingManager::Instance().GetRandomFreeNode();
+					success = pf->GeneratePath(transform.GetGlobalPosition(), pos);
+				} while (success == false);
+
+				nextPos = pf->GetNextNodePos();
+				nextPos.y = 1; //Set to 1 to clear any small deviations on the ground
+			}
+
+			//Walk towards the wandering node
+			if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node
+			{
+				//Get direction to rotate toward, (similar code as RotateYToward)
+				glm::vec3 toTarget = nextPos - transform.GetGlobalPosition();
+				int cross = 0;
+				float angle = glm::degrees(glm::angle(transform.GetLocalFront(), toTarget));
+				if (!(fabs(angle) < 1.0)) //Tolerance
+					cross = glm::sign(glm::cross(transform.GetLocalFront(), toTarget)).y;
+
+				glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * 4.0f;
+
+				rb->SetVelocity(move);
+				rb->SetAngularVelocity(0, (angle * cross) * 2, 0);
+			}
+			else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
+			{
+				nextPos = pf->GetNextNodePos();
+				nextPos.y = 1; //Set to 1 to clear any small deviations on the ground
+			}
+			else
+			{
+				pf->ClearPath();
+				rb->SetVelocity(0, 0, 0);
+			}
+		}
+	}
+}
