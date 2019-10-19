@@ -120,7 +120,10 @@ bool PathFinder::GeneratePath(glm::vec3 start, glm::vec3 end)
 
 			for (unsigned i = 1; i < nodePath.size(); i++) //Convert nodes into positions in the world, skip start node
 			{
-				path.push_back(nodePath.at(i)->transform.GetGlobalPosition());
+				glm::vec3 pos = nodePath.at(i)->transform.GetGlobalPosition();
+				pos.y = 1; //Move position to ground level, remove for 3d grids
+
+				path.push_back(pos);
 			}
 
 			return true; //Success!

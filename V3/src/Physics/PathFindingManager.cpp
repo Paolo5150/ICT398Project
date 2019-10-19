@@ -97,7 +97,7 @@ glm::vec3 PathFindingManager::GetRandomFreeNode()
 
 		PathNode* pn = nodeMap.at(randomX).at(randomY);
 
-		if (pn->cost <= 0)
+		if (pn->cost == 0 && pn->lock == false)
 		{
 			valid = 1;
 			vec = pn->transform.GetPosition();
