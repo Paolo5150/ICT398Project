@@ -4,6 +4,7 @@
 #include "..\Components\Rigidbody.h"
 #include "..\Rendering\Texture2D.h"
 #include "..\Components\MeshRenderer.h"
+#include "..\Components\AIEmotion.h"
 
 class Billquad :
 	public GameObject
@@ -19,6 +20,7 @@ public:
 
 	void SetTexture(Texture2D* texture);
 	void RenderForSeconds(float seconds, float coolDown = 0);
+	void CheckEmotions(AIEmotion* aiE);
 
 
 private:

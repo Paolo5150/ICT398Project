@@ -29,6 +29,28 @@ Billquad::~Billquad()
 
 }
 
+void Billquad::CheckEmotions(AIEmotion* aiE)
+{
+	auto it = aiE->GetNeeds().begin();
+
+	// Check for needs that are below their threshold
+	for (; it != aiE->GetNeeds().end(); it++)
+	{
+		if (aiE->GetNeedValue(it->first) < it->second->GetLowSeekThreshold() || aiE->GetNeedValue(it->first) > it->second->GetHighSeekThreshold())
+		{
+			// If found one, check if there's a texture with the need's name
+			Texture2D* t = ContentManager::Instance().GetAsset<Texture2D>(it->second->GetName());
+			if (t)
+			{
+				//If there is, display the emotion
+				SetTexture(t);
+				RenderForSeconds(2, 2);
+			}
+		}
+	}
+}
+
+
 void Billquad::Update()
 {
 	GameObject::Update();
