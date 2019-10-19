@@ -45,6 +45,7 @@ void Billquad::CheckEmotions(AIEmotion* aiE)
 			if (t)
 			{
 				AddToQ(t);
+			//	Logger::LogInfo("Added texture", it->second->GetName());
 			}
 		}
 		else if (aiE->GetNeedValue(it->first) > it->second->GetHighSeekThreshold())
@@ -55,6 +56,8 @@ void Billquad::CheckEmotions(AIEmotion* aiE)
 			if (t)
 			{
 				AddToQ(t);
+			//	Logger::LogInfo("Added texture", it->second->GetName());
+
 			}
 		}
 	}
