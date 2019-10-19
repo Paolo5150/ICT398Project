@@ -40,12 +40,6 @@ bool Rest::Seek(AIEmotion* ai, AffordanceAgent* aa)
 	}
 	else
 	{
-		if (aa->HasInUseObject())
-		{
-			aa->ExecuteAffordanceUpdateCallback(aa->GetSelectedAffordanceName(), ai);
-			return true;
-		}
-		else
 			return false;
 	}
 }

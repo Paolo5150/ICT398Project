@@ -4,6 +4,7 @@
 #include "../Core/Timer.h"
 #include "../GUI/GUIManager.h"
 #include "../GUI/Elements/GUIText.h"
+#include "AffordanceAgent.h"
 
 AIEmotion::AIEmotion() : Component("Emotion")
 {
@@ -229,30 +230,41 @@ void AIEmotion::SeekNeeds()
 		}
 		it++;
 	}
+	
 
 	//Operate on need satisfaction priority list 
 	if (!priorityOrderedNeeds.empty())
 	{
 		std::list<Need*>::iterator it = priorityOrderedNeeds.begin();
 
+
 		while (it != priorityOrderedNeeds.end())
 		{
-			if (currentlySeekedNeed != nullptr && currentlySeekedNeed != (*it))
-			{
-				currentlySeekedNeed->FinishSeek(this, aa);
-				currentlySeekedNeed = nullptr;
-			}
 			if ((*it)->Seek(this, aa))
 			{
-				currentlySeekedNeed = (*it);
-				it = priorityOrderedNeeds.end();
-			}
-			else
-			{
-				if (currentlySeekedNeed == (*it))
+
+				if (currentlySeekedNeed != nullptr && currentlySeekedNeed != (*it))
 				{
+					//Logger::LogInfo("Finish seek", currentlySeekedNeed->GetName());
 					currentlySeekedNeed->FinishSeek(this, aa);
 					currentlySeekedNeed = nullptr;
+				}
+
+				currentlySeekedNeed = (*it);
+				it = priorityOrderedNeeds.end();
+			}	
+	
+			else
+			{
+				if (!aa->HasInUseObject())
+				{
+					if (currentlySeekedNeed == (*it))
+					{
+					//	Logger::LogInfo("Finish seek OTHER", currentlySeekedNeed->GetName());
+
+						currentlySeekedNeed->FinishSeek(this, aa);
+						currentlySeekedNeed = nullptr;
+					}
 				}
 				it++;
 			}

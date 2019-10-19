@@ -41,7 +41,7 @@ bool Social::Seek(AIEmotion* ai, AffordanceAgent* aa)
 	}
 	else
 	{
-		if (aa->HasInUseObject())
+		/*if (aa->HasInUseObject())
 		{
 			glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - aa->GetParent()->transform.GetGlobalPosition();
 
@@ -54,7 +54,7 @@ bool Social::Seek(AIEmotion* ai, AffordanceAgent* aa)
 			else
 				return false;
 		}
-		else
+		else*/
 			return false;
 	}
 }

@@ -1,6 +1,10 @@
 #include "pch.h"
 #include "AffordanceAgent.h"
-
+#include "AIEmotion.h"
+namespace
+{
+	AIEmotion* ai;
+}
 
 AffordanceAgent::AffordanceAgent() : Component("AffordanceAgent")
 {
@@ -112,6 +116,13 @@ void AffordanceAgent::Update()
 				selectedObj = nullptr;
 			}
 		}
+	}
+
+	if (inUseObj != nullptr)
+	{
+		ai = GetParent()->GetComponent<AIEmotion>("Emotion");
+		ExecuteAffordanceUpdateCallback(GetSelectedAffordanceName(), ai);
+
 	}
 }
 
