@@ -56,7 +56,7 @@ Fred::Fred() : GameObject("Fred"), AffordanceObject(this)
 	});
 
 	aa->AddAffordanceDisengageCallback("SitAffordance",[&]() {
-		Logger::LogInfo("SitAffordance disengaged");
+		Logger::LogInfo("Fred SitAffordance disengaged");
 
 		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition() - glm::vec3(0, 1, 0));
 	});
