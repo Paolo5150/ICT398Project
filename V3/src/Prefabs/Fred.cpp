@@ -72,8 +72,7 @@ Fred::Fred() : GameObject("Fred"), AffordanceObject(this)
 	aa->AddAffordanceDisengageCallback("LaydownAffordance", [&]() {
 		Logger::LogInfo("LaydownAffordance disengaged");
 		transform.RotateBy(-90, transform.GetLocalRight());
-		billquad->SetTexture(ContentManager::Instance().GetAsset<Texture2D>("happy"));
-		billquad->RenderForSeconds(2);
+
 	});
 
 	aa->AddAffordanceEngageCallback("ThirstAffordance", [&](AffordanceObject*obj) {});

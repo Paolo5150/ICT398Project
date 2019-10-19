@@ -5,7 +5,7 @@
 #include "..\..\Core\Timer.h"
 
 
-Rest::Rest(float startValue, int priority, float positiveGainMultiplier, float negativeGainMultiplier) : Need(NeedType::Rest, "Rest", startValue, 20, 50, positiveGainMultiplier, negativeGainMultiplier, priority)
+Rest::Rest(float startValue, int priority, float positiveGainMultiplier, float negativeGainMultiplier) : Need(NeedType::Rest, "Rest", startValue, 30, 65, positiveGainMultiplier, negativeGainMultiplier, priority)
 {
 }
 
