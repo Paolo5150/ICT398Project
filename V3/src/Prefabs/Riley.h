@@ -22,5 +22,6 @@ public:
 
 private:
 	Billquad* billquad;
+	void Move(); //Navigates to affordances or wanders if no affordance is selected
 
 };

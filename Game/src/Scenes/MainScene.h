@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene/Scene.h"
 
+
 class GUIImage;
 class Player;
 class GUIProgressBar;
@@ -52,6 +53,7 @@ public:
 	void Initialize() override;
 
 	void Start() override;
+
 	/**
 	* @brief		Update objects in the scene.
 	*/

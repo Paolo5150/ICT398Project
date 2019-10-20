@@ -4,6 +4,7 @@
 #include "..\Components\BoxCollider.h"
 #include "..\Components\Rigidbody.h"
 #include "..\Components\AffordanceAgent.h"
+#include "..\Components\PathFinder.h"
 #include "..\Affordances\RestAffordance.h"
 #include "..\Scene\SceneManager.h"
 
@@ -12,7 +13,12 @@ namespace
 	AffordanceAgent* aa;
 	GameObject* player;
 	AIEmotion* aiE;
-
+	PathFinder* pf;
+	Rigidbody* rb;
+	glm::vec3 nextPos; //Next position to navigate to
+	float timer = 0; //Used to regenerate path every now and then
+	AffordanceObject* pathAffordanceObject; //Which affordance the current path is made from
+	bool waiting = false; //Waiting while wandering
 }
 
 void Riley::Test(AffordanceObject* obj)
@@ -45,7 +51,7 @@ Riley::Riley() : GameObject("Riley"), AffordanceObject(this)
 	SceneManager::Instance().GetCurrentScene().AddGameObject(billquad);
 
 	aa = new AffordanceAgent();
-	aa->AddAffordanceEngageCallback("SitAffordance",[&](AffordanceObject*obj) {
+	aa->AddAffordanceEngageCallback("SitAffordance", [&](AffordanceObject*obj) {
 
 		transform.SetPosition(obj->gameObject->transform.GetPosition() + glm::vec3(0, 1, 0));
 	});
@@ -53,14 +59,17 @@ Riley::Riley() : GameObject("Riley"), AffordanceObject(this)
 	aa->AddAffordanceUpdateCallback("SitAffordance", [&]() {
 	});
 
-	aa->AddAffordanceDisengageCallback("SitAffordance",[&]() {
+	aa->AddAffordanceDisengageCallback("SitAffordance", [&]() {
 
-		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition() - glm::vec3(0, 1, 0));
+		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition() - glm::vec3(2, 1, 0));
 	});
 
 	aa->AddAffordanceEngageCallback("LaydownAffordance", [&](AffordanceObject*obj) {
 		//Logger::LogInfo("LaydownAffordance engaged");
 		transform.RotateBy(90, transform.GetLocalRight());
+		glm::vec3 pos = obj->gameObject->transform.GetGlobalPosition();
+		pos.y += 1;
+		transform.SetPosition(pos);
 	});
 
 	aa->AddAffordanceUpdateCallback("LaydownAffordance", [&]() {
@@ -75,7 +84,11 @@ Riley::Riley() : GameObject("Riley"), AffordanceObject(this)
 	aa->AddAffordanceEngageCallback("SocialAffordance", [&](AffordanceObject*obj) {});
 	aa->AddAffordanceUpdateCallback("SocialAffordance", [&]() {});
 	aa->AddAffordanceDisengageCallback("SocialAffordance", [&]() {});
-		
+
+	aa->AddAffordanceEngageCallback("ThirstAffordance", [&](AffordanceObject*obj) {});
+	aa->AddAffordanceUpdateCallback("ThirstAffordance", [&]() {});
+	aa->AddAffordanceDisengageCallback("ThirstAffordance", [&]() {});
+
 
 	AddComponent(aa);
 
@@ -96,6 +109,8 @@ void Riley::Update()
 
 	billquad->CheckEmotions(aiE);
 
+	Move();
+
 	//NPCs GUI
 	if (glm::length2(player->transform.GetPosition() - transform.GetPosition()) < 100)
 		aiE->EnableRenderStats();
@@ -109,10 +124,15 @@ void Riley::Start()
 
 	LoadCollidersFromFile("Assets\\Colliders\\Riley.txt");
 
-	/*Rigidbody* rb = new Rigidbody();
-	rb->UseGravity(true);
+	rb = new Rigidbody();
+	rb->UseGravity(0);
+	rb->SetUseDynamicPhysics(1);
+	rb->SetIgnoreRotation(1);
 
-	AddComponent(rb);*/
+	AddComponent(rb);
+
+	pf = new PathFinder();
+	AddComponent(pf);
 
 	aiE = new AIEmotion("Riley", "depressive");
 	AddComponent(aiE);
@@ -123,7 +143,7 @@ void Riley::Start()
 
 void Riley::OnCollisionEnter(Collider* g, Collision& collision)
 {
-//	Logger::LogInfo("Riley Collided ENTER against", g->GetName());
+	//	Logger::LogInfo("Riley Collided ENTER against", g->GetName());
 
 }
 
@@ -138,3 +158,99 @@ void Riley::OnCollisionStay(Collider* g, Collision& collision)
 
 }
 
+void Riley::Move()
+{
+	if (aa->GetSelectedAffordanceName() != "" && aa->selectedObj != nullptr && !aa->HasInUseObject()) //If there is an affordance to move to
+	{
+		glm::vec3 targetPos = aa->selectedObj->gameObject->transform.GetGlobalPosition();
+		glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - aa->GetParent()->transform.GetGlobalPosition();
+		bool pathSuccess = false; //Whether the path was successfully generated
+
+		if (!pf->HasPath() || !pf->IsLastNode(PathFindingManager::Instance().ClosestNodeAt(targetPos.x, targetPos.y, targetPos.z)) || (Timer::GetTimeS() - timer) > 5 || aa->selectedObj != pathAffordanceObject) //If a path hasn't been generated yet, or the path does not lead to the target, or the timer has 'elapsed'
+		{
+			waiting = false;
+			rb->SetActive(true);
+			pf->GeneratePath(transform.GetGlobalPosition(), targetPos, true);
+			nextPos = pf->GetNextNodePos();
+			timer = Timer::GetTimeS();
+			pathAffordanceObject = aa->selectedObj;
+		}
+
+		if (glm::length2(toObj) > 80)
+		{
+
+			// Walk towards the affordance object
+			if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node
+			{
+				//Get direction to rotate toward, (similar code as RotateYToward)
+				glm::vec3 toTarget = nextPos - transform.GetGlobalPosition();
+				int cross = 0;
+				float angle = glm::degrees(glm::angle(transform.GetLocalFront(), toTarget));
+				if (!(fabs(angle) < 1.0)) //Tolerance
+					cross = glm::sign(glm::cross(transform.GetLocalFront(), toTarget)).y;
+
+				glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * 8.0f;
+
+				rb->SetVelocity(move);
+				rb->SetAngularVelocity(0, (angle * cross) * 2, 0);
+			}
+			else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
+			{
+				nextPos = pf->GetNextNodePos();
+			}
+		}
+		else
+		{
+			aa->ExecuteAffordanceEngageCallback(aa->GetSelectedAffordanceName(), aiE);
+			rb->SetVelocity(0, 0, 0);
+			rb->SetActive(false); //Turn off rigidbody so people can't push agent around
+		}
+	}
+	else
+	{
+		if (!waiting)
+		{
+			if (!pf->HasPath() || (Timer::GetTimeS() - timer) > 20)
+			{
+				rb->SetActive(true);
+				glm::vec3 pos = PathFindingManager::Instance().GetRandomFreeNode();
+				pf->GeneratePath(transform.GetGlobalPosition(), pos);
+
+				nextPos = pf->GetNextNodePos();
+
+				timer = Timer::GetTimeS();
+			}
+
+			//Walk towards the wandering node
+			if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node
+			{
+				//Get direction to rotate toward, (similar code as RotateYToward)
+				glm::vec3 toTarget = nextPos - transform.GetGlobalPosition();
+				int cross = 0;
+				float angle = glm::degrees(glm::angle(transform.GetLocalFront(), toTarget));
+				if (!(fabs(angle) < 1.0)) //Tolerance
+					cross = glm::sign(glm::cross(transform.GetLocalFront(), toTarget)).y;
+
+				glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * 4.0f;
+
+				rb->SetVelocity(move);
+				rb->SetAngularVelocity(0, (angle * cross) * 2, 0);
+			}
+			else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
+			{
+				nextPos = pf->GetNextNodePos();
+			}
+			else
+			{
+				waiting = true;
+				timer = Timer::GetTimeS();
+				pf->ClearPath();
+				rb->SetVelocity(0, 0, 0);
+			}
+		}
+		else if ((Timer::GetTimeS() - timer) > 5)
+		{
+			waiting = false;
+		}
+	}
+}

@@ -50,7 +50,7 @@ void MainScene::LoadAssets() {
 	GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(loadingBar);
 
 	GUIManager::Instance().SetColorBuffer(0.8, 0.8, 0.8);
-	GUIManager::Instance().Render(true,true);
+	GUIManager::Instance().Render(true, true);
 
 	text->message = "Loading uncomfortable feelings...";
 	loadingBar->percentage = 0.2;
@@ -88,7 +88,7 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\Models\\LandfillBin\\textures\\LB_Sides.png", 0);
 
 	ContentManager::Instance().LoadTexture("Assets\\Models\\RecycleBin\\textures\\RB_Frame.png", 0);
-	ContentManager::Instance().LoadTexture("Assets\\Models\\RecycleBin\\textures\\RB_Sides.png", 0);	
+	ContentManager::Instance().LoadTexture("Assets\\Models\\RecycleBin\\textures\\RB_Sides.png", 0);
 
 	ContentManager::Instance().LoadTexture("Assets\\Models\\DrinkingFountain\\textures\\fountain.png", 0);
 
@@ -99,7 +99,7 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_albedo.jpg", 1);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_roughness.jpg", 1);
 	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_metallic.jpg", 1);
-	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_normal.jpg", 1);	
+	ContentManager::Instance().LoadTexture("Assets\\PBRMaterials\\Iron\\iron_normal.jpg", 1);
 
 	text->message = "Instantiating sense of despair...";
 	loadingBar->percentage = 0.5;
@@ -133,7 +133,7 @@ void MainScene::LoadAssets() {
 	loadingBar->percentage = 0.9;
 	GUIManager::Instance().Render(true, true);
 	// Load this stuff as preserved so they can be used in the exit scene (so there's not much loading when transitioning)
-	ContentManager::Instance().LoadModel("Assets\\Models\\Paolo\\paolo.fbx", false,true);
+	ContentManager::Instance().LoadModel("Assets\\Models\\Paolo\\paolo.fbx", false, true);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Drew\\drew.fbx", false, true);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Dylan\\dylan.fbx", false, true);
 
@@ -167,16 +167,16 @@ void MainScene::Initialize() {
 	cam = new MainCamera();
 	cam->transform.SetPosition(0, 10, 40);
 	cam->transform.SetRotation(0, 180, 0);
-	
+
 	DirectionalLight* dirLight = new DirectionalLight(false);
-	dirLight->transform.SetRotation(20,114,-4);
+	dirLight->transform.SetRotation(20, 114, -4);
 	dirLight->SetDiffuseColor(1.0, 0.9, 0.9);
 	dirLight->SetSpecularColor(1.0, 0.8, 0.4);
 	dirLight->SetIntensity(1.5);
 
 	DirectionalLight* dirLight2 = new DirectionalLight(false);
-	dirLight2->transform.SetRotation(0, -60,0);
-	dirLight2->SetSpecularColor(0,0,0);
+	dirLight2->transform.SetRotation(0, -60, 0);
+	dirLight2->SetSpecularColor(0, 0, 0);
 	dirLight2->SetIntensity(1.5);
 
 	DirectionalLight* dirLight3 = new DirectionalLight(false);
@@ -206,7 +206,7 @@ void MainScene::Start()
 	PathFindingManager::Instance().Generate(0, 0, 180, 180, 5);
 	PathFindingManager::Instance().Start();
 
-	PhysicsWorld::Instance().InitializeQuadtree(0, 0,100, 100);
+	PhysicsWorld::Instance().InitializeQuadtree(0, 0, 100, 100);
 	PhysicsWorld::Instance().FillQuadtree(1); // Fill static quadtree
 	PhysicsWorld::Instance().PerformCollisions(1);
 

@@ -68,6 +68,11 @@ public:
 	std::vector<PathNode*> neighbors;
 
 	/**
+	* @brief		Parent node used for pathfinding
+	*/
+	PathNode* parentNode;
+
+	/**
 	* @brief		The distance from the previous closest node
 	*/
 	double distanceFromPrevious;
@@ -78,7 +83,17 @@ public:
 	double distanceFromTarget;
 
 	/**
-	* @brief		The traversal cost of the noden
+	* @brief		The sum of distanceFromPrevious, distanceFromTarget, and cost
+	*/
+	double totalCost;
+
+	/**
+	* @brief		Represents whether this node is currently used as the goal of a pathfinding component
+	*/
+	bool lock;
+
+	/**
+	* @brief		The traversal cost of the node
 	*/
 	double cost;
 

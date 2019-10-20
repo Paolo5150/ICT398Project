@@ -96,6 +96,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Bullet\include;$(SolutionDir)Dependencies\ImGui;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\Luabind\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\soil\soil\include;$(SolutionDir)\Dependencies\glm;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -167,6 +168,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Dependencies\qu3e\src\q3.h" />
+    <ClInclude Include="src\Components\PathFinder.h" />
     <ClInclude Include="src\Affordances\Affordance.h" />
     <ClInclude Include="src\Affordances\AffordanceFactory.h" />
     <ClInclude Include="src\Affordances\AffordanceManager.h" />
@@ -310,6 +312,7 @@
     <ClInclude Include="src\Utils\UBOLibrary.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Components\PathFinder.cpp" />
     <ClCompile Include="src\Affordances\Affordance.cpp" />
     <ClCompile Include="src\Affordances\AffordanceManager.cpp" />
     <ClCompile Include="src\Affordances\AffordanceObject.cpp" />

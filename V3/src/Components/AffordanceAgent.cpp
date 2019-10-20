@@ -115,6 +115,7 @@ void AffordanceAgent::Update()
 	{
 		if (selectedObj->GetInUseAffordanceName() != "")
 		{
+			//LookForBestScoreAffordanceObjectInRange(selectedObj->GetInUseAffordanceName(),20);
 			// If the selected affordance object is in use by someone else, unselect it
 			if (!selectedObj->IsAvailableForAffordance(selectedObj->GetInUseAffordanceName()) && !selectedObj->IsGameObjectAUser(_parent))
 			{
@@ -127,6 +128,9 @@ void AffordanceAgent::Update()
 	{
 		ai = GetParent()->GetComponent<AIEmotion>("Emotion");
 		ExecuteAffordanceUpdateCallback(GetSelectedAffordanceName(), ai);
+
+		if (glm::length(inUseObj->gameObject->transform.GetGlobalPosition() - GetParent()->transform.GetGlobalPosition()) > 10)
+			ExecuteAffordanceDisengageCallback(GetSelectedAffordanceName());
 
 	}
 }
