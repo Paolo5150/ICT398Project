@@ -180,7 +180,7 @@ void Fred::Move()
 			pathAffordanceObject = aa->selectedObj;
 		}
 
-		if (glm::length2(toObj) > 30)
+		if (glm::length2(toObj) > 50)
 		{
 			// Walk towards the affordance object
 			if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node

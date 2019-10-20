@@ -145,18 +145,18 @@ void PathFindingManager::Generate(int centerX, int centerY, int sizeX, int sizeY
 // Comment this out when releasing, not needed (used for rendering the nodes)
 void PathFindingManager::EngineUpdate()
 {
-	/*for (unsigned i = 0; i < pathNodes.size(); i++)
+	for (unsigned i = 0; i < pathNodes.size(); i++)
 	{
 		pathNodes[i]->EngineUpdate();
-	}*/
+	}
 }
 // Comment this out when releasing, not needed (used for rendering the nodes)
 void PathFindingManager::Update()
 {
-	/*for (unsigned i = 0; i < pathNodes.size(); i++)
+	for (unsigned i = 0; i < pathNodes.size(); i++)
 	{
 		pathNodes[i]->Update();
-	}*/
+	}
 }
 
 
@@ -167,7 +167,7 @@ void PathFindingManager::Start()
 	{
 
 		pathNodes[i]->Start();
-		pathNodes[i]->bc->enableRender = 0;
+		pathNodes[i]->bc->enableRender = 1;
 		nodesQT->AddElement(pathNodes[i].get(), pathNodes[i]->bc->transform.GetGlobalPosition().x, pathNodes[i]->bc->transform.GetGlobalPosition().z, pathNodes[i]->bc->transform.GetGlobalScale().x, pathNodes[i]->bc->transform.GetGlobalScale().z);
 	}
 
