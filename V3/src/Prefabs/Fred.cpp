@@ -54,7 +54,7 @@ Fred::Fred() : GameObject("Fred"), AffordanceObject(this)
 	aa = new AffordanceAgent();
 
 	aa->AddAffordanceEngageCallback("SitAffordance", [&](AffordanceObject*obj) {
-		Logger::LogInfo("SitAffordance engaged");
+		//Logger::LogInfo("SitAffordance engaged");
 		transform.SetPosition(obj->gameObject->transform.GetPosition() + glm::vec3(0, 1, 0));
 	});
 
@@ -64,7 +64,7 @@ Fred::Fred() : GameObject("Fred"), AffordanceObject(this)
 	aa->AddAffordanceDisengageCallback("SitAffordance",[&]() {
 		//Logger::LogInfo("Fred SitAffordance disengaged");
 
-		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition() - glm::vec3(0, 1, 0));
+		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition() - glm::vec3(2, 1, 0));
 	});
 
 	aa->AddAffordanceEngageCallback("LaydownAffordance",[&](AffordanceObject*obj) {
@@ -83,6 +83,8 @@ Fred::Fred() : GameObject("Fred"), AffordanceObject(this)
 	aa->AddAffordanceDisengageCallback("LaydownAffordance", [&]() {
 		//Logger::LogInfo("Fred LaydownAffordance disengaged");
 		transform.RotateBy(-90, transform.GetLocalRight());
+		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition()  + aa->selectedObj->gameObject->transform.GetLocalFront() * 8.0f);
+
 
 	});
 
@@ -180,7 +182,7 @@ void Fred::Move()
 			pathAffordanceObject = aa->selectedObj;
 		}
 
-		if (glm::length2(toObj) > 80)
+		if (glm::length2(toObj) > 50)
 		{
 			// Walk towards the affordance object
 			if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node

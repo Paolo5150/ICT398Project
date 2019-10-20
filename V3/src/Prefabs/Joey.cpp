@@ -65,8 +65,10 @@ Joey::Joey() : GameObject("Joey")
 	});
 
 	aa->AddAffordanceDisengageCallback("LaydownAffordance", [&]() {
-		Logger::LogInfo("LaydownAffordance disengaged"); 
+		//Logger::LogInfo("LaydownAffordance disengaged"); 
 		transform.RotateBy(-90, transform.GetLocalRight());
+		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition() - glm::vec3(2, 1, 0));
+
 	});
 
 
