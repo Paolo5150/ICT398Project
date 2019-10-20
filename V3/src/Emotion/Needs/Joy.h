@@ -1,6 +1,17 @@
 #pragma once
 #include "..\Need.h"
 
+/**
+* @class Joy
+* @brief Child class of Need for tracking AI joy
+*
+* @author Drew Paridaens
+* @version 01
+* @date 06/10/2019
+*
+*
+* @bug No known bugs.
+*/
 class Joy :
 	public Need
 {

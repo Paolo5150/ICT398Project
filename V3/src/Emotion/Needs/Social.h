@@ -1,6 +1,17 @@
 #pragma once
 #include "..\Need.h"
 
+/**
+* @class Social
+* @brief Child class of Need for tracking AI social needs
+*
+* @author Drew Paridaens
+* @version 01
+* @date 12/10/2019
+*
+*
+* @bug No known bugs.
+*/
 class Social :
 	public Need
 {

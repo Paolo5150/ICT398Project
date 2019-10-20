@@ -111,7 +111,7 @@ bool AIEmotion::GetSeeking()
 	return seeking;
 }
 
-void AIEmotion::SetSeeking(float newSeeking)
+void AIEmotion::SetSeeking(bool newSeeking)
 {
 	seeking = newSeeking;
 }

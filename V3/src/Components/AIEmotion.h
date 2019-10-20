@@ -29,21 +29,92 @@ class AIEmotion :
 	public Component
 {
 public:
+/**
+* @brief		Creates a default AIEmotion component
+*
+*/
 	AIEmotion();
+/**
+* @brief		Creates a parameterized AIEmotion component
+*
+* @param		name			The name for this AI
+* @param		personality		The name of the personality file for this AI
+*/
 	AIEmotion(std::string name, std::string personality);
+/**
+* @brief		Destroys the AIComponent
+*
+*/
 	~AIEmotion();
+/**
+* @brief		Adds a stimuli to this AIEmotion component
+*
+* @param		stimuli			The stimuli object to add
+*/
 	void AddStimuli(const Stimuli& stimuli);
+/**
+* @brief		Returns whether this AI has the given NeedType
+*
+* @param		needType		The need type to check for
+*
+* @return		True if this AIEmotion component has the need type
+*/
 	bool HasNeedType(Need::NeedType needType);
+/**
+* @brief		Returns the name of the AIEmotion component
+*
+* @return		name
+*/
 	std::string GetName();
+/**
+* @brief		Returns the value this object has for the given need type
+*
+* @param		needType		The need type to get the value of
+*
+* @return		The value of the given need type for this object
+*/
 	float GetNeedValue(Need::NeedType needType);
+/**
+* @brief		Override to call when added to a gameobject
+*
+* @param		go			references to the calling gameobject
+*/
 	void OnAttach(GameObject* go) override;
+/**
+* @brief		override to call on scene start
+*/
 	void Start() override;
+/**
+* @brief		override to call in engine update phase
+*/
 	void EngineUpdate() override;
+/**
+* @brief		Returns whether this object is set to seek to satisfy it's need
+*
+* @return		whether this object is set to seek to satisfy it's need
+*/
 	bool GetSeeking();
-	void SetSeeking(float newSeeking);
+/**
+* @brief		Sets whether this object will seek to satisfy it's needs
+*
+* @param		newSeeking		boolean whether this object will seek to satisfy it's needs
+*/
+	void SetSeeking(bool newSeeking);
+/**
+* @brief		Returns a reference to the map of needs for this object
+*
+* @return		reference to the map of needs for this object
+*/
 	std::map<Need::NeedType, std::unique_ptr<Need>>& GetNeeds() { return needs; };
-
+/**
+* @brief		Allows the need stats of the object to be rendered
+*
+*/
 	void EnableRenderStats();
+/**
+* @brief		Prevents the need stats of the object from being rendered
+*
+*/
 	void DisableRenderStats();
 
 private:
@@ -56,7 +127,15 @@ private:
 	std::map<Need::NeedType, std::unique_ptr<Need>> needs = std::map<Need::NeedType, std::unique_ptr<Need>>();
 	std::list<std::unique_ptr<Trait>> traits = std::list<std::unique_ptr<Trait>>();
 	std::list<std::unique_ptr<Stimuli>> effectedStimuli = std::list<std::unique_ptr<Stimuli>>();
+/**
+* @brief		Helper method to update the stimuli in the objects list and apply them
+*
+*/
 	void UpdateStimuli();
+/**
+* @brief		Helper method to determine the current need to pursue satisfaction of
+*
+*/
 	void SeekNeeds();
 
 	bool isRenderingStats;
