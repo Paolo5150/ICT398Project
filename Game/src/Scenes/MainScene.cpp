@@ -64,7 +64,7 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadModel("Assets\\Models\\BushCourt\\bushcourt.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Lantern\\lantern.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Crate\\crate.obj",false, false);
-	ContentManager::Instance().LoadModel("Assets\\Models\\DrinkingFountain\\fountain.obj", false, false);
+	ContentManager::Instance().LoadModel("Assets\\Models\\Fountain\\fountain.obj", false, false);
 
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\Rest_low.png", false);
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\happy.png", false);

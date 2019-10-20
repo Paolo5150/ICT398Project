@@ -8,7 +8,7 @@
 DrinkingFountain::DrinkingFountain() : GameObject("DrinkingFountain"), AffordanceObject(this)
 {
 	SetIsStatic(1);
-	ContentManager::Instance().GetAsset<Model>("DrinkingFountain")->PopulateGameObject(this);
+	ContentManager::Instance().GetAsset<Model>("Fountain")->PopulateGameObject(this);
 	transform.SetScale(0.55);
 	Material m;
 	m.SetShader(ContentManager::Instance().GetAsset<Shader>("PBR"));
