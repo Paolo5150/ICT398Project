@@ -5,7 +5,7 @@
 #include "..\..\Components\AffordanceAgent.h"
 #include "..\..\Core\Timer.h"
 
-Social::Social(float startValue, int priority, float positiveGainMultiplier, float negativeGainMultiplier) : Need(NeedType::Social, "Social", startValue, 70, 99, positiveGainMultiplier, negativeGainMultiplier, priority)
+Social::Social(float startValue, int priority, float positiveGainMultiplier, float negativeGainMultiplier) : Need(NeedType::Social, "Social", startValue, 50, 70, positiveGainMultiplier, negativeGainMultiplier, priority)
 {
 }
 

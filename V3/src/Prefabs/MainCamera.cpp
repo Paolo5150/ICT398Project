@@ -63,8 +63,6 @@ void MainCamera::Start()
 
 	});
 	LoadAffordancesFromFile("Assets\\Affordances\\people_affordances.txt");
-	GetPerceivedAffordances()[0]->SetScore(100);
-
 }
 
 void MainCamera::OnCollisionEnter(Collider* c, Collision& collision)

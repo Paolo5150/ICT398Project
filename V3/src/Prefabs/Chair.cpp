@@ -49,7 +49,9 @@ void Chair::Start()
 	LoadCollidersFromFile("Assets\\Colliders\\Chair.txt");
 
 	/*Rigidbody* rb = new Rigidbody();
-	rb->UseGravity(1);
+	rb->UseGravity(0);
+	rb->SetUseDynamicPhysics(1);
+	rb->SetIgnoreRotation(1);
 	AddComponent(rb);*/
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider
 						 // has been added.

@@ -61,7 +61,7 @@ Riley::Riley() : GameObject("Riley"), AffordanceObject(this)
 
 	aa->AddAffordanceDisengageCallback("SitAffordance", [&]() {
 
-		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition() - glm::vec3(0, 1, 0));
+		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition() - glm::vec3(2, 1, 0));
 	});
 
 	aa->AddAffordanceEngageCallback("LaydownAffordance", [&](AffordanceObject*obj) {
