@@ -17,6 +17,7 @@
 #include "..\Prefabs\Riley.h"
 #include "..\Prefabs\Joey.h"
 #include "..\Prefabs\Box2.h"
+#include "..\Prefabs\DrinkingFountain.h"
 
 
 
@@ -92,6 +93,10 @@ public:
 		else if (name == "Box")
 		{
 			return new Box2();
+		}
+		else if (name == "DrinkingFountain")
+		{
+			return new DrinkingFountain();
 		}
 
 		return nullptr;

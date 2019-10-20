@@ -16,7 +16,7 @@ Thirst::~Thirst()
 
 bool Thirst::Seek(AIEmotion* ai, AffordanceAgent* aa)
 {
-	if (aa->LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Affordance::AffordanceTypes::THIRST, 100))
+	if (aa->LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Affordance::AffordanceTypes::THIRST, 200))
 	{
 		//// If the method is true, we have found an affordance object in the specified range
 		//// That would be pointed by "selectedObj" in the Affordance Agent
@@ -45,4 +45,6 @@ bool Thirst::Seek(AIEmotion* ai, AffordanceAgent* aa)
 
 void Thirst::FinishSeek(AIEmotion* ai, AffordanceAgent * aa)
 {
+	aa->ExecuteAffordanceDisengageCallback(aa->GetSelectedAffordanceName());
+
 }
