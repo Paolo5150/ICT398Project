@@ -159,7 +159,7 @@ void Joey::Move()
 			pathAffordanceObject = aa->selectedObj;
 		}
 
-		if (glm::length2(toObj) > 80)
+		if (glm::length2(toObj) > 50)
 		{
 			// Walk towards the affordance object
 			if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node

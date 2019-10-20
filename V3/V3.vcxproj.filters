@@ -327,6 +327,9 @@
     <ClCompile Include="src\Emotion\Needs\Social.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Prefabs\DrinkingFountain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h">
@@ -753,6 +756,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Emotion\Needs\Social.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Prefabs\DrinkingFountain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
