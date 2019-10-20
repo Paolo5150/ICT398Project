@@ -84,8 +84,8 @@ Fred::Fred() : GameObject("Fred"), AffordanceObject(this)
 	aa->AddAffordanceDisengageCallback("LaydownAffordance", [&]() {
 		//Logger::LogInfo("Fred LaydownAffordance disengaged");
 		transform.RotateBy(-90, transform.GetLocalRight());
-		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition()  + aa->selectedObj->gameObject->transform.GetLocalFront() * 8.0f);
-
+		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition()  - aa->selectedObj->gameObject->transform.GetLocalRight() * 8.0f);
+		transform.SetPosition(transform.GetPosition().x, 1, transform.GetPosition().z);
 
 	});
 
