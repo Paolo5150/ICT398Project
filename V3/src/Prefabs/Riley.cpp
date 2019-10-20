@@ -172,6 +172,7 @@ void Riley::Move()
 
 		if (glm::length2(toObj) > 80)
 		{
+			
 			// Walk towards the affordance object
 			if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node
 			{
@@ -204,12 +205,12 @@ void Riley::Move()
 
 		if (aa->HasInUseObject())
 		{
-			aa->ExecuteAffordanceUpdateCallback(aa->GetSelectedAffordanceName(), aiE);
-			glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - aa->GetParent()->transform.GetGlobalPosition();
+			//aa->ExecuteAffordanceUpdateCallback(aa->GetSelectedAffordanceName(), aiE);
+			/*glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - aa->GetParent()->transform.GetGlobalPosition();
 			if (glm::length2(toObj) > 80)
 			{
 				aa->ExecuteAffordanceDisengageCallback(aa->GetSelectedAffordanceName());
-			}
+			}*/
 
 		}
 		else

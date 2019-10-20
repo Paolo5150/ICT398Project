@@ -183,7 +183,7 @@ void Joey::Move()
 	{
 		if (aa->HasInUseObject())
 		{
-			aa->ExecuteAffordanceUpdateCallback(aa->GetSelectedAffordanceName(), aiE);
+			//aa->ExecuteAffordanceUpdateCallback(aa->GetSelectedAffordanceName(), aiE);
 		}
 		else
 		{

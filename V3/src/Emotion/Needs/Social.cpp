@@ -19,7 +19,7 @@ bool Social::Seek(AIEmotion* ai, AffordanceAgent* aa)
 	AffordanceObject* ao = dynamic_cast<AffordanceObject*>(aa->GetParent());
 	if (ao == nullptr)
 		return false;
-	if (aa->LookForBestScoreAffordanceObjectByAffordanceTypeInRangeNotTarget(Affordance::AffordanceTypes::SOCIAL, ao, 500))
+	if (aa->LookForBestScoreAffordanceObjectByAffordanceTypeInRangeNotTarget(Affordance::AffordanceTypes::SOCIAL, ao, 40))
 	{
 		//// If the method is true, we have found an affordance object in the specified range
 		//// That would be pointed by "selectedObj" in the Affordance Agent

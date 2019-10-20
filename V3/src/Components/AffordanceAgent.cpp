@@ -128,6 +128,9 @@ void AffordanceAgent::Update()
 		ai = GetParent()->GetComponent<AIEmotion>("Emotion");
 		ExecuteAffordanceUpdateCallback(GetSelectedAffordanceName(), ai);
 
+		if (glm::length(inUseObj->gameObject->transform.GetGlobalPosition() - GetParent()->transform.GetGlobalPosition()) > 10)
+			ExecuteAffordanceDisengageCallback(GetSelectedAffordanceName());
+
 	}
 }
 

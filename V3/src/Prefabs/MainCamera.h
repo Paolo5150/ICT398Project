@@ -2,6 +2,7 @@
 #include "..\Core\CameraPerspective.h"
 #include "..\Core\Input.h"
 #include "..\Components\AffordanceAgent.h"
+#include "..\Affordances\AffordanceObject.h"
 
 class Rigidbody;
 
@@ -17,7 +18,7 @@ class Rigidbody;
 *
 * @bug No known bugs.
 */
-class MainCamera : public CameraPerspective
+class MainCamera : public CameraPerspective, public AffordanceObject
 {
 public:
 
