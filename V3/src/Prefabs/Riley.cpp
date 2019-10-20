@@ -18,6 +18,7 @@ namespace
 	glm::vec3 nextPos; //Next position to navigate to
 	float timer = 0; //Used to regenerate path every now and then
 	AffordanceObject* pathAffordanceObject; //Which affordance the current path is made from
+	bool waiting = false; //Waiting while wandering
 }
 
 void Riley::Test(AffordanceObject* obj)
@@ -50,7 +51,7 @@ Riley::Riley() : GameObject("Riley"), AffordanceObject(this)
 	SceneManager::Instance().GetCurrentScene().AddGameObject(billquad);
 
 	aa = new AffordanceAgent();
-	aa->AddAffordanceEngageCallback("SitAffordance",[&](AffordanceObject*obj) {
+	aa->AddAffordanceEngageCallback("SitAffordance", [&](AffordanceObject*obj) {
 
 		transform.SetPosition(obj->gameObject->transform.GetPosition() + glm::vec3(0, 1, 0));
 	});
@@ -58,7 +59,7 @@ Riley::Riley() : GameObject("Riley"), AffordanceObject(this)
 	aa->AddAffordanceUpdateCallback("SitAffordance", [&]() {
 	});
 
-	aa->AddAffordanceDisengageCallback("SitAffordance",[&]() {
+	aa->AddAffordanceDisengageCallback("SitAffordance", [&]() {
 
 		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition() - glm::vec3(0, 1, 0));
 	});
@@ -83,7 +84,7 @@ Riley::Riley() : GameObject("Riley"), AffordanceObject(this)
 	aa->AddAffordanceEngageCallback("SocialAffordance", [&](AffordanceObject*obj) {});
 	aa->AddAffordanceUpdateCallback("SocialAffordance", [&]() {});
 	aa->AddAffordanceDisengageCallback("SocialAffordance", [&]() {});
-		
+
 
 	AddComponent(aa);
 
@@ -138,7 +139,7 @@ void Riley::Start()
 
 void Riley::OnCollisionEnter(Collider* g, Collision& collision)
 {
-//	Logger::LogInfo("Riley Collided ENTER against", g->GetName());
+	//	Logger::LogInfo("Riley Collided ENTER against", g->GetName());
 
 }
 
@@ -163,6 +164,7 @@ void Riley::Move()
 
 		if (!pf->HasPath() || !pf->IsLastNode(PathFindingManager::Instance().ClosestNodeAt(targetPos.x, targetPos.y, targetPos.z)) || (Timer::GetTimeS() - timer) > 5 || aa->selectedObj != pathAffordanceObject) //If a path hasn't been generated yet, or the path does not lead to the target, or the timer has 'elapsed'
 		{
+			waiting = false;
 			rb->SetActive(true);
 			pf->GeneratePath(transform.GetGlobalPosition(), targetPos, true);
 			nextPos = pf->GetNextNodePos();
@@ -172,7 +174,7 @@ void Riley::Move()
 
 		if (glm::length2(toObj) > 80)
 		{
-			
+
 			// Walk towards the affordance object
 			if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node
 			{
@@ -215,40 +217,49 @@ void Riley::Move()
 		}
 		else
 		{
-			if (!pf->HasPath() || (Timer::GetTimeS() - timer) > 10)
+			if (!waiting)
 			{
-				rb->SetActive(true);
-				glm::vec3 pos = PathFindingManager::Instance().GetRandomFreeNode();
-				pf->GeneratePath(transform.GetGlobalPosition(), pos);
+				if (!pf->HasPath() || (Timer::GetTimeS() - timer) > 20)
+				{
+					rb->SetActive(true);
+					glm::vec3 pos = PathFindingManager::Instance().GetRandomFreeNode();
+					pf->GeneratePath(transform.GetGlobalPosition(), pos);
 
-				nextPos = pf->GetNextNodePos();
+					nextPos = pf->GetNextNodePos();
 
-				timer = Timer::GetTimeS();
+					timer = Timer::GetTimeS();
+				}
+
+				//Walk towards the wandering node
+				if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node
+				{
+					//Get direction to rotate toward, (similar code as RotateYToward)
+					glm::vec3 toTarget = nextPos - transform.GetGlobalPosition();
+					int cross = 0;
+					float angle = glm::degrees(glm::angle(transform.GetLocalFront(), toTarget));
+					if (!(fabs(angle) < 1.0)) //Tolerance
+						cross = glm::sign(glm::cross(transform.GetLocalFront(), toTarget)).y;
+
+					glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * 4.0f;
+
+					rb->SetVelocity(move);
+					rb->SetAngularVelocity(0, (angle * cross) * 2, 0);
+				}
+				else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
+				{
+					nextPos = pf->GetNextNodePos();
+				}
+				else
+				{
+					waiting = true;
+					timer = Timer::GetTimeS();
+					pf->ClearPath();
+					rb->SetVelocity(0, 0, 0);
+				}
 			}
-
-			//Walk towards the wandering node
-			if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node
+			else if ((Timer::GetTimeS() - timer) > 5)
 			{
-				//Get direction to rotate toward, (similar code as RotateYToward)
-				glm::vec3 toTarget = nextPos - transform.GetGlobalPosition();
-				int cross = 0;
-				float angle = glm::degrees(glm::angle(transform.GetLocalFront(), toTarget));
-				if (!(fabs(angle) < 1.0)) //Tolerance
-					cross = glm::sign(glm::cross(transform.GetLocalFront(), toTarget)).y;
-
-				glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * 4.0f;
-
-				rb->SetVelocity(move);
-				rb->SetAngularVelocity(0, (angle * cross) * 2, 0);
-			}
-			else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
-			{
-				nextPos = pf->GetNextNodePos();
-			}
-			else
-			{
-				pf->ClearPath();
-				rb->SetVelocity(0, 0, 0);
+				waiting = false;
 			}
 		}
 	}
