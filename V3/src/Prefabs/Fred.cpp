@@ -95,6 +95,10 @@ Fred::Fred() : GameObject("Fred"), AffordanceObject(this)
 	aa->AddAffordanceUpdateCallback("SocialAffordance", [&]() {});
 	aa->AddAffordanceDisengageCallback("SocialAffordance", [&]() {});
 
+	aa->AddAffordanceEngageCallback("ThirstAffordance", [&](AffordanceObject*obj) {});
+	aa->AddAffordanceUpdateCallback("ThirstAffordance", [&]() {});
+	aa->AddAffordanceDisengageCallback("ThirstAffordance", [&]() {});
+
 	AddComponent(aa);
 
 
@@ -213,56 +217,49 @@ void Fred::Move()
 	}
 	else
 	{
-		if (aa->HasInUseObject())
+		if (!waiting)
 		{
-			//aa->ExecuteAffordanceUpdateCallback(aa->GetSelectedAffordanceName(), aiE);
+			if (!pf->HasPath() || (Timer::GetTimeS() - timer) > 20)
+			{
+				rb->SetActive(true);
+				glm::vec3 pos = PathFindingManager::Instance().GetRandomFreeNode();
+				pf->GeneratePath(transform.GetGlobalPosition(), pos);
+
+				nextPos = pf->GetNextNodePos();
+
+				timer = Timer::GetTimeS();
+			}
+
+			//Walk towards the wandering node
+			if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node
+			{
+				//Get direction to rotate toward, (similar code as RotateYToward)
+				glm::vec3 toTarget = nextPos - transform.GetGlobalPosition();
+				int cross = 0;
+				float angle = glm::degrees(glm::angle(transform.GetLocalFront(), toTarget));
+				if (!(fabs(angle) < 1.0)) //Tolerance
+					cross = glm::sign(glm::cross(transform.GetLocalFront(), toTarget)).y;
+
+				glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * 4.0f;
+
+				rb->SetVelocity(move);
+				rb->SetAngularVelocity(0, (angle * cross) * 2, 0);
+			}
+			else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
+			{
+				nextPos = pf->GetNextNodePos();
+			}
+			else
+			{
+				waiting = true;
+				timer = Timer::GetTimeS();
+				pf->ClearPath();
+				rb->SetVelocity(0, 0, 0);
+			}
 		}
-		else
+		else if ((Timer::GetTimeS() - timer) > 5)
 		{
-			if (!waiting)
-			{
-				if (!pf->HasPath() || (Timer::GetTimeS() - timer) > 20)
-				{
-					rb->SetActive(true);
-					glm::vec3 pos = PathFindingManager::Instance().GetRandomFreeNode();
-					pf->GeneratePath(transform.GetGlobalPosition(), pos);
-
-					nextPos = pf->GetNextNodePos();
-
-					timer = Timer::GetTimeS();
-				}
-
-				//Walk towards the wandering node
-				if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node
-				{
-					//Get direction to rotate toward, (similar code as RotateYToward)
-					glm::vec3 toTarget = nextPos - transform.GetGlobalPosition();
-					int cross = 0;
-					float angle = glm::degrees(glm::angle(transform.GetLocalFront(), toTarget));
-					if (!(fabs(angle) < 1.0)) //Tolerance
-						cross = glm::sign(glm::cross(transform.GetLocalFront(), toTarget)).y;
-
-					glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * 4.0f;
-
-					rb->SetVelocity(move);
-					rb->SetAngularVelocity(0, (angle * cross) * 2, 0);
-				}
-				else if (!pf->IsLastPos(nextPos)) //If this node is not the final node, get the next one
-				{
-					nextPos = pf->GetNextNodePos();
-				}
-				else
-				{
-					waiting = true;
-					timer = Timer::GetTimeS();
-					pf->ClearPath();
-					rb->SetVelocity(0, 0, 0);
-				}
-			}
-			else if ((Timer::GetTimeS() - timer) > 5)
-			{
-				waiting = false;
-			}
+			waiting = false;
 		}
 	}
 }
