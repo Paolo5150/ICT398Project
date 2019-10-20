@@ -115,6 +115,7 @@ void AffordanceAgent::Update()
 	{
 		if (selectedObj->GetInUseAffordanceName() != "")
 		{
+			//LookForBestScoreAffordanceObjectInRange(selectedObj->GetInUseAffordanceName(),20);
 			// If the selected affordance object is in use by someone else, unselect it
 			if (!selectedObj->IsAvailableForAffordance(selectedObj->GetInUseAffordanceName()) && !selectedObj->IsGameObjectAUser(_parent))
 			{
