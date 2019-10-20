@@ -90,7 +90,7 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\Models\\RecycleBin\\textures\\RB_Frame.png", 0);
 	ContentManager::Instance().LoadTexture("Assets\\Models\\RecycleBin\\textures\\RB_Sides.png", 0);
 
-	ContentManager::Instance().LoadTexture("Assets\\Models\\DrinkingFountain\\textures\\fountain.png", 0);
+	ContentManager::Instance().LoadTexture("Assets\\Models\\Fountain\\textures\\fountain.png", 0);
 
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\BushCourt\\BushCourt.png", 0);	
 	ContentManager::Instance().LoadCubeMap("Assets\\SkyBoxes\\SunSet");
