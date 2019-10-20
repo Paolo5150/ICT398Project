@@ -145,18 +145,18 @@ void PathFindingManager::Generate(int centerX, int centerY, int sizeX, int sizeY
 // Comment this out when releasing, not needed (used for rendering the nodes)
 void PathFindingManager::EngineUpdate()
 {
-	for (unsigned i = 0; i < pathNodes.size(); i++)
+	/*for (unsigned i = 0; i < pathNodes.size(); i++)
 	{
 		pathNodes[i]->EngineUpdate();
-	}
+	}*/
 }
 // Comment this out when releasing, not needed (used for rendering the nodes)
 void PathFindingManager::Update()
 {
-	for (unsigned i = 0; i < pathNodes.size(); i++)
+	/*for (unsigned i = 0; i < pathNodes.size(); i++)
 	{
 		pathNodes[i]->Update();
-	}
+	}*/
 }
 
 

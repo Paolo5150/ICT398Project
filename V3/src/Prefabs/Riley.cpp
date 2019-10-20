@@ -155,7 +155,7 @@ void Riley::OnCollisionStay(Collider* g, Collision& collision)
 
 void Riley::Move()
 {
-	if (aa->GetSelectedAffordanceName() != "" && aa->selectedObj != nullptr) //If there is an affordance to move to
+	if (aa->GetSelectedAffordanceName() != "" && aa->selectedObj != nullptr && !aa->HasInUseObject()) //If there is an affordance to move to
 	{
 		glm::vec3 targetPos = aa->selectedObj->gameObject->transform.GetGlobalPosition();
 		glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - aa->GetParent()->transform.GetGlobalPosition();
@@ -170,7 +170,7 @@ void Riley::Move()
 			pathAffordanceObject = aa->selectedObj;
 		}
 
-		if (glm::length2(toObj) > 30)
+		if (glm::length2(toObj) > 80)
 		{
 			// Walk towards the affordance object
 			if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node
@@ -201,9 +201,16 @@ void Riley::Move()
 	}
 	else
 	{
+
 		if (aa->HasInUseObject())
 		{
 			aa->ExecuteAffordanceUpdateCallback(aa->GetSelectedAffordanceName(), aiE);
+			glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - aa->GetParent()->transform.GetGlobalPosition();
+			if (glm::length2(toObj) > 80)
+			{
+				aa->ExecuteAffordanceDisengageCallback(aa->GetSelectedAffordanceName());
+			}
+
 		}
 		else
 		{

@@ -38,13 +38,13 @@ public:
 
 	bool HasInUseObject();
 
+	AffordanceObject* inUseObj;
 protected:
 
 	std::map<std::string, std::function<void(AffordanceObject*)>> affordanceEngageCallbackMap;
 	std::map<std::string, std::function<void()>> affordanceUpdateCallbackMap;
 	std::map<std::string, std::function<void()>> affordanceDisengageCallbackMap;
 
-	AffordanceObject* inUseObj;
 	std::string selectedAffordanceName; //Used when looking for affordance objs by type
 };
 
