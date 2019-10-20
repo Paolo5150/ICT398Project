@@ -54,6 +54,8 @@ public:
 	*/
 	PathNode* ClosestNodeAt(int x, int y, int z);
 
+	glm::vec3 GetRandomFreeNode();
+
 	/**
 	* @brief						Initialize the nodes
 	*
@@ -71,12 +73,13 @@ public:
 
 	void EngineUpdate();
 	void Update();
-
+	
 private:
 	/**
 	* @brief						Create PathFinder object
 	*/
 	PathFindingManager();
+
 	/**
 	* @brief						Quadtree of nodes
 	*/
@@ -86,6 +89,7 @@ private:
 	* @brief						The 2D map of nodes
 	*/
 	std::vector<std::vector<PathNode*>> nodeMap;
+
 
 	int sizeX;
 	int sizeY;

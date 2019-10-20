@@ -7,7 +7,7 @@
 #include "..\Scene\SceneManager.h"
 #include "..\Components\AffordanceAgent.h"
 
-MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 100000.0f)
+MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspectRatio(), 0.1f, 100000.0f), AffordanceObject(this)
 {
 	this->SetName("Main Camera");
 	m_rotationSpeed = 20;
@@ -62,7 +62,7 @@ void MainCamera::Start()
 		collectedObject->GetComponent<Rigidbody>("Rigidbody")->SetActive(0);
 
 	});
-
+	LoadAffordancesFromFile("Assets\\Affordances\\people_affordances.txt");
 }
 
 void MainCamera::OnCollisionEnter(Collider* c, Collision& collision)
