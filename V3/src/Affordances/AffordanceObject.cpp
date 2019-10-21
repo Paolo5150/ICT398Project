@@ -180,7 +180,7 @@ bool AffordanceObject::IsAvailableForAffordance(std::string affName)
 		return inUse->GetCurrentUsers() < inUse->GetMaxUsers();
 	}
 	return false;
-	//return inUse == nullptr;
+	return inUse == nullptr;
 }
 
 void AffordanceObject::ExecuteAffordanceCallback(std::string afName, AIEmotion* ai)

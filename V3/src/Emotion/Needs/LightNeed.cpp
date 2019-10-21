@@ -27,4 +27,6 @@ bool LightNeed::Seek(AIEmotion* ai, AffordanceAgent* aa)
 
 void LightNeed::FinishSeek(AIEmotion* ai, AffordanceAgent * aa)
 {
+	aa->ExecuteAffordanceDisengageCallback(aa->GetSelectedAffordanceName());
+
 }
