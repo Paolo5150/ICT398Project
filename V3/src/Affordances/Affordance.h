@@ -25,7 +25,8 @@ public:
 		REST,
 		COLLECTABLE,
 		THIRST,
-		SOCIAL
+		SOCIAL,
+		LIGHT
 	};
 
 	/**

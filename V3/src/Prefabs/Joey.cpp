@@ -8,6 +8,7 @@
 #include "..\Affordances\RestAffordance.h"
 #include "Dylan.h"
 #include "..\Scene\SceneManager.h"
+#include "..\Diag\DiagRenderer.h"
 
 
 namespace
@@ -161,6 +162,7 @@ void Joey::Move()
 
 		if (glm::length2(toObj) > 50)
 		{
+			DiagRenderer::Instance().RenderSphere(nextPos, 1.0);
 			// Walk towards the affordance object
 			if (glm::length(nextPos - transform.GetGlobalPosition()) > 2.5) //Travel to node
 			{

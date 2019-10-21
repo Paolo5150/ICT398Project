@@ -72,6 +72,8 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\Anger_high.png", false);
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\Social_low.png", false);
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\Thirst_low.png", false);
+	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\Light_low.png", false);
+
 
 
 	ContentManager::Instance().LoadModel("Assets\\Models\\Fred\\Fred.fbx", false, false);
@@ -245,7 +247,11 @@ void MainScene::LogicUpdate()
 
 	if (dirLight2->GetIntensity() < 0.1 && dirLight->GetIntensity() < 0.1)
 	{
-		AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Joy, Stimuli::StimuliType::Default, -1.0, true, 0.1, glm::vec3(), 500.0);
+		AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Light, Stimuli::StimuliType::Default, -1.0, true, 0.1, glm::vec3(), 500.0);
+	}
+	else
+	{
+		AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Light, Stimuli::StimuliType::Default, 1.0, true, 0.1, glm::vec3(), 500.0);
 
 	}
 

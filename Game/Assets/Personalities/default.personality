@@ -6,8 +6,9 @@ N anger 10.0 10 1.0 1.0
 N anticipation 50.0 10 1.0 1.0
 N joy 50.0 10 1.0 1.0
 N trust 50.0 10 1.0 1.0
-N thirst 11.0 1 1.0 1.0
+N thirst 25.0 4 1.0 1.0
 N rest 80.0 2 3 5.0
+N light 80.0 0 1 5.0
 
 # Trait:
 # T nameOfTrait(classname)

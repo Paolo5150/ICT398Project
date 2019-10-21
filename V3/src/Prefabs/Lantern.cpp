@@ -5,7 +5,7 @@
 #include "..\Components\Rigidbody.h"
 #include "..\Lighting\PointLight.h"
 
-Lantern::Lantern() : GameObject("Lantern")
+Lantern::Lantern() : GameObject("Lantern"), AffordanceObject(this)
 {
 	SetIsStatic(false);
 	ContentManager::Instance().GetAsset<Model>("Lantern")->PopulateGameObject(this);
@@ -29,6 +29,9 @@ Lantern::Lantern() : GameObject("Lantern")
 	pl->SetIntensity(10);
 
 	AddChild(pl);
+
+	LoadAffordancesFromFile("Assets\\Affordances\\lantern_affordances.txt");
+
 }
 
 
@@ -39,7 +42,7 @@ void Lantern::Start()
 
 	 rb = new Rigidbody();
 	rb = new Rigidbody();
-	rb->UseGravity(true);
+	rb->UseGravity(0);
 	AddComponent(rb);
 }
 
