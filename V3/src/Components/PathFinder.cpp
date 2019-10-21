@@ -183,12 +183,21 @@ bool PathFinder::HasPath()
 	}
 }
 
-bool PathFinder::IsLastNode(PathNode* node)
+bool PathFinder::IsLastNode(PathNode* node, bool allowClose)
 {
 	if (node == nodePath.back())
 		return true;
-	else
-		return false;
+
+	if (allowClose)
+	{
+		for (unsigned i = 0; i < nodePath.back()->neighbors.size(); i++)
+		{
+			if (node == nodePath.back()->neighbors.at(i))
+				return true;
+		}
+	}
+
+	return false;
 }
 
 bool PathFinder::IsLastPos(glm::vec3 pos, bool includeY)
