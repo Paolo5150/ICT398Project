@@ -27,7 +27,8 @@ namespace
 {
 	GUIBar* loadingBar;
 	GameObject* player;
-
+	DirectionalLight* dirLight;
+	DirectionalLight* dirLight2;
 
 }
 
@@ -168,13 +169,13 @@ void MainScene::Initialize() {
 	cam->transform.SetPosition(0, 10, 40);
 	cam->transform.SetRotation(0, 180, 0);
 
-	DirectionalLight* dirLight = new DirectionalLight(false);
+	dirLight = new DirectionalLight(false);
 	dirLight->transform.SetRotation(20, 114, -4);
 	dirLight->SetDiffuseColor(1.0, 0.9, 0.9);
 	dirLight->SetSpecularColor(1.0, 0.8, 0.4);
 	dirLight->SetIntensity(1.5);
 
-	DirectionalLight* dirLight2 = new DirectionalLight(false);
+	dirLight2 = new DirectionalLight(false);
 	dirLight2->transform.SetRotation(0, -60, 0);
 	dirLight2->SetSpecularColor(0, 0, 0);
 	dirLight2->SetIntensity(1.5);
@@ -223,6 +224,29 @@ void MainScene::LogicUpdate()
 		GUIManager::Instance().Render(1);
 		SceneManager::Instance().LoadNewScene("ExitScene");
 		return;
+	}
+
+	if (Input::GetKeyDown(GLFW_KEY_PAGE_UP))
+	{
+		if (dirLight->GetIntensity() < 1.5f)
+			dirLight->SetIntensity(dirLight->GetIntensity() + 0.1f);
+
+		if (dirLight2->GetIntensity() < 1.5f)
+			dirLight2->SetIntensity(dirLight2->GetIntensity() + 0.1f);
+	}
+	if (Input::GetKeyDown(GLFW_KEY_PAGE_DOWN))
+	{
+		if (dirLight->GetIntensity() > 0)
+			dirLight->SetIntensity(dirLight->GetIntensity() - 0.1f);
+
+		if (dirLight2->GetIntensity() > 0)
+			dirLight2->SetIntensity(dirLight2->GetIntensity() - 0.1f);		
+	}
+
+	if (dirLight2->GetIntensity() < 0.1 && dirLight->GetIntensity() < 0.1)
+	{
+		AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Joy, Stimuli::StimuliType::Default, -1.0, true, 0.1, glm::vec3(), 500.0);
+
 	}
 
 	
