@@ -12,6 +12,8 @@
 #include "Prefabs/Billquad.h"
 
 #include "Prefabs/BushCourt.h"
+#include "Prefabs/Sand.h"
+#include "Prefabs/Mountain.h"
 #include "Prefabs/Lantern.h"
 #include "Physics/PathFindingManager.h"
 
@@ -62,6 +64,8 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadModel("Assets\\Models\\LandfillBin\\landfillbin.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\RecycleBin\\recyclebin.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\BushCourt\\bushcourt.obj", false, false);
+	ContentManager::Instance().LoadModel("Assets\\Models\\Sand\\Sand.obj", false, false);
+	ContentManager::Instance().LoadModel("Assets\\Models\\Mountain\\Mountain.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Lantern\\lantern.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Crate\\crate.obj",false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Fountain\\fountain.obj", false, false);
@@ -92,7 +96,9 @@ void MainScene::LoadAssets() {
 
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Fountain\\textures\\fountain.png", 0);
 
-	ContentManager::Instance().LoadTexture("Assets\\Textures\\BushCourt\\BushCourt.png", 0);	
+	ContentManager::Instance().LoadTexture("Assets\\Textures\\BushCourt\\BushCourt.png", 0);
+	ContentManager::Instance().LoadTexture("Assets\\Textures\\Sand\\Sand.png", 0);
+	ContentManager::Instance().LoadTexture("Assets\\Textures\\Mountain\\Mountain.png", 0);
 	ContentManager::Instance().LoadCubeMap("Assets\\SkyBoxes\\SunSet");
 
 	// Preserve these as they are used in the exit scene
@@ -183,7 +189,10 @@ void MainScene::Initialize() {
 	dirLight3->transform.SetRotation(70, 0, 0);
 	dirLight3->SetIntensity(0.4);
 
-	BushCourt* bushCourt = new BushCourt();	
+	BushCourt* bushCourt = new BushCourt();
+	Sand* sand = new Sand();
+	Mountain* mountain = new Mountain();
+	mountain->transform.SetPosition(2000, -50, -5000);
 
 
 	AddGameObject(cam);
@@ -192,6 +201,8 @@ void MainScene::Initialize() {
 	AddGameObject(dirLight2);
 	AddGameObject(dirLight3);
 	AddGameObject(bushCourt);
+	AddGameObject(sand);
+	AddGameObject(mountain);
 
 
 	

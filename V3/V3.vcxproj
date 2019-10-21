@@ -262,10 +262,12 @@
     <ClInclude Include="src\Prefabs\LandfillBin.h" />
     <ClInclude Include="src\Prefabs\Lantern.h" />
     <ClInclude Include="src\Prefabs\MainCamera.h" />
+    <ClInclude Include="src\Prefabs\Mountain.h" />
     <ClInclude Include="src\Prefabs\Paolo.h" />
     <ClInclude Include="src\Prefabs\PaoloText.h" />
     <ClInclude Include="src\Prefabs\RecycleBin.h" />
     <ClInclude Include="src\Prefabs\Riley.h" />
+    <ClInclude Include="src\Prefabs\Sand.h" />
     <ClInclude Include="src\Prefabs\Table.h" />
     <ClInclude Include="src\Prefabs\Terrain.h" />
     <ClInclude Include="src\Prefabs\Water.h" />
@@ -412,10 +414,12 @@
     <ClCompile Include="src\Prefabs\LandfillBin.cpp" />
     <ClCompile Include="src\Prefabs\Lantern.cpp" />
     <ClCompile Include="src\Prefabs\MainCamera.cpp" />
+    <ClCompile Include="src\Prefabs\Mountain.cpp" />
     <ClCompile Include="src\Prefabs\Paolo.cpp" />
     <ClCompile Include="src\Prefabs\PaoloText.cpp" />
     <ClCompile Include="src\Prefabs\RecycleBin.cpp" />
     <ClCompile Include="src\Prefabs\Riley.cpp" />
+    <ClCompile Include="src\Prefabs\Sand.cpp" />
     <ClCompile Include="src\Prefabs\Table.cpp" />
     <ClCompile Include="src\Prefabs\Terrain.cpp" />
     <ClCompile Include="src\Prefabs\Water.cpp" />
