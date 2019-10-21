@@ -11,6 +11,7 @@ public:
 	{
 		score = 50;
 		affordanceType = AffordanceTypes::LIGHT;
+		maxUsers = 100;
 		affordanceName = "LightAffordance";
 		Callback = [](AIEmotion* ai) { };
 		UpdateCallback = [](AIEmotion* ai) { AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Light, Stimuli::StimuliType::Default, 1.0, true, 0.1, glm::vec3(), 500.0); };

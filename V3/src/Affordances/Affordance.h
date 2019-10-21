@@ -62,6 +62,11 @@ public:
 	*/
 	int GetMaxUsers() { return maxUsers; }
 
+	/**
+* @brief Return the maximum number of users for the affordance
+*/
+	void setMaxUsers(int m) {  maxUsers = m; }
+
 
 	/**
 	* @brief Returns the current number of users for the affordance

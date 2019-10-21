@@ -25,12 +25,13 @@ Lantern::Lantern() : GameObject("Lantern"), AffordanceObject(this)
 	//transform.SetRotation(-90, 0, 0);
 
 	PointLight* pl = new PointLight();
-	pl->transform.SetPosition(0, 1, 0);
+	pl->transform.SetPosition(0, 3, 0);
 	pl->SetIntensity(10);
 
 	AddChild(pl);
 
 	LoadAffordancesFromFile("Assets\\Affordances\\lantern_affordances.txt");
+	GetPerceivedAffordances()[0]->setMaxUsers(100);
 
 }
 
