@@ -2,6 +2,17 @@
 
 #include "../Need.h"
 
+/**
+* @class Thirst
+* @brief Child class of Need for tracking AI thirst
+*
+* @author Drew Paridaens
+* @version 01
+* @date 06/10/2019
+*
+*
+* @bug No known bugs.
+*/
 class Thirst : public Need
 {
 public:
