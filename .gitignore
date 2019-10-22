@@ -263,3 +263,4 @@ __pycache__/
 !Dependencies/Luabind/include/boost/preprocessor/debug
 !Dependencies/Bullet/lib/[Dd]ebug
 !Dependencies/Bullet/lib/[Rr]elease
+!Game/Assets/Models/*/*.obj
