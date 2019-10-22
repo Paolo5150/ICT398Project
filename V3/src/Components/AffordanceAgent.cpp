@@ -62,18 +62,16 @@ void AffordanceAgent::ExecuteAffordanceUpdateCallback(std::string affName, AIEmo
 		if (it != affordanceUpdateCallbackMap.end())
 		{
 			it->second();
-			selectedObj->ExecuteAffordanceUpdateCallback(affName, ai);
-			inUseObj = selectedObj;
-			selectedObj->AddUser(_parent);
+			inUseObj->ExecuteAffordanceUpdateCallback(affName, ai);
 		}
 	}
 }
 
-bool AffordanceAgent::LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Affordance::AffordanceTypes type, float range)
+bool AffordanceAgent::LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Affordance::AffordanceTypes type, float range, bool ignoreUse)
 {
 	if (inUseObj == nullptr)
 	{
-		if (selectedObj == nullptr)
+		if (1)
 		{
 			selectedObj = AffordanceManager::Instance().GetBestScoreObjectByAffordanceTypeWithinRange(type, _parent->transform.GetGlobalPosition(), range, selectedAffordanceName);
 			return selectedObj != nullptr;

@@ -82,7 +82,7 @@ Fred::Fred() : GameObject("Fred"), AffordanceObject(this)
 	});
 
 	aa->AddAffordanceDisengageCallback("LaydownAffordance", [&]() {
-		//Logger::LogInfo("Fred LaydownAffordance disengaged");
+		Logger::LogInfo("Fred LaydownAffordance disengaged");
 		transform.RotateBy(-90, transform.GetLocalRight());
 		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition()  - aa->selectedObj->gameObject->transform.GetLocalRight() * 8.0f);
 		transform.SetPosition(transform.GetPosition().x, 1, transform.GetPosition().z);
@@ -178,7 +178,7 @@ void Fred::Move()
 		glm::vec3 targetPos = aa->selectedObj->gameObject->transform.GetGlobalPosition();
 		glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - aa->GetParent()->transform.GetGlobalPosition();
 
-		if (!pf->HasPath() || !pf->IsLastNode(PathFindingManager::Instance().ClosestNodeAt(targetPos.x, targetPos.y, targetPos.z)) || (Timer::GetTimeS() - timer) > 5 || aa->selectedObj != pathAffordanceObject) //If a path hasn't been generated yet, or the path does not lead to the target, or the timer has 'elapsed'
+		if (!pf->HasPath() || !pf->IsLastNode(PathFindingManager::Instance().ClosestNodeAt(targetPos.x, targetPos.y, targetPos.z), true) || (Timer::GetTimeS() - timer) > 5 || aa->selectedObj != pathAffordanceObject) //If a path hasn't been generated yet, or the path does not lead to the target, or the timer has 'elapsed'
 		{
 			waiting = false;
 			rb->SetActive(true);

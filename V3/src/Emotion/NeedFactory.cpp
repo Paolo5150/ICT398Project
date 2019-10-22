@@ -6,6 +6,8 @@
 #include "Needs/Rest.h"
 #include "Needs/Joy.h"
 #include "Needs/Trust.h"
+#include "Needs/LightNeed.h"
+
 #include "Needs/Social.h"
 #include "..\Core\Logger.h"
 #include <boost/algorithm/string.hpp>
@@ -50,6 +52,10 @@ int NeedFactory::GetNeedType(std::string needName)
 	{
 		return Need::NeedType::Social;
 	}
+	else if (strcmp("light", needName.c_str()) == 0)
+	{
+		return Need::NeedType::Light;
+	}
 	else
 	{
 		Logger::LogError("NEED FACTORY: \"" + needName + "\" NOT VALID NEED NAME");
@@ -83,6 +89,10 @@ std::unique_ptr<Need> NeedFactory::GetNeed(Need::NeedType type, float startValue
 	case Need::NeedType::Social:
 		need = std::unique_ptr<Social>(new Social(startValue, priority, positiveGainMultiplier, negativeGainMultiplier));
 		break;
+	case Need::NeedType::Light:
+		need = std::unique_ptr<LightNeed>(new LightNeed(startValue, priority, positiveGainMultiplier, negativeGainMultiplier));
+		break;
+
 	}
 
 	return need;

@@ -25,7 +25,8 @@ public:
 		REST,
 		COLLECTABLE,
 		THIRST,
-		SOCIAL
+		SOCIAL,
+		LIGHT
 	};
 
 	/**
@@ -60,6 +61,11 @@ public:
 	* @brief Return the maximum number of users for the affordance
 	*/
 	int GetMaxUsers() { return maxUsers; }
+
+	/**
+* @brief Return the maximum number of users for the affordance
+*/
+	void setMaxUsers(int m) {  maxUsers = m; }
 
 
 	/**

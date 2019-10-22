@@ -138,7 +138,7 @@ void MainCamera::Update()
 			affordanceAgent->ExecuteAffordanceDisengageCallback("CollectableAffordance");
 		}
 	}
-	else if (affordanceAgent->LookForBestScoreAffordanceObjectInRange("CollectableAffordance", 5))
+	else if (affordanceAgent->LookForBestScoreAffordanceObjectInRange("CollectableAffordance", 10))
 	{
 		float dot = glm::dot(transform.GetLocalFront(), glm::normalize(affordanceAgent->selectedObj->gameObject->transform.GetGlobalPosition() - transform.GetPosition()));
 		if (dot > 0.9)

@@ -102,12 +102,12 @@
     <ClCompile Include="src\Scene\Scene.cpp" />
     <ClCompile Include="src\Scene\SceneManager.cpp" />
     <ClCompile Include="src\Utils\AssetContainer.cpp" />
+    <ClCompile Include="src\Utils\AssetContainer.cpp" />
     <ClCompile Include="src\Utils\ContentManager.cpp" />
     <ClCompile Include="src\Utils\AssimpWrapper.cpp" />
     <ClCompile Include="src\Utils\FileUtils.cpp" />
     <ClCompile Include="src\Utils\Maths.cpp" />
-    <ClCompile Include="src\Prefabs\Sand.cpp" />
-    <ClCompile Include="src\Prefabs\Mountain.cpp" />
+    <ClCompile Include="src\Emotion\Needs\LightNeed.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Dependencies\qu3e\src\q3.h" />
@@ -253,7 +253,7 @@
     <ClInclude Include="src\Utils\PrefabFactory.h" />
     <ClInclude Include="src\Utils\Quadtree.h" />
     <ClInclude Include="src\Utils\UBOLibrary.h" />
-    <ClInclude Include="src\Prefabs\Sand.h" />
-    <ClInclude Include="src\Prefabs\Mountain.h" />
+    <ClInclude Include="src\Emotion\Needs\LightNeed.h" />
+    <ClInclude Include="src\Affordances\LightAffordance.h" />
   </ItemGroup>
 </Project>

@@ -8,6 +8,7 @@
 #include "..\Affordances\RestAffordance.h"
 #include "Dylan.h"
 #include "..\Scene\SceneManager.h"
+#include "..\Diag\DiagRenderer.h"
 
 
 namespace
@@ -149,7 +150,7 @@ void Joey::Move()
 		glm::vec3 targetPos = aa->selectedObj->gameObject->transform.GetGlobalPosition();
 		glm::vec3 toObj = aa->selectedObj->gameObject->transform.GetGlobalPosition() - aa->GetParent()->transform.GetGlobalPosition();
 
-		if (!pf->HasPath() || !pf->IsLastNode(PathFindingManager::Instance().ClosestNodeAt(targetPos.x, targetPos.y, targetPos.z)) || (Timer::GetTimeS() - timer) > 5 || aa->selectedObj != pathAffordanceObject) //If a path hasn't been generated yet, or the path does not lead to the target, or the timer has 'elapsed'
+		if (!pf->HasPath() || !pf->IsLastNode(PathFindingManager::Instance().ClosestNodeAt(targetPos.x, targetPos.y, targetPos.z), true) || (Timer::GetTimeS() - timer) > 5 || aa->selectedObj != pathAffordanceObject) //If a path hasn't been generated yet, or the path does not lead to the target, or the timer has 'elapsed'
 		{
 			waiting = false;
 			rb->SetActive(true);

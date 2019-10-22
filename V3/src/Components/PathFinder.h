@@ -108,7 +108,7 @@ public:
 	*
 	* @return		True if the parameter node is the last node in the nodePath, false otherwise.
 	*/
-	bool IsLastNode(PathNode* node);
+	bool IsLastNode(PathNode* node, bool allowClose = false);
 
 	/**
 	* @brief		Returns true if the parameter position is equal to the one at the end of the path

@@ -3,6 +3,8 @@
 #include "CollectableAffordances.h"
 #include "ThirstAffordance.h"
 #include "SocialAffordance.h"
+#include "LightAffordance.h"
+
 
 class AffordanceFactory
 {
@@ -28,6 +30,10 @@ public:
 		else if (name == "SocialAffordance")
 		{
 			return new SocialAffordance();
+		}
+		else if (name == "LightAffordance")
+		{
+			return new LightAffordance();
 		}
 
 		return nullptr;

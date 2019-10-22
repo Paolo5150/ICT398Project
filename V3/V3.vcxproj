@@ -168,6 +168,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Dependencies\qu3e\src\q3.h" />
+    <ClInclude Include="src\Affordances\LightAffordance.h" />
     <ClInclude Include="src\Components\PathFinder.h" />
     <ClInclude Include="src\Affordances\Affordance.h" />
     <ClInclude Include="src\Affordances\AffordanceFactory.h" />
@@ -207,6 +208,7 @@
     <ClInclude Include="src\Emotion\NeedFactory.h" />
     <ClInclude Include="src\Emotion\Needs\Anger.h" />
     <ClInclude Include="src\Emotion\Needs\Anticipation.h" />
+    <ClInclude Include="src\Emotion\Needs\LightNeed.h" />
     <ClInclude Include="src\Emotion\Needs\Joy.h" />
     <ClInclude Include="src\Emotion\Needs\Rest.h" />
     <ClInclude Include="src\Emotion\Needs\Social.h" />
@@ -345,6 +347,7 @@
     <ClCompile Include="src\Emotion\NeedFactory.cpp" />
     <ClCompile Include="src\Emotion\Needs\Anger.cpp" />
     <ClCompile Include="src\Emotion\Needs\Anticipation.cpp" />
+    <ClCompile Include="src\Emotion\Needs\LightNeed.cpp" />
     <ClCompile Include="src\Emotion\Needs\Joy.cpp" />
     <ClCompile Include="src\Emotion\Needs\Rest.cpp" />
     <ClCompile Include="src\Emotion\Needs\Social.cpp" />

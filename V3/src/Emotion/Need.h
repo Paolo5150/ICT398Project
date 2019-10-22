@@ -30,7 +30,8 @@ public:
 		Trust,
 		Thirst,
 		Rest,
-		Social
+		Social,
+		Light
 	};
 /**
 * @brief		Creates a parameterized Need

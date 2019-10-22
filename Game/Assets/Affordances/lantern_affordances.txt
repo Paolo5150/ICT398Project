@@ -1,0 +1,5 @@
+# Chair affordances
+# Use the format "AffordanceName 10"
+
+LightAffordance 50
+CollectableAffordance 70
