@@ -11,7 +11,7 @@ MainCamera::MainCamera() : CameraPerspective(60.0f, Window::Instance().GetAspect
 {
 	this->SetName("Main Camera");
 	m_rotationSpeed = 20;
-	m_movementSpeed = 20;	
+	m_movementSpeed = 20;
 	blockRotation = false;
 	blockMovement = false;
 	SetIsStatic(0);
@@ -22,12 +22,12 @@ void MainCamera::Start()
 	collectedObject = nullptr;
 
 	BoxCollider* bc = new BoxCollider();
-	bc->transform.SetScale(0.5,4.0,1.0);
+	bc->transform.SetScale(0.5, 4.0, 1.0);
 	//bc->RemoveCollideAgainstLayer(CollisionLayers::DEFAULT);
 	bc->enableRender = 1;
 	bc->SetMass(20);
 	totalMass = 20;
-	
+
 	AddComponent(bc);
 
 	rb = new Rigidbody();
@@ -36,7 +36,7 @@ void MainCamera::Start()
 	AddComponent(rb);
 	//Logger::LogInfo("Camera trans child", transform.transformChildren.size());
 
-	affordanceAgent= new AffordanceAgent();
+	affordanceAgent = new AffordanceAgent();
 	AddComponent(affordanceAgent);
 
 	affordanceAgent->AddAffordanceDisengageCallback("CollectableAffordance", [&]() {
@@ -49,7 +49,7 @@ void MainCamera::Start()
 
 
 		collectedObject = nullptr;
-		
+
 	});
 
 	affordanceAgent->AddAffordanceEngageCallback("CollectableAffordance", [&](AffordanceObject*obj) {
@@ -70,7 +70,7 @@ void MainCamera::OnCollisionEnter(Collider* c, Collision& collision)
 
 	transform.Translate(rb->GetVelocity() * -Timer::GetDeltaS());
 
-		
+
 }
 
 void MainCamera::OnCollisionStay(Collider* c, Collision& collision)
@@ -82,12 +82,12 @@ void MainCamera::OnCollisionStay(Collider* c, Collision& collision)
 
 
 void MainCamera::Update()
-{	
+{
 	if (!blockRotation)
 	{
 
-	transform.RotateBy(Input::GetDeltaMousePosX() * Timer::GetDeltaS() * m_rotationSpeed, glm::vec3(0, 1, 0));
-	transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * m_rotationSpeed, transform.GetLocalRight());
+		transform.RotateBy(Input::GetDeltaMousePosX() * Timer::GetDeltaS() * m_rotationSpeed, glm::vec3(0, 1, 0));
+		transform.RotateBy(Input::GetDeltaMousePosY() * Timer::GetDeltaS() * m_rotationSpeed, transform.GetLocalRight());
 	}
 
 	if (!blockMovement)
@@ -145,7 +145,7 @@ void MainCamera::Update()
 		{
 			if (Input::GetKeyPressed(GLFW_KEY_SPACE) && collectedObject == nullptr)
 			{
-				affordanceAgent->ExecuteAffordanceEngageCallback("CollectableAffordance",nullptr );
+				affordanceAgent->ExecuteAffordanceEngageCallback("CollectableAffordance", nullptr);
 			}
 		}
 	}
@@ -167,11 +167,12 @@ void MainCamera::Update()
 		Input::SetCursorMode("disabled");
 		blockRotation = false;
 	}
-	if(glm::length2(rb->GetVelocity()) != 0)
+	if (glm::length2(rb->GetVelocity()) != 0)
 		rb->SetVelocity(glm::normalize(rb->GetVelocity()) * m_movementSpeed);
 
 
 	Camera::Update(); //Update last as this will update the view matrix with the new position values
 
-	transform.SetPosition(transform.GetPosition().x,5,transform.GetPosition().z);
+	if (!rb->GetUseGravity())
+		transform.SetPosition(transform.GetPosition().x, 5, transform.GetPosition().z);
 }

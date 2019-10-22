@@ -108,6 +108,7 @@
     <ClCompile Include="src\Utils\Maths.cpp" />
     <ClCompile Include="src\Prefabs\Sand.cpp" />
     <ClCompile Include="src\Prefabs\Mountain.cpp" />
+    <ClCompile Include="src\Prefabs\TestRamp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Dependencies\qu3e\src\q3.h" />
@@ -255,5 +256,6 @@
     <ClInclude Include="src\Utils\UBOLibrary.h" />
     <ClInclude Include="src\Prefabs\Sand.h" />
     <ClInclude Include="src\Prefabs\Mountain.h" />
+    <ClInclude Include="src\Prefabs\TestRamp.h" />
   </ItemGroup>
 </Project>

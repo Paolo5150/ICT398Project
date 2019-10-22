@@ -69,6 +69,7 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadModel("Assets\\Models\\Lantern\\lantern.obj", false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Crate\\crate.obj",false, false);
 	ContentManager::Instance().LoadModel("Assets\\Models\\Fountain\\fountain.obj", false, false);
+	ContentManager::Instance().LoadModel("Assets\\Models\\TestRamp\\TestRamp.obj", false, false);
 
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\Rest_low.png", false);
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\Emotions\\happy.png", false);
@@ -95,6 +96,7 @@ void MainScene::LoadAssets() {
 	ContentManager::Instance().LoadTexture("Assets\\Models\\RecycleBin\\textures\\RB_Sides.png", 0);
 
 	ContentManager::Instance().LoadTexture("Assets\\Models\\Fountain\\textures\\fountain.png", 0);
+	ContentManager::Instance().LoadTexture("Assets\\Models\\TestRamp\\textures\\TestRamp.png", 0);
 
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\BushCourt\\BushCourt.png", 0);
 	ContentManager::Instance().LoadTexture("Assets\\Textures\\Sand\\Sand.png", 0);
@@ -236,6 +238,24 @@ void MainScene::LogicUpdate()
 		return;
 	}
 
+
+	if (Input::GetKeyPressed(GLFW_KEY_G))
+	{
+		PhysicsWorld::gravity = glm::vec3(0.0, -3.8, 0);
+	}
+	else if (Input::GetKeyPressed(GLFW_KEY_H))
+	{
+		PhysicsWorld::gravity = glm::vec3(0.0, 0, 0);
+	}
+
+	if (Input::GetKeyPressed(GLFW_KEY_B))
+	{
+		cam->GetComponent<Rigidbody>("Rigidbody")->UseGravity(true);
+	}
+	else if (Input::GetKeyPressed(GLFW_KEY_N))
+	{
+		cam->GetComponent<Rigidbody>("Rigidbody")->UseGravity(false);
+	}
 	
 	PathFindingManager::Instance().ClosestNodeAt(cam->transform.GetPosition().x, cam->transform.GetPosition().y, cam->transform.GetPosition().z);
 

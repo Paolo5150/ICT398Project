@@ -36,3 +36,6 @@ Box P(-2,10,-1) R(0,0,0) S(1,1,1)
 DrinkingFountain P(10,0,74.5) R(0,90,0) S(1,1,1)
 DrinkingFountain P(60,0,74.5) R(0,90,0) S(1,1,1)
 DrinkingFountain P(-30,0,74.5) R(0,90,0) S(1,1,1)
+
+TestRamp P(0,0,30) R(0,90,0) S(3,3,3)
+Box P(0,40,30) R(0,0,0) S(1,1,1)

@@ -7,7 +7,7 @@ TestRamp::TestRamp() : GameObject("TestRamp")
 {
 	SetIsStatic(1);
 	ContentManager::Instance().GetAsset<Model>("TestRamp")->PopulateGameObject(this);
-	transform.SetScale(0.55);
+	transform.SetScale(1);
 	Material m;
 	m.SetShader(ContentManager::Instance().GetAsset<Shader>("PBR"));
 	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("TestRamp"), "albedoMap");
@@ -38,7 +38,7 @@ void TestRamp::Update()
 void TestRamp::Start()
 {
 
-	LoadCollidersFromFile("Assets\\Colliders\\Fountain.txt");
+	LoadCollidersFromFile("Assets\\Colliders\\TestRamp.txt");
 
 
 	GameObject::Start(); //This will call start on all the object components, so it's better to leave it as last call when the collider

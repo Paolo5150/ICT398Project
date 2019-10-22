@@ -1,0 +1,35 @@
+# This can be used as comments
+# Use "P" to specify position, followed by XYZ
+# Use "S" to specify scale, followed by XYZ
+# Use "R" to specify rotation, followed by XYZ
+# Use "D" to specify whether to draw the collider or not (use as boolean 1 or )
+# "BC" to identify the starting point of a new box collider
+# "SC" to identify the starting point of a new box collider
+# "A" is the "isActive" parameter
+# For Sphere colliders, onle the X value of Scale is used as Radius
+# Ramp only
+BC
+P 0 2 1
+S 1 2.8 0.2
+R -42 0 0
+M 20.0
+D 1
+A 1
+
+BC
+P 0 2 -0.8
+S 1 2 0.2
+R 0 0 0
+M 20.0
+D 1
+A 1
+
+
+# Full box
+# BC
+# P 0 2.1 1
+# S 1 2.1 2
+# R -42 0 0
+# M 20.0
+# D 1
+# A 1
