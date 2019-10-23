@@ -201,7 +201,7 @@ void Fred::Move()
 				if (!(fabs(angle) < 1.0)) //Tolerance
 					cross = glm::sign(glm::cross(transform.GetLocalFront(), toTarget)).y;
 
-				glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * 4.0f;
+				glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * 6.0f;
 
 				rb->SetVelocity(move);
 				rb->SetAngularVelocity(0, (angle * cross) * 2, 0);
@@ -243,7 +243,7 @@ void Fred::Move()
 				if (!(fabs(angle) < 1.0)) //Tolerance
 					cross = glm::sign(glm::cross(transform.GetLocalFront(), toTarget)).y;
 
-				glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) * 4.0f;
+				glm::vec3 move = glm::normalize(nextPos - transform.GetGlobalPosition()) *6.0f;
 
 				rb->SetVelocity(move);
 				rb->SetAngularVelocity(0, (angle * cross) * 2, 0);
