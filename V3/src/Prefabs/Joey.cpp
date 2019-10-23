@@ -168,7 +168,7 @@ void Joey::Move()
 				//Get direction to rotate toward, (similar code as RotateYToward)
 				glm::vec3 toTarget = nextPos - transform.GetGlobalPosition();
 				int cross = 0;
-				float angle = glm::degrees(glm::angle(transform.GetLocalFront(), toTarget));
+				float angle = glm::degrees(glm::angle(transform.GetLocalFront(), glm::normalize(toTarget)));
 				if (!(fabs(angle) < 1.0)) //Tolerance
 					cross = glm::sign(glm::cross(transform.GetLocalFront(), toTarget)).y;
 
@@ -210,7 +210,7 @@ void Joey::Move()
 				//Get direction to rotate toward, (similar code as RotateYToward)
 				glm::vec3 toTarget = nextPos - transform.GetGlobalPosition();
 				int cross = 0;
-				float angle = glm::degrees(glm::angle(transform.GetLocalFront(), toTarget));
+				float angle = glm::degrees(glm::angle(transform.GetLocalFront(), glm::normalize(toTarget)));
 				if (!(fabs(angle) < 1.0)) //Tolerance
 					cross = glm::sign(glm::cross(transform.GetLocalFront(), toTarget)).y;
 
