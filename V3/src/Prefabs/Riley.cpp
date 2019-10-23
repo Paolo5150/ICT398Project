@@ -60,6 +60,7 @@ Riley::Riley() : GameObject("Riley"), AffordanceObject(this)
 	});
 
 	aa->AddAffordanceDisengageCallback("SitAffordance", [&]() {
+		pf->ClearPath();
 
 		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition() - glm::vec3(2, 1, 0));
 	});
@@ -80,6 +81,7 @@ Riley::Riley() : GameObject("Riley"), AffordanceObject(this)
 		transform.RotateBy(-90, transform.GetLocalRight());
 		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition() - aa->selectedObj->gameObject->transform.GetLocalRight() * 8.0f);
 		transform.SetPosition(transform.GetPosition().x, 1, transform.GetPosition().z);
+		pf->ClearPath();
 	});
 
 

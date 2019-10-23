@@ -55,6 +55,19 @@ Joey::Joey() : GameObject("Joey")
 	SceneManager::Instance().GetCurrentScene().AddGameObject(billquad);
 	aa = new AffordanceAgent();
 	AddComponent(aa);
+	aa->AddAffordanceEngageCallback("SitAffordance", [&](AffordanceObject*obj) {
+		//Logger::LogInfo("SitAffordance engaged");
+		transform.SetPosition(obj->gameObject->transform.GetPosition() + glm::vec3(0, 1, 0));
+	});
+
+	aa->AddAffordanceUpdateCallback("SitAffordance", [&]() {
+	});
+
+	aa->AddAffordanceDisengageCallback("SitAffordance", [&]() {
+		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition() - glm::vec3(2, 1, 0));
+		pf->ClearPath();
+
+	});
 	aa->AddAffordanceEngageCallback("LaydownAffordance", [&](AffordanceObject*obj) {
 		//Logger::LogInfo("LaydownAffordance engaged");
 		transform.RotateBy(90, transform.GetLocalRight());
@@ -70,9 +83,9 @@ Joey::Joey() : GameObject("Joey")
 		//Logger::LogInfo("LaydownAffordance disengaged"); 
 		transform.RotateBy(-90, transform.GetLocalRight());
 		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition() - aa->selectedObj->gameObject->transform.GetLocalRight() * 8.0f);
-
 		transform.SetPosition(transform.GetPosition().x, 1, transform.GetPosition().z);
-
+		pf->ClearPath();
+		
 	});
 
 	aa->AddAffordanceEngageCallback("ThirstAffordance", [&](AffordanceObject*obj) {});
