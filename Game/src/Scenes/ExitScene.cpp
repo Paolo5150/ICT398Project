@@ -45,7 +45,7 @@ void ExitScene::QuitScene() {
 }
 void ExitScene::Initialize() {
 
-	 text = new GUIText("Quit", "Left click to quit", 80, 1, glm::vec3(1), 2.5, 1);
+	 text = new GUIText("Quit", "Left click to quit", 70, 1, glm::vec3(1), 2.5, 1);
 	text->isActive = 0;
 	GUIManager::Instance().GetCanvasByName("MainCanvas")->AddGUIObject(text);
 
