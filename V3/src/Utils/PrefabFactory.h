@@ -19,7 +19,18 @@
 #include "..\Prefabs\Box2.h"
 #include "..\Prefabs\DrinkingFountain.h"
 
-
+/**
+* @class PrefabFactory
+* @brief Factory used to get specific prefab object, by name
+*
+*
+* @author Paolo Ferri
+* @version 01
+* @date 05/10/2019
+*
+*
+* @bug No known bugs.
+*/
 
 class PrefabFactory
 {

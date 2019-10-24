@@ -74,8 +74,20 @@ class FileUtils
 		*/
 		static std::string GetLastFolderNameFromAbsolutePath(std::string path);
 
+		/**
+		* @brief						Returns a vector of colliders, read from file
+		* @pre							The file is available
+		* @param absolutePathToFile		The absolute path to the file
+		* @return						The vector of colliders, read from file
+		*/
 		static std::vector<ColliderInfo> ReadColliderFile(std::string absolutePathToFile);
 
+		/**
+		* @brief						Returns a vector of gameobjects to be added to the scene, read from file
+		* @pre							The file is available
+		* @param absolutePathToFile		The absolute path to the file
+		* @return						The vector of game objects, read from file
+		*/
 		static std::vector<GameObject*> ReadSceneFile(std::string absolutePathToFile);
 
 		/**

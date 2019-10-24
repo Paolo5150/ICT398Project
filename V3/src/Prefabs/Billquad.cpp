@@ -177,15 +177,3 @@ void Billquad::Initialize()
 	coolDownTimer = 0;
 }
 
-void Billquad::RenderForSeconds(float seconds, float coolDown)
-{
-	if (timer <= 0 && coolDownTimer <= 0)
-	{
-		timer = seconds;
-		coolDownTimer = coolDown;
-
-	}
-
-
-
-}

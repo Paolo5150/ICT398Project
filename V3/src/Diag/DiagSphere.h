@@ -1,7 +1,18 @@
 #pragma once
 #include "DiagPrefab.h"
 
-
+/**
+* @class DiagSphere
+* @brief Specialized diag prefab that renders spheres
+*
+*
+* @author Paolo Ferri
+* @version 01
+* @date 21/09/2019
+*
+*
+* @bug No known bugs.
+*/
 class DiagSphere : public DiagPrefab
 {
 public:

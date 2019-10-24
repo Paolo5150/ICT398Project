@@ -5,19 +5,62 @@
 
 class AffordanceObject;
 
+/**
+* @class Riley
+* @brief Premade gameobject for a Riley NPC
+*
+*
+* @author Paolo Ferri
+* @version 01
+* @date 05/10/2019
+*
+*
+* @bug No known bugs.
+*/
+
 class Riley : public GameObject, public AffordanceObject
 {
 
 public:
+	/**
+	* @brief						Create a new object
+	*/
 	Riley();
+	/**
+	* @brief						Destroy the object
+	*/
 	~Riley();
-
+	/**
+	* @brief						Update the object
+	* @pre							The object must exist
+	*/
 	void Update() override;
+	/**
+	* @brief						Strt callbackt
+	* @pre							The object must exist
+	*/
 	void Start() override;
+	/**
+	* @brief						Collision enter callbackt
+	* @param g						The other collider
+	* @param collisioni				Collision information
+	*/
 	void OnCollisionEnter(Collider* g, Collision& collision) override;
+	/**
+	* @brief						Collision stay callbackt
+	* @param g						The other collider
+	* @param collisioni				Collision information
+	*/
 	void OnCollisionStay(Collider* g, Collision& collision) override;
+	/**
+	* @brief						Collision exit callbackt
+	* @param g						The other collider
+	*/
 	void OnCollisionExit(Collider* g) override;
 	void Test(AffordanceObject*);
+	/**
+	* @brief						Return the billquad object
+	*/
 	Billquad& GetBillquad() { return *billquad; }
 
 private:

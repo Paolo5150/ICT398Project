@@ -5,6 +5,18 @@
 #include "SocialAffordance.h"
 #include "LightAffordance.h"
 
+/**
+* @class AffordanceFactory
+* @brief Factory used to get specific Affordane object, by name
+*
+*
+* @author Paolo Ferri
+* @version 01
+* @date 05/10/2019
+*
+*
+* @bug No known bugs.
+*/
 
 class AffordanceFactory
 {
