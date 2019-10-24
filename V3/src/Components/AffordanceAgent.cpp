@@ -67,7 +67,7 @@ void AffordanceAgent::ExecuteAffordanceUpdateCallback(std::string affName, AIEmo
 	}
 }
 
-bool AffordanceAgent::LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Affordance::AffordanceTypes type, float range, bool ignoreUse)
+bool AffordanceAgent::LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Affordance::AffordanceTypes type, float range)
 {
 	if (inUseObj == nullptr)
 	{

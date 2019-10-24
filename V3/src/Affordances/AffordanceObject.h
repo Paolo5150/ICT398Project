@@ -54,6 +54,9 @@ public:
 	*/
 	void ExecuteAffordanceCallback(std::string afName, AIEmotion* ai);
 
+	/**
+	* @brief		Call to update callback method for specified affordance name
+	*/
 	void ExecuteAffordanceUpdateCallback(std::string afName, AIEmotion* ai);
 
 	/**

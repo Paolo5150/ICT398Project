@@ -83,7 +83,9 @@ public:
 	*/
 	AffordanceTypes affordanceType;
 
-
+	/**
+	* @brief REturns the affordance name
+	*/
 	std::string& GetName() { return affordanceName; }
 protected:
 	int score;

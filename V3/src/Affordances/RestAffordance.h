@@ -4,6 +4,18 @@
 #include "..\Emotion\AIEmotionManager.h"
 #include "..\Core\Timer.h"
 
+/**
+* @class RestAffordance
+* @brief Defines an affordance of type REST
+*
+*
+* @author Paolo Ferri
+* @version 01
+* @date 20/10/2019
+*
+*
+* @bug No known bugs.
+*/
 class SitAffordance : public Affordance
 {
 public:

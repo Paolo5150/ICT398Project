@@ -15,7 +15,7 @@ LightNeed::~LightNeed()
 
 bool LightNeed::Seek(AIEmotion* ai, AffordanceAgent* aa)
 {
-	if (aa->LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Affordance::AffordanceTypes::LIGHT, 100,1))
+	if (aa->LookForBestScoreAffordanceObjectByAffordanceTypeInRange(Affordance::AffordanceTypes::LIGHT, 100))
 	{
 		return true;
 	}

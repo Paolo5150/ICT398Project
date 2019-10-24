@@ -56,6 +56,15 @@ public:
 	*/
 	AffordanceObject* GetBestScoreObjectByAffordanceTypeWithinRange(Affordance::AffordanceTypes type, glm::vec3 pos, float range, std::string& outAffordanceName);
 
+	/**
+	* @brief					Get best affordance object by typewithin range
+	* @param type				The type of the affordance object
+	* @param pos				The position of the check point
+	* @param range				The range
+	* @param noTarget			AIEMotion target
+
+	* @return					The best affordance object in range
+	*/
 	AffordanceObject* GetBestScoreObjectByAffordanceTypeWithinRangeNotTarget(Affordance::AffordanceTypes type, glm::vec3 pos, float range, std::string& outAffordanceName, AffordanceObject* notTarget);
 
 
