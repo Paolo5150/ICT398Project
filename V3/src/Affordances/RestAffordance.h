@@ -41,9 +41,9 @@ public:
 		affordanceType = AffordanceTypes::REST;
 		affordanceName = "LaydownAffordance";
 		Callback = [](AIEmotion* ai) { Logger::LogInfo("Someone laid down on me"); };
-		UpdateCallback = [](AIEmotion* ai) { AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Rest, Stimuli::StimuliType::Default, 2.4f * Timer::GetDeltaS(), true, 0, ai); };
+		UpdateCallback = [](AIEmotion* ai) { 
+		AIEmotionManager::Instance().GenerateStimuli(Need::NeedType::Rest, Stimuli::StimuliType::Default, 2.4f * Timer::GetDeltaS(), true, 0, ai);
+		};
 	}
 	virtual ~LaydownAffordance() {};
-
-
 };

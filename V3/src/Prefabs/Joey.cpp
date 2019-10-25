@@ -11,19 +11,6 @@
 #include "..\Diag\DiagRenderer.h"
 
 
-namespace
-{
-	AffordanceAgent* aa;
-	GameObject* player;
-	AIEmotion* aiE;
-	PathFinder* pf;
-	Rigidbody* rb;
-	glm::vec3 nextPos; //Next position to navigate to
-	float timer = 0; //Used to regenerate path every now and then
-	AffordanceObject* pathAffordanceObject; //Which affordance the current path is made from
-	bool waiting = false; //Waiting while wandering
-}
-
 void Joey::Test(AffordanceObject* obj)
 {
 	Logger::LogInfo("I'm sitting on", obj->gameObject->GetName());

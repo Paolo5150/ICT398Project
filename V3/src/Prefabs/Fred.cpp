@@ -10,19 +10,6 @@
 #include "..\Components\AIEmotion.h"
 #include "..\Scene\SceneManager.h"
 
-namespace
-{
-	AffordanceAgent* aa;
-	GameObject* player;
-	AIEmotion* aiE;
-	PathFinder* pf;
-	Rigidbody* rb;
-	glm::vec3 nextPos; //Next position to navigate to
-	float timer = 0; //Used to regenerate path every now and then
-	AffordanceObject* pathAffordanceObject; //Which affordance the current path is made from
-	bool waiting = false; //Waiting while wandering
-}
-
 void Fred::Test(AffordanceObject* obj)
 {
 	Logger::LogInfo("I'm sitting on", obj->gameObject->GetName());
@@ -70,7 +57,6 @@ Fred::Fred() : GameObject("Fred"), AffordanceObject(this)
 	});
 
 	aa->AddAffordanceEngageCallback("LaydownAffordance", [&](AffordanceObject*obj) {
-		//Logger::LogInfo("Fred LaydownAffordance engaged");
 		transform.RotateBy(90, transform.GetLocalRight());
 		glm::vec3 pos = obj->gameObject->transform.GetGlobalPosition();
 		pos.y += 1;
@@ -83,12 +69,10 @@ Fred::Fred() : GameObject("Fred"), AffordanceObject(this)
 	});
 
 	aa->AddAffordanceDisengageCallback("LaydownAffordance", [&]() {
-		Logger::LogInfo("Fred LaydownAffordance disengaged");
 		transform.RotateBy(-90, transform.GetLocalRight());
 		transform.SetPosition(aa->selectedObj->gameObject->transform.GetPosition()  - aa->selectedObj->gameObject->transform.GetLocalRight() * 8.0f);
 		transform.SetPosition(transform.GetPosition().x, 1, transform.GetPosition().z);
 		pf->ClearPath();
-
 	});
 
 	aa->AddAffordanceEngageCallback("ThirstAffordance", [&](AffordanceObject*obj) {});
