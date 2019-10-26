@@ -266,12 +266,6 @@ void MainScene::LogicUpdate()
 
 	}
 
-	
-	PathFindingManager::Instance().ClosestNodeAt(cam->transform.GetPosition().x, cam->transform.GetPosition().y, cam->transform.GetPosition().z);
-
-
-
-
 
 	Scene::LogicUpdate(); //Must be last statement!
 
