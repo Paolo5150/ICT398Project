@@ -105,6 +105,7 @@ public:
 	* @post			Whether the parameter node is the last node.
 	*
 	* @param		node		the node to check
+	* @param		allowClose	if true, returns true if node is the last node or a neighbor of the last node
 	*
 	* @return		True if the parameter node is the last node in the nodePath, false otherwise.
 	*/
@@ -117,6 +118,7 @@ public:
 	* @post			Whether the parameter node is the last node.
 	*
 	* @param		pos			the pos to check
+	* @param		includeY	whether to include the y pos in the check
 	*
 	* @return		True if the parameter node is the last node in the path, false otherwise.
 	*/

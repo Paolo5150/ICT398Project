@@ -9,10 +9,8 @@ Rigidbody::Rigidbody() : Component("Rigidbody")
 	angVelocity = glm::vec3(0, 0, 0);
 	useGravity = true;
 	awake = 1;
-	timer = 0;
 	damping = 1.5;
 	ignoreRotation = 0;
-
 }
 
 Rigidbody::Rigidbody(float x, float y, float z, bool relative) : Component("Rigidbody")
@@ -25,10 +23,7 @@ Rigidbody::Rigidbody(float x, float y, float z, bool relative) : Component("Rigi
 	angVelocity = glm::vec3(0, 0, 0);
 	useGravity = true;
 	awake = 1;
-	timer = 0;
 	ignoreRotation = 0;
-
-
 }
 
 Rigidbody::~Rigidbody()
@@ -183,8 +178,6 @@ glm::vec3 Rigidbody::GetAngularVelocity() const
 
 void Rigidbody::Update()
 {
-	timer += Timer::GetDeltaS();	
-
 	angVelocity = glm::lerp(angVelocity, glm::vec3(), Timer::GetDeltaS() * damping * 6 );
 
 	if (fabs(angVelocity.x) < 0.05)
@@ -212,11 +205,6 @@ void Rigidbody::Update()
 	_parent->transform.RotateBy(angVelocity.x * Timer::GetDeltaS(), 1, 0, 0); //Update the transform's x rotation
 	_parent->transform.RotateBy(angVelocity.y * Timer::GetDeltaS(), 0, 1, 0); //Update the transform's y rotation
 	_parent->transform.RotateBy(angVelocity.z * Timer::GetDeltaS(), 0, 0, 1); //Update the transform's z rotation		
-
-
-
-
-
 }
 
 bool Rigidbody::GetUseDynamicPhysics()

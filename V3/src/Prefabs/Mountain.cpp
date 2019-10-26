@@ -7,15 +7,13 @@ Mountain::Mountain() : GameObject("Mountain")
 {
 	SetIsStatic(true);
 	ContentManager::Instance().GetAsset<Model>("Mountain")->PopulateGameObject(this);
-	//transform.SetScale(1.5);
+
 	SetCullable(false);
 	Material m;
 	m.SetShader(ContentManager::Instance().GetAsset<Shader>("DefaultStatic"));
 	m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("Mountain"));
 	m.LoadFloat("shininess", 400.0f);
 	m.SetColor(0.5, 0.5, 0.5);
-	//m.Loadtexture(ContentManager::Instance().GetAsset<Texture2D>("BushCourt"), "diffuse0");
-//	m.LoadFloat("shininess", 300.0f);
 	ApplyMaterial(m);
 
 	Material m2NoLight;

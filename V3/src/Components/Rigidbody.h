@@ -163,6 +163,15 @@ public:
 	* @param		useGravity		whether the Rigidbody should be affected by gravity
 	*/
 	void UseGravity(bool gravityEnabled);
+
+	/**
+	* @brief		Retrieves whether the rigidbody is affected gravity.
+	*
+	* @pre			The Rigidbody must exist.
+	* @post			Whether the Rigidbody is being affected by gravity.
+	*
+	* @return		Whether the Rigidbody is being affected by gravity.
+	*/
 	bool GetUseGravity();
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -282,7 +291,6 @@ private:
 	float damping;
 	bool useGravity; //Whether to be affected by gravity
 	bool useDynamicPhysics = true;
-	float timer;
 	bool ignoreRotation;
 	
 };
