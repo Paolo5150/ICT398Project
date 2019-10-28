@@ -27,6 +27,7 @@ bool LightNeed::Seek(AIEmotion* ai, AffordanceAgent* aa)
 
 void LightNeed::FinishSeek(AIEmotion* ai, AffordanceAgent * aa)
 {
+	aa->selectedObj = nullptr;
 	aa->ExecuteAffordanceDisengageCallback(aa->GetSelectedAffordanceName());
 
 }

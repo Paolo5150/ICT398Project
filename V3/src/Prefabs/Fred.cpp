@@ -208,7 +208,7 @@ void Fred::Move()
 	{
 		if (!waiting)
 		{
-			if (!pf->HasPath() || (Timer::GetTimeS() - timer) > 20)
+			if (!pf->HasPath() || (Timer::GetTimeS() - timer) > 8)
 			{
 				rb->SetActive(true);
 				glm::vec3 pos = PathFindingManager::Instance().GetRandomFreeNode();

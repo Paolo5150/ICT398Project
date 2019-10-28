@@ -7,8 +7,8 @@ N anticipation 50.0 10 1.0 1.0
 N joy 50.0 10 1.0 1.0
 N trust 50.0 10 1.0 1.0
 N thirst 50.0 1 1.0 1.0
-N rest 20.0 2 1.0 1.0
-N social 100 5 1 1
+N rest 20.0 2 3.0 1.0
+N social 100 5 2 4
 
 # Trait:
 # T nameOfTrait(classname)
