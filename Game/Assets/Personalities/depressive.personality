@@ -8,7 +8,7 @@ N joy 50.0 10 1.0 1.0
 N trust 50.0 10 1.0 1.0
 N thirst 50.0 1 1.0 1.0
 N rest 20.0 2 3.0 1.0
-N social 100 5 2 4
+N social 70 5 2 2
 
 # Trait:
 # T nameOfTrait(classname)
